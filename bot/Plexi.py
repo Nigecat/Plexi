@@ -1,5 +1,6 @@
 import discord
 import requests
+from config import *
 from requests import get
 from bs4 import BeautifulSoup
 from discord.utils import get
@@ -23,7 +24,6 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    #message.content       #Content of the message
     await bot.process_commands(message) #Send the command to the rest of the script
 
 #COMMANDS -------------------------------------------------------
@@ -78,7 +78,14 @@ async def sndmsg(ctx, *, msg):
 
 @bot.command()
 async def config(ctx, option, setting):
-    print(option, setting)
+    id = ctx.message.guild.id
+    if not exists(id):
+        create(id)
+        data = {}
+    else:
+        data = load(id)
+    data[option] = setting
+    save(id, data)
 
 #----------------------------------------------------------------
 
