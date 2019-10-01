@@ -106,5 +106,5 @@ async def help(ctx, *, command = None):
         await user.send(embed = private)
 
         await ctx.send(embed = public)
-           
+         
 bot.run(TOKEN)
