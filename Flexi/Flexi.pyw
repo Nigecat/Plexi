@@ -40,5 +40,15 @@ async def flex(ctx, level = 0):
 
         for emoji in nitroflex:
             await message[0].add_reaction(emoji)
+    else:
+        await ctx.message.delete()
+        channel = bot.get_channel(ctx.channel.id)
+        message = await channel.history(limit=1).flatten()
+        message.reverse()  
+
+        nitroflex = [emoji for emoji in ctx.guild.emojis if "nitroflex" in emoji.name]
+
+        for emoji in nitroflex:
+            await message[0].add_reaction(emoji)
 
 bot.run(TOKEN)
