@@ -10,12 +10,15 @@ from requests import get
 from bs4 import BeautifulSoup
 from os import system, remove
 from discord.utils import get
+from pafy import new as video
 from discord.utils import find
 from discord.ext import commands
+from discord.ext.commands import has_permissions, MissingPermissions
 
 TOKEN = 'NjIxMTc5Mjg5NDkxOTk2Njgz.XXhmFw.IgagFyMii9zzY8gRAZBTPHxTkDU'
 PREFIX = "$"
-WHITELIST = [307429254017056769, 408521712725000199]
+UPLOAD_LIMIT = 8
+WHITELIST = [[307429254017056769, 408521712725000199], [508826294901932062]]
 bot = commands.Bot(command_prefix = PREFIX)
 
 @bot.event
@@ -32,8 +35,16 @@ async def on_message(message):
     #    for emoji in nitroflex:
     #        await message.add_reaction(emoji)
 
-    if message.author.id in WHITELIST:
+    if message.content.startswith("$"):
+        await message.delete()
+
+    if message.author.id in WHITELIST[0]:
         await bot.process_commands(message) 
+    else:
+        if message.author.id in WHITELIST[1]:
+            confirm = input("Would you like to authorize {} running {}? [y/n]: ".format(message.author.name, message.content))
+            if confirm == "y":
+                await bot.process_commands(message) 
 
 @bot.command()
 async def define(ctx, *, word):
@@ -71,8 +82,8 @@ async def define(ctx, *, word):
 
 @bot.command()
 async def flex(ctx, level = 0):
+    #await ctx.message.delete()
     if level != 0:
-        await ctx.message.delete()
         channel = bot.get_channel(ctx.channel.id)
         message = await channel.history(limit=1).flatten()
         message.reverse()  
@@ -82,7 +93,6 @@ async def flex(ctx, level = 0):
         for emoji in nitroflex:
             await message[0].add_reaction(emoji)
     else:
-        await ctx.message.delete()
         channel = bot.get_channel(ctx.channel.id)
         message = await channel.history(limit=1).flatten()
         message.reverse()  
@@ -95,7 +105,6 @@ async def flex(ctx, level = 0):
 @bot.command()
 async def nigelflex(ctx, level = 0):
     if level != 0:
-        await ctx.message.delete()
         channel = bot.get_channel(ctx.channel.id)
         message = await channel.history(limit=1).flatten()
         message.reverse()  
@@ -105,7 +114,6 @@ async def nigelflex(ctx, level = 0):
         for emoji in nitroflex:
             await message[0].add_reaction(emoji)
     else:
-        await ctx.message.delete()
         channel = bot.get_channel(ctx.channel.id)
         message = await channel.history(limit=1).flatten()
         message.reverse()  
@@ -117,53 +125,49 @@ async def nigelflex(ctx, level = 0):
 
 @bot.command()
 async def nitrowhisper(ctx):
-    await ctx.message.delete()
-
-@bot.command()
-async def nitrobroadcast(ctx):
-    await ctx.message.delete()
-
-@bot.command()
-async def connect(ctx):
     try:
         channel = ctx.author.voice.channel
-    except AttributeError:
+    except AttributeError:  
         await ctx.send("You are not connected to a voice channel!")
         return
 
-    await ctx.message.delete()
     await channel.connect()    
-
-@bot.command()
-async def disconnect(ctx):
-    await ctx.message.delete()
-
-    server = ctx.message.guild.voice_client
-    await server.disconnect()
-
-@bot.command()
-async def lonely(ctx):
-    try:
-        channel = ctx.author.voice.channel
-    except AttributeError:
-        await ctx.send("You are not connected to a voice channel!")
-        return
-
-    msg = "You must be lonely, {}. I have been summoned and shall join you!".format(ctx.author.mention)
-    await bot.get_channel(ctx.channel.id).send(msg)
-
-    await channel.connect()
 
     voice = get(bot.voice_clients, guild = ctx.guild)
     if voice and voice.is_connected():
         await voice.move_to(channel)
     else:
         voice = await channel.connect()
-    source = discord.FFmpegPCMAudio('Shrekophone.mp3')
+    source = discord.FFmpegPCMAudio('nitrowhisper.mp3')
     player = voice.play(source)
 
 @bot.command()
+async def nitrobroadcast(ctx):
+    pass
+
+@bot.command()
+async def connect(ctx):
+    try:
+        channel = ctx.author.voice.channel
+    except AttributeError:  
+        await ctx.send("You are not connected to a voice channel!")
+        return
+
+    await channel.connect()    
+
+@bot.command()
+async def disconnect(ctx):
+    server = ctx.message.guild.voice_client
+    await server.disconnect()
+
+@bot.command()
 async def play(ctx, url):
+    try:
+        server = ctx.message.guild.voice_client
+        await server.disconnect()
+    except AttributeError:
+        pass
+
     try:
         channel = ctx.author.voice.channel
     except AttributeError:
@@ -220,6 +224,25 @@ async def download(ctx, url):
     sleep(1)
     remove("Youtube\\{}.mp3".format(url.split("=")[-1]))
 
+
+@bot.command()
+@has_permissions(kick_members = True)
+async def kick(ctx, user: discord.User):
+    await ctx.author.send("You have kicked `{}`".format(user.name))
+    await ctx.guild.kick(user)
+
+@bot.command()
+@has_permissions(ban_members = True)
+async def ban(ctx, user: discord.User):
+    await ctx.author.send("You have banned `{}`".format(user.name))
+    await ctx.guild.ban(user)
+
+@bot.command()
+@has_permissions(ban_members = True)
+async def unban(ctx, user: discord.User):
+    await ctx.author.send("You have unbanned `{}`".format(user.name))
+    await ctx.guild.unban(user)
+
 bot.remove_command("help")
 
 @bot.command()
@@ -228,12 +251,14 @@ async def help(ctx):
     embed.add_field(name="$help", value="Display this page", inline=False)
     embed.add_field(name="$download <url>", value="Download a youtube video and upload the mp3 file (only works if under upload cap)", inline=False)
     embed.add_field(name="$play <url>", value="Plays a youtube video into the voice channel the user is in", inline=False)
-    embed.add_field(name="$lonely", value="Run if you're lonely!", inline=False)
     embed.add_field(name="$define <word>", value="Define a word, pulls from the dictionary", inline=False)
     embed.add_field(name="$connect", value="Connect the bot to the user's voice channel", inline=False)
     embed.add_field(name="$disconnect", value="Disconnect the bot from it's voice channel", inline=False)
     embed.add_field(name="$flex <level>", value="Flex on the previous message, leave level blank for max flex", inline=False)
-    embed.add_field(name="$nigelflex", value="...", inline=False)
+    embed.add_field(name="$nigelflex", value="???", inline=False)
+    embed.add_field(name="$ban <user>", value="Ban a user", inline=False)
+    embed.add_field(name="$unban <user>", value="Unban a user", inline=False)
+    embed.add_field(name="$kick <user>", value="Kick a user", inline=False)
 
     embed.add_field(name="-------------------------------------", value="Work in progress:", inline=False)
 
