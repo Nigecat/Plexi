@@ -1,3 +1,3 @@
 # Plexi
 
-A discord moderation bot
+A discord bot
