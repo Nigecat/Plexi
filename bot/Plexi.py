@@ -28,9 +28,11 @@ def starts(msg, checks):
 TOKEN = 'NjIxMTc5Mjg5NDkxOTk2Njgz.XXhmFw.IgagFyMii9zzY8gRAZBTPHxTkDU'
 PREFIX = "$"
 UPLOAD_LIMIT = 8
-WHITELIST = [307429254017056769, 408521712725000199, 547881813088010241]
-BLACKLIST = [209088521728688128, 416832121324306454, 508826294901932062]        #Nitro users
+WHITELIST = [307429254017056769, 408521712725000199, 547881813088010241, 617606040724176896, 524060680853127168]    #Nigel Q, Ben D, Billy B, Ben M, James D
+BLACKLIST = [209088521728688128, 416832121324306454]        #Nitro users
 locked = []
+confirm = False
+command = None
 #BLACKLIST = []
 bot = commands.Bot(command_prefix = PREFIX)
 
@@ -43,24 +45,39 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
+    global confirm, command
     #if "nitroflex" in message.content:
     #    nitroflex = [emoji for emoji in message.guild.emojis if "nitroflex" in emoji.name]
     #    for emoji in nitroflex:
     #        await message.add_reaction(emoji)
 
-    if message.content.startswith("$"):
-        if starts(message.content, ["$flex", "$nigelflex", "$play", "$download", "$connect", "$disconnect", "$help", "$nitrowhisper", "$nitrobroadcast", "$kick", "$ban", "$unban", "$favourite", "$sec", "$bruh", "$lock"]):
-            if message.guild.id != 621181741972979722:
-                await message.delete()
+    if confirm and message.guild == None:
+        if message.content == "y":
+            await bot.process_commands(command)
+            command = None
+            confirm = False
+        elif message.content == "n":
+            command = None
+            confirm = False
 
-        if message.author.id in WHITELIST:
-            await bot.process_commands(message) 
+    elif message.guild == None and message.author.id != 307429254017056769 and message.author.id != 621179289491996683:
+        user = bot.get_user(307429254017056769)
+        await user.send(f"`{message.author.name}`: {message.content}")
 
-        #elif message.author.id not in WHITELIST and message.author.id not in BLACKLIST:
-        #    #user = bot.get_user(307429254017056769)
-        #    confirm = input("Would you like to authorize `{}` running `{}`? [y/n]: ".format(message.author.name, message.content))
-        #    if confirm == "y":
-        #        await bot.process_commands(message) 
+    else:
+        if message.content.startswith("$"):
+            if starts(message.content, ["$flex", "$nigelflex", "$play", "$download", "$connect", "$disconnect", "$lock", "$unlock", "$help", "$nitrowhisper", "$nitrobroadcast", "$kick", "$ban", "$unban", "$favourite", "$sec", "$bruh", "$lock"]):
+                if message.guild.id != 621181741972979722:
+                    await message.delete()
+
+            if message.author.id in WHITELIST:
+                await bot.process_commands(message) 
+
+            elif message.author.id not in WHITELIST and message.author.id not in BLACKLIST:
+                user = bot.get_user(307429254017056769)
+                await user.send(f"Would you like to authorize `{message.author.name}` running `{message.content}`? [y/n]: ")
+                confirm = True
+                command = message
 
         #elif message.author.id in BLACKLIST:
         #    print("NITROUSER DETECTED")
