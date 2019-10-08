@@ -145,12 +145,12 @@ async def favourite(ctx, url):
     update("config\\favourites.json", {str(ctx.author.id): url})
 
 @bot.command()
-async def sec(ctx):
-    try:
-        channel = ctx.author.voice.channel
-    except AttributeError:  
-        await ctx.send("You are not connected to a voice channel!")
-        return
+async def sec(ctx, target = None):
+    if target == None:
+        if ctx.author.voice and ctx.author.voice.channel:
+            channel = ctx.author.voice.channel
+    else:
+        channel = bot.get_channel(int(target))
 
     await channel.connect()    
 
@@ -168,12 +168,12 @@ async def sec(ctx):
     await server.disconnect()
 
 @bot.command()
-async def bruh(ctx):
-    try:
-        channel = ctx.author.voice.channel
-    except AttributeError:  
-        await ctx.send("You are not connected to a voice channel!")
-        return
+async def bruh(ctx, target = None):
+    if target == None:
+        if ctx.author.voice and ctx.author.voice.channel:
+            channel = ctx.author.voice.channel
+    else:
+        channel = bot.get_channel(int(target))
 
     await channel.connect()    
 
@@ -259,7 +259,12 @@ async def download(ctx, url):
 
 @bot.command()
 async def whatsmypeanut(ctx):
-    level = randint(1, 100)
+    level = list(str(ctx.message.author.id))
+    level = ((((int(str(level[0]) + str(level[1])) + int(str(level[-1]) + str(level[-2])) // 2) * randint(1, 2)) + randint(1, 3)) - randint(1, 3) + int((list(str(ctx.message.author.guild.id))[0]))) - randint(5, 10)
+    if level > 100:
+        level = 100
+    elif level < 0:
+        level = 0
     await ctx.send("Your peanut meter level is currently at {}!".format(level))
     if level < 10 and level > 1:
         await ctx.send("Wow! That's a small peanut...")
@@ -275,8 +280,13 @@ async def whatsmypeanut(ctx):
         await ctx.send("I don't know how, but you managed to break the scale, your peanut is off the charts!")
         
 @bot.command()
-async def whatstheirpeanut(ctx, user):
-    level = randint(1, 100)
+async def whatstheirpeanut(ctx, user:discord.Member = None):
+    level = list(str(user.id))
+    level = ((((int(str(level[0]) + str(level[1])) + int(str(level[-1]) + str(level[-2])) // 2) * randint(1, 2)) + randint(1, 3)) - randint(1, 3) + int((list(str(ctx.message.author.guild.id))[0]))) - randint(5, 10)
+    if level > 100:
+        level = 100
+    elif level < 0:
+        level = 0
     await ctx.send("{}'s peanut meter level is currently at {}!".format(user, level))
     if level < 10 and level > 1:
         await ctx.send("Wow! That's a small peanut...")
@@ -378,7 +388,6 @@ async def help(ctx):
     embed.add_field(name="$flex <level>", value="Flex on the previous message, leave level blank for max flex", inline=False)
     embed.add_field(name="$nigelflex <level>", value="???", inline=False)
     embed.add_field(name="$nitrowhisper <level> <target", value="???", inline=False)
-    #embed.add_field(name="$define <word>", value="Define a word, pulls from the dictionary", inline=False)
     embed.add_field(name="$bruh", value="Bruh", inline=False)
     embed.add_field(name="$sec", value="???", inline=False)
     #embed.add_field(name="$ban <user>", value="Ban a user", inline=False)
