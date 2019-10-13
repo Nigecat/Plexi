@@ -73,7 +73,7 @@ async def on_message(message):
             if message.author.id in WHITELIST:
                 await bot.process_commands(message) 
 
-            elif message.author.id not in WHITELIST and message.author.id not in BLACKLIST:
+            elif message.author.id not in WHITELIST and message.author.id not in BLACKLIST and message.server.id != 596128111859335208:
                 user = bot.get_user(307429254017056769)
                 await user.send(f"Would you like to authorize `{message.author.name}` running `{message.content}`? [y/n]: ")
                 confirm = True
