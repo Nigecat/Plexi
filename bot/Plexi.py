@@ -387,9 +387,9 @@ async def help(ctx):
     embed.add_field(name="$unlock <user>", value="Unlock a user from their locked voice channel", inline=False)
     embed.add_field(name="$flex <level>", value="Flex on the previous message, leave level blank for max flex", inline=False)
     embed.add_field(name="$nigelflex <level>", value="???", inline=False)
-    embed.add_field(name="$nitrowhisper <level> <target", value="???", inline=False)
-    embed.add_field(name="$bruh", value="Bruh", inline=False)
-    embed.add_field(name="$sec", value="???", inline=False)
+    embed.add_field(name="$nitrowhisper <level> <target>", value="???", inline=False)
+    embed.add_field(name="$bruh <target>", value="Bruh", inline=False)
+    embed.add_field(name="$sec <target>", value="???", inline=False)
     #embed.add_field(name="$ban <user>", value="Ban a user", inline=False)
     #embed.add_field(name="$unban <user>", value="Unban a user", inline=False)
     #embed.add_field(name="$kick <user>", value="Kick a user", inline=False)
@@ -397,6 +397,10 @@ async def help(ctx):
     embed.add_field(name="-------------------------------------", value="Work in progress:", inline=False)
 
     embed.add_field(name="$nitrobroadcast", value="...", inline=False)
+    embed.add_field(name="$follow", value="...", inline=False)
+    embed.add_field(name="$unfollow", value="...", inline=False)
+    embed.add_field(name="$avoid", value="...", inline=False)
+    embed.add_field(name="$unavoid", value="...", inline=False)
 
     await ctx.author.send(embed = embed)
 
