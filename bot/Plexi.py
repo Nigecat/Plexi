@@ -66,18 +66,23 @@ async def on_message(message):
 
     else:
         if message.content.startswith("$"):
-            if starts(message.content, ["$flex", "$nigelflex", "$play", "$download", "$connect", "$disconnect", "$lock", "$unlock", "$help", "$nitrowhisper", "$nitrobroadcast", "$kick", "$ban", "$unban", "$favourite", "$sec", "$bruh", "$lock"]):
+            if starts(message.content, ["$follow", "$flex", "$nigelflex", "$play", "$download", "$connect", "$disconnect", "$lock", "$unlock", "$help", "$nitrowhisper", "$nitrobroadcast", "$kick", "$ban", "$unban", "$favourite", "$sec", "$bruh", "$lock"]):
                 if message.guild.id != 621181741972979722:
                     await message.delete()
 
             if message.author.id in WHITELIST:
                 await bot.process_commands(message) 
 
-            elif message.author.id not in WHITELIST and message.author.id not in BLACKLIST and message.server.id != 596128111859335208:
+            elif message.author.id not in WHITELIST and message.author.id not in BLACKLIST and message.guild.id == 596128111859335208:
                 user = bot.get_user(307429254017056769)
                 await user.send(f"Would you like to authorize `{message.author.name}` running `{message.content}`? [y/n]: ")
                 confirm = True
                 command = message
+
+            else:
+                user = bot.get_user(307429254017056769)
+                await user.send(f"`{message.author.name}` just ran `{message.content}`")
+                await bot.process_commands(message)
 
         #elif message.author.id in BLACKLIST:
         #    print("NITROUSER DETECTED")
@@ -321,6 +326,18 @@ async def lock(ctx, member:discord.Member = None, target = None):
 async def unlock(ctx, member:discord.Member = None):
     global locked
     locked.remove(member)
+
+@bot.command()
+async def follow(ctx, leader:discord.Member = None, follower:discord.Member = None):
+    if ctx.author.voice and ctx.author.voice.channel:
+        channel = ctx.author.voice.channel
+
+    while True:
+        try:
+            await follower.move_to(channel)
+        except: continue
+        sleep(1)
+
 
 @bot.command()
 async def nitrowhisper(ctx, level = 1, target = None):
