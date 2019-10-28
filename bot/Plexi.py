@@ -28,11 +28,7 @@ def starts(msg, checks):
 TOKEN = 'NjIxMTc5Mjg5NDkxOTk2Njgz.XXhmFw.IgagFyMii9zzY8gRAZBTPHxTkDU'
 PREFIX = "$"
 UPLOAD_LIMIT = 8
-WHITELIST = [307429254017056769, 408521712725000199, 547881813088010241, 617606040724176896, 524060680853127168]    #Nigel Q, Ben D, Billy B, Ben M, James D
-BLACKLIST = [209088521728688128, 416832121324306454]        #Nitro users
 locked = []
-confirm = False
-command = None
 #BLACKLIST = []
 bot = commands.Bot(command_prefix = PREFIX)
 
@@ -45,47 +41,25 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    global confirm, command
-    #if "nitroflex" in message.content:
-    #    nitroflex = [emoji for emoji in message.guild.emojis if "nitroflex" in emoji.name]
-    #    for emoji in nitroflex:
-    #        await message.add_reaction(emoji)
-
-    if confirm and message.guild == None:
-        if message.content == "y":
-            await bot.process_commands(command)
-            command = None
-            confirm = False
-        elif message.content == "n":
-            command = None
-            confirm = False
-
-    elif message.guild == None and message.author.id != 307429254017056769 and message.author.id != 621179289491996683:
+    if message.guild == None and message.author.id != 307429254017056769 and message.author.id != 621179289491996683:
         user = bot.get_user(307429254017056769)
         await user.send(f"`{message.author.name}`: {message.content}")
 
     else:
+        channel = bot.get_channel(message.channel.id)
+        if "lemon" in message.content.lower() and message.author.id != 621179289491996683:
+            await channel.send("lemon")
+
         if message.content.startswith("$"):
-            if starts(message.content, ["$follow", "$flex", "$nigelflex", "$play", "$download", "$connect", "$disconnect", "$lock", "$unlock", "$help", "$nitrowhisper", "$nitrobroadcast", "$kick", "$ban", "$unban", "$favourite", "$sec", "$bruh", "$lock"]):
+            #await channel.send("This bot is broken and Nigecat can't be bothered to fix it, so it is temporarily disabled until i can be bothered to fix it")
+            if starts(message.content, ["$follow", "$flex", "$nigelflex", "mop", "$play", "$download", "$connect", "$disconnect", "$lock", "$unlock", "$help", "$nitrowhisper", "$nitrobroadcast", "$kick", "$ban", "$unban", "$favourite", "$sec", "$bruh", "$lock"]):
                 if message.guild.id != 621181741972979722:
                     await message.delete()
 
-            if message.author.id in WHITELIST:
-                await bot.process_commands(message) 
+            user = bot.get_user(307429254017056769)
+            await user.send(f"`{message.author.name}` just ran `{message.content}`")
+            await bot.process_commands(message)
 
-            elif message.author.id not in WHITELIST and message.author.id not in BLACKLIST and message.guild.id == 596128111859335208:
-                user = bot.get_user(307429254017056769)
-                await user.send(f"Would you like to authorize `{message.author.name}` running `{message.content}`? [y/n]: ")
-                confirm = True
-                command = message
-
-            else:
-                user = bot.get_user(307429254017056769)
-                await user.send(f"`{message.author.name}` just ran `{message.content}`")
-                await bot.process_commands(message)
-
-        #elif message.author.id in BLACKLIST:
-        #    print("NITROUSER DETECTED")
 
 @bot.command()
 async def flex(ctx, level = 0):
@@ -174,6 +148,13 @@ async def sec(ctx, target = None):
 
 @bot.command()
 async def bruh(ctx, target = None):
+    voice_channel = None
+    if not ctx.author.voice is None:
+        voice_channel = ctx.author.voice.channel
+    if not voice_channel is None:
+        vc = await voice_channel.connect()
+        vc.play(discord.FFmpegPCMAudio('play/bruh.mp3')) 
+    '''
     if target == None:
         if ctx.author.voice and ctx.author.voice.channel:
             channel = ctx.author.voice.channel
@@ -188,12 +169,37 @@ async def bruh(ctx, target = None):
     else:
         voice = await channel.connect()
     source = discord.FFmpegPCMAudio('play\\bruh.mp3')
+    player = await voice.play(source)
+
+    sleep(2)
+
+    server = ctx.message.guild.voice_client
+    await server.disconnect()
+    '''
+
+@bot.command()
+async def mop(ctx, target = None):
+    if target == None:
+        if ctx.author.voice and ctx.author.voice.channel:
+            channel = ctx.author.voice.channel
+    else:
+        channel = bot.get_channel(int(target))
+
+
+    voice = get(bot.voice_clients, guild = ctx.guild)
+    if voice and voice.is_connected():
+        await voice.move_to(channel)
+    else:
+        voice = await channel.connect()
+
+    source = discord.FFmpegPCMAudio('play\\mop.mp3')
     player = voice.play(source)
 
     sleep(2)
 
     server = ctx.message.guild.voice_client
     await server.disconnect()
+
 
 @bot.command()
 async def play(ctx, url = None, target = None):
@@ -264,8 +270,27 @@ async def download(ctx, url):
 
 @bot.command()
 async def whatsmypeanut(ctx):
+    messages = await ctx.channel.history(limit=100).flatten()
+    total = 0
+    for message in range(len(messages)):
+        if messages[message].author.id == ctx.author.id:
+            total += 1
+
+    total = total * 5
+
+    id_total = 0
+    for num in range(len(list(str(ctx.author.id)))):
+        id_total += int(num)
+
+    #await ctx.send(f"{id_total}, {total}")
     level = list(str(ctx.message.author.id))
-    level = ((((int(str(level[0]) + str(level[1])) + int(str(level[-1]) + str(level[-2])) // 2) * randint(1, 2)) + randint(1, 3)) - randint(1, 3) + int((list(str(ctx.message.author.guild.id))[0]))) - randint(5, 10)
+    level = int(level[0]) + int(level[1]) + int(level[-1]) + int(level[-2])
+    level = level // 2
+    level = level + int(list(str(ctx.message.author.guild.id))[0]) * total
+    level = level // (int(list(str(total))[0]) + 1)
+    level = ((level + id_total - id_total) // (float(len(list(str(ctx.message.author.id))))) + 20)
+    level = int(level + 30)
+
     if level > 100:
         level = 100
     elif level < 0:
@@ -283,11 +308,31 @@ async def whatsmypeanut(ctx):
         await ctx.send("Impressive! I've never seen a bigger peanut!")
     else:
         await ctx.send("I don't know how, but you managed to break the scale, your peanut is off the charts!")
-        
+    await ctx.send("`Calculated with peanut algorithm™`")
+          
 @bot.command()
 async def whatstheirpeanut(ctx, user:discord.Member = None):
+    messages = await ctx.channel.history(limit=100).flatten()
+    total = 0
+    for message in range(len(messages)):
+        if messages[message].author.id == user.id:
+            total += 1
+
+    total = total * 5
+
+    id_total = 0
+    for num in range(len(list(str(user.id)))):
+        id_total += int(num)
+
+    #await ctx.send(f"{id_total}, {total}")
     level = list(str(user.id))
-    level = ((((int(str(level[0]) + str(level[1])) + int(str(level[-1]) + str(level[-2])) // 2) * randint(1, 2)) + randint(1, 3)) - randint(1, 3) + int((list(str(ctx.message.author.guild.id))[0]))) - randint(5, 10)
+    level = int(level[0]) + int(level[1]) + int(level[-1]) + int(level[-2])
+    level = level // 2
+    level = level + int(list(str(ctx.message.author.guild.id))[0]) * total
+    level = level // (int(list(str(total))[0]) + 1)
+    level = ((level + id_total - id_total) // (float(len(list(str(user.id))))) + 20)
+    level = int(level + 30)
+
     if level > 100:
         level = 100
     elif level < 0:
@@ -305,7 +350,8 @@ async def whatstheirpeanut(ctx, user:discord.Member = None):
         await ctx.send("Impressive! I've never seen a bigger peanut!")
     else:
         await ctx.send("I don't know how, but you managed to break the scale, your peanut is off the charts!")
-
+    await ctx.send("`Calculated with peanut algorithm™`")
+    
 @bot.command()
 async def lock(ctx, member:discord.Member = None, target = None):
     global locked
@@ -326,18 +372,6 @@ async def lock(ctx, member:discord.Member = None, target = None):
 async def unlock(ctx, member:discord.Member = None):
     global locked
     locked.remove(member)
-
-@bot.command()
-async def follow(ctx, leader:discord.Member = None, follower:discord.Member = None):
-    if ctx.author.voice and ctx.author.voice.channel:
-        channel = ctx.author.voice.channel
-
-    while True:
-        try:
-            await follower.move_to(channel)
-        except: continue
-        sleep(1)
-
 
 @bot.command()
 async def nitrowhisper(ctx, level = 1, target = None):
