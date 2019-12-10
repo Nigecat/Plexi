@@ -5,7 +5,7 @@ from os import path
 from json import dump
 from datetime import timedelta
 
-PREFIX = "do any of you have weekend "
+PREFIX = "wt"
 
 bot = commands.Bot(command_prefix=PREFIX, self_bot=True)
 
@@ -28,7 +28,7 @@ def ascii_encode(unicode_string):
      return unicode_string
 
 @bot.command()
-async def homework(ctx):
+async def f(ctx):
     messages = await ctx.channel.history(limit = 10000).flatten()
 
     messages.reverse()
