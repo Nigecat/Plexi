@@ -52,7 +52,7 @@ async def on_message(message):
 
         if message.content.startswith("$"):
             #await channel.send("This bot is broken and Nigecat can't be bothered to fix it, so it is temporarily disabled until i can be bothered to fix it")
-            if starts(message.content, ["$follow", "$flex", "$nigelflex", "mop", "$play", "$download", "$connect", "$disconnect", "$lock", "$unlock", "$help", "$nitrowhisper", "$nitrobroadcast", "$kick", "$ban", "$unban", "$favourite", "$sec", "$bruh", "$lock"]):
+            if starts(message.content, ["$follow", "$flex", "$nigelflex", "mop", "$play", "$connect", "$disconnect", "$lock", "$unlock", "$help", "$nitrowhisper", "$nitrobroadcast", "$kick", "$ban", "$unban", "$favourite", "$sec", "$bruh", "$lock"]):
                 if message.guild.id != 621181741972979722:
                     await message.delete()
 
@@ -225,7 +225,6 @@ async def play(ctx, url = None, target = None):
         'outtmpl': 'youtube\\{}.mp3'.format(url.split("=")[-1]),
         'format': 'bestaudio/best',
         'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
             'preferredquality': '192',
         }],
