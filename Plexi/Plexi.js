@@ -1,3 +1,5 @@
+"use strict";
+
 const ytdl = require('ytdl-core');
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -25,9 +27,6 @@ client.on('message', async message => {
         let command = message.content.split(PREFIX).slice(1).join(PREFIX).toLowerCase().split(" ")[0];    // remove token from string
         let args = message.content.split(" ").slice(1);
 
-        /**
-         * @
-         */
         switch (command) {
             case "help": {
                 let embed = new Discord.MessageEmbed()
@@ -148,14 +147,15 @@ class audioPlayer {
                         this.dispatcher = this.connection.play(`${__dirname}/sound/${this.source}`, {
                             volume: this.volume
                         });
-                    } else if (this.location == "online") {
+                    } else if (this.location == "online") 
+                    {
                         this.dispatcher = this.connection.play(ytdl(this.source, {
                             filter: 'audioonly' 
                         }), {
                             volume: this.volume
                         });
                     }
-                    if (this.diconnect) {
+                    if (this.disconnect) {
                         this.dispatcher.on('end', () => {
                             this.dispatcher.destroy();
                             this.connection.disconnect();
