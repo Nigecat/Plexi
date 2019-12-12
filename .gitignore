@@ -1,3 +1,5 @@
-bot/youtube/*.mp3
-bot/__pycache__
-waiting/music.mp3
+Plexi/node_modules
+Plexi/package.json
+Plexi/package-lock.json
+
+Waiting-Room/music.mp3
