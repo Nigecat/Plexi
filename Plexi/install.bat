@@ -1,0 +1,1 @@
+npm install discordjs/discord.js opusscript ytdl-core
