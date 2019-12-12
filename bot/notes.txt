@@ -1,1 +1,0 @@
-add ffmpeg/bin to PATH
