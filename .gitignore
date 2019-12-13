@@ -1,6 +1,6 @@
-Plexi/node_modules
-Plexi/package.json
-Plexi/package-lock.json
+*/node_modules
+*/package.json
+*/package-lock.json
 
 !ffmpeg.exe
 */ffmpeg.exe

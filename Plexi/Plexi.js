@@ -1,5 +1,3 @@
-"use strict";
-
 const ytdl = require('ytdl-core');
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -9,7 +7,7 @@ const PREFIX = "$";
 client.on('ready', () => {
     console.log("Servers:");
     client.guilds.forEach((guild) => {
-        console.log("\n - " + guild.name);
+        console.log(` - ${guild.name}`);
         guild.members.forEach((member) => {
             console.log(`   -- ${member.displayName}: ${member.user.tag}`);
         });
@@ -22,7 +20,7 @@ client.on('ready', () => {
 
 client.on('message', async message => {
     if (message.author != client.user && message.content.startsWith(PREFIX)) {
-        console.log("Command received: " + message.content);
+        console.log(`Command received: ${message.content}`);
 
         let command = message.content.split(PREFIX).slice(1).join(PREFIX).toLowerCase().split(" ")[0];    // remove token from string
         let args = message.content.split(" ").slice(1);
