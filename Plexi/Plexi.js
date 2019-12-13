@@ -28,6 +28,8 @@ client.on('message', async message => {
         let args = message.content.split(" ").slice(1);
 
         switch (command) {
+
+            /*  Text commands   */
             case "help": {
                 let embed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
@@ -54,26 +56,33 @@ client.on('message', async message => {
                 break;
             }
 
+            case "download": {
+                // TODO
+            }
+
+
+
+            /*  Audio commands   */
             case "bruh": {
-                this.player = new audioPlayer(message, "bruh.mp3", "local", 2, true);
+                this.player = new audioPlayer(message, "sound/bruh.mp3", "local", 2, true);
                 this.player.play();
                 break;
             }
 
             case "mop": {
-                this.player = new audioPlayer(message, "mop.mp3", "local", 1, true);
+                this.player = new audioPlayer(message, "sound/mop.mp3", "local", 1, true);
                 this.player.play();
                 break;
             }            
             
             case "sec": {
-                this.player = new audioPlayer(message, "sec.mp3", "local", 1, true);
+                this.player = new audioPlayer(message, "sound/sec.mp3", "local", 1, true);
                 this.player.play();
                 break;
             }
 
             case "naeg": {
-                this.player = new audioPlayer(message, "naeg.mp3", "local", 2, true);
+                this.player = new audioPlayer(message, "sound/naeg.mp3", "local", 2, true);
                 this.player.play();
                 break;
             }
@@ -101,10 +110,6 @@ client.on('message', async message => {
                 this.player.leave();
                 break;
             }
-
-            case "download": {
-                // TODO
-            }
         }
     }
 });
@@ -119,7 +124,7 @@ class audioPlayer {
     /**
      * @class 
      * @param {object}  message     user's message object
-     * @param {string}  source      source location for audio to play, can be web url or local file
+     * @param {string}  source      source location for audio to play, can be web url or local file (local is relative file path)
      * @param {string}  location    online/local
      * @param {number}  volume      1 = 100%
      * @param {boolean} disconnect  whether or not to diconnect after audio is finished playing
@@ -142,9 +147,8 @@ class audioPlayer {
             this.message.member.voice.channel.join()
                 .then(connection => { 
                     this.connection = connection;
-
                     if (this.location == "local") {
-                        this.dispatcher = this.connection.play(`${__dirname}/sound/${this.source}`, {
+                        this.dispatcher = this.connection.play(`${__dirname}/${this.source}`, {
                             volume: this.volume
                         });
                     } else if (this.location == "online") 
