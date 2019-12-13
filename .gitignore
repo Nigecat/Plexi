@@ -2,6 +2,7 @@ Plexi/node_modules
 Plexi/package.json
 Plexi/package-lock.json
 
+!ffmpeg.exe
 */ffmpeg.exe
 
 Waiting-Room/music.mp3
