@@ -1,33 +1,47 @@
-const ytdl = require('ytdl-core');
-const Discord = require('discord.js');
+const ytdl = require('./modules/node_modules/ytdl-core');
+const Discord = require('./modules/node_modules/discord.js');
+
+const CONFIG = JSON.parse(require('fs').readFileSync(`${__dirname}/config/config.json`));
+const TOKEN = CONFIG.TOKEN;
+const PREFIX = CONFIG.PREFIX;
+
 const client = new Discord.Client();
-const TOKEN = "NjIxMTc5Mjg5NDkxOTk2Njgz.XXhmFw.IgagFyMii9zzY8gRAZBTPHxTkDU";
-const PREFIX = "$";
+
+
 
 client.on('ready', () => {
+    this.queue = new Array();
+
     console.log("Servers:");
     client.guilds.forEach((guild) => {
-        console.log(` - ${guild.name}`);
+        console.log(`\n - ${guild.name}:`);
+        console.log(`    -- Members:`);
         guild.members.forEach((member) => {
-            console.log(`   -- ${member.displayName}: ${member.user.tag}`);
+            console.log(`       --- ${member.displayName}: ${member.user.tag}`);
         });
+        console.log(`    -- Channels:`);
+        guild.channels.forEach((channel) => {
+            if (channel.type == "text") {
+                console.log(`       --- ${channel.name}`);
+            }
+        })
     });
 
-    client.user.setActivity("your soul", {type: "WATCHING"});
-    console.log(`\n\nConnected as ${client.user.tag}\n`);
+    client.user.setActivity(`your soul (${PREFIX}help)`, {type: "WATCHING"})
+    console.log(`\n\nConnected as ${client.user.tag}, prefix: ${PREFIX}\n`);
 });
+
+
 
 
 client.on('message', async message => {
     if (message.author != client.user && message.content.startsWith(PREFIX)) {
         console.log(`Command received: ${message.content}`);
 
-        let command = message.content.split(PREFIX).slice(1).join(PREFIX).toLowerCase().split(" ")[0];    // remove token from string
+        let command = message.content.split(PREFIX).slice(1).join(PREFIX).toLowerCase().split(" ")[0];    // remove token from string and get first word
         let args = message.content.split(" ").slice(1);
 
         switch (command) {
-
-            /*  Text commands   */
             case "help": {
                 let embed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
@@ -35,32 +49,161 @@ client.on('message', async message => {
                     .setDescription('this entire project was a bad idea...')
                     .addBlankField()
                     .setThumbnail('https://cdn.discordapp.com/avatars/621179289491996683/9746eaab6605b25c429b3d1459d172a6.png?size=128')
-                    .addField('$whatsmypeanut\t\t$whatstheirpeanut <@user>', '‎')
-                    .addField('$bruh\t\t$sec\t\t$mop\t\t$naeg\t\t$play <url>', '‎')
+                    .addField('‎', 'Text Commands:')
+                    .addField(`${PREFIX}whatsmypeanut\t\t${PREFIX}whatstheirpeanut <@user>`, '‎')
+                    .addField('‎', 'Audio Commands:')
+                    .addField(`${PREFIX}play <url>\t\t${PREFIX}pause\t\t${PREFIX}unpause`, '‎')
+                    .addField(`${PREFIX}bruh\t\t${PREFIX}sec\t\t${PREFIX}mop\t\t${PREFIX}naeg`, '‎')
                     .setTimestamp()
                 message.channel.send({embed});
                 break;
             }
 
+    
+
+
+            /**
+             * Get the user's peanut level
+             */
             case "whatsmypeanut": {
                 message.channel.send(`Your peanut meter level is currently at ${peanut(message.author.id, message.guild.id)}!`);
                 message.channel.send("`Calculated with peanut algorithm™`");
                 break;
             }
 
+            /**
+             * Get the mentioned user's peanut level
+             * @parem <@user>
+             */
             case "whatstheirpeanut": {
-                message.channel.send(`${message.mentions.users.first()}'s peanut meter level is currently at ${peanut(args[0].split("@!")[1].split(">")[0], message.guild.id)}`);
+                message.channel.send(`${message.mentions.users.first()}'s peanut meter level is currently at ${peanut(message.mentions.members.first().id, message.guild.id)}`);
                 message.channel.send("`Calculated with peanut algorithm™`");
                 break;
             }
 
+            /**
+             * Download a YouTube video's audio and upload the mp3
+             * @parem <url>
+             */
             case "download": {
                 // TODO
             }
 
 
 
-            /*  Audio commands   */
+
+
+
+
+            /**
+             * Lock a user in their current voice channel
+             * @parem <@user>
+             */
+            case "lock": {
+                message.delete();
+                var user = message.mentions.members.first();
+                var lockChannel = user.voice.channel;
+                this.lock = setInterval(function() { user.voice.setChannel(lockChannel)}, 1000);
+                break;
+            }
+
+            /**
+             * Remove all active locks
+             */
+            case "unlock": {
+                message.delete();
+                clearInterval(this.lock);
+                break;
+            }
+
+            /**
+             * Drag a mentioned user into the message sender's voice channel
+             * @parem <@user>
+             */
+            case "drag": {
+                message.delete();
+                message.mentions.members.first().voice.setChannel(message.member.voice.channel);
+                break;
+            }
+
+            /**
+             * Make a user follow another user
+             * @parem <@user> follower
+             * @parem <@user> leader
+             */
+            case "follow": {
+                message.delete();
+                var leader = message.mentions.members.last();
+                var follower = message.mentions.members.first();
+                this.follow = setInterval(function () { follower.voice.setChannel(leader.voice.channel) }, 1000);
+                break;
+            }
+
+            /**
+             * Removed all active followings
+             */
+            case "unfollow": {
+                message.delete()
+                clearInterval(this.follow);
+                break;
+            }
+
+            /**
+             * Play audio from a YouTube video into a voice channel
+             * @parem <url>
+             */
+            case "p":
+            case "play": {
+                this.player = new audioPlayer(message, args[0], "online", 1, false);
+                this.player.play();
+                break;
+            }
+
+            /**
+             * Pause currently playing audio
+             */
+            case "pause": {
+                message.delete();
+                this.player.pause();
+                break;
+            }
+
+            /**
+             * Unpause currently playing audio
+             */
+            case "resume":
+            case "unpause": {
+                message.delete();
+                this.player.resume();
+                break;
+            }
+
+            /**
+             * Diconnect bot from current voice channel
+             */
+            case "leave":
+            case "disconnect": {
+                message.delete();
+                this.player.leave();
+                break;
+            }
+
+            /**
+             * View current audio queue
+             */
+            case "q":
+            case "queue": {   
+                // TODO
+            }
+
+            /**
+             * Skip currently playing song
+             */
+            case "s": 
+            case "skip": {
+                // TODO
+            }
+
             case "bruh": {
                 this.player = new audioPlayer(message, "sound/bruh.mp3", "local", 2, true);
                 this.player.play();
@@ -84,35 +227,19 @@ client.on('message', async message => {
                 this.player.play();
                 break;
             }
-
-            case "p":
-            case "play": {
-                this.player = new audioPlayer(message, args[0], "online", 1, false);
-                this.player.play();
-                break;
-            }
-
-            case "pause": {
-                this.player.pause();
-                break;
-            }
-
-            case "resume": {
-                this.player.resume();
-                break;
-            }
-
-            case "stop":
-            case "leave":
-            case "disconnect": {
-                this.player.leave();
-                break;
-            }
         }
     }
 });
 
 client.login(TOKEN);
+
+
+
+
+
+
+
+
 
 
 
@@ -149,8 +276,7 @@ class audioPlayer {
                         this.dispatcher = this.connection.play(`${__dirname}/${this.source}`, {
                             volume: this.volume
                         });
-                    } else if (this.location == "online") 
-                    {
+                    } else if (this.location == "online") {
                         this.dispatcher = this.connection.play(ytdl(this.source, {
                             filter: 'audioonly' 
                         }), {
@@ -186,7 +312,6 @@ class audioPlayer {
 
 
 /**
- * 
  * @param {number} userID  the user's id
  * @param {number} guildID the message's guild (server) id
  */
@@ -210,4 +335,14 @@ function peanut(userID, guildID) {
                     )
         )
     ) / 10;
+}
+
+
+/**
+ * @param {object} message  the message object to check the perms of
+ * @param {string} perm     the perm to check
+ * @return {boolean}
+ */
+function hasPerm(message, perm) {
+    return message.member.hasPermission(perm);
 }
