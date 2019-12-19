@@ -1,23 +1,20 @@
 const ytdl = require('./modules/node_modules/ytdl-core');
 const Discord = require('./modules/node_modules/discord.js');
 
-const CONFIG = JSON.parse(require('fs').readFileSync(`${__dirname}/config/config.json`));
+const CONFIG = JSON.parse(require('fs').readFileSync(`${__dirname}/config.json`));
 const TOKEN = CONFIG.TOKEN;
 const PREFIX = CONFIG.PREFIX;
 
 const client = new Discord.Client();
 
 
-
 client.on('ready', () => {
-    this.queue = new Array();
-
     console.log("Servers:");
     client.guilds.forEach((guild) => {
         console.log(`\n - ${guild.name}:`);
         console.log(`    -- Members:`);
         guild.members.forEach((member) => {
-            console.log(`       --- ${member.displayName}: ${member.user.tag}`);
+            console.log(`       --- ${member.displayName}: ${member.user.tag} (${member.user.presence.status})`);
         });
         console.log(`    -- Channels:`);
         guild.channels.forEach((channel) => {
@@ -36,11 +33,13 @@ client.on('ready', () => {
 
 client.on('message', async message => {
     if (message.author != client.user && message.content.startsWith(PREFIX)) {
-        console.log(`Command received: ${message.content}`);
+        console.log(`Command received: ${message.content} from ${message.author.tag}`);
 
         let command = message.content.split(PREFIX).slice(1).join(PREFIX).toLowerCase().split(" ")[0];    // remove token from string and get first word
         let args = message.content.split(" ").slice(1);
+        
 
+        //Un-restricted text commands
         switch (command) {
             case "help": {
                 let embed = new Discord.MessageEmbed()
@@ -49,18 +48,19 @@ client.on('message', async message => {
                     .setDescription('this entire project was a bad idea...')
                     .addBlankField()
                     .setThumbnail('https://cdn.discordapp.com/avatars/621179289491996683/9746eaab6605b25c429b3d1459d172a6.png?size=128')
+
                     .addField('‎', 'Text Commands:')
                     .addField(`${PREFIX}whatsmypeanut\t\t${PREFIX}whatstheirpeanut <@user>`, '‎')
+                    .addField(`${PREFIX}lock <@user>\t\t${PREFIX}unlock <@user>`, '‎')
+
                     .addField('‎', 'Audio Commands:')
                     .addField(`${PREFIX}play <url>\t\t${PREFIX}pause\t\t${PREFIX}unpause`, '‎')
                     .addField(`${PREFIX}bruh\t\t${PREFIX}sec\t\t${PREFIX}mop\t\t${PREFIX}naeg`, '‎')
+
                     .setTimestamp()
                 message.channel.send({embed});
                 break;
             }
-
-    
-
 
             /**
              * Get the user's peanut level
@@ -80,74 +80,16 @@ client.on('message', async message => {
                 message.channel.send("`Calculated with peanut algorithm™`");
                 break;
             }
-
-            /**
-             * Download a YouTube video's audio and upload the mp3
-             * @parem <url>
-             */
-            case "download": {
-                // TODO
-            }
+        }
 
 
 
+        // !-------------------------------------------------------------------------------------------------------------!
 
+        
 
-
-
-            /**
-             * Lock a user in their current voice channel
-             * @parem <@user>
-             */
-            case "lock": {
-                message.delete();
-                var user = message.mentions.members.first();
-                var lockChannel = user.voice.channel;
-                this.lock = setInterval(function() { user.voice.setChannel(lockChannel)}, 1000);
-                break;
-            }
-
-            /**
-             * Remove all active locks
-             */
-            case "unlock": {
-                message.delete();
-                clearInterval(this.lock);
-                break;
-            }
-
-            /**
-             * Drag a mentioned user into the message sender's voice channel
-             * @parem <@user>
-             */
-            case "drag": {
-                message.delete();
-                message.mentions.members.first().voice.setChannel(message.member.voice.channel);
-                break;
-            }
-
-            /**
-             * Make a user follow another user
-             * @parem <@user> follower
-             * @parem <@user> leader
-             */
-            case "follow": {
-                message.delete();
-                var leader = message.mentions.members.last();
-                var follower = message.mentions.members.first();
-                this.follow = setInterval(function () { follower.voice.setChannel(leader.voice.channel) }, 1000);
-                break;
-            }
-
-            /**
-             * Removed all active followings
-             */
-            case "unfollow": {
-                message.delete()
-                clearInterval(this.follow);
-                break;
-            }
-
+        //Un-restricted audio commands
+        switch (command) {
             /**
              * Play audio from a YouTube video into a voice channel
              * @parem <url>
@@ -188,22 +130,6 @@ client.on('message', async message => {
                 break;
             }
 
-            /**
-             * View current audio queue
-             */
-            case "q":
-            case "queue": {   
-                // TODO
-            }
-
-            /**
-             * Skip currently playing song
-             */
-            case "s": 
-            case "skip": {
-                // TODO
-            }
-
             case "bruh": {
                 this.player = new audioPlayer(message, "sound/bruh.mp3", "local", 2, true);
                 this.player.play();
@@ -225,6 +151,74 @@ client.on('message', async message => {
             case "naeg": {
                 this.player = new audioPlayer(message, "sound/naeg.mp3", "local", 2, true);
                 this.player.play();
+                break;
+            }
+        }
+
+
+
+        // !-------------------------------------------------------------------------------------------------------------!
+
+
+
+        //Restricted commands
+        switch (command) {
+            /**
+             * Lock a user in their current voice channel   *only one active per server
+             * @parem <@user>
+             */
+            case "lock": {
+                if (message.member.hasPermission("ADMINISTRATOR")) {      // admin only since this is potentially server-breaking
+                    message.delete();
+                    var user = message.mentions.members.first();
+                    var lockChannel = user.voice.channel;
+                    this.lock = setInterval(function() { user.voice.setChannel(lockChannel)}, 1000);
+                } else {
+                    missingPerm(message, "ADMINISTRATOR");
+                }
+                break;
+            }
+
+            /**
+             * Remove all active locks
+             */
+            case "unlock": {
+                if (message.member.hasPermission("ADMINISTRATOR")) {   
+                    message.delete();
+                    clearInterval(this.lock);
+                } else {
+                    missingPerm(message, "ADMINISTRATOR");
+                }
+                break;
+            }
+
+            /**
+             * Make a user follow another user    *only one active per server
+             * @parem <@user> leader
+             * @parem <@user> follower
+             */
+            case "follow": {
+                if (message.member.hasPermission("ADMINISTRATOR")) {      // admin only since this is potentially server-breaking
+                    message.delete();
+                    var leader = message.mentions.members.last();
+                    var follower = message.mentions.members.first();
+                    this.follow = setInterval(function () { follower.voice.setChannel(leader.voice.channel) }, 1000);
+                } else {
+                    missingPerm(message, "ADMINISTRATOR");
+                }
+                break;
+            }
+
+            /**
+             * Removed all active followings
+             */
+            case "unfollow": {
+                if (message.member.hasPermission("ADMINISTRATOR")) {   
+                    message.delete()
+                    clearInterval(this.follow);
+                } else {
+                    missingPerm(message, "ADMINISTRATOR");
+                }
                 break;
             }
         }
@@ -339,10 +333,10 @@ function peanut(userID, guildID) {
 
 
 /**
- * @param {object} message  the message object to check the perms of
- * @param {string} perm     the perm to check
- * @return {boolean}
+ * 
+ * @param {object}  message the message object
+ * @param {*string} perm    the permission that is missing
  */
-function hasPerm(message, perm) {
-    return message.member.hasPermission(perm);
+function missingPerm(message, perm) {
+    message.reply(`you require the ${perm.toLowerCase()} permission to run that command!`);
 }
