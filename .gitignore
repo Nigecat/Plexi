@@ -1,11 +1,7 @@
+*/modules
 */node_modules
 */package.json
 */package-lock.json
 
-*/modules/*
-!*/modules/*.bat
-
-!ffmpeg.exe
-*.exe
-
-Waiting-Room/music.mp3
+*/ffmpeg.exe
+!ffmpeg/ffmpeg.exe
