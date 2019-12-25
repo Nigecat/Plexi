@@ -1,4 +1,4 @@
 # Plexi
 
-A discord bot
+A discord bot  
 Run `make install` on the top level to install dependencies
