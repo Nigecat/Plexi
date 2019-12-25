@@ -3,5 +3,6 @@
 */package.json
 */package-lock.json
 
+*/config.json
 */ffmpeg.exe
 !ffmpeg/ffmpeg.exe
