@@ -66,8 +66,10 @@ client.on('message', async message => {
              * Get the user's peanut level
              */
             case "whatsmypeanut": {
-                message.channel.send(`Your peanut meter level is currently at ${peanut(message.author.id, message.guild.id)}!`);
-                message.channel.send("`Calculated with peanut algorithm™`");
+                peanut(message.author.id, message.guild, message.channel, (level) => {
+                    message.channel.send(`Your peanut meter level is currently at ${level}!`);
+                    message.channel.send("`Calculated with peanut algorithm™`");
+                });
                 break;
             }
 
@@ -76,8 +78,10 @@ client.on('message', async message => {
              * @parem <@user>
              */
             case "whatstheirpeanut": {
-                message.channel.send(`${message.mentions.users.first()}'s peanut meter level is currently at ${peanut(message.mentions.members.first().id, message.guild.id)}`);
-                message.channel.send("`Calculated with peanut algorithm™`");
+                peanut(message.mentions.members.first().id, message.guild, message.channel, (level) => {
+                    message.channel.send(`${message.mentions.users.first()}'s peanut meter level is currently at ${level}`);
+                    message.channel.send("`Calculated with peanut algorithm™`");
+                });
                 break;
             }
         }
@@ -307,10 +311,12 @@ class audioPlayer {
 
 /**
  * @param {number} userID  the user's id
- * @param {number} guildID the message's guild (server) id
+ * @param {object} guild the message's guild (server) object
+ * @param {object} channel the message's channel
+ * @param {function} callback
  */
-function peanut(userID, guildID) {
-    return (
+function peanut(userID, guild, channel, callback) {
+    let level = (
         (
             (
                 parseInt(userID.split("")[0]) + 1
@@ -322,13 +328,23 @@ function peanut(userID, guildID) {
                 parseInt(userID.split("")[3]) + 1)
         ) / 10 + (
             parseInt(
-                guildID.split("")[0]
+                guild.id.split("")[0]
             ) * userID.split("")
                     .reduce(
                         (a, b) => parseInt(a) + parseInt(b), 0
                     )
         )
     ) / 10;
+
+    channel.messages.fetch({ limit: 100 }).then((messages) => {
+        messages.forEach((message) => {
+            if (message.author.id == userID) {
+                level = level + (message.content.toLowerCase().match(/peanut/g) || []).length; // count number of peanuts in message
+            }
+        });
+
+        callback(level);
+    });
 }
 
 
