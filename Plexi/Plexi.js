@@ -338,7 +338,7 @@ function peanut(userID, guild, channel, callback) {
 
     channel.messages.fetch({ limit: 100 }).then((messages) => {
         messages.forEach((message) => {
-            if (message.author.id == userID) {
+            if (message.author.id == userID && !message.content.includes("$whatsmypeanut")) {
                 level = level + (message.content.toLowerCase().match(/peanut/g) || []).length; // count number of peanuts in message
             }
         });
