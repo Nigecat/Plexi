@@ -33,19 +33,20 @@ client.on('ready', () => {
 
 client.on('message', async message => {
     if (message.author != client.user) {
-        if (!message.content.startsWith(PREFIX)) {
-            (() => {        // so we dont pollute the global object
-                let file = `${__dirname}/data/user/${message.author.id}.json`;
-                if (!fs.existsSync(file)) {
-                    var data = { peanut: 0 };
-                } else {
-                    var data = JSON.parse(fs.readFileSync(file));
-                }
         
+        (() => {        // so we dont pollute the global object
+            let file = `${__dirname}/data/user/${message.author.id}.json`;
+            if (!fs.existsSync(file)) {
+                var data = { peanut: 0 };
+            } else {
+                var data = JSON.parse(fs.readFileSync(file));
+            }
+    
+            if (!message.content.startsWith(PREFIX)) {
                 data.peanut += (message.content.match(/peanut/g) || []).length;
-                fs.writeFileSync(file, JSON.stringify(data, null, 4)); 
-            })()
-        }
+            }
+            fs.writeFileSync(file, JSON.stringify(data, null, 4)); 
+        })()
 
         if (message.content.startsWith(PREFIX)) {
             console.log(`Command received: ${message.content} from ${message.author.tag}`);
