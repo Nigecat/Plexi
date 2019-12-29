@@ -31,7 +31,7 @@ client.on('ready', () => {
 
 
 
-client.on('message', async message => {
+client.on('message', (message) => {
     if (message.author != client.user) {
         
         (() => {        // so we dont pollute the global object
