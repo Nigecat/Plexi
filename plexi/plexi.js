@@ -1,5 +1,6 @@
 const fs = require('fs');
 const ytdl = require('./modules/node_modules/ytdl-core');
+const converter = require('./modules/node_modules/video-converter');
 const Discord = require('./modules/node_modules/discord.js');
 
 const CONFIG = JSON.parse(fs.readFileSync(`${__dirname}/config.json`));
@@ -31,7 +32,7 @@ client.on('ready', () => {
 
 
 
-client.on('message', (message) => {
+client.on('message', async message => {
     if (message.author != client.user) {
         
         (() => {        // so we dont pollute the global object
@@ -68,6 +69,7 @@ client.on('message', (message) => {
                         .addField('‎', 'Text Commands:')
                         .addField(`${PREFIX}whatsmypeanut\t\t${PREFIX}whatstheirpeanut <@user>`, '‎')
                         .addField(`${PREFIX}lock <@user>\t\t${PREFIX}unlock <@user>`, '‎')
+                        .addField(`${PREFIX}download <url>\t\t${PREFIX}__________`, '‎')
     
                         .addField('‎', 'Audio Commands:')
                         .addField(`${PREFIX}play <url>\t\t${PREFIX}pause\t\t${PREFIX}unpause`, '‎')
@@ -82,7 +84,7 @@ client.on('message', (message) => {
                  * Get the user's peanut level
                  */
                 case "whatsmypeanut": {
-                    peanut(message.author.id, message.guild, (level) => {
+                    peanut(message.author.id, message.guild, level => {
                         message.channel.send(`Your peanut meter level is currently at ${level}!`);
                         message.channel.send("`Calculated with peanut algorithm™`");
                     });
@@ -94,11 +96,42 @@ client.on('message', (message) => {
                  * @parem <@user>
                  */
                 case "whatstheirpeanut": {
-                    peanut(message.mentions.members.first().id, message.guild, (level) => {
+                    peanut(message.mentions.members.first().id, message.guild, level => {
                         message.channel.send(`${message.mentions.users.first()}'s peanut meter level is currently at ${level}`);
                         message.channel.send("`Calculated with peanut algorithm™`");
                     });
                     break;
+                }
+
+                /**
+                 * Get the audio of a youtube video as an mp3
+                 * @parem <url>
+                 */
+                case "download": {
+                    let progress = await message.channel.send(`Downloading... 0%`);
+                    let ws = fs.createWriteStream("download.mp4");
+                    let video = ytdl(args[0], { filter: 'audioonly' });
+                    video.pipe(ws);
+
+                    video.on('progress',(chunkLength, downloaded, total) => {
+                        let percent = Math.floor((downloaded / total) * 100);
+                        if (percent % 5 == 0) {
+                            progress.edit(`Downloading... ${percent}%`);
+                        }
+                    });
+
+                    ws.on("finish", () => {
+                        progress.edit("Converting to mp3...");
+                        converter.convert("./download.mp4", "./download.mp3", async () => {
+                            progress.edit("Uploading mp3...");
+                            await message.reply("download complete!", {
+                                files: ["./download.mp3"]
+                            });
+                            progress.delete();
+                            fs.unlinkSync("./download.mp4");
+                            fs.unlinkSync("./download.mp3");
+                        });
+                    });
                 }
             }
     
@@ -192,7 +225,7 @@ client.on('message', (message) => {
                         message.delete();
                         var user = message.mentions.members.first();
                         var lockChannel = user.voice.channel;
-                        this.lock = setInterval(function() { user.voice.setChannel(lockChannel)}, 1000);
+                        this.lock = setInterval(() => { user.voice.setChannel(lockChannel)}, 1000);
                     } else {
                         missingPerm(message, "ADMINISTRATOR");
                     }
@@ -222,7 +255,7 @@ client.on('message', (message) => {
                         message.delete();
                         var leader = message.mentions.members.last();
                         var follower = message.mentions.members.first();
-                        this.follow = setInterval(function () { follower.voice.setChannel(leader.voice.channel) }, 1000);
+                        this.follow = setInterval(() => { follower.voice.setChannel(leader.voice.channel) }, 1000);
                     } else {
                         missingPerm(message, "ADMINISTRATOR");
                     }
