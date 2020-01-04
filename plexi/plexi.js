@@ -35,20 +35,14 @@ client.on('ready', () => {
 client.on('message', async message => {
     if (message.author != client.user) {
         
-        (() => {        // so we dont pollute the global object
-            let file = `${__dirname}/data/user/${message.author.id}.json`;
-            if (!fs.existsSync(file)) {
-                var data = { peanut: 0 };
-            } else {
-                var data = JSON.parse(fs.readFileSync(file));
-            }
-    
-            if (!message.content.startsWith(PREFIX)) {
-                data.peanut += (message.content.match(/peanut/g) || []).length;
-            }
-            fs.writeFileSync(file, JSON.stringify(data, null, 4)); 
-        })()
+        let file = `${__dirname}/data/user/${message.author.id}.json`;
+        data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file)) : { peanut: 0 };
+        if (!message.content.startsWith(PREFIX)) {
+            data.peanut += (message.content.match(/peanut/g) || []).length;
+        }
+        fs.writeFileSync(file, JSON.stringify(data, null, 4)); 
 
+        
         if (message.content.startsWith(PREFIX)) {
             console.log(`Command received: ${message.content} from ${message.author.tag}`);
     
@@ -391,7 +385,7 @@ function peanut(userID, guild, callback) {
 /**
  * 
  * @param {object}  message the message object
- * @param {*string} perm    the permission that is missing
+ * @param {string} perm     the permission that is missing
  */
 function missingPerm(message, perm) {
     message.reply(`you require the ${perm.toLowerCase()} permission to run that command!`);
