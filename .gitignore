@@ -2,6 +2,3 @@
 */node_modules
 */package.json
 */package-lock.json
-
-*/ffmpeg.exe
-!ffmpeg/ffmpeg.exe
