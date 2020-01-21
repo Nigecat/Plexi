@@ -33,241 +33,231 @@ client.on('ready', () => {
 
 
 client.on('message', async message => {
-    if (message.author != client.user) {
+    if (message.author != client.user && message.content.startsWith(PREFIX)) {
+
+    
+        console.log(`Command received: ${message.content} from ${message.author.tag}`);
+
+        let command = message.content.split(PREFIX).slice(1).join(PREFIX).toLowerCase().split(" ")[0];    // remove token from string and get first word
+        let args = message.content.split(" ").slice(1);
         
-        let file = `${__dirname}/data/user/${message.author.id}.json`;
-        data = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file)) : { peanut: 0 };
-        if (!message.content.startsWith(PREFIX)) {
-            data.peanut += (message.content.match(/peanut/g) || []).length;
-        }
-        fs.writeFileSync(file, JSON.stringify(data, null, 4)); 
 
-        
-        if (message.content.startsWith(PREFIX)) {
-            console.log(`Command received: ${message.content} from ${message.author.tag}`);
-    
-            let command = message.content.split(PREFIX).slice(1).join(PREFIX).toLowerCase().split(" ")[0];    // remove token from string and get first word
-            let args = message.content.split(" ").slice(1);
-            
-    
-            //Un-restricted text commands
-            switch (command) {
-                case "help": {
-                    let embed = new Discord.MessageEmbed()
-                        .setColor('#0099ff')
-                        .setTitle('Plexi')
-                        .setDescription('this entire project was a bad idea...')
-                        .addBlankField()
-                        .setThumbnail('https://cdn.discordapp.com/avatars/621179289491996683/9746eaab6605b25c429b3d1459d172a6.png?size=128')
-    
-                        .addField('‎', 'Text Commands:')
-                        .addField(`${PREFIX}whatsmypeanut\t\t${PREFIX}whatstheirpeanut <@user>`, '‎')
-                        .addField(`${PREFIX}lock <@user>\t\t${PREFIX}unlock <@user>`, '‎')
-                        .addField(`${PREFIX}download <url>\t\t${PREFIX}__________`, '‎')
-    
-                        .addField('‎', 'Audio Commands:')
-                        .addField(`${PREFIX}play <url>\t\t${PREFIX}pause\t\t${PREFIX}unpause`, '‎')
-                        .addField(`${PREFIX}bruh\t\t${PREFIX}sec\t\t${PREFIX}mop\t\t${PREFIX}naeg`, '‎')
-    
-                        .setTimestamp()
-                    message.channel.send({embed});
-                    break;
-                }
-    
-                /**
-                 * Get the user's peanut level
-                 */
-                case "whatsmypeanut": {
-                    peanut(message.author.id, message.guild, level => {
-                        message.channel.send(`Your peanut meter level is currently at ${level}!`);
-                        message.channel.send("`Calculated with peanut algorithm™`");
-                    });
-                    break;
-                }
-    
-                /**
-                 * Get the mentioned user's peanut level
-                 * @parem <@user>
-                 */
-                case "whatstheirpeanut": {
-                    peanut(message.mentions.members.first().id, message.guild, level => {
-                        message.channel.send(`${message.mentions.users.first()}'s peanut meter level is currently at ${level}`);
-                        message.channel.send("`Calculated with peanut algorithm™`");
-                    });
-                    break;
-                }
+        //Un-restricted text commands
+        switch (command) {
+            case "help": {
+                let embed = new Discord.MessageEmbed()
+                    .setColor('#0099ff')
+                    .setTitle('Plexi')
+                    .setDescription('this entire project was a bad idea...')
+                    .addBlankField()
+                    .setThumbnail('https://cdn.discordapp.com/avatars/621179289491996683/9746eaab6605b25c429b3d1459d172a6.png?size=128')
 
-                /**
-                 * Get the audio of a youtube video as an mp3
-                 * @parem <url>
-                 */
-                case "download": {
-                    let progress = await message.channel.send(`Downloading... 0%`);
-                    let ws = fs.createWriteStream("download.mp4");
-                    let video = ytdl(args[0], { filter: 'audioonly' });
-                    video.pipe(ws);
+                    .addField('‎', 'Text Commands:')
+                    .addField(`${PREFIX}whatsmypeanut\t\t${PREFIX}whatstheirpeanut <@user>`, '‎')
+                    .addField(`${PREFIX}download <url>\t\t${PREFIX}__________`, '‎')
 
-                    video.on('progress',(chunkLength, downloaded, total) => {
-                        let percent = Math.floor((downloaded / total) * 100);
-                        if (percent % 5 == 0) {
-                            progress.edit(`Downloading... ${percent}%`);
-                        }
-                    });
+                    .addField('‎', 'Audio Commands:')
+                    .addField(`${PREFIX}play <url>\t\t${PREFIX}pause\t\t${PREFIX}unpause`, '‎')
+                    .addField(`${PREFIX}bruh\t\t${PREFIX}sec\t\t${PREFIX}mop\t\t${PREFIX}naeg`, '‎')
 
-                    ws.on("finish", () => {
-                        progress.edit("Converting to mp3...");
-                        converter.convert("./download.mp4", "./download.mp3", async () => {
-                            progress.edit("Uploading mp3...");
-                            await message.reply("download complete!", {
-                                files: ["./download.mp3"]
-                            });
-                            progress.delete();
-                            fs.unlinkSync("./download.mp4");
-                            fs.unlinkSync("./download.mp3");
+                    .setTimestamp()
+                message.channel.send({embed});
+                break;
+            }
+
+            /**
+             * Get the user's peanut level
+             */
+            case "whatsmypeanut": {
+                peanut(message.author.id, message.guild, level => {
+                    message.channel.send(`Your peanut meter level is currently at ${level}!`);
+                    message.channel.send("`Calculated with peanut algorithm™`");
+                });
+                break;
+            }
+
+            /**
+             * Get the mentioned user's peanut level
+             * @parem <@user>
+             */
+            case "whatstheirpeanut": {
+                peanut(message.mentions.members.first().id, message.guild, level => {
+                    message.channel.send(`${message.mentions.users.first()}'s peanut meter level is currently at ${level}`);
+                    message.channel.send("`Calculated with peanut algorithm™`");
+                });
+                break;
+            }
+
+            /**
+             * Get the audio of a youtube video as an mp3
+             * @parem <url>
+             */
+            case "download": {
+                let progress = await message.channel.send(`Downloading... 0%`);
+                let ws = fs.createWriteStream("download.mp4");
+                let video = ytdl(args[0], { filter: 'audioonly' });
+                video.pipe(ws);
+
+                video.on('progress',(chunkLength, downloaded, total) => {
+                    let percent = Math.floor((downloaded / total) * 100);
+                    if (percent % 5 == 0) {
+                        progress.edit(`Downloading... ${percent}%`);
+                    }
+                });
+
+                ws.on("finish", () => {
+                    progress.edit("Converting to mp3...");
+                    converter.convert("./download.mp4", "./download.mp3", async () => {
+                        progress.edit("Uploading mp3...");
+                        await message.reply("download complete!", {
+                            files: ["./download.mp3"]
                         });
+                        progress.delete();
+                        fs.unlinkSync("./download.mp4");
+                        fs.unlinkSync("./download.mp3");
                     });
-                }
+                });
             }
-    
-    
-    
-            // !-------------------------------------------------------------------------------------------------------------!
-    
+        }
+
+
+
+        // !-------------------------------------------------------------------------------------------------------------!
+
+        
+
+        //Un-restricted audio commands
+        switch (command) {
+            /**
+             * Play audio from a YouTube video into a voice channel
+             * @parem <url>
+             */
+            case "p":
+            case "play": {
+                this.player = new audioPlayer(message, args[0], "online", 1, false);
+                this.player.play();
+                break;
+            }
+
+            /**
+             * Pause currently playing audio
+             */
+            case "pause": {
+                message.delete();
+                this.player.pause();
+                break;
+            }
+
+            /**
+             * Unpause currently playing audio
+             */
+            case "resume":
+            case "unpause": {
+                message.delete();
+                this.player.resume();
+                break;
+            }
+
+            /**
+             * Diconnect bot from current voice channel
+             */
+            case "leave":
+            case "disconnect": {
+                message.delete();
+                this.player.leave();
+                break;
+            }
+
+            case "bruh": {
+                this.player = new audioPlayer(message, "sound/bruh.mp3", "local", 2, true);
+                this.player.play();
+                break;
+            }
+
+            case "mop": {
+                this.player = new audioPlayer(message, "sound/mop.mp3", "local", 1, true);
+                this.player.play();
+                break;
+            }            
             
-    
-            //Un-restricted audio commands
-            switch (command) {
-                /**
-                 * Play audio from a YouTube video into a voice channel
-                 * @parem <url>
-                 */
-                case "p":
-                case "play": {
-                    this.player = new audioPlayer(message, args[0], "online", 1, false);
-                    this.player.play();
-                    break;
-                }
-    
-                /**
-                 * Pause currently playing audio
-                 */
-                case "pause": {
-                    message.delete();
-                    this.player.pause();
-                    break;
-                }
-    
-                /**
-                 * Unpause currently playing audio
-                 */
-                case "resume":
-                case "unpause": {
-                    message.delete();
-                    this.player.resume();
-                    break;
-                }
-    
-                /**
-                 * Diconnect bot from current voice channel
-                 */
-                case "leave":
-                case "disconnect": {
-                    message.delete();
-                    this.player.leave();
-                    break;
-                }
-    
-                case "bruh": {
-                    this.player = new audioPlayer(message, "sound/bruh.mp3", "local", 2, true);
-                    this.player.play();
-                    break;
-                }
-    
-                case "mop": {
-                    this.player = new audioPlayer(message, "sound/mop.mp3", "local", 1, true);
-                    this.player.play();
-                    break;
-                }            
-                
-                case "sec": {
-                    this.player = new audioPlayer(message, "sound/sec.mp3", "local", 1, true);
-                    this.player.play();
-                    break;
-                }
-    
-                case "naeg": {
-                    this.player = new audioPlayer(message, "sound/naeg.mp3", "local", 2, true);
-                    this.player.play();
-                    break;
-                }
+            case "sec": {
+                this.player = new audioPlayer(message, "sound/sec.mp3", "local", 1, true);
+                this.player.play();
+                break;
             }
-    
-    
-    
-            // !-------------------------------------------------------------------------------------------------------------!
-    
-    
-    
-            //Restricted commands
-            switch (command) {
-                /**
-                 * Lock a user in their current voice channel   *only one active per server
-                 * @parem <@user>
-                 */
-                case "lock": {
-                    if (message.member.hasPermission("ADMINISTRATOR")) {      // admin only since this is potentially server-breaking
-                        message.delete();
-                        var user = message.mentions.members.first();
-                        var lockChannel = user.voice.channel;
-                        this.lock = setInterval(() => { user.voice.setChannel(lockChannel)}, 1000);
-                    } else {
-                        missingPerm(message, "ADMINISTRATOR");
-                    }
-                    break;
+
+            case "naeg": {
+                this.player = new audioPlayer(message, "sound/naeg.mp3", "local", 2, true);
+                this.player.play();
+                break;
+            }
+        }
+
+
+
+        // !-------------------------------------------------------------------------------------------------------------!
+
+
+
+        //Restricted commands
+        switch (command) {
+            /**
+             * Lock a user in their current voice channel   *only one active per server
+             * @parem <@user>
+             */
+            case "lock": {
+                if (message.member.hasPermission("ADMINISTRATOR")) {      // admin only since this is potentially server-breaking
+                    message.delete();
+                    var user = message.mentions.members.first();
+                    var lockChannel = user.voice.channel;
+                    this.lock = setInterval(() => { user.voice.setChannel(lockChannel)}, 1000);
+                } else {
+                    missingPerm(message, "ADMINISTRATOR");
                 }
-    
-                /**
-                 * Remove all active locks
-                 */
-                case "unlock": {
-                    if (message.member.hasPermission("ADMINISTRATOR")) {   
-                        message.delete();
-                        clearInterval(this.lock);
-                    } else {
-                        missingPerm(message, "ADMINISTRATOR");
-                    }
-                    break;
+                break;
+            }
+
+            /**
+             * Remove all active locks
+             */
+            case "unlock": {
+                if (message.member.hasPermission("ADMINISTRATOR")) {   
+                    message.delete();
+                    clearInterval(this.lock);
+                } else {
+                    missingPerm(message, "ADMINISTRATOR");
                 }
-    
-                /**
-                 * Make a user follow another user    *only one active per server
-                 * @parem <@user> leader
-                 * @parem <@user> follower
-                 */
-                case "follow": {
-                    if (message.member.hasPermission("ADMINISTRATOR")) {      // admin only since this is potentially server-breaking
-                        message.delete();
-                        var leader = message.mentions.members.last();
-                        var follower = message.mentions.members.first();
-                        this.follow = setInterval(() => { follower.voice.setChannel(leader.voice.channel) }, 1000);
-                    } else {
-                        missingPerm(message, "ADMINISTRATOR");
-                    }
-                    break;
+                break;
+            }
+
+            /**
+             * Make a user follow another user    *only one active per server
+             * @parem <@user> leader
+             * @parem <@user> follower
+             */
+            case "follow": {
+                if (message.member.hasPermission("ADMINISTRATOR")) {      // admin only since this is potentially server-breaking
+                    message.delete();
+                    var leader = message.mentions.members.last();
+                    var follower = message.mentions.members.first();
+                    this.follow = setInterval(() => { follower.voice.setChannel(leader.voice.channel) }, 1000);
+                } else {
+                    missingPerm(message, "ADMINISTRATOR");
                 }
-    
-                /**
-                 * Removed all active followings
-                 */
-                case "unfollow": {
-                    if (message.member.hasPermission("ADMINISTRATOR")) {   
-                        message.delete()
-                        clearInterval(this.follow);
-                    } else {
-                        missingPerm(message, "ADMINISTRATOR");
-                    }
-                    break;
+                break;
+            }
+
+            /**
+             * Removed all active followings
+             */
+            case "unfollow": {
+                if (message.member.hasPermission("ADMINISTRATOR")) {   
+                    message.delete()
+                    clearInterval(this.follow);
+                } else {
+                    missingPerm(message, "ADMINISTRATOR");
                 }
+                break;
             }
         }
     }
