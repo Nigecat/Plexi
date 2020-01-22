@@ -34,8 +34,6 @@ client.on('ready', () => {
 
 client.on('message', async message => {
     if (message.author != client.user && message.content.startsWith(PREFIX)) {
-
-    
         console.log(`Command received: ${message.content} from ${message.author.tag}`);
 
         let command = message.content.split(PREFIX).slice(1).join(PREFIX).toLowerCase().split(" ")[0];    // remove token from string and get first word
@@ -350,7 +348,7 @@ class audioPlayer {
  * @param {function} callback
  */
 function peanut(userID, guild, callback) {
-    callback(((
+    callback((
         (
             (
                 parseInt(userID.split("")[0]) + 1
@@ -368,7 +366,7 @@ function peanut(userID, guild, callback) {
                         (a, b) => parseInt(a) + parseInt(b), 0
                     )
         )
-    ) / 10) + JSON.parse(fs.readFileSync(`${__dirname}/data/user/${userID}.json`)).peanut);
+    ) / 10);
 }
 
 
