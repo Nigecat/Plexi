@@ -1,0 +1,18 @@
+{
+  "name": "plexi",
+  "version": "0.0.1",
+  "description": "A discord bot",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "author": {
+    "name": "Nigecat"
+  },
+  "dependencies": {
+    "discord.js": "github:discordjs/discord.js",
+    "ffmpeg": "0.0.4",
+    "opusscript": "0.0.7",
+    "ytdl-core": "^1.0.7"
+  }
+}

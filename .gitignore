@@ -1,4 +1,2 @@
-*/modules
-*/node_modules
-*/package.json
-*/package-lock.json
+auth.json
+node_modules/
