@@ -22,7 +22,7 @@ client.on('message', message => {
                 .setThumbnail('https://cdn.discordapp.com/avatars/621179289491996683/b7b990f5028df5de4d9274eb6eed143b.png?size=128')
 
             for (let key in commands) {
-                embed.addField(`${PREFIX}${key} ${commands[key].args.join(" ")}`, '‎')
+                embed.addField(`${PREFIX}${key} ${commands[key].args.join(" ")}`, commands[key].description)
             }
 
             message.channel.send({embed});

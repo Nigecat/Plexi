@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 
 module.exports = {
     whatsmypeanut: {
@@ -8,6 +9,11 @@ module.exports = {
     whatstheirpeanut: {
         call: whatstheirpeanut,
         description: "Check a user's peanut level",
+        args: ["<@user>"]
+    },
+    avatar: {
+        call: avatar,
+        description: "Get a user's avatar (profile picture)",
         args: ["<@user>"]
     }
 }
@@ -27,6 +33,17 @@ function whatstheirpeanut(message) {
         message.channel.send("`Calculated with peanut algorithm™`");
     });
 }
+
+function avatar(message) {
+    let embed = new Discord.MessageEmbed()
+        .setColor('#0099ff')
+        .setTitle(message.mentions.users.first().tag)
+        .setImage(`${message.mentions.users.first().displayAvatarURL()}?size=512`)
+
+    message.channel.send({embed});
+}
+
+
 
 
 
