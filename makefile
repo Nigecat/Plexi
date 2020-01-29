@@ -1,6 +1,6 @@
 
 install:
-	cd src/ && npm install discordjs/discord.js discordjs/opus
+	cd src/ && npm install discordjs/discord.js opusscript discordjs/opus ytdl-core
 	rm -f src/package-lock.json
 
 start:

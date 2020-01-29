@@ -1,3 +1,4 @@
+const ytdl = require('ytdl-core');
 const Discord = require('discord.js');
 
 module.exports = {
@@ -21,25 +22,15 @@ module.exports = {
         description: "Flex on the previous message",
         args: []
     },
-    bruh: {
-        call: bruh,
+    play: {
+        call: play,
+        description: "Play a YouTube video",
+        args: ["<url>"]
+    },
+    local: {
+        call: local,
         description: "bruh",
-        args: []
-    },
-    mop: {
-        call: mop,
-        description: "mop",
-        args: []
-    },
-    naeg: {
-        call: naeg,
-        description: "naeg",
-        args: []
-    },
-    sec: {
-        call: sec,
-        description: "sec",
-        args: []
+        args: ["[bruh | mop | naeg | sec]"]
     }
 }
 
@@ -79,20 +70,12 @@ function flex(message) {
     });
 }
 
-function bruh(message) {
-    playAudio(message, `bruh.mp3`);
+function play(message, args) {
+    playAudio(message, args[0], false);
 }
 
-function mop(message) {
-    playAudio(message, `mop.mp3`);
-}
-
-function naeg(message) {
-    playAudio(message, `naeg.mp3`);
-}
-
-function sec(message) {
-    playAudio(message, `sec.mp3`);
+function local(message, args) {
+    playAudio(message, args[0], true)
 }
 
 
@@ -101,11 +84,14 @@ function sec(message) {
 
 
 
-function playAudio(message, file) {
+
+
+function playAudio(message, file, local) {
+    file = local ? `${__dirname}/audio/${file}.mp3` : ytdl(file, { filter: "audioonly" });
     try {
         let vc = message.member.voice.channel;
         vc.join().then(connection => {
-            const dispatcher = connection.play(`${__dirname}/audio/${file}`);
+            const dispatcher = connection.play(file);
             dispatcher.on('end', () => { vc.leave() });
         });
     } catch (err) {
