@@ -15,6 +15,11 @@ module.exports = {
         call: avatar,
         description: "Get a user's avatar (profile picture)",
         args: ["<@user>"]
+    },
+    flex: {
+        call: flex,
+        description: "Flex on the previous message",
+        args: []
     }
 }
 
@@ -39,8 +44,19 @@ function avatar(message) {
         .setColor('#0099ff')
         .setTitle(message.mentions.users.first().tag)
         .setImage(`${message.mentions.users.first().displayAvatarURL()}?size=512`)
-
+        
     message.channel.send({embed});
+}
+
+function flex(message) {
+    message.channel.messages.fetch({ limit: 2 }).then(messages => {
+        let message = messages.array()[1];
+        message.guild.emojis.forEach(emoji => {
+            if (emoji.identifier.toLowerCase().includes("nitroflex")) {
+                message.react(emoji);
+            }
+        });
+    });
 }
 
 

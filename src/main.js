@@ -8,6 +8,10 @@ client.on('ready', () => {
     console.log(`\n\nConnected as ${client.user.tag}, prefix: ${PREFIX}\n`);  
 });
 
+client.on('guildCreate', guild => { client.users.get("307429254017056769").send(`Joined server: \`${guild.name}\``) });
+
+client.on('guildDelete', guild => { client.users.get("307429254017056769").send(`Left server: \`${guild.name}\``) });
+
 client.on('message', message => {
     if (message.author != client.user && message.content.startsWith(PREFIX)) {
         console.log(`Command received: ${message.content} from ${message.author.tag}`);
@@ -22,7 +26,7 @@ client.on('message', message => {
                 .setThumbnail('https://cdn.discordapp.com/avatars/621179289491996683/b7b990f5028df5de4d9274eb6eed143b.png?size=128')
 
             for (let key in commands) {
-                embed.addField(`${PREFIX}${key} ${commands[key].args.join(" ")}`, commands[key].description)
+                embed.addField(`${PREFIX}${key} ${commands[key].args.join(" ")}`, commands[key].description)    // automatically add commands and their description
             }
 
             message.channel.send({embed});
