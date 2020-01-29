@@ -39,6 +39,11 @@ client.on('message', message => {
             }
         }
     }
+
+    else if (message.content.toLowerCase().includes("asleep") && message.content.toLowerCase().includes("upvote") && message.content.toLowerCase().includes("mod")) {
+        message.channel.send("i think you are forgetting that i am a mod and that i do not sleep");
+        message.channel.send("so thus, i shall not be upvoting");
+    }
 });
 
 client.login(JSON.parse(require('fs').readFileSync(`${__dirname}/auth.json`)).token);

@@ -102,11 +102,15 @@ function sec(message) {
 
 
 function playAudio(message, file) {
-    let vc = message.member.voice.channel;
-    vc.join().then(connection => {
-        const dispatcher = connection.play(`${__dirname}/audio/${file}`);
-        dispatcher.on('end', () => { vc.leave() });
-    });
+    try {
+        let vc = message.member.voice.channel;
+        vc.join().then(connection => {
+            const dispatcher = connection.play(`${__dirname}/audio/${file}`);
+            dispatcher.on('end', () => { vc.leave() });
+        });
+    } catch (err) {
+        message.channel.send("Please connect to a voice channel!")
+    }
 }
 
 function checkPeanut(userID, guild, callback) {
