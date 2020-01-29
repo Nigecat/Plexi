@@ -20,6 +20,26 @@ module.exports = {
         call: flex,
         description: "Flex on the previous message",
         args: []
+    },
+    bruh: {
+        call: bruh,
+        description: "bruh",
+        args: []
+    },
+    mop: {
+        call: mop,
+        description: "mop",
+        args: []
+    },
+    naeg: {
+        call: naeg,
+        description: "naeg",
+        args: []
+    },
+    sec: {
+        call: sec,
+        description: "sec",
+        args: []
     }
 }
 
@@ -59,9 +79,35 @@ function flex(message) {
     });
 }
 
+function bruh(message) {
+    playAudio(message, `bruh.mp3`);
+}
+
+function mop(message) {
+    playAudio(message, `mop.mp3`);
+}
+
+function naeg(message) {
+    playAudio(message, `naeg.mp3`);
+}
+
+function sec(message) {
+    playAudio(message, `sec.mp3`);
+}
 
 
 
+
+
+
+
+function playAudio(message, file) {
+    let vc = message.member.voice.channel;
+    vc.join().then(connection => {
+        const dispatcher = connection.play(`${__dirname}/audio/${file}`);
+        dispatcher.on('end', () => { vc.leave() });
+    });
+}
 
 function checkPeanut(userID, guild, callback) {
     callback((
