@@ -27,11 +27,26 @@ module.exports = {
         description: "Play a YouTube video",
         args: ["<url>"]
     },
-    local: {
-        call: local,
+    bruh: {
+        call: bruh,
         description: "bruh",
-        args: ["[bruh | mop | naeg | sec]"]
-    }
+        args: []
+    },
+    mop: {
+        call: mop,
+        description: "mop",
+        args: []
+    },
+    naeg: {
+        call: bruh,
+        description: "naeg",
+        args: []
+    },
+    sec: {
+        call: bruh,
+        description: "sec",
+        args: []
+    },
 }
 
 
@@ -74,10 +89,21 @@ function play(message, args) {
     playAudio(message, args[0], false);
 }
 
-function local(message, args) {
-    playAudio(message, args[0], true)
+function bruh(message) {
+    playAudio(message, "bruh", true);
 }
 
+function mop(message) {
+    playAudio(message, "mop", true);
+}
+
+function naeg(message) {
+    playAudio(message, "naeg", true);
+}
+
+function sec(message) {
+    playAudio(message, "sec", true);
+}
 
 
 
