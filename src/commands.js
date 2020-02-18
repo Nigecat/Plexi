@@ -38,15 +38,15 @@ module.exports = {
         args: []
     },
     naeg: {
-        call: bruh,
+        call: naeg,
         description: "naeg",
         args: []
     },
     sec: {
-        call: bruh,
+        call: sec,
         description: "sec",
         args: []
-    },
+    }
 }
 
 
