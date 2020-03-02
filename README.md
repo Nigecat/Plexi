@@ -1,7 +1,7 @@
 # Plexi
 
 A discord bot  
-Run `make start` on the top level to start the bot  
-Run `make install` on the top level to install dependencies
+Run `npm start` in src to start the bot  
+Run `npm install` in src to install dependencies
 
-![](https://github.com/Nigecat/Plexi/blob/rewrite/logo.png)
+![](https://github.com/Nigecat/Plexi/blob/master/logo.png)
