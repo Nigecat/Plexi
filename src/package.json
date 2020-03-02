@@ -1,0 +1,23 @@
+{
+    "name": "plexi",
+    "description": "A discord bot",
+    "version": "0.1.0",
+    "main": "plexi.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Nigecat/Plexi.git"
+    },
+    "scripts": {
+        "start": "node plexi.js"
+    },
+    "author": "Nigecat",
+    "homepage": "https://github.com/Nigecat/Plexi",
+    "dependencies": {
+        "@discordjs/opus": "github:discordjs/opus",
+        "discord.js": "github:discordjs/discord.js",
+        "install": "^0.13.0",
+        "npm": "^6.14.1",
+        "opusscript": "0.0.7",
+        "ytdl-core": "^2.0.0"
+    }
+}
