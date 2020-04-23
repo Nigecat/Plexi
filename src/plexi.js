@@ -12,15 +12,6 @@ module.exports = class {
     }
 
     /**
-     * Write a log out to log.txt
-     * @param {string} details The log details
-     */
-    log(details) {
-        // write log and remove all newlines
-        appendFileSync("log.txt", "\n" + `[${new Date().toLocaleString()}]: ${details}`.replace(/[\n\r]/g, ""));    
-    }
-
-    /**
      * Start the bot
      */
     start() {
@@ -40,14 +31,20 @@ module.exports = class {
     }
 
     /**
+     * Dm the bot's owner
+     * @param {string} text The text to send 
+     */
+    messageOwner(text) {
+        client.users.fetch(this.OWNER.id).then(user => user.send(text));
+    }
+
+    /**
      * Callback event for when bot joins a guild
      * @param {object} guild Guild object
      */
     joinGuild(guild) {
-        client.users.fetch(this.OWNER.id).then(user => user.send(`Joined guild: \`${guild.name}\``));
-        this.TOTAL_GUILDS += 1;
+        this.messageOwner(`Joined guild: \`${guild.name}\`, total guilds now at ${this.TOTAL_GUILDS}`);
         this.setStatus();
-        this.log(`Guild joined, total guilds now at ${this.TOTAL_GUILDS}`);
     }
 
     /**
@@ -55,10 +52,8 @@ module.exports = class {
      * @param {object} guild Guild object
      */
     leaveGuild(guild) {
-        client.users.fetch(this.OWNER.id).then(user => user.send(`Left guild: \`${guild.name}\``));
-        this.TOTAL_GUILDS -= 1;
+        this.messageOwner(`Left guild: \`${guild.name}\`, total guilds now at ${this.TOTAL_GUILDS}`);
         this.setStatus();
-        this.log(`Guild left, total guilds now at ${this.TOTAL_GUILDS}`);
     }
 
     /**
@@ -67,7 +62,7 @@ module.exports = class {
      */
     processMessage(message) {
         if (message.author != client.user && message.content.startsWith(this.PREFIX)) {
-            this.log(`Command received: ${message.content} from ${message.author.tag}`);
+            this.messageOwner(`Command received: ${message.content} from ${message.author.tag}`);
             let command = message.content.split(this.PREFIX).slice(1).join(this.PREFIX).toLowerCase().split(' ')[0];    // remove token from string and get first word
             let args = message.content.split(' ').slice(1);
 

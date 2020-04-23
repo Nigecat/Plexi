@@ -1,4 +1,6 @@
 const Discord = require('discord.js');
+const { AudioHandler } = require('./audioHandler.js');
+const audioHandler = new AudioHandler();
 
 module.exports = {
     whatsmypeanut: {
