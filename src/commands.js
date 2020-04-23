@@ -1,9 +1,5 @@
 const Discord = require('discord.js');
 
-const { AudioHandler } = require(`${__dirname}/audioHandler.js`);
-const audioHandler = new AudioHandler();
-
-
 module.exports = {
     whatsmypeanut: {
         call: whatsmypeanut,
@@ -23,26 +19,6 @@ module.exports = {
     flex: {
         call: flex,
         description: "Flex on the previous message",
-        args: []
-    },
-    play: {
-        call: play,
-        description: "Play a YouTube video",
-        args: ["<url>"]
-    },
-    disconnect: {
-        call: disconnect,
-        description: "Disconnect the bot from it's voice channel",
-        args: []
-    },
-    queue: {
-        call: queue,
-        description: "Get the bot's audio queue",
-        args: []
-    },
-    skip: {
-        call: skip,
-        description: "Skip the current song",
         args: []
     }
 }
@@ -82,47 +58,4 @@ function flex(message) {
             }
         });
     });
-}
-
-function play(message, args) {
-    audioHandler.play(message, args[0]);
-}
-
-function disconnect(message) {
-    audioHandler.disconnect();
-}
-
-function skip(message) {
-    audioHandler.skip();
-}
-
-function queue(message) {
-    message.channel.send(audioHandler.getQueue());
-}
-
-
-
-
-
-
-
-
-
-
-function checkPeanut(userID, guild, callback) {
-    callback((
-        (
-            (
-                parseInt(userID.split("")[0]) + 1
-            ) * (
-                parseInt(userID.split("")[1]) + 1
-            ) * (
-                parseInt(userID.split("")[2]) + 1
-            ) * (
-                parseInt(userID.split("")[3]) + 1)
-        ) / 10 + (
-            parseInt(guild.id.split("")[0]) * userID.split("")
-                .reduce((a, b) => parseInt(a) + parseInt(b), 0)
-        )
-    ) / 10);
 }
