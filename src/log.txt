@@ -1,3 +1,0 @@
-[4/23/2020, 8:48:52 PM]: Command received: $test from Nigecat#2288
-[4/23/2020, 8:54:53 PM]: Command received: $help from Nigecat#2288
-[4/23/2020, 8:55:08 PM]: Command received: $help from Nigecat#2288
