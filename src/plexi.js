@@ -1,4 +1,3 @@
-const { appendFileSync } = require('fs');
 const commands = require('./commands.js');
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -15,6 +14,7 @@ module.exports = class {
      * Start the bot
      */
     start() {
+        client.on("debug", console.log);
         client.on("ready", this.setStatus.bind(this));
         client.on("message", this.processMessage.bind(this));
         client.on("guildCreate", this.joinGuild.bind(this));
@@ -27,7 +27,7 @@ module.exports = class {
      */
     setStatus() {
         this.TOTAL_GUILDS = client.guilds.cache.size;
-        client.user.setPresence({ activity: { type: "LISTENING", "name": `music (${this.TOTAL_GUILDS} guilds)` }, status: "online" });
+        client.user.setPresence({ activity: { type: "LISTENING", "name": `music in ${this.TOTAL_GUILDS} servers` }, status: "online" });
     }
 
     /**
@@ -62,7 +62,7 @@ module.exports = class {
      */
     processMessage(message) {
         if (message.author != client.user && message.content.startsWith(this.PREFIX)) {
-            this.messageOwner(`Command received: ${message.content} from ${message.author.tag}`);
+            this.messageOwner(`Command received: \`${message.content}\` from \`${message.author.tag}\``);
             let command = message.content.split(this.PREFIX).slice(1).join(this.PREFIX).toLowerCase().split(' ')[0];    // remove token from string and get first word
             let args = message.content.split(' ').slice(1);
 

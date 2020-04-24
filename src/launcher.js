@@ -1,4 +1,4 @@
-'use strict';
+// kontatsu
 
 const Bot = require('./plexi.js');
 const Plexi = new Bot({
