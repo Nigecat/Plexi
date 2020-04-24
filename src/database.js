@@ -33,10 +33,6 @@ module.exports = class {
         this.database.run(`DELETE FROM Server WHERE id = ${id}`);
     }
 
-    updateServer(id, key, value) {
-        this.database.run(`UPDATE Server SET ${key} = '${value}' WHERE id = ${id}`);
-    }
-
     updateAll(guilds) {
         // update the database to make sure it is up to date with any new guilds
         this.database.serialize(() => {

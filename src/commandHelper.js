@@ -19,6 +19,14 @@ module.exports = async function(message, database) {
                 });
             });
 
+            readdir("./commands/restricted", (err, files) => {
+                files.forEach(file => {
+                    if (file.split(".")[0] == command) {
+                        require(`./commands/restricted/${file}`)(message, args);
+                    }
+                });
+            });
+
             if (message.author.id == "307429254017056769") {  // only run these commands for bot owneer
                 readdir("./commands/private", (err, files) => {
                     files.forEach(file => {
