@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "0.2.0",
+    "version": "1.2.0",
     "description": "A discord bot",
     "main": "launcher.js",
     "scripts": {
@@ -12,6 +12,7 @@
     },
     "author": "Nigecat",
     "dependencies": {
-        "discord.js": "^12.2.0"
+        "discord.js": "^12.2.0",
+        "sqlite3": "^4.1.1"
     }
 }

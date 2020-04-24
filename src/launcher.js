@@ -1,13 +1,10 @@
-// kontatsu
+const Database = require("./database.js");
+const Bot = require("./plexi.js");
 
-const Bot = require('./plexi.js');
 const Plexi = new Bot({
-    PREFIX: "$", 
-    TOKEN: JSON.parse(require("fs").readFileSync("./auth.json")).auth,
-    OWNER: { 
-        "tag": "Nigecat#2288",
-        "id": "307429254017056769"
-    }
+    DEFAULT_PREFIX: "$", 
+    TOKEN: require("./configuration/auth.json").token,
+    DATABASE: new Database("./configuration/config.sqlite")
 });
 
 Plexi.start();
