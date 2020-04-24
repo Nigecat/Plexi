@@ -4,7 +4,6 @@ const client = new Discord.Client();
 
 module.exports = class {
     constructor(config) {
-        this.default_prefix = config.DEFAULT_PREFIX;
         this.token = config.TOKEN;
         this.database = config.DATABASE;
         this.TOTAL_GUILDS = 0;
@@ -26,9 +25,10 @@ module.exports = class {
      * Callback function for when bot starts
      */
     ready() {
-        this.database.updateAll(client.guilds);
         this.updateStatus();
-        this.database.connect(this.default_prefix);
+        this.database.connect(() => {
+            this.database.updateAll(client.guilds);
+        });
     }
 
     /**

@@ -19,8 +19,15 @@ module.exports = async function(message, database) {
                 });
             });
 
-            
-
+            if (message.author.id == "307429254017056769") {  // only run these commands for bot owneer
+                readdir("./commands/private", (err, files) => {
+                    files.forEach(file => {
+                        if (file.split(".")[0] == command) {
+                            require(`./commands/private/${file}`)(message, args);
+                        }
+                    });
+                });
+            }
         }
     });
 }

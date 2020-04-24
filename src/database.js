@@ -17,15 +17,16 @@ module.exports = class {
         });
     }
 
-    connect() {
+    connect(callback) {
         this.database.run(`CREATE TABLE IF NOT EXISTS Server  (            \
             id BIGINT NOT NULL UNIQUE PRIMARY KEY,                         \
             prefix TEXT NOT NULL DEFAULT '${this.default_token}'           \
         );`);
+        callback();
     }
 
     addServer(id) {
-        this.database.run(`INSERT INTO Server ( id ) VALUES ( ${id} )`);
+        this.database.run(`INSERT INTO Server ( id ) VALUES ( ${id} )`, err => {});
     }
 
     removeServer(id) {
@@ -37,9 +38,12 @@ module.exports = class {
     }
 
     updateAll(guilds) {
-        //guilds.forEach(guild => {
-       ///     console.log(guild.id);
-        //});
+        // update the database to make sure it is up to date with any new guilds
+        this.database.serialize(() => {
+            guilds.cache.array().forEach(guild => {
+                this.addServer(guild.id);
+            });
+        });
     }
 
     getServerInfo(id, callback) {
