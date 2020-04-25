@@ -4,6 +4,7 @@ const Config = require("../../data/config.json");
 module.exports = {
     args: ["<prefix>"],
     perms: ["ADMINISTRATOR"],
+    description: "Set the custom prefix for this server",
     call: function(message, args) {
         let database = new Database(Config.database, Config.default_prefix);
         database.updateServer(message.guild.id, "prefix", args[0]);

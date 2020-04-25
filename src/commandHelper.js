@@ -1,11 +1,31 @@
-const { readdir } = require("fs");
+const { readdir, readdirSync } = require("fs");
+const { MessageEmbed } = require("discord.js");
 
-module.exports = async function(message, database) {
+module.exports = async function(message, database, client) {
     database.getServerInfo(message.guild.id, row => {
         const prefix = row.prefix;
 
         if (message.content == "$help" || message.content == `${prefix}help`) {
-            message.reply("beep boop how about no (im updating the bot try again later).");
+            const embed = new MessageEmbed()
+                .setColor([114, 137, 218])
+                .setAuthor(client.user.username, client.user.avatarURL())
+                .setTimestamp(new Date())
+                .setFooter("v" + require("./package.json").version)
+                .setTitle(`This server's prefix is currently: ${prefix}`)
+                .addField("‎", "Public commands:");
+
+            readdirSync("./commands/public").forEach(file => {
+                let data = require(`./commands/public/${file}`);
+                embed.addField(`${prefix}${file.split(".")[0]} ${data.args.join(" ")}`, data.description);
+            });
+
+            embed.addField("‎", "Restricted commands:")
+            readdirSync("./commands/restricted").forEach(file => {
+                let data = require(`./commands/restricted/${file}`);
+                embed.addField(`${prefix}${file.split(".")[0]} ${data.args.join(" ")}`, `${data.description} | Perms: ${data.perms.join(" ")}`);
+            });
+
+            message.channel.send({embed});
 
         } else if (message.content.startsWith(prefix)) {
             let command = message.content.split(prefix)[1].replace(/ .*/,'').toLowerCase();   // extract command

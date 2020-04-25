@@ -63,7 +63,7 @@ module.exports = class {
      */
     processMessage(message) {
         if (message.author != client.user) {
-            processCommand(message, this.database);
+            processCommand(message, this.database, client);
         }
     }
 }
