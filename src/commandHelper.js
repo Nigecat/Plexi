@@ -17,6 +17,11 @@ module.exports = async function(message, database, client) {
             // loop through each command and append the required information to the embed
             readdirSync("./commands/public").forEach(file => {
                 let data = require(`./commands/public/${file}`);
+                if (typeof data.args == "string") {
+                    let temp = data.args;
+                    data.args = [];
+                    data.push(temp);
+                }
                 if (data.perms.length > 0) {    // check if command has any perms and change what is displayed
                     embed.addField(`${prefix}${file.split(".")[0]} ${data.args.join(" ")}`, `${data.description} | Perms: ${data.perms.join(" ")}`);
                 } else {
@@ -36,7 +41,7 @@ module.exports = async function(message, database, client) {
                     if (file.split(".")[0] == command) { // check if file matches the user's command
                         let data = require(`./commands/public/${file}`);    
                         if (message.member.hasPermission(data.perms)) { // verify the user has the correct permissions
-                            if (data.args.length == args.length) {    // verify the user has entered all the arguments
+                            if (data.args.length == args.length || typeof data.args == "string") {    // verify the user has entered all the arguments  (or if the argument is a string the allow it)
                                 data.call(message, args);
                             } else {
                                 message.channel.send(`Command syntax error, expected syntax: \`${prefix}${command} ${data.args.join(" ")}\``)

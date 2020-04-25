@@ -7,9 +7,9 @@ module.exports = {
     call: function (message, args) {
         try {
             let result = convert(args[0]).from(args[1]).to(args[2]);
-            message.channel.send(`Result: \`${result}${args[2]}\``);
+            message.channel.send(`**Converting:** ${args[0]} ${args[1]} to ${args[2]}\n**Result:** ${result}${args[2]}`);
         } catch (err) {
-            message.channel.send(`Unrecognized unit in conversion: \`${args[1]}/${args[2]}\``)
+            message.channel.send(`**Unrecognized unit in conversion:** ${args[1]}/${args[2]}`)
         }
     }
 }

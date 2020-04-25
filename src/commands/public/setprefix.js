@@ -8,7 +8,7 @@ module.exports = {
     call: function(message, args) {
         let database = new Database(Config.database, Config.default_prefix);
         database.updateServer(message.guild.id, "prefix", args[0]);
-        message.channel.send(`Server prefix updated to: \`${args[0]}\``);
+        message.channel.send(`**Server prefix updated to:** ${args[0]}`);
         database.disconnect();
     }
 }
