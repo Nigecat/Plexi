@@ -20,7 +20,7 @@ module.exports = async function(message, database, client) {
                 if (typeof data.args == "string") {
                     let temp = data.args;
                     data.args = [];
-                    data.push(temp);
+                    data.args.push(temp);
                 }
                 if (data.perms.length > 0) {    // check if command has any perms and change what is displayed
                     embed.addField(`${prefix}${file.split(".")[0]} ${data.args.join(" ")}`, `${data.description} | Perms: ${data.perms.join(" ")}`);
@@ -49,6 +49,8 @@ module.exports = async function(message, database, client) {
                         } else {
                             message.channel.send(`It appears you are missing the permission(s) \`${data.perms.join(" ")}\` to run this command`)
                         }
+                        // delete the file cache so the commands can be updated without stopping the bot
+                        delete require.cache[require.resolve(`./commands/public/${file}`)];
                     }
                 });
             });
