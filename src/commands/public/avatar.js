@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 
 module.exports = {
     args: ["<@user>"],
+    perms: [],
     description: "Get a user's avatar",
     call: function (message) {
         let embed = new Discord.MessageEmbed()

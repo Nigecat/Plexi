@@ -2,6 +2,7 @@ const { checkPeanut } = require("../util.js");
 
 module.exports = {
     args: [],
+    perms: [],
     description: "Check your peanut level",
     call: function (message) {
         checkPeanut(message.author.id, message.guild, level => {

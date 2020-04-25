@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 
 module.exports = {
     args: [],
+    perms: [],
     description: "Get the server's icon",
     call: function (message) {
         let embed = new Discord.MessageEmbed()

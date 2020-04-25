@@ -12,17 +12,14 @@ module.exports = async function(message, database, client) {
                 .setTimestamp(new Date())
                 .setFooter("v" + require("./package.json").version)
                 .setTitle(`This server's prefix is currently: ${prefix}`)
-                .addField("‎", "Public commands:");
 
             readdirSync("./commands/public").forEach(file => {
                 let data = require(`./commands/public/${file}`);
-                embed.addField(`${prefix}${file.split(".")[0]} ${data.args.join(" ")}`, data.description);
-            });
-
-            embed.addField("‎", "Restricted commands:")
-            readdirSync("./commands/restricted").forEach(file => {
-                let data = require(`./commands/restricted/${file}`);
-                embed.addField(`${prefix}${file.split(".")[0]} ${data.args.join(" ")}`, `${data.description} | Perms: ${data.perms.join(" ")}`);
+                if (data.perms.length > 0) {
+                    embed.addField(`${prefix}${file.split(".")[0]} ${data.args.join(" ")}`, `${data.description} | Perms: ${data.perms.join(" ")}`);
+                } else {
+                    embed.addField(`${prefix}${file.split(".")[0]} ${data.args.join(" ")}`, data.description);
+                }
             });
 
             message.channel.send({embed});
@@ -35,19 +32,6 @@ module.exports = async function(message, database, client) {
                 files.forEach(file => {
                     if (file.split(".")[0] == command) {
                         let data = require(`./commands/public/${file}`);
-                        if (data.args.length == args.length) {
-                            data.call(message, args);
-                        } else {
-                            message.channel.send(`Command syntax error, expected syntax: \`${prefix}${command} ${data.args.join(" ")}\``)
-                        }
-                    }
-                });
-            });
-
-            readdir("./commands/restricted", (err, files) => {
-                files.forEach(file => {
-                    if (file.split(".")[0] == command) {
-                        let data = require(`./commands/restricted/${file}`);
                         if (message.member.hasPermission(data.perms)) {
                             if (data.args.length == args.length) {
                                 data.call(message, args);
