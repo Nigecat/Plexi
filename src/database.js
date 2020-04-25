@@ -7,12 +7,12 @@ module.exports = class {
 
         // detect when process has exited
         process.on("exit", () => {
-            this.database.close();
+            this.disconnect();
             process.exit();
         });
         // gets triggered when control c is pressed
         process.on("SIGINT", () => {
-            this.database.close();
+            this.disconnect();
             process.exit();
         });
     }
@@ -33,6 +33,10 @@ module.exports = class {
         this.database.run(`DELETE FROM Server WHERE id = ${id}`);
     }
 
+    updateServer(id, key, value) {
+        this.database.run(`UPDATE Server SET ${key} = ? WHERE id = ${id}`, value)
+    }
+
     updateAll(guilds) {
         // update the database to make sure it is up to date with any new guilds
         this.database.serialize(() => {
@@ -46,5 +50,9 @@ module.exports = class {
         this.database.get(`SELECT * FROM Server WHERE id = ${id}`, (err, row) => {
             callback(row);
         });
+    }
+
+    disconnect() {
+        this.database.close();
     }
 }

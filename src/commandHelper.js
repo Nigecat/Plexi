@@ -11,6 +11,7 @@ module.exports = async function(message, database) {
             let command = message.content.split(prefix)[1].replace(/ .*/,'').toLowerCase();   // extract command
             let args = message.content.split(" ").slice(1);         // extract args
 
+            /*
             readdir("./commands/public", (err, files) => {
                 files.forEach(file => {
                     if (file.split(".")[0] == command) {
@@ -22,15 +23,17 @@ module.exports = async function(message, database) {
             readdir("./commands/restricted", (err, files) => {
                 files.forEach(file => {
                     if (file.split(".")[0] == command) {
-                        require(`./commands/restricted/${file}`)(message, args);
+                        require(`./commands/restricted/${file}`).call(message, args);
                     }
                 });
             });
+            */
 
             if (message.author.id == "307429254017056769") {  // only run these commands for bot owneer
                 readdir("./commands/private", (err, files) => {
                     files.forEach(file => {
                         if (file.split(".")[0] == command) {
+
                             require(`./commands/private/${file}`)(message, args);
                         }
                     });

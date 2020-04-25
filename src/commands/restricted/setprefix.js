@@ -1,10 +1,13 @@
-const sqlite3 = require("sqlite3").verbose();
+const Database = require("../../database.js");
+const Config = require("../../data/config.json");
 
-module.exports = function(message, args) {
-    if (message.member.hasPermission("ADMINISTRATOR")) {
-        let database = new sqlite3.Database("./configuration/config.sqlite");
-        database.run(`UPDATE Server SET prefix = '${args[0]}' WHERE id = ${message.guild.id}`);
+module.exports = {
+    args: ["prefix"],
+    perms: ["ADMINISTRATOR"],
+    call: function(message, args) {
+        let database = new Database(Config.database, Config.default_prefix);
+        database.updateServer(message.guild.id, "prefix", args[0]);
         message.channel.send(`Server prefix updated to: \`${args[0]}\``);
-        database.close();
+        database.disconnect();
     }
 }
