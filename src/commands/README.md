@@ -1,4 +1,6 @@
 ## How to add a new command
+Put any resources for the commands in `/commands/resources` (such as images)  
+If you have functions that run accross multiple commands, add them to `/commands/util.js`
 ### /commands/private - Commands restricted to bot owner only  
 ```javascript
 /commands/private/commandName.js
