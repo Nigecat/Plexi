@@ -11,7 +11,7 @@ module.exports = function(message, args) { }
 
 module.exports = {
 	args: [],	// the required arguments (this is for the help menu, please wrap each on in <>)
-	perms: [],		// the perms required to run this command (leave blank for anyone to be able to run it)
+	perms: [],	// the perms required to run this command (leave blank for anyone to be able to run it)
     description: "",		// description for command (this is for help menu, try to keep it short)
     call: function (message, args) { }
 }
