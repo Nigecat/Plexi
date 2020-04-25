@@ -2,7 +2,7 @@ const Database = require("../../database.js");
 const Config = require("../../data/config.json");
 
 module.exports = {
-    args: ["prefix"],
+    args: ["<prefix>"],
     perms: ["ADMINISTRATOR"],
     call: function(message, args) {
         let database = new Database(Config.database, Config.default_prefix);

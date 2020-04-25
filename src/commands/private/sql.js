@@ -2,7 +2,6 @@ const Database = require("../../database.js");
 const Config = require("../../data/config.json");
 
 module.exports = function(message, query) {
-
     query = query.join(" ");
     let database = new Database(Config.database, Config.default_prefix);
     database.database.all(query, (err, rows) => {
