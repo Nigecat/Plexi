@@ -13,6 +13,6 @@ module.exports = {
         ];
 
         // get user tag and remove the 4 digits after the hashtag then pick random element of response array
-        message.channel.send(`🎱** | ${message.author.tag.split("#").slice(0, -1).join("#")} asked:** ${args.join(" ")}\n       **| Answer:** ${responses[Math.floor(Math.random() * responses.length)]}`);
+        message.channel.send(`🎱** | ${message.author.tag.split("#").slice(0, -1).join("#")} asked:** ${args.join(" ")}\n🎱 **| Answer:** ${responses[Math.floor(Math.random() * responses.length)]}`);
     }
 }
