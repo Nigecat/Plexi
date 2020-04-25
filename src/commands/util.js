@@ -1,4 +1,4 @@
-
+﻿
 module.exports.checkPeanut = function (userID, guild, callback) {
     callback((
         (
@@ -15,4 +15,21 @@ module.exports.checkPeanut = function (userID, guild, callback) {
                 .reduce((a, b) => parseInt(a) + parseInt(b), 0)
         )
     ) / 10);
+}
+
+module.exports.wordReact = async function(message, text) {
+    text = text.toLowerCase().replace(/[^A-Za-z]/g, "").split("");
+    let emojis = {
+        a: "🇦", b: "🇧", c: "🇨", d: "🇩", e: "🇪",
+        f: "🇫", g: "🇬", h: "🇭", i: "🇮", j: "🇯",
+        k: "🇰", l: "🇱", m: "🇲", n: "🇳", o: "🇴",
+        p: "🇵", q: "🇶", r: "🇷", s: "🇸", t: "🇹",
+        u: "🇺", v: "🇻", w: "🇼", x: "🇽", y: "🇾",
+        z: "🇿"
+    }
+    text.forEach((char, index) => {
+        text[index] = emojis[char];
+    });
+    // react to the message with the emojis, this ensures they arrive in the correct order
+    text.reduce((promise, emoji) => promise.then(() => message.react(emoji)), Promise.resolve());   
 }
