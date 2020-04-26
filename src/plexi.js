@@ -14,6 +14,7 @@ module.exports = class {
      */
     start() {
         client.on("debug", console.log);
+        client.on("error", console.log);
         client.on("ready", this.ready.bind(this));
         client.on("message", this.processMessage.bind(this));
         client.on("guildCreate", this.joinServer.bind(this));
