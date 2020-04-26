@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     args: ["<hex-code>"],
     perms: [],
-    description: "Display a hex code",
+    description: "Display a hex code (must be 6 characters)",
     call: function(message, args) {
         if (!args[0].startsWith("#")) {
             args[0] = `#${args[0]}`

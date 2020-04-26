@@ -2,7 +2,7 @@
 module.exports = {
     args: ["<@user>"],
     perms: ["BAN_MEMBERS"],
-    description: "Ban a user (will delete all their messages)",
+    description: "Ban a user",
     call: function (message, args) {
         try {
             message.mentions.members.first().ban().then(() => {

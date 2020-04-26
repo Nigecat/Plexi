@@ -2,6 +2,7 @@ const { readdir, readdirSync } = require("fs");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = async function(message, database, client) {
+    message.content = message.content.toLowerCase();
     database.getServerInfo(message.guild.id, row => {       // get prefix for server
         const prefix = row.prefix;
 
@@ -15,21 +16,29 @@ module.exports = async function(message, database, client) {
                 .setTitle(`This server's prefix is currently: ${prefix}`)
 
             // loop through each command and append the required information to the embed
+            let commands = [];
             readdirSync("./commands/public").forEach(file => {
-                let data = require(`./commands/public/${file}`);
-                if (typeof data.args == "string") {
-                    let temp = data.args;
-                    data.args = [];
-                    data.args.push(temp);
-                }
-                if (data.perms.length > 0) {    // check if command has any perms and change what is displayed
-                    embed.addField(`${prefix}${file.split(".")[0]} ${data.args.join(" ")}`, `${data.description} | Perms: ${data.perms.join(" ")}`);
-                } else {
-                    embed.addField(`${prefix}${file.split(".")[0]} ${data.args.join(" ")}`, data.description);
+                commands.push(`${prefix}${file.split(".")[0]}`);
+            });
+            embed.addField(`(use ${prefix}help <command> to get more details on a command, run ${prefix}setprefix to change the server prefix)`, commands.join("\n"));
+
+           message.channel.send({embed});
+
+        } else if (message.content.startsWith("$help") || message.content.startsWith(`${prefix}help`)) {
+            readdirSync("./commands/public").forEach(file => {
+                file = file.split(".")[0];
+                if (file == message.content.split(" ")[1]) {
+                    let data = require(`./commands/public/${file}`);
+                    if (typeof data.args == "string") {
+                        data.args = [data.args];
+                    }
+                    if (data.perms.length > 0) {
+                        message.channel.send(`\`\`\`markdown\n# Command\n${prefix}${file.split(".")[0]} ${data.args.join(" ")}\n\n# Description\n${data.description}\n\n# Required Permissions\n${data.perms.join(", ")}\`\`\``);
+                    } else {
+                        message.channel.send(`\`\`\`markdown\n# Command\n${prefix}${file.split(".")[0]} ${data.args.join(" ")}\n\n# Description\n${data.description}\`\`\``);
+                    }
                 }
             });
-
-            message.channel.send({embed});
 
         } else if (message.content.startsWith(prefix)) {
             let command = message.content.split(prefix)[1].replace(/ .*/,'').toLowerCase();   // extract command

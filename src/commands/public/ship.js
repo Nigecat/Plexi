@@ -2,7 +2,7 @@
 module.exports = {
     args: ["<@user1>", "<@user2>"],
     perms: [],
-    description: "Ship two users",
+    description: "Ship two users (attempts to merge their names)",
     call: function(message) {
         try {
             let user1 = Array.from(message.mentions.members)[0][1].user.username;
