@@ -7,7 +7,6 @@ module.exports = {
     call: function (message, args) {
         message.channel.messages.fetch({ limit: 2 }).then(messages => {
             wordReact(messages.get(Array.from(messages.keys())[1]), args[0]);   // get second last message
-            message.delete();
         });
     }
 }
