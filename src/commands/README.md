@@ -9,7 +9,7 @@ module.exports = function(message, args) { }
 ```
 ### /commands/public - Commands that can be run by anyone  
 ```javascript
-/commands/private/commandName.js
+/commands/public/commandName.js
 
 module.exports = {
 	args: [],	// the required arguments (this is for the help menu, please wrap each on in <>, set this to a string if the amount of arguments isn't static, if it's a string wrap it in [])
