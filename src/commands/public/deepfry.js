@@ -1,0 +1,35 @@
+const Jimp = require("jimp");
+
+function attachIsImage(msgAttach) {
+    let url = msgAttach.url;
+    //True if this url is a png or jpg image.
+    return url.indexOf("png", url.length - "png".length /*or 3*/) !== -1 || url.indexOf("jpg", url.length - "jpg".length /*or 3*/) !== -1;
+}
+
+module.exports = {
+    args: [],
+    perms: [],
+    description: "Deep fry the previous message (as long as it is an image)",
+    call: function(message) {
+        message.channel.messages.fetch({ limit: 2 }).then(messages => {
+            let image = messages.get(Array.from(messages.keys())[1]);
+            if (image.attachments.size > 0) {
+                if (image.attachments.every(attachIsImage)){
+                    let url = image.attachments.first().url;
+                    Jimp.read(url).then(image => {
+                        image.pixelate(Math.floor(Math.random() * 2 + 2))
+                            .posterize(8)
+                            .contrast(0.75)
+                            .write("./commands/resources/temp/deepfry.png")
+                        message.channel.send({ files: [ "./commands/resources/temp/deepfry.png" ] });
+                    });
+
+                } else {
+                    message.channel.send("Image not found!");
+                }
+            } else {
+                message.channel.send("Image not found!");
+            }
+        });
+    }
+}
