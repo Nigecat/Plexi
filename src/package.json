@@ -1,7 +1,7 @@
 {
     "name": "plexi",
     "version": "1.2.8",
-    "description": "A discord bot",
+    "description": "A general purpose fun/moderation discord bot",
     "main": "launcher.js",
     "scripts": {
         "start": "node launcher.js"
