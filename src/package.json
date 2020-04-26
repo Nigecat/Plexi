@@ -12,10 +12,8 @@
     },
     "author": "Nigecat",
     "dependencies": {
-        "@discordjs/opus": "^0.2.1",
         "convert-units": "^2.3.4",
         "discord.js": "^12.2.0",
-        "ffmpeg-static": "^4.1.1",
         "node-fetch": "^2.6.0",
         "sqlite3": "^4.1.1",
         "urban-dictionary": "^2.2.1",
