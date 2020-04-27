@@ -3,7 +3,6 @@ const Config = require("../../data/config.json");
 
 module.exports = {
     args: ["<rock|paper|scissors>", "<coins>"],
-    perms: [],
     description: "Gamble your coins in a rock paper scissors game against the bot! If you lose the game you lose all betted coins, if you win they get doubled. A tie results in nothing.",
     call: function (message, args) {
         const choices = ["rock", "paper", "scissors"];
@@ -16,12 +15,12 @@ module.exports = {
                     if (row.coins >= args[1]) {
                         switch (Math.floor((Math.random() * 3) + 1)) {
                             case 1: {
-                                message.channel.send(`You just won ${args[1]} coins!`);
+                                message.channel.send(`You just won ${args[1]} coins! You now have ${row.coins + args[1]} coins.`);
                                 database.updateUser(message.author.id, "coins", row.coins + args[1]);
                                 break;
                             }
                             case 2: {
-                                message.channel.send(`You have lost ${args[1]} coins`);
+                                message.channel.send(`You have lost ${args[1]} coins, you now have ${row.coins - args[1]} coins.`);
                                 database.updateUser(message.author.id, "coins", row.coins - args[1]);
                                 break;
                             }

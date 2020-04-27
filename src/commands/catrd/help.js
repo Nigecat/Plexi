@@ -22,14 +22,15 @@ module.exports = {
                     .setColor([114, 137, 218])
                     .setAuthor(`This server's prefix is currently: ${prefix}`)
                     .setTimestamp(new Date())
-                    .setTitle("catrd help");
+                    .setTitle("catrd - a card game but with cats!");
                 
                 let commands = [];
                 readdirSync("./commands/catrd/").forEach(file => {
                     commands.push(`${prefix}${file.split(".")[0]}`);
                 });
                 embed.addField(`(use ${prefix}catrd help <command> to get more details on a command)`, commands.join("\n"));
-    
+                embed.addField("TODO: Usage description", "‎");
+
                 message.channel.send({embed});
             }
         });
