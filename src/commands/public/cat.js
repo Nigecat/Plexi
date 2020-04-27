@@ -6,7 +6,7 @@ module.exports = {
     perms: [],
     description: "Get a random post from /r/cats",
     call: function(message, args) {
-        fetch(`https://www.reddit.com/r/cats/random.json?limit=100`)
+        fetch(`https://www.reddit.com/r/cats/random.json?limit=1000`)
             .then(res => res.json())
             .then(res => {
                 let post = res.data.children[Math.floor(Math.random() * res.data.children.length)].data;

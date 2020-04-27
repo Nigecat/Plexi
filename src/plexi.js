@@ -7,6 +7,17 @@ module.exports = class {
         this.token = config.TOKEN;
         this.database = config.DATABASE;
         this.TOTAL_GUILDS = 0;
+
+        // detect when process has exited
+        process.on("exit", () => {
+            this.database.disconnect();
+            process.exit();
+        });
+        // gets triggered when control c is pressed
+        process.on("SIGINT", () => {
+            this.database.disconnect();
+            process.exit();
+        });
     }
 
     /**

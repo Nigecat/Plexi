@@ -3,25 +3,12 @@ const sqlite3 = require("sqlite3").verbose();
 module.exports = class {
     constructor(path, default_token) {
         this.database = new sqlite3.Database(path);
-        this.default_token = default_token
-
-        // detect when process has exited
-        process.on("exit", () => {
-            this.disconnect();
-            process.exit();
-        });
-        // gets triggered when control c is pressed
-        process.on("SIGINT", () => {
-            this.disconnect();
-            process.exit();
-        });
+        this.default_token = default_token;     // legacy code cant remove
     }
 
+    // this used to have code but then i removed it and cant delete the function
+    // so it doesnt really do anything now
     connect(callback) {
-        this.database.run(`CREATE TABLE IF NOT EXISTS Server  (            \
-            id BIGINT NOT NULL UNIQUE PRIMARY KEY,                         \
-            prefix TEXT NOT NULL DEFAULT '${this.default_token}'           \
-        );`);
         callback();
     }
 
