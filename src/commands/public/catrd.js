@@ -8,12 +8,13 @@ module.exports = {
     description: "Run catrd help for more details",
     call: function(message, args) {
         let database = new Database(Config.database, Config.default_prefix);
+        database.addUser(message.author.id);
+
         database.getServerInfo(message.guild.id, row => {   
             let state = !!row.catrd; // check if catrd is enabled on server (convert 0 or 1 to true/false)
             if (args.length == 0) { // if no command specified default to help
                 args.push("help");
             }
-            console.log(!state, args[0] != "enable");
             if (!state && args[0] != "enable") {
                 message.channel.send("catrd is currently disabled on this server, get an admin to run `catrd enable` to start playing!");
             } else {

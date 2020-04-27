@@ -20,6 +20,10 @@ module.exports = class {
         this.database.run(`DELETE FROM Server WHERE id = ${id}`);
     }
 
+    addUser(id) {
+        this.database.run(`INSERT INTO User ( id ) VALUES ( ${id} )`, err => {});
+    }
+
     updateServer(id, key, value) {
         this.database.run(`UPDATE Server SET ${key} = ? WHERE id = ${id}`, value)
     }
@@ -35,6 +39,12 @@ module.exports = class {
 
     getServerInfo(id, callback) {
         this.database.get(`SELECT * FROM Server WHERE id = ${id}`, (err, row) => {
+            callback(row);
+        });
+    }
+
+    getUser(id, callback) {
+        this.database.get(`SELECT * FROM User WHERE id = ${id}`, (err, row) => {
             callback(row);
         });
     }
