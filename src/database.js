@@ -25,7 +25,11 @@ module.exports = class {
     }
 
     updateServer(id, key, value) {
-        this.database.run(`UPDATE Server SET ${key} = ? WHERE id = ${id}`, value)
+        this.database.run(`UPDATE Server SET ${key} = ? WHERE id = ${id}`, value);
+    }
+
+    updateUser(id, key, value) {
+        this.database.run(`UPDATE User SET ${key} = ? WHERE id = ${id}`, value);
     }
 
     updateAll(guilds) {
