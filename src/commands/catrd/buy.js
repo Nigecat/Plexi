@@ -41,15 +41,14 @@ module.exports = {
 
                         // actual code to calculate a booster pack
                         getBoosterPack(database, set.set_name).then(pack => {
-                            pack = pack.map(card => card.name);
 
                             database.updateUser(message.author.id, "coins", row.coins - set.cost);
-                            database.updateUser(message.author.id, "cards", JSON.stringify(JSON.parse(row.cards).concat(pack)));
+                            database.updateUser(message.author.id, "cards", JSON.stringify(JSON.parse(row.cards).concat(pack.map(card => card.name))));
 
                             let embed = new MessageEmbed()
                                 .setColor([114, 137, 218])
                                 .setAuthor(`You just bought the ${set.set_name.toLowerCase()} set for ${set.cost} coins!\nYou now have ${row.coins - set.cost} coins`)
-                                .addField("Recieved Cards (run catrd info <card> for more details):", pack.join(", "))
+                                .addField("Recieved Cards (run catrd info <card> for more details):", pack.map(card => `${card.name} [${card.type}] - ${card.power} power (Ability: ${card.ability_name})`).join("\n"))
                             message.channel.send({embed});
 
                         });
