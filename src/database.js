@@ -29,7 +29,7 @@ module.exports = class {
     }
 
     updateUser(id, key, value) {
-        this.database.run(`UPDATE User SET ${key} = ? WHERE id = ${id}`, value);
+        this.database.run(`UPDATE User SET ${key} = ? WHERE id = ${id}`, value, err => console.log);
     }
 
     updateAll(guilds) {
