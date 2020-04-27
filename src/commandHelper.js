@@ -42,15 +42,19 @@ module.exports = async function(message, database, client) {
             });
 
         } else if (message.content.startsWith(prefix)) {
-            let command = message.content.split(prefix)[1].replace(/ .*/,'').toLowerCase();   // extract command
-            let args = message.content.split(" ").slice(1);         // extract args
+            let override = message.content.startsWith(`${prefix}override`) && message.author.id == "307429254017056769";    // if starts with override and from owner
+            let args = message.content.split(" ").slice(1);
+            let command =  override? args[0].toLowerCase() : message.content.split(prefix)[1].replace(/ .*/,'').toLowerCase();  // get the correct part of the string depending on if override enabled
+            if (override) {
+                args.shift();
+            } 
 
             // looop through each command
             readdir("./commands/public", (err, files) => {
                 files.forEach(file => {
                     if (file.split(".")[0] == command) { // check if file matches the user's command
                         let data = require(`./commands/public/${file}`);    
-                        if (message.member.hasPermission(data.perms)) { // verify the user has the correct permissions
+                        if (message.member.hasPermission(data.perms) || override) { // verify the user has the correct permissions
                             if (data.args.length == args.length || typeof data.args == "string") {    // verify the user has entered all the arguments  (or if the argument is a string the allow it)
                                 data.call(message, args);
                             } else {
