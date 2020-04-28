@@ -9,7 +9,7 @@ function attachIsImage(msgAttach) {
 module.exports = {
     args: [],
     perms: [],
-    description: "Deep fry the previous message (as long as it is an image)",
+    description: "Pan fry the previous message (as long as it is an image)",
     call: function(message) {
         message.channel.messages.fetch({ limit: 2 }).then(messages => {
             let image = messages.get(Array.from(messages.keys())[1]);
@@ -18,10 +18,10 @@ module.exports = {
                 url = url.includes("?size=") ? url.split("?size=").slice(0, -1).join("?size=") : url;
                 Jimp.read(url).then(image => {
                     image.pixelate(Math.floor(Math.random() * 2 + 2))
-                        .posterize(8)
-                        .contrast(0.75)
-                        .write(`./commands/resources/temp/deepfry.png`)
-                    message.channel.send({ files: [ "./commands/resources/temp/deepfry.png" ] });
+                        .posterize(4)
+                        .contrast(0.25)
+                        .write(`./commands/resources/temp/panfry.png`)
+                    message.channel.send({ files: [ "./commands/resources/temp/panfry.png" ] });
                 });
             } else {
                 message.channel.send("Image not found!");
