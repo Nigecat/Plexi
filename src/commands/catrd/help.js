@@ -26,7 +26,7 @@ module.exports = {
                 
                 let commands = [];
                 readdirSync("./commands/catrd/").forEach(file => {
-                    commands.push(`${prefix}${file.split(".")[0]}`);
+                    commands.push(`${prefix}catrd ${file.split(".")[0]}`);
                 });
                 embed.addField(`(use ${prefix}catrd help <command> to get more details on a command)`, commands.join("\n"));
                 embed.addField("TODO: Usage description", "‎");
