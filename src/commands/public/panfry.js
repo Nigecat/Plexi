@@ -17,9 +17,8 @@ module.exports = {
                 let url = image.embeds.length > 0 ? (image.embeds[0].url || image.embeds[0].image.url) : image.attachments.first().url;
                 url = url.includes("?size=") ? url.split("?size=").slice(0, -1).join("?size=") : url;
                 Jimp.read(url).then(image => {
-                    image.pixelate(Math.floor(Math.random() * 2 + 2))
-                        .posterize(4)
-                        .contrast(0.25)
+                    image.posterize(9)
+                        .contrast(0.3)
                         .write(`./commands/resources/temp/panfry.png`)
                     message.channel.send({ files: [ "./commands/resources/temp/panfry.png" ] });
                 });
