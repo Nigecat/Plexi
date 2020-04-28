@@ -18,6 +18,7 @@ module.exports = class {
             this.database.disconnect();
             process.exit();
         });
+        process.on('uncaughtException', console.log);
     }
 
     /**

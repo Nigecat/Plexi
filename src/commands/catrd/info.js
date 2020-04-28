@@ -17,14 +17,16 @@ module.exports = {
                 let card = rows[0];
                 let embed = new MessageEmbed()
                     .setColor([114, 137, 218])
-                    .setTitle(card.name);
+                    .setTitle(card.name)
+                    // replace all spaces with an underscore because for some reason if the file has a space in it, it doesn't appear inside the embed
+                    .attachFiles([`./commands/resources/catrd/${card.set_name}/${card.name.split(" ").join("_")}.jpg`]) 
+                    .setImage(`attachment://${card.name.split(" ").join("_")}.jpg`);
 
                 Object.keys(card).forEach(key => {
                     embed.addField(capitalizeFirstLetter(key).split("_").join(" "), card[key]);
                 });
 
                 message.channel.send({embed});
-                message.channel.send({files: [`./commands/resources/catrd/${card.set_name}/${card.name}.jpg`]})
             } else {
                 message.channel.send("Card not found");
             }

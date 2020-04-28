@@ -32,8 +32,8 @@ module.exports = {
                     } else {
                         message.channel.send("You do not have enough coins to do that");
                     }
-                });
-                database.disconnect();
+            });
+            database.disconnect();
             } else {
                 message.channel.send("Invalid coin value");
             }

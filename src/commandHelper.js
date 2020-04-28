@@ -6,7 +6,12 @@ module.exports = async function(message, database, client) {
     database.getServerInfo(message.guild.id, row => {       // get prefix for server
         const prefix = row.prefix;
 
-        if (message.content == "$help" || message.content == `${prefix}help`) {
+        // custom code for 264163117078937601 (Pinpointpotato#9418) AKA the ideas man
+        if (message.author.id == "264163117078937601" && message.content.toLowerCase().includes("you know why they call me the ideas man")) {
+            message.channel.send("cuz i CLEEEEEEAaaan up");
+        } 
+        
+        else if (message.content == "$help" || message.content == `${prefix}help`) {
             // create custom message embed for help command
             const embed = new MessageEmbed()
                 .setColor([114, 137, 218])

@@ -10,7 +10,7 @@ module.exports = {
             database.updateServer(message.guild.id, "catrd", 0);
             message.channel.send(`**catrd disabled!**`);
             database.disconnect();
-        } else {
+    } else {
             message.channel.send("Only an admin can run this command!");
         }
     }

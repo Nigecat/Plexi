@@ -13,7 +13,7 @@ module.exports = {
                 database.updateUser(message.author.id, "coins", row.coins + 50);
                 database.updateUser(message.author.id, "dailyClaimTime", Date.now());
             } else {
-                message.channel.send(`Please wait ${24 - ((time - row.dailyClaimTime) / 3600000).toFixed(1)} hours before you can claim your daily coins`);
+                message.channel.send(`Please wait ${24 - Math.trunc((time - row.dailyClaimTime) / 3600000)} hours before you can claim your daily coins`);
             }
         });
         database.disconnect();

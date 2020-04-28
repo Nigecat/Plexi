@@ -5,7 +5,7 @@ const Config = require("../../data/config.json");
 async function getCard(database, setName, pack) {
     return new Promise((resolve, reject) => {
         database.database.get(`SELECT * FROM Card WHERE set_name = ? AND name NOT IN ( ${pack.map(card => `"${card.name}"`).join(", ")} ) ORDER BY RANDOM() LIMIT 1`, setName, (err, row) => {
-            if (err) {
+              if (err) {
                 reject(err)
             } else {
                 resolve(row);
@@ -37,27 +37,30 @@ module.exports = {
                 let set = rows[0];
                 database.getUser(message.author.id, row => {
                     if (row.coins >= set.cost) {
-                        message.channel.send("Generating pack...");
+                        message.channel.send("Generating pack...").then(msg => {
+                            // actual code to calculate a booster pack
+                            getBoosterPack(database, set.set_name).then(pack => {
+                                database.updateUser(message.author.id, "coins", row.coins - set.cost);
+                                database.updateUser(message.author.id, "cards", JSON.stringify(JSON.parse(row.cards).concat(pack.map(card => card.name))));
 
-                        // actual code to calculate a booster pack
-                        getBoosterPack(database, set.set_name).then(pack => {
-
-                            database.updateUser(message.author.id, "coins", row.coins - set.cost);
-                            database.updateUser(message.author.id, "cards", JSON.stringify(JSON.parse(row.cards).concat(pack.map(card => card.name))));
-
-                            let embed = new MessageEmbed()
-                                .setColor([114, 137, 218])
-                                .setAuthor(`You just bought the ${set.set_name.toLowerCase()} set for ${set.cost} coins!\nYou now have ${row.coins - set.cost} coins`)
-                                .addField("Recieved Cards (run catrd info <card> for more details):", pack.map(card => `${card.name} [${card.type}] - ${card.power} power (Ability: ${card.ability_name})`).join("\n"))
-                            message.channel.send({embed});
-
+                                let embed = new MessageEmbed()
+                                    .setColor([114, 137, 218])
+                                    .setAuthor(`You just bought the ${set.set_name.toLowerCase()} set for ${set.cost} coins!\nYou now have ${row.coins - set.cost} coins`)
+                                    .addField("Recieved Cards (run catrd info <card> for more details):", pack.map(card => `${card.name} [${card.type}] - ${card.power} power (Ability: ${card.ability_name})`).join("\n"))
+                                message.channel.send({embed});
+                                msg.delete();
+                                database.disconnect();
+                            });
                         });
+                    } else {
+                        message.channel.send("You don't have enough coins to do that!");
+                        database.disconnect();
                     }
                 });
             } else {
                 message.channel.send("Set not found! Run `catrd sets` to view available options");
+                database.disconnect();
             }
         });
-        database.disconnect();
     }
 }
