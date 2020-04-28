@@ -38,7 +38,7 @@ module.exports = async function(message, database, client) {
             readdirSync("./commands/public").forEach(file => {
                 commands.push(`${prefix}${file.split(".")[0]}`);
             });
-            embed.addField(`(use ${prefix}help <command> to get more details on a command, run ${prefix}setprefix to change the server prefix)`, commands.join("\n"));
+            embed.addField(`(use ${prefix}help <command> to get more details on a command, run ${prefix}setprefix to change the server prefix, run $catrd help for more details on the card game)`, commands.join("\n"));
 
            message.channel.send({embed});
 
