@@ -10,6 +10,19 @@ module.exports = async function(message, database, client) {
         if (message.author.id == "264163117078937601" && message.content.toLowerCase().includes("you know why they call me the ideas man")) {
             message.channel.send("cuz i CLEEEEEEAaaan up");
         } 
+
+        else if (message.content.startsWith("g`")) {
+            message.content = message.content.slice(2);
+            let emojis = client.emojis.cache.map(x => [x.name, x]);
+            emojis = emojis.filter(emoji => emoji[0].toLowerCase() == message.content.toLowerCase());
+            if (emojis.length > 0) {
+                let embed = new MessageEmbed()
+                    .setImage(`https://cdn.discordapp.com/emojis/${emojis[0][1].id}`)
+                    .setFooter(message.author.tag);
+                message.channel.send({embed});
+                message.delete();
+            }
+        }
         
         else if (message.content == "$help" || message.content == `${prefix}help`) {
             // create custom message embed for help command
