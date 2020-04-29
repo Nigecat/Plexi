@@ -11,6 +11,7 @@ module.exports = async function(message, database, client) {
             message.channel.send("cuz i CLEEEEEEAaaan up");
         } 
 
+        // literally just pseudo-nitro (since bots can use emotes like how nitro does)
         else if (message.content.startsWith("g`")) {
             message.content = message.content.slice(2);
             let emojis = client.emojis.cache.map(x => [x.name, x]);
