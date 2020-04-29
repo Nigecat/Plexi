@@ -10,7 +10,7 @@ async function getLeaderboard(message, rows, args, msg) {
         let data = [];
         for (let i = 0; i < rows.length; i++) {
             let user = await client.users.fetch(rows[i].id);
-            data.push(`[${i + 1}]${" ".repeat(7 - (i + 1).toString().length)}> ${user.tag}`);
+            data.push(`[${i + 1}]${" ".repeat(7 - (i + 1).toString().length)}> ${user.username}`);   // auto calculate the number of spaces required
             data.push(`                    Total ${args[0]}: ${rows[i][args[0]]}`);
         }; 
         data = data.join("\n");

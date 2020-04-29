@@ -1,7 +1,7 @@
 ﻿const Database = require("../database.js");
 const Config = require("../data/config.json");
 
-module.exports.checkPeanut = function (userID, guild, callback) {
+module.exports.checkPeanut = function(userID, guild, callback) {
     let database = new Database(Config.database, Config.default_prefix);
     database.addUser(userID);
     database.getUser(userID, row => {
@@ -27,7 +27,7 @@ module.exports.checkPeanut = function (userID, guild, callback) {
     });
 }
 
-module.exports.wordReact = async function(message, text) {
+module.exports.toEmoji = function(text) {
     text = text.toLowerCase().replace(/[^A-Za-z]/g, "").split("");
     let emojis = {
         a: "🇦", b: "🇧", c: "🇨", d: "🇩", e: "🇪",
@@ -40,6 +40,12 @@ module.exports.wordReact = async function(message, text) {
     text.forEach((char, index) => {
         text[index] = emojis[char];
     });
+    return text;
+}
+
+module.exports.wordReact = async function(message, text) {
+    text = text.toLowerCase().replace(/[^A-Za-z]/g, "").split("");
+    text = module.exports.toEmoji(text);
     // react to the message with the emojis, this ensures they arrive in the correct order
     text.reduce((promise, emoji) => promise.then(() => message.react(emoji)), Promise.resolve());   
 }
