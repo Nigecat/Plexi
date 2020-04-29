@@ -2,7 +2,7 @@ const { Client } = require("discord.js");
 const Database = require("../../database.js");
 const Config = require("../../data/config.json");
 
-const valid_sorts = ["coins", "todo", "todo"];
+const valid_sorts = ["coins", "peanuts"];
 
 async function getLeaderboard(message, rows, args, msg) {
     const client = new Client();
@@ -23,6 +23,7 @@ async function getLeaderboard(message, rows, args, msg) {
 
 module.exports = {
     args: [`<${valid_sorts.join("|")}>`],
+    perms: [],
     description: "View the global top leaderboard on a variable",
     call: async function(message, args) {
         args[0] = args[0].toLowerCase();

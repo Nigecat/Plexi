@@ -6,6 +6,13 @@ module.exports = async function(message, database, client) {
     database.getServerInfo(message.guild.id, row => {       // get prefix for server
         const prefix = row.prefix;
 
+        if (message.content.toLowerCase().includes("peanut")) {
+            database.addUser(message.author.id);
+            database.getUser(message.author.id, row => {
+                database.updateUser(message.author.id, "peanuts", row.peanuts + (message.content.toLowerCase().match(/peanut/g) || []).length);
+            });
+        }
+
         // custom code for 264163117078937601 (Pinpointpotato#9418) AKA the ideas man
         if (message.author.id == "264163117078937601" && message.content.toLowerCase().includes("you know why they call me the ideas man")) {
             message.channel.send("cuz i CLEEEEEEAaaan up");
