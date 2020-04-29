@@ -1,4 +1,4 @@
-const { readdir, readdirSync } = require("fs");
+const { readdir, readdirSync, access } = require("fs");
 const { MessageEmbed } = require("discord.js");
 
 module.exports = async function(message, database, client) {
@@ -70,39 +70,41 @@ module.exports = async function(message, database, client) {
         } else if (message.content.startsWith(prefix)) {
             let override = message.content.startsWith(`${prefix}override`) && message.author.id == "307429254017056769";    // if starts with override and from owner
             let args = message.content.split(" ").slice(1);
-            let command =  override? args[0].toLowerCase() : message.content.split(prefix)[1].replace(/ .*/,'').toLowerCase();  // get the correct part of the string depending on if override enabled
+            let command = override? args[0].toLowerCase() : message.content.split(prefix)[1].replace(/ .*/,'').toLowerCase();  // get the correct part of the string depending on if override enabled (removes the word 'override')
             if (override) {
                 args.shift();
             } 
 
-            // looop through each command
-            readdir("./commands/public", (err, files) => {
-                files.forEach(file => {
-                    if (file.split(".")[0] == command) { // check if file matches the user's command
-                        let data = require(`./commands/public/${file}`);    
-                        if (message.member.hasPermission(data.perms) || override) { // verify the user has the correct permissions
-                            if (data.args.length == args.length || typeof data.args == "string") {    // verify the user has entered all the arguments  (or if the argument is a string the allow it)
-                                data.call(message, args);
+            access(`./commands/public/${command}.js`, err => {
+                if (!err) {
+                    let data = require(`./commands/public/${command}.js`);    
+                    if (message.member.hasPermission(data.perms) || override) { // verify the user has the correct permissions
+                        if (data.args.length == args.length || (typeof data.args == "string" && args.length > 0)) {    // verify the user has entered all the arguments  (or if the argument is a string the allow it)
+                            data.call(message, args);
+                        } else {
+                            if (typeof data.args == "string") {
+                                message.channel.send(`Command syntax error, expected syntax: \`${prefix}${command} ${data.args}\``)
                             } else {
                                 message.channel.send(`Command syntax error, expected syntax: \`${prefix}${command} ${data.args.join(" ")}\``)
                             }
-                        } else {
-                            message.channel.send(`It appears you are missing the permission(s) \`${data.perms.join(" ")}\` to run this command`)
                         }
-                        // delete the file cache so the commands can be updated without stopping the bot
-                        delete require.cache[require.resolve(`./commands/public/${file}`)];
+                    } else {
+                        message.channel.send(`It appears you are missing the permission(s) \`${data.perms.join(" ")}\` to run this command`)
                     }
-                });
+                    // delete the file cache so the commands can be updated without stopping the bot
+                    delete require.cache[require.resolve(`./commands/public/${command}.js`)];
+                }
             });
 
             if (message.author.id == "307429254017056769") {  // only run these commands for bot owneer
-                readdir("./commands/private", (err, files) => {
-                    files.forEach(file => {
-                        if (file.split(".")[0] == command) {
-                            require(`./commands/private/${file}`)(message, args);
+                if (message.author.id == "307429254017056769") {  // only run these commands for bot owneer
+                    access(`./commands/private/${command}.js`, err => {
+                        if (!err) {
+                            require(`./commands/private/${command}.js`)(message, args);
+                            delete require.cache[require.resolve(`./commands/private/${command}.js`)];
                         }
                     });
-                });
+                }
             }
         }
     });

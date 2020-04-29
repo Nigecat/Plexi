@@ -42,6 +42,7 @@ module.exports = class {
      * Callback function for when bot starts
      */
     ready() {
+        console.log(`Logged in as ${client.user.tag} in ${client.guilds.cache.size} servers`);
         this.updateStatus();
         this.database.connect(() => {
             this.database.updateAll(client.guilds);
