@@ -4,7 +4,7 @@ const Config = require("../../data/config.json");
 
 function capitalizeFirstLetter(str) {
     return str[0].toUpperCase() + str.slice(1);
-  }
+}
 
 module.exports = {
     args: "[card]",
