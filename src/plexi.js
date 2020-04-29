@@ -1,12 +1,16 @@
 const processCommand = require('./commandHelper.js');
+const DBL = require('dblapi.js');
 const Discord = require('discord.js');
 const client = new Discord.Client();
+
 
 module.exports = class {
     constructor(config) {
         this.token = config.TOKEN;
+        this.topggapikey = config.TOPGGAPIKEY;
         this.database = config.DATABASE;
         this.TOTAL_GUILDS = 0;
+        this.dbl = new DBL(this.topggapikey, client);        // top.gg api  
 
         // detect when process has exited
         process.on("exit", () => {
