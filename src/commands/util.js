@@ -7,23 +7,26 @@ module.exports.checkPeanut = function(userID, guild, callback) {
     database.getUser(userID, row => {
         database.disconnect();
         callback(row.peanuts);
-        /*
-        callback((
-            (
-                (
-                    parseInt(userID.split("")[0]) + 1
-                ) * (
-                    parseInt(userID.split("")[1]) + 1
-                ) * (
-                    parseInt(userID.split("")[2]) + 1
-                ) * (
-                    parseInt(userID.split("")[3]) + 1)
-            ) / 10 + (
-                parseInt(guild.id.split("")[0]) * userID.split("")
-                    .reduce((a, b) => parseInt(a) + parseInt(b), 0)
-            )
-        ) / 10);
-        */
+    });
+}
+
+// check if a game has expired and if so auto clear the rows (specified users)
+module.exports.checkExpire = async function(database, user1ID, user2ID) {
+    return new Promise((resolve, reject) => {
+        database.database.all(`SELECT * FROM Game WHERE user1 = ${user1ID} OR user2 = ${user1ID} OR user1 = ${user2ID} OR user2 = ${user2ID} LIMIT 1`, (err, rows) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (rows.length != 0) {
+                    let time = Date.now();
+                    rows.forEach(row => {
+                        if (row.user1timeout - time < 0 || row.user2timeout - time < 0) {
+                            database.database.run(`DELETE FROM Game WHERE user1 = ${row.user1} AND user2 = ${row.user2}`);
+                        }
+                    })
+                }
+            }
+        }); 
     });
 }
 

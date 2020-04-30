@@ -28,8 +28,9 @@ module.exports = {
                 readdirSync("./commands/catrd/").forEach(file => {
                     commands.push(`${prefix}catrd ${file.split(".")[0]}`);
                 });
-                embed.addField(`(use ${prefix}catrd help <command> to get more details on a command)`, commands.join("\n"));
-                embed.addField("TODO: Usage description", "‎");
+                embed.addField(`(use ${prefix}catrd help <command> to get more details on a command)`, commands.join("\n"))
+                    .addField("‎", "‎")
+                    .addField("Usage:", "‎TODO");
 
                 message.channel.send({embed});
             }
