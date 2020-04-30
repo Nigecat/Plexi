@@ -97,14 +97,12 @@ module.exports = async function(message, database, client) {
             });
 
             if (message.author.id == "307429254017056769") {  // only run these commands for bot owneer
-                if (message.author.id == "307429254017056769") {  // only run these commands for bot owneer
-                    access(`./commands/private/${command}.js`, err => {
-                        if (!err) {
-                            require(`./commands/private/${command}.js`)(message, args);
-                            delete require.cache[require.resolve(`./commands/private/${command}.js`)];
-                        }
-                    });
-                }
+                access(`./commands/private/${command}.js`, err => {
+                    if (!err) {
+                        require(`./commands/private/${command}.js`)(message, args);
+                        delete require.cache[require.resolve(`./commands/private/${command}.js`)];
+                    }
+                });
             }
         }
     });

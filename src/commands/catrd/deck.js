@@ -15,8 +15,8 @@ module.exports = {
                 let embed = new MessageEmbed()  
                     .setColor([114, 137, 218])
                     .setTitle(`Run catrd add <card> to add a card to your deck,\nrun catrd remove <card> to remove a card from the deck:`)
-                
-                embed.addField("‎", cards.join("\n"));
+                    .addField("‎", cards.join("\n"))
+                    .setFooter(`[${cards.length}/20]`);
             
                 message.channel.send({embed});
             } else {
