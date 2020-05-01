@@ -23,10 +23,14 @@ module.exports = {
                         if (args[0] == file.split(".")[0] && file != "catrd.js") {
                             let data = require(`../catrd/${file}`);
                             let prefix = message.content.split("catrd")[0];
-                            if (data.args.length + 1 == args.length || typeof data.args == "string") {    // verify the user has entered all the arguments  (or if the argument is a string the allow it)
+                            if (data.args.length == args.slice(1).length || (typeof data.args == "string" && args.slice(1).length > 0)) {   // verify the user has entered all the arguments  (or if the argument is a string the allow it)
                                 data.call(message, args.slice(1));
                             } else {
-                                message.channel.send(`Command syntax error, expected syntax: \`${prefix}catrd ${args[0]} ${data.args.join(" ")}\``);
+                                if (typeof data.args == "string") {
+                                    message.channel.send(`Command syntax error, expected syntax: \`${prefix}catrd ${args[0]} ${data.args}\``)
+                                } else {
+                                    message.channel.send(`Command syntax error, expected syntax: \`${prefix}catrd ${args[0]} ${data.args.join(" ")}\``)
+                                }
                             }
                             delete require.cache[require.resolve(`../catrd/${file}`)];
                         }

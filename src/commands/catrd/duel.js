@@ -1,5 +1,4 @@
 const { MessageEmbed } = require("discord.js");
-const { checkExpire } = require("../util.js");
 const Database = require("../../database.js");
 const Config = require("../../data/config.json");
 
@@ -9,7 +8,8 @@ function displayInstructions(message) {
         "catrd play <card> - play a card onto the board (only works if it is your turn)",
         "catrd pass - stop playing cards for this round (only works if it is your turn)",
         "catrd forfeit - give up on the game, you will lose your bet",
-        "catrd info <card> - get info on a card"
+        "catrd info <card> - get info on a card",
+        "catrd board - view the current board state"
     ];
     let embed = new MessageEmbed()
         .setTitle("A complete guide on how to duel")
@@ -60,7 +60,8 @@ module.exports = {
                 let user2 = { obj: message.mentions.members.first(), id: message.mentions.members.first().id, tag: message.mentions.members.first().user.tag, deck: [], hand: [] }
                 
                 // check if matches are supposed to be expired
-                checkExpire(database, user1.id, user2.id).then(console.log).catch(console.log);     
+                database.checkExpire(user1.id);     
+                database.checkExpire(user2.id);     
                 
                 database.addUser(user1.id);
                 database.addUser(user2.id);

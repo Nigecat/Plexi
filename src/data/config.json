@@ -1,4 +1,5 @@
 {
     "database": "./data/data.sqlite",
-    "default_prefix": "$"
+    "default_prefix": "$",
+    "catrdTimeout": 360000
 }

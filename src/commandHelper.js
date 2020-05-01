@@ -24,8 +24,8 @@ module.exports = async function(message, database, client) {
             let emojis = client.emojis.cache.map(x => [x.name, x]);
             emojis = emojis.filter(emoji => emoji[0].toLowerCase() == message.content.toLowerCase());
             if (emojis.length > 0) {
-                let embed = new MessageEmbed()
-                    .setImage(`https://cdn.discordapp.com/emojis/${emojis[0][1].id}`)
+                embed = new MessageEmbed()
+                    .setImage(`https://cdn.discordapp.com/emojis/${emojis[0][1].id}${emojis[0][1].animated ? ".gif" : ".png"}`)
                     .setFooter(message.author.tag);
                 message.channel.send({embed});
                 message.delete();
