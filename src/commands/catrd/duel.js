@@ -2,6 +2,14 @@ const { MessageEmbed } = require("discord.js");
 const Database = require("../../database.js");
 const Config = require("../../data/config.json");
 
+async function getPower(database, card) {
+    return new Promise((resolve, reject) => {
+        database.database.get(`SELECT power FROM Card WHERE name = ?`, card, (err, row) => {
+            resolve(row.power);
+        });
+    });
+}
+
 function displayInstructions(message) {
     let commands = [
         "catrd bet <card|coins> - set your bet for the game",
@@ -31,6 +39,16 @@ async function beginGame(message, database, user1, user2) {
         ${user1.id}, ${user2.id}, ?, ?, 
         '${JSON.stringify(user1.hand)}', '${JSON.stringify(user2.hand)}', 
         ${Date.now() + 600000}, ${Date.now() + 600000} )`, user1.tag, user2.tag);
+
+    for (let i = 0; i < user1.hand.length; i++) {
+        let power = await getPower(database, user1.hand[i]);
+        user1.hand[i] = `${user1.hand[i]} - ${power} power`;
+    }
+
+    for (let i = 0; i < user2.hand.length; i++) {
+        let power = await getPower(database, user2.hand[i]);
+        user2.hand[i] = `${user2.hand[i]} - ${power} power`;
+    }
 
     // DM USER THEIR DRAWN CARDS
     let user1embed = new MessageEmbed()  

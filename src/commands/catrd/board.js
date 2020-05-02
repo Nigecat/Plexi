@@ -6,10 +6,10 @@ function capitalizeFirstLetter(str) {
     return str[0].toUpperCase() + str.slice(1);
 }
 
-async function getType(database, card) {
+async function getData(database, card) {
     return new Promise((resolve, reject) => {
-        database.database.get(`SELECT type FROM Card WHERE name = ?`, card, (err, row) => {
-            resolve(row.type);
+        database.database.get(`SELECT type, power FROM Card WHERE name = ?`, card, (err, row) => {
+            resolve([row.type, row.power]);
         });
     });
 }
@@ -20,14 +20,19 @@ async function generateBoardEmbed(database, user1, user2) {
     user1.push({ melee: [], scout: [], defense: [] });
     user2.push({ melee: [], scout: [], defense: [] });
 
+    user1power = 0;
+    user2power = 0;
+
     for (const card of user1[1]) {
-        let type = await getType(database, card);
-        user1[2][type].push(card);
+        let data = await getData(database, card);
+        user1[2][data[0]].push(`${card} - ${data[1]} power`);
+        user1power += data[1];
     }
 
     for (const card of user2[1]) {
-        let type = await getType(database, card);
-        user2[2][type].push(card);
+        let data = await getData(database, card);
+        user2[2][data[0]].push(`${card} - ${data[1]} power`);
+        user2power += data[1];
     }
 
     let embed = new MessageEmbed()
@@ -40,7 +45,8 @@ async function generateBoardEmbed(database, user1, user2) {
         .addField("Scout", user2[2].scout.join(", ") != "" ? user2[2].scout.join("\n") : "‎", true)
         .addField("‎", "‎")
         .addField("Defense", user1[2].defense.join(", ") != "" ? user1[2].defense.join("\n") : "‎", true)
-        .addField("Defense", user2[2].defense.join(", ") != "" ? user2[2].defense.join("\n") : "‎", true);
+        .addField("Defense", user2[2].defense.join(", ") != "" ? user2[2].defense.join("\n") : "‎", true)
+        .setFooter(`Total power: ${user1power} | ${user2power}`);
 
     return embed;
 }

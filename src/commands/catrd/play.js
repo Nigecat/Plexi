@@ -26,7 +26,7 @@ module.exports = {
                             if (row.turn == user && row[`${user}hand`].includes(args)) {
                                 database.updateGame(message.author.id, `hand`, JSON.stringify(remove(JSON.parse(row[`${user}hand`]), args)));
                                 database.updateGame(message.author.id, `active`, JSON.stringify(JSON.parse(row[`${user}active`]).concat([args])));
-                                database.updateGameVal(message.author.id, "turn", row.turn == "user1" && !row[`${user == "user1" ? "user2" : "user1"}pass`] ? "user2" : "user1");
+                                database.updateGameVal(message.author.id, "turn", !row[`${user == "user1" ? "user2" : "user1"}pass`] ? user == "user1" ? "user2" : "user1" : user );
                                 database.updateGame(message.author.id, `timeout`, Date.now() + Config.catrdTimeout);
                                 message.channel.send(`${message.author} has played ${args}!`);
                             } else {
