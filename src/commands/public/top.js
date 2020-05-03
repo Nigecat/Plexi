@@ -30,7 +30,7 @@ module.exports = {
         if (valid_sorts.includes(args[0])) {
             message.channel.send("Calculating...").then(msg => {
                 let database = new Database(Config.database, Config.default_prefix);
-                database.database.all(`SELECT * FROM User WHERE id != 307429254017056769 ORDER BY ${args[0]} DESC LIMIT 10`, (err, rows) => {    
+                database.database.all(`SELECT * FROM User WHERE id != ${Config.owner} ORDER BY ${args[0]} DESC LIMIT 10`, (err, rows) => {    
                     getLeaderboard(message, rows, args, msg);
                 });
                 database.disconnect();
