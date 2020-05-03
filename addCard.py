@@ -24,20 +24,24 @@ while True:
     print()
 
     url = input("Image url: ")
-    name = capwords(input("Card name: ").lower())
+    name = capwords(input("Card name: ").lower()).title()
     rarity = input("Card rarity (number from 0-100): ")
     type = input("Card type [melee, scout, defense]: ").lower()
     power = input("Card power: ")
-    set = capwords(input("Set name: ").lower())
+    set = capwords(input("Set name (press enter for basic set): ").lower())
     ability = capwords(input("Ability name (press enter for no ability): ").lower())
 
+    if set == "":
+        set = "Basic"
+    else:
+        cards.append(f"INSERT OR IGNORE INTO Sets ( set_name ) VALUES ( '{set}' );")
+
     downloadImage(name, set, url)
-    cards.append(f"INSERT OR IGNORE INTO Sets ( set_name ) VALUES ( '{set}' );")
 
     if ability == "":
-        cards.append(f"INSERT INTO Card ( name, rarity, type, power, set_name ) VALUES ( '{name}', '{rarity}', '{type}', '{power}', '{set}' );")
+        cards.append(f"INSERT INTO Card ( name, rarity, type, power, set_name ) VALUES ( '{name}', {rarity}, '{type}', {power}, '{set}' );")
 
     else:
         cards.append(f"INSERT OR IGNORE INTO Ability ( ability_name ) VALUES ( '{ability}' );")
-        cards.append(f"INSERT INTO Card ( name, rarity, type, power, set_name, ability_name ) VALUES ( '{name}', '{rarity}', '{type}', '{power}', '{set}', '{ability}' );")
+        cards.append(f"INSERT INTO Card ( name, rarity, type, power, set_name, ability_name ) VALUES ( '{name}', {rarity}, '{type}', {power}, '{set}', '{ability}' );")
         
