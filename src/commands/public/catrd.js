@@ -5,7 +5,7 @@ const Config = require("../../data/config.json");
 module.exports = {
     args: `<${readdirSync("./commands/catrd/").map(file => file.split(".")[0]).join("|")}>`,
     perms: [],
-    description: "Run catrd help for more details",
+    description: "Run catrd help <command> for more details\nTODO usage instructions",
     call: function(message, args) {
         let database = new Database(Config.database, Config.default_prefix);
         database.addUser(message.author.id);

@@ -43,7 +43,7 @@ module.exports = {
                             }
                         } else {    // card bet
                             args = args.map(w => capitalizeFirstLetter(w)).join(" ");
-                            if (row.cards.includes(args) || row.deck.includes(args)) {
+                            if (JSON.parse(row.cards).includes(args) || JSON.parse(row.deck).includes(args)) {
                                 message.reply(`your bet has been set to ${args}`);
                                 database.updateGame(message.author.id, "bet", args);
                             } else {

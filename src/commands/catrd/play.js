@@ -26,7 +26,7 @@ module.exports = {
                                 args[args.length - 2] = "(Alt";
                             }
                             args = args.map(w => capitalizeFirstLetter(w)).join(" ");
-                            if (row.turn == user && row[`${user}hand`].includes(args)) {
+                            if (row.turn == user && JSON.parse(row[`${user}hand`]).includes(args)) {
                                 database.updateGame(message.author.id, `hand`, JSON.stringify(remove(JSON.parse(row[`${user}hand`]), args)));
                                 database.updateGame(message.author.id, `active`, JSON.stringify(JSON.parse(row[`${user}active`]).concat([args])));
                                 database.updateGameVal(message.author.id, "turn", !row[`${user == "user1" ? "user2" : "user1"}pass`] ? user == "user1" ? "user2" : "user1" : user );

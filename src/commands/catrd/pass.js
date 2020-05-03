@@ -49,7 +49,7 @@ async function calculateWinner(database, user1, user2) {
 
 module.exports = {
     args: [],
-    description: "End your turn for the rest of the round TODO",
+    description: "End your turn for the rest of the round",
     call: function(message) {
         let database = new Database(Config.database, Config.default_prefix);
         database.checkExpire(message.author.id);     

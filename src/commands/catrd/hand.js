@@ -4,7 +4,7 @@ const Config = require("../../data/config.json");
 
 module.exports = {
     args: [],
-    description: "End your turn for the rest of the round TODO",
+    description: "View the cards currently left in your hand during a duel",
     call: function(message) {
         let database = new Database(Config.database, Config.default_prefix);
         database.checkExpire(message.author.id);     
