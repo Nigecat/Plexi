@@ -26,6 +26,8 @@ module.exports = {
                     embed.addField(capitalizeFirstLetter(key).split("_").join(" "), card[key]);
                 });
 
+                embed.addField("Sell price:", `${Math.floor((100 - card.rarity) / 5)} coins`);
+
                 message.channel.send({embed});
             } else {
                 message.channel.send("Card not found");

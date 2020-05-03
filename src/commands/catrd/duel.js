@@ -17,7 +17,8 @@ function displayInstructions(message) {
         "catrd pass - stop playing cards for this round (only works if it is your turn)",
         "catrd forfeit - give up on the game, you will lose your bet",
         "catrd info <card> - get info on a card",
-        "catrd board - view the current board state"
+        "catrd board - view the current board state",
+        "catrd hand - view the cards left in your hand"
     ];
     let embed = new MessageEmbed()
         .setTitle("A complete guide on how to duel")

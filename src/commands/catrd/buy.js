@@ -18,7 +18,7 @@ async function getBoosterPack(database, setName) {
     let pack = [];
     while (pack.length < 5) {
         let card = await getCard(database, setName, pack);
-        if (card.rarity > Math.floor(Math. random() * 50) + 1) {   // rarity check
+        if (card.rarity > Math.floor(Math. random() * 100) + 1) {   // rarity check
             pack.push(card);
         }
     }
