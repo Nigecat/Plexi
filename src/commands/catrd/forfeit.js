@@ -22,7 +22,7 @@ module.exports = {
                     let user = row.user1 == message.author.id ? "user1" : "user2"; 
                     let user2 = user == "user1" ? "user2" : "user1";
                     if (row.round > 0) {
-                        let bet = row[`${user == "user1" ? "user1" : "user2"}bet`];
+                        let bet = row[`${user}bet`];
                         database.addUser(row[user]);
                         database.addUser(row[user2]);
                         if (!isNaN(bet)) {   // coin bet

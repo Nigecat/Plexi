@@ -2,8 +2,19 @@ const { MessageEmbed } = require("discord.js");
 const Database = require("../../database.js");
 const Config = require("../../data/config.json");
 
+function remove(arr, text) {
+    arr.splice(arr.indexOf(text), 1);
+    return arr;
+}
+
 function capitalizeFirstLetter(str) {
     return str[0].toUpperCase() + str.slice(1);
+}
+
+function deleteGame(id, database) {
+    database.database.get(`SELECT * FROM Game WHERE user1 = ${id} OR user2 = ${id} LIMIT 1`, (err, row) => {
+        database.database.run(`DELETE FROM Game WHERE user1 = ${row.user1} AND user2 = ${row.user2}`);
+    }); 
 }
 
 async function getPower(database, card) {
@@ -75,7 +86,7 @@ module.exports = {
 
                                 if (row.user1wins >= 2 || row.user2wins >= 2) {  // game over
                                     if (winner[0] != "draw") {
-                                        let bet = row[`${winner[0]}bet`];
+                                        let bet = row[`${winner[0] == "user1" ? "user2" : "user1"}bet`];
                                         let user2 = winner[0];
                                         user = user2 == "user1" ? "user2" : "user1";
                                         if (!isNaN(bet)) {   // coin bet
@@ -84,7 +95,7 @@ module.exports = {
                                                 database.updateUser(row[user], "coins", row1.coins - bet > 0 ? row1.coins - bet : 0);
                                                 database.getUser(row[user2], row2 => {
                                                     database.updateUser(row[user2], "coins", row2.coins + bet);
-                                                    database.database.run(`DELETE FROM Game WHERE user1 = ${row[user]} AND user2 = ${row[user2]}`);
+                                                    deleteGame(row[user], database);
                                                 });
                                                 message.channel.send(`${row[`${user}tag`]} has lost the duel to ${row[`${user2}tag`]}, the winner will now recieve ${bet} coins.`);
                                             });
@@ -94,14 +105,14 @@ module.exports = {
                                                 database.getUser(row[user2], row2 => {
                                                     database.updateUser(row[user], "cards", JSON.stringify(remove(JSON.parse(row1.cards), bet)));
                                                     database.updateUser(row[user2], "cards", JSON.stringify(JSON.parse(row2.cards).concat([bet])));
-                                                    database.database.run(`DELETE FROM Game WHERE user1 = ${row[user]} AND user2 = ${row[user2]}`);
+                                                    deleteGame(row[user], database);
                                                 });
                                             });
                                             message.channel.send(`${row[`${user}tag`]} has lost the duel to ${row[`${user2}tag`]}, the winner will now recieve ${bet}.`);
                                         }
                                     } else {
                                         message.channel.send("The duel is now over, it was a draw.");
-                                        database.database.run(`DELETE FROM Game WHERE user1 = ${row.user1} AND user2 = ${row.user2}`);
+                                        deleteGame(row.user1, database);
                                     }
                                 } else {
                                     message.channel.send({embed});

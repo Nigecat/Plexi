@@ -82,6 +82,8 @@ module.exports = async function(message, database, client) {
         
         // general commander handler for executing the correct file
         else if (message.content.startsWith(prefix)) {
+            console.log(`Executing command  [${message.content}]  from ${message.author.tag} in ${message.guild.name}`);
+
             let override = message.content.startsWith(`${prefix}override`) && message.author.id == Config.owner;    // if starts with override and from owner (perm override)
             let args = message.content.split(" ").slice(1);
             let command = override? args[0].toLowerCase() : message.content.split(prefix)[1].replace(/ .*/,'').toLowerCase();  // get the correct part of the string depending on if override enabled (removes the word 'override')

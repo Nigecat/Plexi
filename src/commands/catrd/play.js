@@ -12,7 +12,7 @@ function remove(arr, text) {
 
 module.exports = {
     args: "<card>",
-    decription: "Play a card from your hand onto the board",
+    description: "Play a card from your hand onto the board",
     call: function(message, args) {
         let database = new Database(Config.database, Config.default_prefix);
         database.checkExpire(message.author.id);
@@ -22,6 +22,9 @@ module.exports = {
                     if (row.round > 0) {
                         let user = row.user1 == message.author.id ? "user1" : "user2"; 
                         if (row.turn == user) {
+                            if (args[args.length - 2] == "(alt") {
+                                args[args.length - 2] = "(Alt";
+                            }
                             args = args.map(w => capitalizeFirstLetter(w)).join(" ");
                             if (row.turn == user && row[`${user}hand`].includes(args)) {
                                 database.updateGame(message.author.id, `hand`, JSON.stringify(remove(JSON.parse(row[`${user}hand`]), args)));

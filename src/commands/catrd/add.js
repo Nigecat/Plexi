@@ -13,6 +13,9 @@ module.exports = {
         let database = new Database(Config.database, Config.default_prefix);
         database.addUser(message.author.id);
         database.getUser(message.author.id, row => {
+            if (args[args.length - 2] == "(alt") {
+                args[args.length - 2] = "(Alt";
+            }
             args = args.map(w => capitalizeFirstLetter(w)).join(" ");
             let cards = JSON.parse(row.cards);
             let deck = JSON.parse(row.deck);

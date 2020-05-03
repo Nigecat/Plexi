@@ -9,7 +9,7 @@ module.exports = {
         args = args.join(" ");
         let cards = []
         let database = new Database(Config.database, Config.default_prefix);
-        database.database.all(`SELECT * FROM Card WHERE set_name = ? COLLATE NOCASE`, args, (err, rows) => {
+        database.database.all(`SELECT * FROM Card WHERE set_name = ? COLLATE NOCASE ORDER BY power`, args, (err, rows) => {
             if (rows.length > 0) {
                 rows.forEach(row => {
                     cards.push(`${row.name} - ${row.power} power`);
