@@ -2,6 +2,11 @@ const Config = require("./data/config.json");
 const { readdirSync, access } = require("fs");
 const { MessageEmbed } = require("discord.js");
 
+// delete the file cache of a file so the commands can be updated without stopping the bot
+function clearCache(file) {
+    delete require.cache[require.resolve(file)];
+}
+
 module.exports = async function(message, database, client) {
     message.content = message.content.toLowerCase();
     database.getServerInfo(message.guild.id, row => {       // get prefix for server
@@ -100,16 +105,16 @@ module.exports = async function(message, database, client) {
                     } else {
                         message.channel.send(`It appears you are missing the permission(s) \`${data.perms.join(" ")}\` to run this command`)
                     }
-                    // delete the file cache so the commands can be updated without stopping the bot
-                    delete require.cache[require.resolve(`./commands/public/${command}.js`)];
+                    clearCache(`./commands/public/${command}.js`);
                 }
             });
 
-            if (message.author.id == Config.owner) {  // only run these commands for bot owneer
+            // restricted commands that can only be run by the bot owner
+            if (message.author.id == Config.owner) {  
                 access(`./commands/private/${command}.js`, err => {
                     if (!err) {
                         require(`./commands/private/${command}.js`)(message, args);
-                        delete require.cache[require.resolve(`./commands/private/${command}.js`)];
+                        clearCache(`./commands/private/${command}.js`);
                     }
                 });
             }
