@@ -28,7 +28,7 @@ module.exports = {
                     message.channel.send("Image not found!");
                 }
             } catch (err) {
-                message.channel.send("Image not found!");
+                message.channel.send("Image not found (you may have specified a .webp image, these are not currently supported)!");
             }
         });
     }

@@ -62,6 +62,7 @@ module.exports = class {
      * @param {object} guild Guild object
      */
     joinServer(guild) {
+        console.log(`Joined guild: ${guild.name}`);
         this.database.addServer(guild.id);
         this.updateStatus();
     }
@@ -71,6 +72,7 @@ module.exports = class {
      * @param {object} guild Guild object
      */
     levaeServer(guild) {
+        console.log(`Left guild: ${guild.name}`);
         this.database.removeServer(guild.id);
         this.updateStatus();
     }
