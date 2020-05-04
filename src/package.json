@@ -17,6 +17,7 @@
         "discord.js": "^12.2.0",
         "jimp": "^0.10.3",
         "node-fetch": "^2.6.0",
+        "random-facts": "^1.0.6",
         "sqlite3": "^4.1.1",
         "urban-dictionary": "^2.2.1",
         "weather-js": "^2.0.0",
