@@ -36,13 +36,9 @@ module.exports = class {
      * Callback function for when bot starts
      */
     ready() {
-        let tag = client.user.tag;
-        let totalServers = client.guilds.cache.size;
         let totalUsers = Array.from(client.guilds.cache.values()).reduce((total, guild) => total + guild.members.cache.size, 0);
         let totalChannels = Array.from(client.guilds.cache.values()).reduce((total, guild) => total + guild.channels.cache.size, 0);
-        console.log(`Logged in as ${tag} in ${totalServers} servers`);
-        console.log(`Serving ${totalUsers} users across ${totalChannels} channels`);
-
+        console.log(`Logged in as ${client.user.tag} serving ${totalUsers} users across ${totalChannels} channels in ${client.guilds.cache.size} servers`);
         this.updateStatus();
         this.database.connect(() => {
             this.database.updateAll(client.guilds);
