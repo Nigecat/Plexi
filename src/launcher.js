@@ -1,7 +1,7 @@
 const Database = require("./database.js");
 const Bot = require("./plexi.js");
 const Config = require("./data/config.json");
-let Auth = require("./data/auth.json");
+const Auth = require("./data/auth.json");
 
 const Plexi = new Bot({
     AUTH: Auth, 
