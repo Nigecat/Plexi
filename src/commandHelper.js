@@ -75,7 +75,7 @@ module.exports = async function(message, database, client) {
                         message.channel.send(`\`\`\`markdown\n# Command\n${prefix}${file.split(".")[0]} ${data.args.join(" ")}\n\n# Description\n${data.description}\`\`\``);
                     }
                     // delete the file cache so the commands can be updated without stopping the bot
-                    delete require.cache[require.resolve(`./commands/public/${file}`)];
+                    clearCache(`./commands/public/${file}`);
                 }
             });
         } 
