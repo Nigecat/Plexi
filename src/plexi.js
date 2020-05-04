@@ -8,12 +8,11 @@ module.exports = class {
         this.token = data.AUTH.token;
         this.topggapikey = data.AUTH.topggapikey;
         this.database = data.DATABASE;
-        this.debugChannel = data.CONFIG.debugChannel;
         this.owner = data.CONFIG.owner;
         this.TOTAL_GUILDS = 0;
         this.dbl = new DBL(this.topggapikey, client);        // top.gg api  
 
-        // detect when process has exited
+        // detect when process has exited (is triggered from commands/private/shutdown.js)
         process.on("exit", this.shutdown.bind(this));
         // gets triggered when control c is pressed
         process.on("SIGINT", this.shutdown.bind(this));

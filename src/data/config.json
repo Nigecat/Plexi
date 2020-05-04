@@ -2,6 +2,5 @@
     "database": "./data/data.sqlite",
     "default_prefix": "$",
     "owner": "307429254017056769",
-    "debugChannel": "706742560432848960",
     "catrdTimeout": 360000
 }
