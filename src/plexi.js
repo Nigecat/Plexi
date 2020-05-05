@@ -87,7 +87,7 @@ module.exports = class {
      * @param {object} message Message object 
      */
     processMessage(message) {
-        if (message.author != client.user) {
+        if (!message.author.bot) {  // make sure the author of the message isn't a bot
             processCommand(message, this.database, client);
         }
     }

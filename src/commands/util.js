@@ -27,7 +27,6 @@ module.exports.toEmoji = function(text) {
 }
 
 module.exports.wordReact = async function(message, text) {
-    text = text.toLowerCase().replace(/[^A-Za-z]/g, "").split("");
     text = module.exports.toEmoji(text);
     // react to the message with the emojis, this ensures they arrive in the correct order
     text.reduce((promise, emoji) => promise.then(() => message.react(emoji)), Promise.resolve());   

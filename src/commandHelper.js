@@ -12,12 +12,29 @@ module.exports = async function(message, database, client) {
     database.getServerInfo(message.guild.id, row => {       // get prefix for server
         const prefix = row.prefix;
 
+        // if server has @someone enabled and @someone was mentioned
+        if (!!row.someone && (message.content.toLowerCase().includes("@someone") || message.content.toLowerCase().includes(message.guild.roles.cache.find(role => role.name.toLowerCase() == "someone").id))) {
+            // get all users in server that aren't bots
+            let users = Array.from(message.guild.members.cache.values()).filter(user => !user.user.bot);
+            // remove any users that cant see the channel
+            users = users.filter(user => message.guild.member(user).permissionsIn(message.channel.id).any(["VIEW_CHANNEL"]));
+            // remove message author
+            users = users.filter(user => user != message.author.user);
+
+            // mention random user then delete the message
+            message.channel.send(`<@${users[Math.floor(Math.random() * users.length)].user.id}>`).then(msg => {
+                msg.delete();
+            }); 
+        }
+
         // check if message contains 'peanut' and if so 
         // increase the peanut counter for that user by how many times it appears
         if (message.content.toLowerCase().includes("peanut")) {
             database.addUser(message.author.id);
             database.getUser(message.author.id, row => {
-                database.updateUser(message.author.id, "peanuts", row.peanuts + (message.content.toLowerCase().match(/peanut/g) || []).length);
+                let add = (message.content.toLowerCase().match(/peanut/g) || []).length;
+                console.log(`Adding ${add} peanuts to ${message.author.tag} from ${message.guild.name}`);
+                database.updateUser(message.author.id, "peanuts", row.peanuts + add);
             });
         }
 
