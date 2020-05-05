@@ -26,11 +26,11 @@ async function getBoosterPack(database, setName) {
 }
 
 module.exports = {
-    args: ["<pack>"],
+    args: "[<pack]",
     description: "Buy a card pack, to view valid packs and costs run catrd sets",
     call: function(message, args) {
         let database = new Database(Config.database, Config.default_prefix);
-        args[0] = args[0].toLowerCase();
+        args[0] = args.join(" ").toLowerCase();
         database.database.all(`SELECT * FROM Sets`, (err, rows) => {
             rows = rows.filter(row => row.set_name.toLowerCase() == args[0]);
             if (rows.length > 0) {

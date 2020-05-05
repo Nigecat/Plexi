@@ -13,7 +13,7 @@ module.exports = {
 
         database.database.all(`SELECT * FROM Sets`, (err, rows) => {
             rows.forEach(row => {
-                embed.addField(`${row.set_name} - ${row.cost} coins`, row.description);
+                embed.addField(`${row.set_name} - ${row.cost} coins`, "‎");
             });
             message.channel.send({embed});
         });
