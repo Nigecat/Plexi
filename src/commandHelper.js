@@ -19,7 +19,7 @@ module.exports = async function(message, database, client) {
             // remove any users that cant see the channel
             users = users.filter(user => message.guild.member(user).permissionsIn(message.channel.id).any(["VIEW_CHANNEL"]));
             // remove message author
-            users = users.filter(user => user != message.author.user);
+            users = users.filter(user => user.user.id != message.author.id);
 
             // mention random user then delete the message
             message.channel.send(`<@${users[Math.floor(Math.random() * users.length)].user.id}>`).then(msg => {
