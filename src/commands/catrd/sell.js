@@ -23,8 +23,9 @@ module.exports = {
                 database.updateUser(message.author.id, "cards", JSON.stringify(cards));
                 database.database.get(`SELECT rarity FROM Card WHERE name = ?`, args, (err, row) => {
                     database.getUser(message.author.id, user => {
-                        database.updateUser(message.author.id, "coins", user.coins + Math.floor(100 - row.rarity) / 5);
-                        message.channel.send(`You have sold ${args} for ${Math.floor((100 - row.rarity) / 5)} coins!`);
+                        let cost = Math.floor((30 - row.rarity) ** 1.433);
+                        database.updateUser(message.author.id, "coins", user.coins + cost);
+                        message.channel.send(`You have sold ${args} for ${cost} coins!`);
                     });
                 });
             } else {    

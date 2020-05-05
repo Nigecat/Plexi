@@ -26,7 +26,7 @@ module.exports = {
                     embed.addField(capitalizeFirstLetter(key).split("_").join(" "), card[key]);
                 });
 
-                embed.addField("Sell price:", `${Math.floor((100 - card.rarity) / 5)} coins`);
+                embed.addField("Sell price:", `${Math.floor((30 - rows[0].rarity) ** 1.433)} coins`);
 
                 message.channel.send({embed});
             } else {
