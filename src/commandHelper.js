@@ -14,12 +14,10 @@ module.exports = async function(message, database, client) {
 
         // if server has @someone enabled and @someone was mentioned
         if (!!row.someone && (message.content.toLowerCase().includes("@someone") || message.content.toLowerCase().includes(message.guild.roles.cache.find(role => role.name.toLowerCase() == "someone").id))) {
-            // get all users in server that aren't bots
-            let users = Array.from(message.guild.members.cache.values()).filter(user => !user.user.bot);
+            // get all users in server that aren't bots or the message sender
+            let users = Array.from(message.guild.members.cache.values()).filter(user => !user.user.bot && user.user.id != message.author.id);
             // remove any users that cant see the channel
             users = users.filter(user => message.guild.member(user).permissionsIn(message.channel.id).any(["VIEW_CHANNEL"]));
-            // remove message author
-            users = users.filter(user => user.user.id != message.author.id);
 
             // mention random user then delete the message
             message.channel.send(`<@${users[Math.floor(Math.random() * users.length)].user.id}>`).then(msg => {
