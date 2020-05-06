@@ -11,13 +11,18 @@ module.exports = {
         database.inMatch(message.author.id).then(match => {
             if (match) {
                 database.getGame(message.author.id, row => {
-                    let user = row.user1 == message.author.id ? "user1" : "user2";
-                    let embed = new MessageEmbed()  
-                        .setColor([255, 0, 0])
-                        .setTitle(`The cards in your hand:`)
-                        .addField("‎‎", JSON.parse(row[`${user}hand`]).join("\n"));
-                    message.author.send({embed})
-                });
+                    try  {
+                        let user = row.user1 == message.author.id ? "user1" : "user2";
+                        let embed = new MessageEmbed()  
+                            .setColor([255, 0, 0])
+                            .setTitle(`The cards in your hand:`)
+                            .addField("‎‎", JSON.parse(row[`${user}hand`]).join("\n"));
+
+                        message.author.send({embed})
+                    } catch (err) {
+                        message.author.send("It appears you don't have any cards left in your hand!");
+                    }
+                }); 
             } else {
                 message.channel.send("You must be in a duel to run this command!");
             }
