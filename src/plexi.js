@@ -9,7 +9,6 @@ module.exports = class {
         this.topggapikey = data.AUTH.topggapikey;
         this.database = data.DATABASE;
         this.owner = data.CONFIG.owner;
-        this.TOTAL_GUILDS = 0;
         this.dbl = new DBL(this.topggapikey, client);        // top.gg api  
 
         // detect when process has exited (is triggered from commands/private/shutdown.js)
@@ -58,8 +57,7 @@ module.exports = class {
      * Set the bot's status
      */
     updateStatus() {
-        this.TOTAL_GUILDS = client.guilds.cache.size;
-        client.user.setPresence({ activity: { type: "PLAYING", "name": `$help | ${this.TOTAL_GUILDS} servers` }, status: "online" });
+        client.user.setPresence({ activity: { type: "PLAYING", "name": `$help | ${client.guilds.cache.size} servers` }, status: "online" });
     }
 
     /**
