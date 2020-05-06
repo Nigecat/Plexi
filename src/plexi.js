@@ -15,7 +15,7 @@ module.exports = class {
         process.on("exit", this.shutdown.bind(this));
         // gets triggered when control c is pressed
         process.on("SIGINT", this.shutdown.bind(this));
-        process.on('uncaughtException', console.log);
+        process.on("uncaughtException", console.log);
     }
 
     /**
