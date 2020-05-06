@@ -4,7 +4,7 @@ const Config = require("../../data/config.json");
 
 const valid_sorts = ["coins", "peanuts"];
 
-async function getLeaderboard(message, rows, args, msg) {
+async function getLeaderboard(message, rows, args) {
     const client = new Client();
     client.on("ready", async () => {
         let data = [];
@@ -15,7 +15,7 @@ async function getLeaderboard(message, rows, args, msg) {
         }; 
         data = data.join("\n");
         message.channel.send(`\`\`\`markdown\n# Top #10 global for ${args[0]}\n\n${data}\`\`\``);
-        msg.delete();
+        message.channel.stopTyping();
         client.destroy();
     });
     client.login(require("../../data/auth.json").token)
@@ -28,13 +28,12 @@ module.exports = {
     call: async function(message, args) {
         args[0] = args[0].toLowerCase();
         if (valid_sorts.includes(args[0])) {
-            message.channel.send("Calculating...").then(msg => {
-                let database = new Database(Config.database, Config.default_prefix);
-                database.database.all(`SELECT * FROM User WHERE id != ${Config.owner} ORDER BY ${args[0]} DESC LIMIT 10`, (err, rows) => {    
-                    getLeaderboard(message, rows, args, msg);
-                });
-                database.disconnect();
-            })
+            message.channel.startTyping();
+            let database = new Database(Config.database, Config.default_prefix);
+            database.database.all(`SELECT * FROM User WHERE id != ${Config.owner} ORDER BY ${args[0]} DESC LIMIT 10`, (err, rows) => {    
+                getLeaderboard(message, rows, args);
+            });
+            database.disconnect();
         }
     }
 }
