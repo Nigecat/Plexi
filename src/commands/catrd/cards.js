@@ -2,6 +2,10 @@ const { MessageEmbed } = require("discord.js");
 const Database = require("../../database.js");
 const Config = require("../../data/config.json");
 
+function splitStrDiscordReply(str) {
+    return str.match(/[\s\S]{1,1000}/g) || [];
+}
+
 module.exports = {
     args: [],
     description: "View what cards you have that aren't in your deck",
@@ -16,7 +20,11 @@ module.exports = {
                     .setColor([114, 137, 218])
                     .setTitle(`These are cards not in your deck, run catrd deck to see those,\nRun catrd info [card] for more details on a card:`)
                 
-                embed.addField("‎", cards.join("\n"));
+                cards = splitStrDiscordReply(cards.join("\n"));
+
+                cards.forEach(l => {
+                    embed.addField("‎", l);
+                });
             
                 message.channel.send({embed});
             } else {

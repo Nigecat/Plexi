@@ -15,7 +15,7 @@ module.exports = {
             if (args[args.length - 2] == "(alt") {
                 args[args.length - 2] = "(Alt";
             }
-            args = args.map(w => capitalizeFirstLetter(w)).join(" ");
+            args = args.map(w => capitalizeFirstLetter(w)).join(" ").split("-").map(w => capitalizeFirstLetter(w)).join("-");
             let cards = JSON.parse(row.cards);
 
             if (cards.includes(args)) {
