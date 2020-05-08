@@ -42,7 +42,7 @@ module.exports = {
                                 message.channel.send("You don't have that many coins!");
                             }
                         } else {    // card bet
-                            args = args.map(w => capitalizeFirstLetter(w)).join(" ");
+                            args = args.map(w => capitalizeFirstLetter(w)).join(" ").split("-").map(w => capitalizeFirstLetter(w)).join("-");
                             if (JSON.parse(row.cards).includes(args) || JSON.parse(row.deck).includes(args)) {
                                 message.reply(`your bet has been set to ${args}`);
                                 database.updateGame(message.author.id, "bet", args);

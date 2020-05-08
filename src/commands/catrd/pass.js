@@ -103,7 +103,7 @@ module.exports = {
                                             message.channel.send(`${row[`${user}tag`]} has lost the duel to ${row[`${user2}tag`]}, the winner will now recieve ${bet} coins.`);
                                         });
                                     } else {    // card bet
-                                        bet = bet.split(" ").map(w => capitalizeFirstLetter(w)).join(" ");
+                                        bet = bet.split(" ").map(w => capitalizeFirstLetter(w)).join(" ").split("-").map(w => capitalizeFirstLetter(w)).join("-");
                                         database.getUser(row[user], row1 => {
                                             database.getUser(row[user2], row2 => {
                                                 database.updateUser(row[user], "cards", JSON.stringify(remove(JSON.parse(row1.cards), bet)));

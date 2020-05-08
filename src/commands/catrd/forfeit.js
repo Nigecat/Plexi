@@ -42,7 +42,7 @@ module.exports = {
                                 message.channel.send(`${message.author} has forfeited the game against ${row[`${user == "user1" ? "user2" : "user1"}tag`]}, they will now recieve ${bet} coins.`);
                             });
                         } else {    // card bet
-                            bet = bet.split(" ").map(w => capitalizeFirstLetter(w)).join(" ");
+                            bet = bet.split(" ").map(w => capitalizeFirstLetter(w)).join(" ").split("-").map(w => capitalizeFirstLetter(w)).join("-");
                             database.getUser(row[user], row1 => {
                                 database.getUser(row[user2], row2 => {
                                     database.updateUser(row[user], "cards", JSON.stringify(remove(JSON.parse(row1.cards), bet)));

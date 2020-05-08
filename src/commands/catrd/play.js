@@ -5,6 +5,12 @@ function capitalizeFirstLetter(str) {
     return str[0].toUpperCase() + str.slice(1);
 }
 
+function getCards(database, user) {
+    database.getUser(user, row => {
+        return JSON.parse(row.deck).sort(() => .5 - Math.random()).slice(0, 2);
+    });
+}
+
 function remove(arr, text) {
     arr.splice(arr.indexOf(text), 1);
     return arr;
@@ -25,13 +31,20 @@ module.exports = {
                             if (args[args.length - 2] == "(alt") {
                                 args[args.length - 2] = "(Alt";
                             }
-                            args = args.map(w => capitalizeFirstLetter(w)).join(" ");
+                            args = args.map(w => capitalizeFirstLetter(w)).join(" ").split("-").map(w => capitalizeFirstLetter(w)).join("-");
                             if (row.turn == user && JSON.parse(row[`${user}hand`]).includes(args)) {
-                                database.updateGame(message.author.id, `hand`, JSON.stringify(remove(JSON.parse(row[`${user}hand`]), args)));
-                                database.updateGame(message.author.id, `active`, JSON.stringify(JSON.parse(row[`${user}active`]).concat([args])));
-                                database.updateGameVal(message.author.id, "turn", !row[`${user == "user1" ? "user2" : "user1"}pass`] ? user == "user1" ? "user2" : "user1" : user );
-                                database.updateGame(message.author.id, `timeout`, Date.now() + Config.catrdTimeout);
-                                message.channel.send(`${message.author} has played ${args}!`);
+                                database.database.get(`SELECT * FROM Card WHERE name = ? COLLATE NOCASE`, args, (err, data) => {
+                                    if (data.ability_name == "Spy") {
+                                        database.updateGame(message.author.id, `hand`, JSON.stringify(remove(JSON.parse(row[`${user}hand`]), args).concat(getCards(database, row[user]))));
+                                        database.updateGame(row[user == "user1" ? "user2" : "user1"], `active`, JSON.stringify(JSON.parse(row[`${user == "user1" ? "user2" : "user1"}active`]).concat([args])));       
+                                    } else {
+                                        database.updateGame(message.author.id, `hand`, JSON.stringify(remove(JSON.parse(row[`${user}hand`]), args)));
+                                        database.updateGame(message.author.id, `active`, JSON.stringify(JSON.parse(row[`${user}active`]).concat([args])));       
+                                    }
+                                    database.updateGameVal(message.author.id, "turn", !row[`${user == "user1" ? "user2" : "user1"}pass`] ? user == "user1" ? "user2" : "user1" : user );
+                                    database.updateGame(message.author.id, `timeout`, Date.now() + Config.catrdTimeout);
+                                });
+                                   message.channel.send(`${message.author} has played ${args}!`);
                             } else {
                                 message.channel.send("You can't play a card not in your hand!");
                             }
