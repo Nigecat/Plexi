@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "1.4.2",
+    "version": "1.4.5",
     "description": "A general purpose fun/moderation discord bot",
     "main": "launcher.js",
     "scripts": {
@@ -15,6 +15,7 @@
         "convert-units": "^2.3.4",
         "dblapi.js": "^2.4.0",
         "discord.js": "^12.2.0",
+        "got": "^11.1.1",
         "jimp": "^0.10.3",
         "node-fetch": "^2.6.0",
         "random-facts": "^1.0.6",
