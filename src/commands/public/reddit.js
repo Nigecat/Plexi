@@ -18,9 +18,9 @@ module.exports = {
                 .setTitle(title)
                 .setImage(url);
             message.channel.send({embed});
-            message.channel.stopTyping();
         }).catch(() => {
             message.channel.send("That subreddit could not be found!");
+            message.channel.stopTyping();
         });            
     }
 }

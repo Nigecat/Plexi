@@ -6,6 +6,8 @@ module.exports = {
     perms: [],
     description: "Get the weather for the specified region (city)",
     call: function(message, args) {
+        message.channel.startTyping();
+
         let region = args.join(" ");
         if (region.substr(region.length - 1).toLowerCase() == "c" || region.substr(region.length - 1).toLowerCase() == "f") {
             var type = region.substr(region.length - 1);
@@ -14,7 +16,7 @@ module.exports = {
             var type = "c";
         }
 
-        weather.find({search: region, degreeType: type}, function(err, result) {
+        weather.find({search: region, degreeType: type}, (err, result) => {
             if (result.length > 0) {
                 let embed = new MessageEmbed()
                     .setColor([114, 137, 218])
@@ -32,6 +34,7 @@ module.exports = {
             } else {
                 message.channel.send("Region not found!");
             }
+            message.channel.stopTyping();
         });
     }
 }
