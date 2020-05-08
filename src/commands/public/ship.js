@@ -13,7 +13,7 @@ module.exports = {
             // combine the first half of user1's username with the second half of user2's username
             message.channel.send(`**${user1} 💞 ${user2} = ${firsthalf}${secondhalf}**`);
         } catch (err) {
-            message.channel.send("Invalid user (you may have accidently mentioned a roll not a user)!");
+            message.channel.send("Invalid user (you may have accidently mentioned a role not a user)!");
         }
     }
 }

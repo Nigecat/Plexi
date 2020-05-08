@@ -11,14 +11,14 @@ module.exports.checkPeanut = function(userID, guild, callback) {
 }
 
 module.exports.toEmoji = function(text) {
-    text = text.toLowerCase().replace(/[^A-Za-z]/g, "").split("");
+    text = text.toLowerCase().replace(/[^A-Za-z\s]/g, "").split("");
     let emojis = {
         a: "🇦", b: "🇧", c: "🇨", d: "🇩", e: "🇪",
         f: "🇫", g: "🇬", h: "🇭", i: "🇮", j: "🇯",
         k: "🇰", l: "🇱", m: "🇲", n: "🇳", o: "🇴",
         p: "🇵", q: "🇶", r: "🇷", s: "🇸", t: "🇹",
         u: "🇺", v: "🇻", w: "🇼", x: "🇽", y: "🇾",
-        z: "🇿"
+        z: "🇿", " ": "  "
     }
     text.forEach((char, index) => {
         text[index] = emojis[char];
