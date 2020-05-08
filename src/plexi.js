@@ -26,6 +26,7 @@ module.exports = class {
         client.on("error", console.log);
         client.on("ready", this.ready.bind(this));
         client.on("message", this.processMessage.bind(this));
+        client.on("guildMemberAdd", this.autoRole.bind(this));
         client.on("guildCreate", this.joinServer.bind(this));
         client.on("guildDelete", this.levaeServer.bind(this));
         client.login(this.token);
@@ -88,5 +89,19 @@ module.exports = class {
         if (!message.author.bot) {  // make sure the author of the message isn't a bot
             processCommand(message, this.database, client);
         }
+    }
+
+    /**
+     * Gets called when a new member joins a server, checks for autoroles 
+     */
+    autoRole(member) {
+        this.database.getServerInfo(member.guild.id, guild => {
+            if (guild.autorole != null) {
+                member.guild.roles.fetch(guild.autorole).then(role => {
+                    console.log(`Applying autorole  [${role.name}]  to ${member.user.tag} in ${member.guild.name}`);
+                    member.roles.add(role).catch(console.error);
+                });
+            }
+        });
     }
 }
