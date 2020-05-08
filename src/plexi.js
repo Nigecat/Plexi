@@ -22,8 +22,9 @@ module.exports = class {
      * Start the bot
      */
     start() {
-        client.on("debug", console.log);
+        client.on("warn", console.log);
         client.on("error", console.log);
+        client.on("debug", console.log);
         client.on("ready", this.ready.bind(this));
         client.on("message", this.processMessage.bind(this));
         client.on("guildMemberAdd", this.autoRole.bind(this));
@@ -36,9 +37,7 @@ module.exports = class {
      * Callback function for when bot starts
      */
     ready() {
-        let totalUsers = Array.from(client.guilds.cache.values()).reduce((total, guild) => total + guild.members.cache.size, 0);
-        let totalChannels = Array.from(client.guilds.cache.values()).reduce((total, guild) => total + guild.channels.cache.size, 0);
-        console.log(`Logged in as ${client.user.tag} serving ${totalUsers} users across ${totalChannels} channels in ${client.guilds.cache.size} servers`);
+        console.log(`Logged in as ${client.user.tag} serving ${client.users.cache.size} users across ${client.channels.cache.size} channels in ${client.guilds.cache.size} servers`);
         this.updateStatus();
         this.database.connect(() => {
             this.database.updateAll(client.guilds);
@@ -86,7 +85,7 @@ module.exports = class {
      * @param {object} message Message object 
      */
     processMessage(message) {
-        if (!message.author.bot) {  // make sure the author of the message isn't a bot
+        if (!message.author.bot && message.guild) {  // make sure the author of the message isn't a bot and it isn't from a dm channel
             processCommand(message, this.database, client);
         }
     }
