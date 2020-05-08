@@ -1,4 +1,5 @@
 const processCommand = require('./commandHelper.js');
+const chalk = require("chalk");
 const DBL = require('dblapi.js');
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -22,8 +23,8 @@ module.exports = class {
      * Start the bot
      */
     start() {
-        client.on("warn", console.log);
-        client.on("error", console.log);
+        client.on("warn", msg => console.log(chalk.redBright(msg)));
+        client.on("error", msg => console.log(chalk.redBright(msg)));
         client.on("debug", console.log);
         client.on("ready", this.ready.bind(this));
         client.on("message", this.processMessage.bind(this));
@@ -37,7 +38,7 @@ module.exports = class {
      * Callback function for when bot starts
      */
     ready() {
-        console.log(`Logged in as ${client.user.tag} serving ${client.users.cache.size} users across ${client.channels.cache.size} channels in ${client.guilds.cache.size} servers`);
+        console.log(chalk.greenBright(`Logged in as ${client.user.tag} serving ${client.users.cache.size} users across ${client.channels.cache.size} channels in ${client.guilds.cache.size} servers`));
         this.updateStatus();
         this.database.connect(() => {
             this.database.updateAll(client.guilds);
@@ -48,7 +49,6 @@ module.exports = class {
      * Safely shutdown bot and disconnect from database
      */
     shutdown() {
-        console.log("Disconnecting...");
         this.database.disconnect();
         process.exit();
     }
@@ -65,7 +65,7 @@ module.exports = class {
      * @param {object} guild Guild object
      */
     joinServer(guild) {
-        console.log(`Joined server: ${guild.name}`);
+        console.log(chalk.greenBright(`Joined server: ${guild.name}`));
         this.database.addServer(guild.id);
         this.updateStatus();
     }
@@ -75,7 +75,7 @@ module.exports = class {
      * @param {object} guild Guild object
      */
     levaeServer(guild) {
-        console.log(`Left server: ${guild.name}`);
+        console.log(chalk.greenBright(`Left server: ${guild.name}`));
         this.database.removeServer(guild.id);
         this.updateStatus();
     }
@@ -97,7 +97,7 @@ module.exports = class {
         this.database.getServerInfo(member.guild.id, guild => {
             if (guild.autorole != null) {
                 member.guild.roles.fetch(guild.autorole).then(role => {
-                    console.log(`Applying autorole  [${role.name}]  to ${member.user.tag} in ${member.guild.name}`);
+                    console.log(chalk.blueBright(`[status] Applying autorole  [${role.name}]  to ${member.user.tag} in ${member.guild.name}`));
                     member.roles.add(role).catch(console.error);
                 });
             }

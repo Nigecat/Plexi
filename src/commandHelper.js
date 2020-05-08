@@ -1,3 +1,4 @@
+const chalk = require("chalk");
 const Config = require("./data/config.json");
 const { readdirSync, access } = require("fs");
 const { MessageEmbed } = require("discord.js");
@@ -31,7 +32,7 @@ module.exports = async function(message, database, client) {
             database.addUser(message.author.id);
             database.getUser(message.author.id, row => {
                 let add = (message.content.toLowerCase().match(/peanut/g) || []).length;
-                console.log(`[database] Adding ${add} peanuts to ${message.author.tag} from ${message.guild.name}`);
+                console.log(chalk.yellowBright(`[database] Adding ${add} peanuts to ${message.author.tag} from ${message.guild.name}`));
                 database.updateUser(message.author.id, "peanuts", row.peanuts + add);
             });
         }
@@ -97,7 +98,7 @@ module.exports = async function(message, database, client) {
         
         // general commander handler for executing the correct file
         else if (message.content.startsWith(prefix)) {
-            console.log(`[status] Executing command  [${message.content}]  from ${message.author.tag} in ${message.guild.name}`);
+            console.log(chalk.blueBright(`[status] Executing command  [${message.content}]  from ${message.author.tag} in ${message.guild.name}`));
 
             let override = message.content.startsWith(`${prefix}override`) && message.author.id == Config.owner;    // if starts with override and from owner (perm override)
             let args = message.content.split(" ").slice(1);

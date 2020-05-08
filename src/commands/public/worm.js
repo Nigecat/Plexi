@@ -10,7 +10,7 @@ module.exports = {
                 message.channel.send("Length must be a positive number!");
             } else {
                 message.channel.send(`<:worm_head:708133267366477944>${"<:worm_body:708133266644926505>".repeat(length)}<:worm_tail:708133266657640578>`).catch(() => {
-                    message.channel.send("Message too long!");
+                    message.channel.send("That worm would be too long to post!");
                 });
             }
         } else {

@@ -12,6 +12,7 @@
     },
     "author": "Nigecat",
     "dependencies": {
+        "chalk": "^4.0.0",
         "convert-units": "^2.3.4",
         "dblapi.js": "^2.4.0",
         "discord.js": "^12.2.0",
