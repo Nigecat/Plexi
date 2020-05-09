@@ -7,9 +7,7 @@ module.exports = {
         if (!isNaN(limit)) {
             limit = parseInt(limit);
             if (limit <= 100) {
-                message.channel.bulkDelete(limit).then(() => {
-                    console.log(`[status] Deleted ${limit} messages`);
-                });
+                message.channel.bulkDelete(limit);
             } else {
                 message.channel.send("Purge size must be 100 messages or fewer!");
             }

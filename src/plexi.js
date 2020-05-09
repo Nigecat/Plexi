@@ -4,6 +4,10 @@ const DBL = require('dblapi.js');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
+function problem(text) {
+    console.log(chalk.redBright(text))
+}
+
 module.exports = class {
     constructor(data) {
         this.token = data.AUTH.token;
@@ -23,10 +27,13 @@ module.exports = class {
      * Start the bot
      */
     start() {
-        client.on("warn", msg => console.log(chalk.redBright(msg)));
-        client.on("error", msg => console.log(chalk.redBright(msg)));
+        client.on("warn", problem);
+        client.on("error", problem);
         client.on("debug", console.log);
+        client.on("raw", this.onPacket);
         client.on("ready", this.ready.bind(this));
+        client.on("messageReactionAdd", this.roleReactAdd.bind(this));
+        client.on("messageReactionRemove", this.roleReactRemove.bind(this));
         client.on("message", this.processMessage.bind(this));
         client.on("guildMemberAdd", this.autoRole.bind(this));
         client.on("guildCreate", this.joinServer.bind(this));
@@ -101,6 +108,78 @@ module.exports = class {
                     member.roles.add(role).catch(console.error);
                 });
             }
+        });
+    }
+
+    /**
+     * Handler for adding automatic role reacts
+     */
+    roleReactAdd(reaction, user) {
+        if (!user.bot) {
+            this.database.getServerInfo(reaction.message.guild.id, row => {
+                let data = JSON.parse(row.rolereact);
+                if (data.hasOwnProperty(reaction.message.id)) {
+                    if (data[reaction.message.id].hasOwnProperty(reaction._emoji.name)) {
+                        let member = reaction.message.guild.members.cache.get(user.id);
+                        let role = data[reaction.message.id][reaction._emoji.name];
+                        member.roles.add(role, "Role reaction").catch(() => { });                 
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * Handler for removing automatic role reacts
+     */
+    roleReactRemove(reaction, user) {
+        if (!user.bot) {
+            this.database.getServerInfo(reaction.message.guild.id, row => {
+                let data = JSON.parse(row.rolereact);
+                if (data.hasOwnProperty(reaction.message.id)) {
+                    if (data[reaction.message.id].hasOwnProperty(reaction._emoji.name)) {
+                        let member = reaction.message.guild.members.cache.get(user.id);
+                        let role = data[reaction.message.id][reaction._emoji.name];
+                        member.roles.remove(role, "Role reaction").catch(() => { });                 
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * Handler to be able to read message reactions from non cached messages (very janky)
+     */
+    onPacket(packet) {
+        // we don't want this to run on unrelated packets
+        if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
+
+        // grab channel to check the message from
+        client.channels.fetch(packet.d.channel_id).then(channel => {
+
+            // no need to manually emit the event if it is cached already, as it will get fired automatically
+            if (channel.messages.cache.has(packet.d.message_id)) return;
+
+            // fetch the message
+            channel.messages.fetch(packet.d.message_id).then(message => {
+                
+                // emojis can have identifiers of name:id format, so we have to account for that case as well
+                const emoji = packet.d.emoji.id ? `${packet.d.emoji.name}:${packet.d.emoji.id}` : packet.d.emoji.name;
+
+                // this gives us the reaction we need to emit the event properly
+                const reaction = message.reactions.cache.get(emoji);
+
+                // adds the currently reacting user to the reaction's users collection.
+                if (reaction) reaction.users.cache.set(packet.d.user_id, client.users.cache.get(packet.d.user_id));
+
+                // check which type of event it is before emitting
+                if (packet.t === 'MESSAGE_REACTION_ADD') {
+                    client.emit('messageReactionAdd', reaction, client.users.cache.get(packet.d.user_id));
+                }
+                if (packet.t === 'MESSAGE_REACTION_REMOVE') {
+                    client.emit('messageReactionRemove', reaction, client.users.cache.get(packet.d.user_id));
+                }
+            });
         });
     }
 }
