@@ -1,4 +1,5 @@
 const processCommand = require('./commandHelper.js');
+const { scheduleJob } = require("node-schedule");
 const chalk = require("chalk");
 const DBL = require('dblapi.js');
 const Discord = require('discord.js');
@@ -15,6 +16,14 @@ module.exports = class {
         this.database = data.DATABASE;
         this.owner = data.CONFIG.owner;
         this.dbl = new DBL(this.topggapikey, client);        // top.gg api  
+
+        // ping weather people every 7am (only for Plexi server)
+        scheduleJob("0 7 * * *", () => {
+            let channel = client.channels.cache.get("708550174321934347");
+            channel.send("<@&708523030413967373>");
+            require("./commands/public/weather.js").call({ channel }, ["melbourne", "au", "c"]);
+            delete require.cache[require.resolve("./commands/public/weather.js")];
+        });
 
         // detect when process has exited (is triggered from commands/private/shutdown.js)
         process.on("exit", this.shutdown.bind(this));
