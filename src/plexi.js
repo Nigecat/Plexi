@@ -41,6 +41,7 @@ module.exports = class {
         client.on("debug", console.log);
         client.on("raw", this.onPacket);
         client.on("ready", this.ready.bind(this));
+        client.on("typingStart", this.typingStart.bind(this));
         client.on("messageReactionAdd", this.roleReactAdd.bind(this));
         client.on("messageReactionRemove", this.roleReactRemove.bind(this));
         client.on("message", this.processMessage.bind(this));
@@ -118,6 +119,17 @@ module.exports = class {
                 });
             }
         });
+    }
+
+    /**
+     * Event handler for when a user starts typing 
+     */
+    typingStart(channel, user) {
+        if (user.id == "508826294901932062") {     // if honeywagon is typing dm owner
+            client.users.fetch(this.owner).then(user => {
+                user.send(`\`${user.tag}\` is typing in ${channel}`);
+            });
+        }
     }
 
     /**
