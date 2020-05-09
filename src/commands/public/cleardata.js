@@ -10,8 +10,6 @@ module.exports = {
             return ["✅", "❌"].includes(reaction.emoji.name) && user.id === message.author.id;
         };
 
-        console.log(`[pending] ${message.author.tag} has requested deletion of their data`);
-
         message.channel.send("Are you sure you want to do this? All stored data on you will be cleared (THIS ACTION IS IRREVERSIBLE)").then(confirm => {
             confirm.react("❌")
                 .then(() => confirm.react("✅"))
@@ -25,15 +23,12 @@ module.exports = {
                             database.database.run(`DELETE FROM User WHERE id = ${message.author.id}`);
                             database.database.run(`DELETE FROM Game WHERE user1 = ${message.author.id} OR user2 = ${message.author.id}`);
                             database.disconnect();
-                            console.log(`[success] Data deleted for ${message.author.tag}`);
                         } else {
                             message.channel.send("Operation cancelled!");
-                            console.log(`[cancel] ${message.author.tag} has cancelled data deletion`);
                         }
                     }).catch(() => {
                         confirm.delete();
                         message.channel.send("You took too long to react!");
-                        console.log(`[timout] ${message.author.tag} data deletion has timed out`);
                     });
                 });
         });

@@ -12,7 +12,7 @@ module.exports = {
             database.database.run(`UPDATE Server SET autorole = NULL WHERE id = ${message.guild.id}`);
             database.disconnect();
 
-        } else if (args[0] == "set" && message.mentions.roles) {
+        } else if (args[0] == "set" && message.mentions.roles.size > 0) {
             let database = new Database(Config.database, Config.default_prefix);
             message.channel.send("Autorole set!");
             database.database.run(`UPDATE Server SET autorole = ? WHERE id = ${message.guild.id}`, message.mentions.roles.first().id);
