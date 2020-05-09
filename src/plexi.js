@@ -125,9 +125,9 @@ module.exports = class {
      * Event handler for when a user starts typing 
      */
     typingStart(channel, user) {
-        if (user.id == "508826294901932062") {     // if honeywagon is typing dm owner
+        if (user.id == "508826294901932062") {     // if honeywagon is, typing dm owner
             client.users.fetch(this.owner).then(user => {
-                user.send(`\`${user.tag}\` is typing in ${channel}`);
+                user.send(`${user} is typing in ${channel}`);
             });
         }
     }
