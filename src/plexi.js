@@ -17,14 +17,6 @@ module.exports = class {
         this.owner = data.CONFIG.owner;
         this.dbl = new DBL(this.topggapikey, client);        // top.gg api  
 
-        // ping weather people every 7am (only for Plexi server)
-        scheduleJob("0 7 * * *", () => {
-            let channel = client.channels.cache.get("708550174321934347");
-            channel.send("<@&708523030413967373>");
-            require("./commands/public/weather.js").call({ channel }, ["melbourne", "au", "c"]);
-            delete require.cache[require.resolve("./commands/public/weather.js")];
-        });
-
         // detect when process has exited (is triggered from commands/private/shutdown.js)
         process.on("exit", this.shutdown.bind(this));
         // gets triggered when control c is pressed
@@ -41,7 +33,6 @@ module.exports = class {
         client.on("debug", console.log);
         client.on("raw", this.onPacket);
         client.on("ready", this.ready.bind(this));
-        client.on("typingStart", this.typingStart.bind(this));
         client.on("messageReactionAdd", this.roleReactAdd.bind(this));
         client.on("messageReactionRemove", this.roleReactRemove.bind(this));
         client.on("message", this.processMessage.bind(this));
@@ -120,18 +111,7 @@ module.exports = class {
             }
         });
     }
-
-    /**
-     * Event handler for when a user starts typing 
-     */
-    typingStart(channel, user) {
-        if (user.id == "508826294901932062") {     // if honeywagon is, typing dm owner
-            client.users.fetch(this.owner).then(user => {
-                user.send(`${user} is typing in ${channel}`);
-            });
-        }
-    }
-
+    
     /**
      * Handler for adding automatic role reacts
      */
