@@ -12,7 +12,7 @@ module.exports = {
                 args[1] = parseInt(args[1]);
                 let database = new Database(Config.database, Config.default_prefix);
                 database.getUser(message.author.id, row => {
-                    if (row.coins >= args[1]) {
+                    if (row.coins >= args[1] && args[1] >= 0) {
                         switch (Math.floor((Math.random() * 3) + 1)) {
                             case 1: {
                                 message.channel.send(`You just won ${args[1]} coins! You now have ${row.coins + args[1]} coins.`);

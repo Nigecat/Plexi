@@ -7,7 +7,7 @@ function capitalizeFirstLetter(str) {
 
 module.exports = {
     args: "<card|coins>",
-    description: "Set your bet for a game, only works while in a duel",
+    description: "Set your bet for a game, only works while in a duel (if betting coins specify a number!)",
     call: function(message, args) {
         let database = new Database(Config.database, Config.default_prefix);
         database.checkExpire(message.author.id);
@@ -35,7 +35,7 @@ module.exports = {
                     database.getUser(message.author.id, row => {
                         if (args.length == 1 && !isNaN(args[0])) {  // coin bet
                             args[0] = parseInt(args[0]);
-                            if (row.coins >= args[0]) {
+                            if (row.coins >= args[0] && args[0] >= 0) {
                                 message.reply(`your bet has been set to ${args[0]} coins`);
                                 database.updateGame(message.author.id, "bet", args[0]);
                             } else {
