@@ -1,6 +1,3 @@
 {
-    "database": "./data/data.sqlite",
-    "default_prefix": "$",
-    "owner": "307429254017056769",
-    "catrdTimeout": 360000
+    "database": "./data/data.sqlite"
 }
