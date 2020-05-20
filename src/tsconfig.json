@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "moduleResolution": "node",
+        "sourceMap": true,
+
+        "sourceRoot": "./",
+        "rootDir": "./",
+
+        "types": [ "node" ],
+        "typeRoots": [ "../node_modules/@types" ]
+    }
+}
