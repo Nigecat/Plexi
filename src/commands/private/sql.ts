@@ -1,4 +1,4 @@
-import { Message, Client } from "discord.js";
+import { Message } from "discord.js";
 import Database from "../../util/Database";
 
 export default async function(message: Message, database: Database): Promise<void> {
