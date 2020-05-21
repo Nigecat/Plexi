@@ -27,17 +27,17 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        working-directory: ./frontend
+        working-directory: ./src
         run: | 
           npm ci --only=production
           
       - name: Run lint
-        working-directory: ./frontend
+        working-directory: ./src
         run: |
           npm run lint
 
       - name: Run build
-        working-directory: ./frontend
+        working-directory: ./src
         run: |
           npm run build
 
