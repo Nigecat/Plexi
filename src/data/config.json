@@ -1,4 +1,13 @@
 {
     "owner": "307429254017056769",
-    "databasePath": "./data/data.sqlite"
+    "databasePath": "./data/data.sqlite",
+    "debug": {
+        "enabled": true,
+
+        "debug": true,
+        "database": true,
+        "ready": true,
+        "status": true,
+        "error": true
+    }
 }

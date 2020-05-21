@@ -1,10 +1,10 @@
-import { logBlue } from "./util/colour.js";
+import log from "./util/logger.js";
 import Server from "./util/Server.js";
 import { Message, Client, MessageEmbed } from "discord.js";
 import Database from "./util/Database.js";
 import { existsSync, promises as fs } from "fs";
 
-export default async function processCommand(message: Message, database: Database, client: Client): Promise<void> {
+export default async function processCommand(message: Message, database: Database, client: Client, owner: string): Promise<void> {
     const server: Server = new Server(message.guild.id, database);
 
 
@@ -48,7 +48,6 @@ export default async function processCommand(message: Message, database: Databas
             .map(file => `${server.prefix}${file.split(".")[0]}`);   // Set command text to {prefix}{commandName}
 
         embed.addField(`(use ${server.prefix}help <command> to get more details on a command)`, commands.join("\n"));
-
         message.channel.send({embed});
     }
 
@@ -81,7 +80,7 @@ export default async function processCommand(message: Message, database: Databas
 
     // General command runner
     else if (message.content.startsWith(server.prefix)) {
-        logBlue(`[status] Executing command  [${message.content}]  from ${message.author.tag} in ${message.guild.name}`);
+        log("status", `Executing command  [${message.content}]  from ${message.author.tag} in ${message.guild.name}`);
 
         // Extract first word after the prefix
         const command: string = message.content.replace(server.prefix, "").split(" ")[0];
@@ -125,6 +124,11 @@ export default async function processCommand(message: Message, database: Databas
             else {
                 data.call(message, args, database, client);
             }
+        }
+
+        // Restricted commands that can only be run by the bot owner
+        if (message.author.id == owner && existsSync(`./commands/private/${command}.js`)) {
+            (await import(`./commands/private/${command}.js`)).default(message, database, client);
         }
     }
 }
