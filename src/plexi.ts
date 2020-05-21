@@ -8,7 +8,7 @@ export default class Plexi {
     private token: string;
     public owner: string;
     private database: Database;
-    
+
     public constructor(token: string, owner: string, databasePath: string) {
         this.token = token;
         this.owner = owner;
@@ -18,12 +18,13 @@ export default class Plexi {
     /** Start the bot */
     public start(): void {
         process.on("uncaughtException", logRed);
+        process.on("UnhandledPromiseRejectionWarning", logRed);
         client.on("warn", logRed);
         client.on("error", logRed);
         client.on("ready", this.ready.bind(this));
         client.on("message", this.processMessage.bind(this));
-        client.on("guildCreate", this.serverUpdate.bind(this));
-        client.on("guildDelete", this.serverUpdate.bind(this));
+        client.on("guildCreate", this.setStatus);
+        client.on("guildDelete", this.setStatus);
         client.on("debug", console.log);
         client.login(this.token);
     }
@@ -39,15 +40,10 @@ export default class Plexi {
         client.user.setPresence({ activity: { type: "PLAYING", "name": `$help | ${client.guilds.cache.size} servers` }, status: "online" });
     }
 
-    /** Gets triggered when the bot leaves or joins a server */
-    private serverUpdate(server: Guild): void {
-        this.setStatus();
-    }
-
     /** Process an incoming message */
     private processMessage(message: Message): void {
         if (!message.author.bot && message.guild) {
-            processCommand(message, client, this.database);
+            processCommand(message, this.database, client);
         }
     }
 }

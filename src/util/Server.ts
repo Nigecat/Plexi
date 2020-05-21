@@ -13,6 +13,7 @@ export default class Server {
     }
 
     public update(key: string, value: string): void {
+        this[key] = value;
         this.database.run("UPDATE Server SET ? = ? WHERE id = ?", [key, value, this.id]);
     }
 }

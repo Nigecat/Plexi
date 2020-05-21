@@ -7,7 +7,7 @@ export default class Database {
         this.connection = new sqlite.Database(path);
     }
 
-    public run(payload: string, args: Array<string> = []): void {
+    public run(payload: string, args: string[] = []): void {
         this.connection.run(payload, args);
     }
 }

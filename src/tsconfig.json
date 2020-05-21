@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "target": "es6",
+        "module": "ESNext",
         "removeComments": true,
         "preserveConstEnums": true,
         "emitDecoratorMetadata": true,
