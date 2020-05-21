@@ -17,7 +17,9 @@
         "@types/convert-units": "^2.3.1",
         "@types/node": "^14.0.4",
         "@types/node-fetch": "^2.5.7",
-        "@types/sqlite3": "^3.1.6"
+        "@types/sqlite3": "^3.1.6",
+        "tslint": "^6.1.2",
+        "typescript": "^3.9.3"
     },
     "dependencies": {
         "convert-units": "^2.3.4",
