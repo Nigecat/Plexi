@@ -11,7 +11,8 @@
     "jsRules": {},
     "rules": {
         "no-console": false,
-        "triple-equals": true
+        "triple-equals": true,
+        "no-trailing-whitespace": false
     },
     "rulesDirectory": []
 }

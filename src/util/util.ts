@@ -6,3 +6,7 @@ export async function lastMessage(channel: (TextChannel | DMChannel | NewsChanne
         resolve(messages.get(Array.from(messages.keys())[1]));
     });
 }
+
+export function sendMarkdown(channel: (TextChannel | DMChannel | NewsChannel), data: string[]): void {
+    channel.send(`\`\`\`markdown\n${data.join("\n")}\`\`\``);
+}

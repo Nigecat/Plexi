@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { lastMessage } from "../util.js";
+import { lastMessage } from "../../util/util.js";
 
 export default {
     description: "🦀 Add crabs around the previous message 🦀",

@@ -14,11 +14,13 @@
         "start": "npm run-script build && node --experimental-modules --experimental-json-modules ./launcher.js"
     },
     "devDependencies": {
+        "@types/convert-units": "^2.3.1",
         "@types/node": "^14.0.4",
         "@types/node-fetch": "^2.5.7",
         "@types/sqlite3": "^3.1.6"
     },
     "dependencies": {
+        "convert-units": "^2.3.4",
         "discord.js": "^12.2.0",
         "node-fetch": "^2.6.0",
         "sqlite3": "^4.2.0"

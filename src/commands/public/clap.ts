@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { lastMessage } from "../util.js";
+import { lastMessage } from "../../util/util.js";
 
 export default {
     description: "Put the 👏 emoji in the spaces of the previous message",
