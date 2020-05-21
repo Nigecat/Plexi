@@ -43,7 +43,7 @@ export default async function processCommand(message: Message, database: Databas
             .setFooter(`v${(await import("./package.json")).default.version}`);
 
         // Get a list of valid commands based on the files in /commands/public/
-        let commands: string[] = (await fs.readdir("./commands/public/"))   // Read files
+        const commands: string[] = (await fs.readdir("./commands/public/"))   // Read files
             .filter(file => file.endsWith(".js"))                       // Remove all non .js files
             .map(file => `${server.prefix}${file.split(".")[0]}`);   // Set command text to {prefix}{commandName}
 

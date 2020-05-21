@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "2.1.6",
+    "version": "2.1.7",
     "description": "A general purpose fun/moderation discord bot",
     "author": "Nigecat",
     "type": "module",
@@ -14,10 +14,12 @@
     },
     "devDependencies": {
         "@types/node": "^14.0.4",
+        "@types/node-fetch": "^2.5.7",
         "@types/sqlite3": "^3.1.6"
     },
     "dependencies": {
         "discord.js": "^12.2.0",
+        "node-fetch": "^2.6.0",
         "sqlite3": "^4.2.0"
     }
 }

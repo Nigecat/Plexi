@@ -1,8 +1,8 @@
 import Database from "./util/Database.js";
 import log from "./util/logger.js";
 import processCommand from "./commandHelper.js";
-import Discord, { Guild, Message } from "discord.js";
-const client = new Discord.Client();
+import { Guild, Message, Client } from "discord.js";
+const client: Client = new Client();
 
 export default class Plexi {
     private token: string;
