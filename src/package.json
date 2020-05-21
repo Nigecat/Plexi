@@ -9,6 +9,7 @@
         "url": "https://github.com/Nigecat/Plexi.git"
     },
     "scripts": {
+        "lint": "tslint --fix **/*.ts",
         "build": "tsc",
         "start": "npm run-script build && node --experimental-modules --experimental-json-modules ./launcher.js"
     },

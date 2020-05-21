@@ -2,23 +2,23 @@ import config from "../data/config.json";
 
 export default function log(type: string, text: (string | Error)): void {
     if (config.debug.enabled) {
-        if (config.debug.debug && type == "debug") {
+        if (config.debug.debug && type === "debug") {
             console.log(text);
         }
 
-        else if (config.debug.database && type == "database") {
+        else if (config.debug.database && type === "database") {
             logYellow(`[${type}] ${text}`);
         }
 
-        else if (config.debug.ready && type == "ready") {
+        else if (config.debug.ready && type === "ready") {
             logGreen(`[${type}] ${text}`);
         }
 
-        else if (config.debug.status && type == "status") {
+        else if (config.debug.status && type === "status") {
             logBlue(`[${type}] ${text}`);
         }
 
-        else if (config.debug.database && type == "database") {
+        else if (config.debug.database && type === "database") {
             logRed(`[${type}] ${text}`);
         }
     }
@@ -40,4 +40,4 @@ function logYellow(text: string): void {
 
 function logBlue(text: string): void {
     console.log("\x1b[34m%s\x1b[0m", text);
-} 
+}

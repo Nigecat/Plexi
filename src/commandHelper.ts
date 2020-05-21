@@ -9,7 +9,7 @@ export default async function processCommand(message: Message, database: Databas
 
 
     // Custom code for 264163117078937601 (Pinpointpotato#9418) AKA the ideas man
-    if (message.author.id == "264163117078937601" && message.content.toLowerCase().includes("you know why they call me the ideas man")) {
+    if (message.author.id === "264163117078937601" && message.content.toLowerCase().includes("you know why they call me the ideas man")) {
         message.channel.send("cuz i CLEEEEEEAaaan up");
     }
 
@@ -20,7 +20,7 @@ export default async function processCommand(message: Message, database: Databas
         message.content = message.content.slice(2);
 
         // Find all matching emojis and get the id and whether or not it is animated
-        const emojis: (string | boolean)[][] = client.emojis.cache.filter(emoji => emoji.name == message.content).map(emoji => [emoji.id, emoji.animated]);
+        const emojis: (string | boolean)[][] = client.emojis.cache.filter(emoji => emoji.name === message.content).map(emoji => [emoji.id, emoji.animated]);
 
         // If an emoji was found
         if (emojis.length > 0) {
@@ -34,7 +34,7 @@ export default async function processCommand(message: Message, database: Databas
 
 
     // General help command that lists the commands
-    else if (message.content == "$help" || message.content == `${server.prefix}help`) {
+    else if (message.content === "$help" || message.content === `${server.prefix}help`) {
         const embed: MessageEmbed = new MessageEmbed()
             .setColor("#7289DA ")
             .setTitle(`This server's prefix is currently: ${server.prefix}`)
@@ -58,7 +58,7 @@ export default async function processCommand(message: Message, database: Databas
 
         // If the command exists
         if (existsSync(file)) {
-            let data: any = (await import(file)).default;
+            const data: any = (await import(file)).default;
 
             // If no perms default to displaying NONE
             if (!data.perms) {
@@ -66,7 +66,7 @@ export default async function processCommand(message: Message, database: Databas
             }
 
             // If args are string wrap them in []
-            if (typeof data.args == "string") {
+            if (typeof data.args === "string") {
                 data.args = `[${data.args}]`;
             }
 
@@ -107,9 +107,9 @@ export default async function processCommand(message: Message, database: Databas
             }
 
             // Check if expected arg is a string (this means it can be any length)
-            else if (typeof data.args == "string") {
+            else if (typeof data.args === "string") {
                 // If the user didn't enter a blank string then call the function
-                if (args.join(" ") != "") {
+                if (args.join(" ") === "") {
                     data.call(message, args.join(" "), database, client);
 
                 } else {
@@ -118,7 +118,7 @@ export default async function processCommand(message: Message, database: Databas
             }
 
             // If incorrect number of args or incorrect number of user mentions
-            else if (data.args.length != args.length || message.mentions.users.array().length != data.args.filter((arg: string) => arg.startsWith("@")).length) {
+            else if (data.args.length === args.length || message.mentions.users.array().length === data.args.filter((arg: string) => arg.startsWith("@")).length) {
                 message.channel.send(`Command syntax error, expected syntax: \`${server.prefix}${command} ${data.args.map((arg: string) => `<${arg}>`).join(" ")}\``);
             }
 
@@ -128,7 +128,7 @@ export default async function processCommand(message: Message, database: Databas
         }
 
         // Restricted commands that can only be run by the bot owner
-        if (message.author.id == owner && existsSync(`./commands/private/${command}.js`)) {
+        if (message.author.id === owner && existsSync(`./commands/private/${command}.js`)) {
             (await import(`./commands/private/${command}.js`)).default(message, database, client);
         }
     }

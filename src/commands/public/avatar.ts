@@ -3,7 +3,7 @@ import { Message, MessageEmbed } from "discord.js";
 export default {
     args: ["@user"],
     description: "Get a user's avatar",
-    call: function (message: Message): void {
+    call (message: Message): void {
         const embed: MessageEmbed = new MessageEmbed()
             .setColor("#0099ff")
             .setTitle(message.mentions.users.first().tag)

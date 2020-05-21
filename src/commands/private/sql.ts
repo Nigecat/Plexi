@@ -12,4 +12,4 @@ export default async function (message: Message, database: Database): Promise<vo
     } else {
         database.run(query);
     }
-}   
+}
