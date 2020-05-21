@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm --prefix src/ ci
+      - run: npm --prefix src/ install --production
       - run: npm --prefix src/ run lint
       - run: npm --prefix src/ run build
 
