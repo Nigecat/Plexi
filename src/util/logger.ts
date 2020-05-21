@@ -22,7 +22,7 @@ export default function log(type: string, text: (string | Error)): void {
             logRed(`[${type}] ${text}`);
         }
     }
-}      
+}
 
 
 

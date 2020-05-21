@@ -11,23 +11,23 @@ export default async function processCommand(message: Message, database: Databas
     // Custom code for 264163117078937601 (Pinpointpotato#9418) AKA the ideas man
     if (message.author.id == "264163117078937601" && message.content.toLowerCase().includes("you know why they call me the ideas man")) {
         message.channel.send("cuz i CLEEEEEEAaaan up");
-    } 
+    }
 
-    
+
     // Literally just pseudo-nitro (since bots can use emotes like how nitro does)
     else if (message.content.startsWith("g`")) {
         // Remove first two characters of message (g`)
-        message.content = message.content.slice(2);     
+        message.content = message.content.slice(2);
 
         // Find all matching emojis and get the id and whether or not it is animated
-        const emojis: (string|boolean)[][] = client.emojis.cache.filter(emoji => emoji.name == message.content).map(emoji => [ emoji.id, emoji.animated ]);
+        const emojis: (string | boolean)[][] = client.emojis.cache.filter(emoji => emoji.name == message.content).map(emoji => [emoji.id, emoji.animated]);
 
         // If an emoji was found
         if (emojis.length > 0) {
             const embed: MessageEmbed = new MessageEmbed()
                 .setImage(`https://cdn.discordapp.com/emojis/${emojis[0][0]}${emojis[0][1] ? ".gif" : ".png"}`)
                 .setFooter(message.author.tag);
-            message.channel.send({embed});
+            message.channel.send({ embed });
             message.delete();
         }
     }
@@ -48,7 +48,7 @@ export default async function processCommand(message: Message, database: Databas
             .map(file => `${server.prefix}${file.split(".")[0]}`);   // Set command text to {prefix}{commandName}
 
         embed.addField(`(use ${server.prefix}help <command> to get more details on a command)`, commands.join("\n"));
-        message.channel.send({embed});
+        message.channel.send({ embed });
     }
 
 
@@ -68,9 +68,10 @@ export default async function processCommand(message: Message, database: Databas
             // If args are string wrap them in []
             if (typeof data.args == "string") {
                 data.args = `[${data.args}]`;
+            }
 
             // Otherwise wrap each argument in <>
-            } else {
+            else {
                 data.args = data.args.map((arg: string) => `<${arg}>`);
             }
             message.channel.send(`\`\`\`markdown\n# Command\n${server.prefix}${file.split(".")[0]} ${data.args}\n\n# Description\n${data.description}\n\n# Required Permissions\n${data.perms.join(", ")}\`\`\``);
@@ -114,13 +115,13 @@ export default async function processCommand(message: Message, database: Databas
                 } else {
                     message.channel.send(`Command syntax error, expected syntax: \`${server.prefix}${command} [${data.args}]\``);
                 }
-            } 
-            
+            }
+
             // If incorrect number of args or incorrect number of user mentions
             else if (data.args.length != args.length || message.mentions.users.array().length != data.args.filter((arg: string) => arg.startsWith("@")).length) {
                 message.channel.send(`Command syntax error, expected syntax: \`${server.prefix}${command} ${data.args.map((arg: string) => `<${arg}>`).join(" ")}\``);
-            } 
-            
+            }
+
             else {
                 data.call(message, args, database, client);
             }
