@@ -109,7 +109,7 @@ export default async function processCommand(message: Message, database: Databas
             // Check if expected arg is a string (this means it can be any length)
             else if (typeof data.args === "string") {
                 // If the user didn't enter a blank string then call the function
-                if (args.join(" ") === "") {
+                if (args.join(" ") !== "") {
                     data.call(message, args.join(" "), database, client);
 
                 } else {
@@ -118,7 +118,7 @@ export default async function processCommand(message: Message, database: Databas
             }
 
             // If incorrect number of args or incorrect number of user mentions
-            else if (data.args.length === args.length || message.mentions.users.array().length === data.args.filter((arg: string) => arg.startsWith("@")).length) {
+            else if (data.args.length !== args.length || message.mentions.users.array().length !== data.args.filter((arg: string) => arg.startsWith("@")).length) {
                 message.channel.send(`Command syntax error, expected syntax: \`${server.prefix}${command} ${data.args.map((arg: string) => `<${arg}>`).join(" ")}\``);
             }
 
