@@ -12,6 +12,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./src
 
     strategy:
       matrix:
@@ -25,17 +27,17 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        working-directory: ./src
+        working-directory: ${{ env.working-directory }}
         run: | 
-          npm ci --silent --only=production
+          npm install --loglevel=silent --only=production
           
       - name: Run lint
-        working-directory: ./src
+        working-directory: ${{ env.working-directory }}
         run: |
           npm run lint
 
       - name: Run build
-        working-directory: ./src
+        working-directory: ${{ env.working-directory }}
         run: |
           npm run build
 
