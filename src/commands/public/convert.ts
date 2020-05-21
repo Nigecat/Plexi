@@ -8,7 +8,7 @@ export default {
         try {
             const from: any = convert().describe(args[1]);
             const to: any = convert().describe(args[2]);
-            const result: any = convert(Number(args[0])).from(from.abbr).to(to.abbr);
+            const result: any = convert(Number(args[0])).from(args[1]).to(args[2]);
             message.channel.send(`**Converting:** ${args[0]} ${from.plural} to ${to.plural}\n**Result:** ${result} ${to.plural}`);
         } catch (err) {
             message.channel.send(`**Unrecognized unit conversion:** ${args[1]}/${args[2]}`);
