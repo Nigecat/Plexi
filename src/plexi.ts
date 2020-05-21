@@ -18,6 +18,7 @@ export default class Plexi {
     /** Start the bot */
     public start(): void {
         process.on("uncaughtException", logRed);
+        process.on("unhandledRejection", logRed);
         process.on("UnhandledPromiseRejectionWarning", logRed);
         client.on("warn", logRed);
         client.on("error", logRed);

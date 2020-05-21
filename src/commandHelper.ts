@@ -5,7 +5,7 @@ import Database from "./util/Database.js";
 import { existsSync } from "fs";
 
 export default async function processCommand(message: Message, database: Database, client: Client): Promise<void> {
-    let server = new Server(message.id, database);
+    let server = new Server(message.guild.id, database);
 
     if (message.content.startsWith(server.prefix)) {
         logBlue(`[status] Executing command  [${message.content}]  from ${message.author.tag} in ${message.guild.name}`);
@@ -30,26 +30,27 @@ export default async function processCommand(message: Message, database: Databas
 
             // If no args are required for this command
             else if (!data.args) {
-                data.call(message);
+                data.call(message, [], database, client);
             }
 
             // Check if expected arg is a string (this means it can be any length)
             else if (typeof data.args == "string") {
                 // If the user didn't enter a blank string then call the function
                 if (args.join(" ") != "") {
-                    data.call(message, args.join(" "));
+                    data.call(message, args.join(" "), database, client);
 
                 } else {
                     message.channel.send(`Command syntax error, expected syntax: \`${server.prefix}${command} [${data.args}]\``);
                 }
             } 
             
-            else if (data.args.length != args.length) {
+            // If incorrect number of args or incorrect number of user mentions
+            else if (data.args.length != args.length || message.mentions.users.array().length != data.args.filter((arg: string) => arg.startsWith("@")).length) {
                 message.channel.send(`Command syntax error, expected syntax: \`${server.prefix}${command} ${data.args.map((arg: string) => `<${arg}>`).join(" ")}\``);
             } 
             
             else {
-                data.call(message, args);
+                data.call(message, args, database, client);
             }
         }
     }
