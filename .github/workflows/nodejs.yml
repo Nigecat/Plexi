@@ -30,7 +30,7 @@ jobs:
         working-directory: ${{ env.working-directory }}
         continue-on-error: true
         run: | 
-          npm ci &> /dev/null || true
+          npm ci
           
       - name: Run test
         working-directory: ${{ env.working-directory }}
