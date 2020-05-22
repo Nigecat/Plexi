@@ -113,14 +113,18 @@ export default async function processCommand(message: Message, database: Databas
 
             // If no args are required for this command
             else if (!data.args) {
-                data.call(message, [], database, client);
+                message.channel.startTyping();
+                await data.call(message, [], database, client);
+                message.channel.stopTyping();
             }
 
             // Check if expected arg is a string (this means it can be any length)
             else if (typeof data.args === "string") {
                 // If the user didn't enter a blank string then call the function
                 if (args.join(" ") !== "") {
-                    data.call(message, args.join(" "), database, client);
+                    message.channel.startTyping();
+                    await data.call(message, args.join(" "), database, client);
+                    message.channel.stopTyping();
 
                 } else {
                     message.channel.send(`Command syntax error, expected syntax: \`${server.prefix}${command} [${data.args}]\``);
@@ -133,7 +137,9 @@ export default async function processCommand(message: Message, database: Databas
             }
 
             else {
-                data.call(message, args, database, client);
+                message.channel.startTyping();
+                await data.call(message, args, database, client);
+                message.channel.stopTyping();
             }
         }
 
