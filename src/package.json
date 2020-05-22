@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "2.2.3",
+    "version": "2.2.4",
     "description": "A general purpose fun/moderation discord bot",
     "author": "Nigecat",
     "type": "module",
@@ -11,6 +11,7 @@
     "scripts": {
         "lint": "tslint --fix **/*.ts",
         "build": "tsc",
+        "clean": "tsc --build --clean",
         "test": "npm run build && node --experimental-modules --experimental-json-modules --unhandled-rejections=strict ./test/commands.test.js",
         "start": "npm run build && node --experimental-modules --experimental-json-modules ./launcher.js"
     },
