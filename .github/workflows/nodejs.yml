@@ -14,7 +14,6 @@ jobs:
     runs-on: [ ubuntu-latest, windows-latest ]
     env:
       working-directory: ./src
-      CI: true
 
     strategy:
       matrix:
