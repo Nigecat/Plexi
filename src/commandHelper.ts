@@ -3,7 +3,7 @@ import Server from "./util/Server.js";
 import { Message, Client, MessageEmbed } from "discord.js";
 import Database from "./util/Database.js";
 import { existsSync, promises as fs } from "fs";
-import { sendMarkdown } from "./util/util.js";
+import { formatMarkdown } from "./util/util.js";
 
 export default async function processCommand(message: Message, database: Database, client: Client, owner: string): Promise<void> {
     const server: Server = new Server(message.guild.id, database);
@@ -77,14 +77,14 @@ export default async function processCommand(message: Message, database: Databas
             }
 
             // Send as markdown
-            sendMarkdown(message.channel, [
+            message.channel.send(formatMarkdown([
                 "# Command", 
                 `${server.prefix}${message.content.split(" ")[1]} ${data.args}\n`, 
                 "# Description", 
                 `${data.description}\n`, 
                 "# Required Permissions", 
                 data.perms.join(", ")
-            ]);
+            ]));
         }
     }
 
