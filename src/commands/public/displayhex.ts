@@ -3,7 +3,7 @@ import { Message, MessageEmbed } from "discord.js";
 export default {
     args: ["hex-code"],
     description: "Display a hex code (must be 6 characters)",
-    call (message: Message, args: string[]) {
+    call (message: Message, args: string[]): void {
         // Automatically put a # before the hex code if it is missing
         const hex: string = args[0].startsWith("#") ? args[0] : `#${args[0]}`;
 

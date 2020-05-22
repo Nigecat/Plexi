@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "2.2.2",
+    "version": "2.2.3",
     "description": "A general purpose fun/moderation discord bot",
     "author": "Nigecat",
     "type": "module",
@@ -27,6 +27,8 @@
         "discord.js": "^12.2.0",
         "jimp": "^0.12.1",
         "node-fetch": "^2.6.0",
-        "sqlite3": "^4.2.0"
+        "sqlite3": "^4.2.0",
+        "urban-dictionary": "^2.2.1",
+        "word-definition": "^2.1.6"
     }
 }
