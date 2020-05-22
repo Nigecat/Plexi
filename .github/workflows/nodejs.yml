@@ -29,7 +29,7 @@ jobs:
       - name: Install dependencies
         working-directory: ${{ env.working-directory }}
         run: | 
-          npm install --silent tslint typescript
+          npm ci &> /dev/null
           
       - name: Run test
         working-directory: ${{ env.working-directory }}
