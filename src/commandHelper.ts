@@ -131,8 +131,11 @@ export default async function processCommand(message: Message, database: Databas
                 }
             }
 
-            // If incorrect number of args or incorrect number of user mentions
-            else if (data.args.length !== args.length || message.mentions.users.array().length !== data.args.filter((arg: string) => arg.startsWith("@")).length) {
+            // If something in the command args is incorrect (the if statement of jank)
+            else if (data.args.length !== args.length 
+                        || data.args.every((arg: string, i: number) => arg.includes("|") ? arg.split("|").includes(args[i]) : true)
+                        || message.mentions.users.array().length !== data.args.filter((arg: string) => arg.startsWith("@user")).length
+                        || message.mentions.roles.array().length !== data.args.filter((arg: string) => arg.startsWith("@role")).length) {
                 message.channel.send(`Command syntax error, expected syntax: \`${server.prefix}${command} ${data.args.map((arg: string) => `<${arg}>`).join(" ")}\``);
             }
 

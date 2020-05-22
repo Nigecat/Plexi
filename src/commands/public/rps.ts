@@ -27,10 +27,6 @@ export default {
         const choice1: string = args[0];
         const choice2: string = choices[Math.floor(Math.random() * choices.length)];;
 
-        if (choices.includes(choice1)) {
-            message.channel.send(`You play ${choice1}, I play ${choice2}, ${compare(choice1, choice2, choices)}!`);
-        } else {
-            message.channel.send("Invalid move!");
-        }
+        message.channel.send(`You play ${choice1}, I play ${choice2}, ${compare(choice1, choice2, choices)}!`);
     }
 }
