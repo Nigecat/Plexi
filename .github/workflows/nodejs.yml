@@ -31,14 +31,17 @@ jobs:
         run: | 
           npm ci --loglevel=silent
           
-      - name: Run lint
-        working-directory: ${{ env.working-directory }}
-        run: |
-          npm run lint
-
       - name: Run build
         working-directory: ${{ env.working-directory }}
         run: |
           npm run build
 
+      - name: Run lint
+        working-directory: ${{ env.working-directory }}
+        run: |
+          npm run lint
 
+      - name: Run test
+        working-directory: ${{ env.working-directory }}
+        run: |
+          npm run test
