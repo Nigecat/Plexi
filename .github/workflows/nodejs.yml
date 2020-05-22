@@ -29,7 +29,7 @@ jobs:
       - name: Install dependencies
         working-directory: ${{ env.working-directory }}
         run: | 
-          npm ci &> /dev/null
+          npm ci &> /dev/null || true
           
       - name: Run test
         working-directory: ${{ env.working-directory }}
