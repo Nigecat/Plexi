@@ -75,3 +75,24 @@ export async function manipulateImage(message: Message, name: string, posterize:
         }
     });
 }
+
+
+/**
+ * Convert a string to discord regional indicators
+ * @param text 
+ */
+export function toEmoji(data: string): string {
+    const text: string[] = data.toLowerCase().replace(/[^A-Za-z\s]/g, "").split("");
+    const emojis: object  = {
+        a: "🇦", b: "🇧", c: "🇨", d: "🇩", e: "🇪",
+        f: "🇫", g: "🇬", h: "🇭", i: "🇮", j: "🇯",
+        k: "🇰", l: "🇱", m: "🇲", n: "🇳", o: "🇴",
+        p: "🇵", q: "🇶", r: "🇷", s: "🇸", t: "🇹",
+        u: "🇺", v: "🇻", w: "🇼", x: "🇽", y: "🇾",
+        z: "🇿", " ": "  "
+    }
+    text.forEach((char, index) => {
+        text[index] = emojis[char];
+    });
+    return text.join(" ");
+}
