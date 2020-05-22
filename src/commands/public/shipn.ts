@@ -3,7 +3,7 @@ import { Message } from "discord.js";
 export default {
     args: ["@user1", "@user2"],
     description: "Ship two users (merge their nicknames)",
-    call (message: Message) {
+    call (message: Message): void {
         const user1: string = message.guild.member(message.mentions.members.first().user).displayName;
         const user2: string = message.guild.member(message.mentions.members.last().user).displayName;
         const firsthalf: string = user1.slice(0, Math.ceil(user1.length / 2));
