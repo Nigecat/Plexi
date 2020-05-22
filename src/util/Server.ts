@@ -5,15 +5,19 @@ export default class Server {
     public prefix: string;
     private database: Database;
 
-    public constructor(id: string, database: Database, prefix: string = "$") {
+    public constructor(id: string, database: Database) {
         this.id = id;
         this.database = database;
-        this.prefix = prefix;
-        this.database.run("INSERT OR IGNORE INTO Server ( id, prefix ) VALUES ( ?, ? )", [id, prefix]);
+    }
+
+    public async init(): Promise<void> {
+        this.database.run("INSERT OR IGNORE INTO Server ( id ) VALUES ( ? )", [ this.id ]);
+        const data: any = await this.database.get("SELECT * FROM Server WHERE id = ?", [ this.id ]);
+        this.prefix = data[0].prefix;
     }
 
     public update(key: string, value: string): void {
         this[key] = value;
-        this.database.run("UPDATE Server SET ? = ? WHERE id = ?", [key, value, this.id]);
+        this.database.run(`UPDATE Server SET ${key} = ? WHERE id = ?`, [value, this.id]);
     }
 }

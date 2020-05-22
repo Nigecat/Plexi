@@ -7,7 +7,7 @@ import { sendMarkdown } from "./util/util.js";
 
 export default async function processCommand(message: Message, database: Database, client: Client, owner: string): Promise<void> {
     const server: Server = new Server(message.guild.id, database);
-
+    await server.init();
 
     // Custom code for 264163117078937601 (Pinpointpotato#9418) AKA the ideas man
     if (message.author.id === "264163117078937601" && message.content.toLowerCase().includes("you know why they call me the ideas man")) {
