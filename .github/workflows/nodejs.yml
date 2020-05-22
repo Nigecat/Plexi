@@ -11,14 +11,13 @@ on:
 jobs:
   build:
 
-    runs-on: ${{ matrix.id }}
+    runs-on: ubuntu-latest
     env:
       working-directory: ./src
 
     strategy:
       matrix:
         node-version: [12.x]
-        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - uses: actions/checkout@v2
