@@ -11,13 +11,14 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.id }}
     env:
       working-directory: ./src
 
     strategy:
       matrix:
         node-version: [12.x]
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - uses: actions/checkout@v2
@@ -29,15 +30,12 @@ jobs:
       - name: Install dependencies
         working-directory: ${{ env.working-directory }}
         continue-on-error: true
-        run: | 
-          npm ci
+        run: npm install
           
-      - name: Run test
-        working-directory: ${{ env.working-directory }}
-        run: |
-          npm run test
-
       - name: Run lint
         working-directory: ${{ env.working-directory }}
-        run: |
-          npm run lint
+        run: npm run lint
+
+      - name: Run test
+        working-directory: ${{ env.working-directory }}
+        run: npm run test
