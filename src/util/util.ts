@@ -41,6 +41,18 @@ export function attachIsImage(msgAttach: MessageAttachment): boolean {
     return url.endsWith("png") || url.endsWith("jpg");
 }
 
+
+/**
+ * Edit an image with the supplied parameters and save to src/commands/resources/temp/<name>.png
+ * 
+ * @param message The message that the source image is contained in
+ * @param name The name of the image modification type
+ * @param posterize The level of poterization
+ * @param contrast The contrast level
+ * @param pixelate The level of pixelation
+ * 
+ * @returns The relative path of the output file
+ */
 export async function manipulateImage(message: Message, name: string, posterize: number, contrast: number, pixelate: number = Math.floor(Math.random() * 2 + 2)): Promise<string> {
     return new Promise(async (resolve, reject) => {
         // Ensure that the message has is a valid image
