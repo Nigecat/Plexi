@@ -4,9 +4,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ workflow ]
+    branches: [ rewrite ]
   pull_request:
-    branches: [ workflow ]
+    branches: [ rewrite ]
 
 jobs:
   build:
