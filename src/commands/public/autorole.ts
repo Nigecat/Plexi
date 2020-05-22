@@ -8,7 +8,7 @@ export default {
     description: "Assign a role to be automatically added to a user when they join this server",
     async call (message: Message, args: string[], database: Database): Promise<void> {
         const id: string = args[0] === "set" 
-            ? message.guild.id 
+            ? message.mentions.roles.first().id
             : args[0] === "clear"
                 ? ""
                 : null;
