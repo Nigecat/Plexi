@@ -11,9 +11,10 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: [ ubuntu-latest, windows-latest ]
     env:
       working-directory: ./src
+      CI: true
 
     strategy:
       matrix:
