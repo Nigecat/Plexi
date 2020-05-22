@@ -5,7 +5,7 @@ function verifyCommand(command: any, name: string): void {
     if (!command.hasOwnProperty("description")) {
         throw new InvalidCommand(`${name} Missing description!`);
     }
-    if (!command.hasOwnProperty("call") || typeof command.call != "function") {
+    if (!command.hasOwnProperty("call") || typeof command.call !== "function") {
         throw new InvalidCommand(`${name} Missing call function!`);
     }
 }
