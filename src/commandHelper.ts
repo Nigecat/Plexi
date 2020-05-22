@@ -71,15 +71,15 @@ export default async function processCommand(message: Message, database: Databas
                 data.args = `[${data.args}]`;
             }
 
-            // Otherwise wrap each argument in <>
-            else {
+            // Otherwise wrap each argument in <> if any exist
+            else if (typeof data.args === "object") {
                 data.args = data.args.map((arg: string) => `<${arg}>`).join(" ");
             }
 
             // Send as markdown
             message.channel.send(formatMarkdown([
                 "# Command", 
-                `${server.prefix}${message.content.split(" ")[1]} ${data.args}\n`, 
+                `${server.prefix}${message.content.split(" ")[1]} ${data.args || ""}\n`, 
                 "# Description", 
                 `${data.description}\n`, 
                 "# Required Permissions", 
