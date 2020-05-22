@@ -3,7 +3,7 @@ import { Message } from "discord.js";
 export default {
     args: "text",
     description: "☭ Make text communist ☭",
-    call (message: Message, args: string) {
+    call (message: Message, args: string): void {
         const communism: object = {
             "my": "our",
             "i": "we",

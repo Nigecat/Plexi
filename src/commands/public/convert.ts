@@ -4,7 +4,7 @@ import convert from "convert-units";
 export default {
     args: ["value", "from-unit", "to-unit"],
     description: "Convert a value from one unit to another (e.g convert 4 lb kg)",
-    call (message: Message, args: any[]) {
+    call (message: Message, args: any[]): void {
         try {
             const from: any = convert().describe(args[1]);
             const to: any = convert().describe(args[2]);
