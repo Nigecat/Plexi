@@ -54,6 +54,8 @@ export default {
 ```
 The args will be the same type (array or string) as the args property of the export.
 
+If the call function export is async and has a Promise return type, the command handler will automatically set the bot to a `typing` state while the command is executing.
+
 # More information
 See the [DiscordJS docs](https://discord.js.org/#/docs/main/stable/general/welcome) for more information on interacting with discord from the [Message](https://discord.js.org/#/docs/main/stable/class/Message) or [Client](https://discord.js.org/#/docs/main/stable/class/Client) objects.  
 See the [permission flags](https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS) for a list of valid permissions.
