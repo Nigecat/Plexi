@@ -4,6 +4,7 @@ import { Message, Client, MessageEmbed } from "discord.js";
 import Database from "./util/Database.js";
 import { existsSync, promises as fs } from "fs";
 import { formatMarkdown } from "./util/util.js";
+import User from "./util/User.js";
 
 
 async function runCommand(data: any, message: Message, args: (string | string[]), database: Database, client: Client) {
@@ -23,8 +24,17 @@ export default async function processCommand(message: Message, database: Databas
     }
 
 
+    // Check if message contains 'peanut' and if so 
+    //     increase the peanut counter for that user by how many times it appears
+    if (message.content.toLowerCase().includes("peanut")) {
+        const user: User = new User(message.author.id, database);
+        await user.init();
+        user.update("peanuts", (Number(user.peanuts) + (message.content.toLowerCase().match(/peanut/g) || []).length).toString());
+    }   
+
+
     // Literally just pseudo-nitro (since bots can use emotes like how nitro does)
-    else if (message.content.startsWith("g`")) {
+    if (message.content.startsWith("g`")) {
         // Remove first two characters of message (g`)
         message.content = message.content.slice(2);
 
@@ -42,8 +52,9 @@ export default async function processCommand(message: Message, database: Databas
     }
 
 
+    
     // General help command that lists the commands
-    else if (message.content === "$help" || message.content === `${server.prefix}help`) {
+    if (message.content === "$help" || message.content === `${server.prefix}help`) {
         const embed: MessageEmbed = new MessageEmbed()
             .setColor("#7289DA ")
             .setTitle(`This server's prefix is currently: ${server.prefix}`)
