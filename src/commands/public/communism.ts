@@ -1,6 +1,7 @@
 import { Message } from "discord.js";
+import Command from "../../util/Command.js";
 
-export default {
+export default Command.create({
     args: "text",
     description: "☭ Make text communist ☭",
     call (message: Message, args: string): void {
@@ -18,4 +19,4 @@ export default {
             return word;
         }).join(" ")} ☭`);
     }
-}
+});

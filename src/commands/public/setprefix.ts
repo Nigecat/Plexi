@@ -1,8 +1,9 @@
 import { Message } from "discord.js";
 import Database from "../../util/Database.js";
 import Server from "../../util/Server.js";
+import Command from "../../util/Command.js";
 
-export default {
+export default Command.create({
     args: ["prefix"],
     perms: ["ADMINISTRATOR"],
     description: "Set a custom prefix for this server",
@@ -13,4 +14,4 @@ export default {
         server.update("prefix", prefix);
         message.channel.send(`**Server prefix updated to:** ${prefix}`);
     }
-}
+});

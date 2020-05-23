@@ -1,7 +1,8 @@
 import { Message } from "discord.js";
 import convert from "convert-units";
+import Command from "../../util/Command.js";
 
-export default {
+export default Command.create({
     args: ["value", "from-unit", "to-unit"],
     description: "Convert a value from one unit to another (e.g convert 4 lb kg)",
     call (message: Message, args: any[]): void {
@@ -14,4 +15,4 @@ export default {
             message.channel.send(`**Unrecognized unit conversion:** ${args[1]}/${args[2]}`);
         }
     }
-}
+});

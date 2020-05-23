@@ -1,6 +1,7 @@
 import { Message } from "discord.js";
+import Command from "../../util/Command.js";
 
-export default {
+export default Command.create({
     args: ["length"],
     description: "Create a worm of the specified length",
     call (message: Message, args: string[]): void {
@@ -13,4 +14,4 @@ export default {
             message.channel.send("Length must be a positive number!");
         }
     }
-}
+});

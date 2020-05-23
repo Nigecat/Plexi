@@ -1,6 +1,7 @@
 import { Message, GuildMember } from "discord.js";
+import Command from "../../util/Command.js";
 
-export default {
+export default Command.create({
     args: ["@user"],
     perms: ["BAN_MEMBERS"],
     description: "Ban a user",
@@ -16,4 +17,4 @@ export default {
             message.channel.send("It appears something has gone wrong, chances are you didn't @ a valid user");
         }
     }
-}
+});

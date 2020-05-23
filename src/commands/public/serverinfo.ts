@@ -1,6 +1,7 @@
 import { Message, MessageEmbed, TextChannel } from "discord.js";
+import Command from "../../util/Command.js";
 
-export default {
+export default Command.create({
     description: "Get information on this server",
     call (message: any): void {
         const embed: MessageEmbed = new MessageEmbed()
@@ -15,4 +16,4 @@ export default {
 
         message.channel.send({ embed });
     }
-}
+});
