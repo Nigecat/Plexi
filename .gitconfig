@@ -1,0 +1,6 @@
+[alias]
+    history = log --all --decorate --oneline --graph
+    st = status
+    a = add -A
+    cm = commit -m 
+    pl = pull
