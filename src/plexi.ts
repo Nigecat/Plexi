@@ -22,7 +22,7 @@ export default class Plexi {
 
     /** Start the bot */
     public start(): void {
-        if (this.topggapikey != "") {
+        if (this.topggapikey !== "") {
             this.dbl = new DBL(this.topggapikey, client);
             this.dbl.on("posted", () => log("debug", "DBL Server count posted!"));
         }
@@ -55,7 +55,7 @@ export default class Plexi {
     private async autoRole(member: GuildMember): Promise<void> {
         const server: Server = new Server(member.guild.id, this.database)
         await server.init();
-        if (server.autorole !== "") {
+        if (server.autorole !== "" && server.autorole !== undefined) {
             const role: Role = await member.guild.roles.fetch(server.autorole);
             member.roles.add(role).catch(console.error);
             log("status", `Applying autorole  [${role.name}]  to ${member.user.tag} in ${member.guild.name}`);
