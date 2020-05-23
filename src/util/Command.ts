@@ -3,7 +3,7 @@ import Database from "./Database";
 
 export default class {
     static create(data: Command): Command {
-        return <Command> data;
+        return data as Command;
     }
 }
 
