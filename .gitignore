@@ -1,3 +1,7 @@
+*.js
+*.map
+!archive/main.js
+
 auth.json
 node_modules/
 src/commands/resources/temp/
