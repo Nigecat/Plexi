@@ -5,6 +5,14 @@ import Database from "./util/Database.js";
 import { existsSync, promises as fs } from "fs";
 import { formatMarkdown } from "./util/util.js";
 
+
+async function runCommand(data: any, message: Message, args: (string | string[]), database: Database, client: Client) {
+    message.channel.startTyping();
+    await data.call(message, args, database, client);
+    message.channel.stopTyping();
+}
+
+
 export default async function processCommand(message: Message, database: Database, client: Client, owner: string): Promise<void> {
     const server: Server = new Server(message.guild.id, database);
     await server.init();
@@ -113,19 +121,14 @@ export default async function processCommand(message: Message, database: Databas
 
             // If no args are required for this command
             else if (!data.args) {
-                message.channel.startTyping();
-                await data.call(message, [], database, client);
-                message.channel.stopTyping();
+                runCommand(data, message, [], database, client);
             }
 
             // Check if expected arg is a string (this means it can be any length)
             else if (typeof data.args === "string") {
                 // If the user didn't enter a blank string then call the function
                 if (args.join(" ") !== "") {
-                    message.channel.startTyping();
-                    await data.call(message, args.join(" "), database, client);
-                    message.channel.stopTyping();
-
+                    runCommand(data, message, args.join(" "), database, client);
                 } else {
                     message.channel.send(`Command syntax error, expected syntax: \`${server.prefix}${command} [${data.args}]\``);
                 }
@@ -140,9 +143,7 @@ export default async function processCommand(message: Message, database: Databas
             }
 
             else {
-                message.channel.startTyping();
-                await data.call(message, args, database, client);
-                message.channel.stopTyping();
+                runCommand(data, message, args, database, client);
             }
         }
 
