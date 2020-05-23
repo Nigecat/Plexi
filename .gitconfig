@@ -4,3 +4,4 @@
     a = add -A
     cm = commit -m 
     pl = pull
+    pu = push
