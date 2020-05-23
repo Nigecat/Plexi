@@ -1,6 +1,7 @@
 import { Message } from "discord.js";
+import Command from "../../util/Command.js";
 
-export default {
+export default <Command> {
     args: ["min", "max"],
     description: "Get a random number between <min> and <max> (inclusive)",
     call (message: Message, args: string[]) {

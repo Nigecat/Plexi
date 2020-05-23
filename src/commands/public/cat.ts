@@ -1,7 +1,8 @@
 import { Message, MessageEmbed } from "discord.js";
 import fetch, { Response, RequestContext } from "node-fetch";
+import Command from "../../util/Command.js";
 
-export default {
+export default <Command> {
     description: "Get a random post from /r/cats",
     async call (message: Message): Promise<void> {
         // Get 1000 random posts from the subreddit's random.json

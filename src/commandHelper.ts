@@ -1,13 +1,14 @@
 import log from "./util/logger.js";
 import Server from "./util/Server.js";
-import { Message, Client, MessageEmbed } from "discord.js";
+import { Message, Client, MessageEmbed, BitFieldResolvable, PermissionString } from "discord.js";
 import Database from "./util/Database.js";
 import { existsSync, promises as fs } from "fs";
 import { formatMarkdown } from "./util/util.js";
 import User from "./util/User.js";
+import Command from "./util/Command.js";
 
 
-async function runCommand(data: any, message: Message, args: (string | string[]), database: Database, client: Client) {
+async function runCommand(data: Command, message: Message, args: (string | string[]), database: Database, client: Client) {
     message.channel.startTyping();
     await data.call(message, args, database, client);
     message.channel.stopTyping();
@@ -78,7 +79,7 @@ export default async function processCommand(message: Message, database: Databas
 
         // If the command exists
         if (existsSync(file)) {
-            const data: any = (await import(file)).default;
+            const data: Command = (await import(file)).default;
 
             // If no perms default to displaying NONE
             if (!data.perms) {
@@ -123,10 +124,10 @@ export default async function processCommand(message: Message, database: Databas
 
         // If the command is found
         if (existsSync(file)) {
-            const data: any = (await import(file)).default;
+            const data: Command = (await import(file)).default;
 
             // Ensure the user has the permissions to run this command
-            if (!data.perms && !message.member.hasPermission(data.perms)) {
+            if (!data.perms && !message.member.hasPermission(<BitFieldResolvable<PermissionString>> data.perms)) {
                 message.channel.send(`It appears you are missing the permission(s) \`${data.perms.join(" ")}\` to run this command`);
             }
 

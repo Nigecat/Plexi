@@ -1,8 +1,9 @@
 import { Message } from "discord.js";
+import Command from "../../util/Command.js";
 import Database from "../../util/Database.js";
 import Server from "../../util/Server.js";
 
-export default {
+export default <Command> {
     args: ["set|clear", "@role"],
     perms: ["ADMINISTRATOR"],
     description: "Assign a role to be automatically added to a user when they join this server",

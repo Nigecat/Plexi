@@ -1,6 +1,7 @@
 import { Message, MessageEmbed } from "discord.js";
+import Command from "../../util/Command.js";
 
-export default {
+export default <Command> {
     args: ["@user"],
     description: "Get a user's avatar",
     call (message: Message): void {

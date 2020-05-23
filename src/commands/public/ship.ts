@@ -1,6 +1,7 @@
 import { Message } from "discord.js";
+import Command from "../../util/Command.js";
 
-export default {
+export default <Command> {
     args: ["@user1", "@user2"],
     description: "Ship two users (merge their usernames)",
     call (message: Message): void {

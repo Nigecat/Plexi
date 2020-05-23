@@ -1,6 +1,7 @@
 import { Message } from "discord.js";
+import Command from "../../util/Command.js";
 
-export default {
+export default <Command> {
     args: "question",
     description: "Ask the 8 ball a question",
     call (message: Message, args: string): void {

@@ -1,4 +1,5 @@
 import { Message } from "discord.js";
+import Command from "../../util/Command.js";
 
 function mod(a: number, b: number): number {
     const c: number = a % b;
@@ -18,7 +19,7 @@ function compare(choice1: string, choice2: string, choices: string[]): string {
     }
 }
 
-export default {
+export default <Command> {
     args: ["rock|paper|scissors"],
     description: "Play rock paper scissors against the bot",
     call (message: Message, args: string[]) {

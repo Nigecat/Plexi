@@ -1,7 +1,8 @@
 import { Message, MessageEmbed } from "discord.js";
 import { lastMessage } from "../../util/util.js";
+import Command from "../../util/Command.js";
 
-export default {
+export default <Command> {
     description: "Mock the previous message",
     async call (message: Message): Promise<void> {
         const data: Message = await lastMessage(message.channel);

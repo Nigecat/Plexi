@@ -1,6 +1,7 @@
 import { Message } from "discord.js";
+import Command from "../../util/Command.js";
 
-export default {
+export default <Command> {
     args: ["limit"],
     perms: ["ADMINISTRATOR"],
     description: "Delete the <limit> most recent messages in the current channel",

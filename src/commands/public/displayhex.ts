@@ -1,6 +1,7 @@
 import { Message, MessageEmbed } from "discord.js";
+import Command from "../../util/Command.js";
 
-export default {
+export default <Command> {
     args: ["hex-code"],
     description: "Display a hex code (must be 6 characters)",
     call (message: Message, args: string[]): void {

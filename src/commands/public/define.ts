@@ -1,7 +1,8 @@
 import { Message } from "discord.js";
 import wd from "word-definition";
+import Command from "../../util/Command.js";
 
-export default {
+export default <Command> {
     args: ["word"],
     description: "Get the definition of a word",
     call (message: Message, args: string[]): void {
