@@ -3,7 +3,7 @@ import Database from "../../util/Database.js";
 import User from "../../util/User.js";
 import Command from "../../util/Command.js";
 
-export default <Command> {
+export default Command.create({
     args: ["@user"],
     description: "Check your peanut level",
     async call (message: Message, args: string[], database: Database): Promise<void> {
@@ -12,4 +12,4 @@ export default <Command> {
         message.channel.send(`${message.mentions.users.first()}'s peanut meter level is currently at ${user.peanuts}!`);
         message.channel.send("`Calculated with peanut algorithm™`");
     }
-}
+});

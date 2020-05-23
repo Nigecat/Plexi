@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from "discord.js";
 import Command from "../../util/Command.js";
 
-export default <Command> {
+export default Command.create({
     args: ["hex-code"],
     description: "Display a hex code (must be 6 characters)",
     call (message: Message, args: string[]): void {
@@ -19,4 +19,4 @@ export default <Command> {
             message.channel.send({ embed });  
         }
     }
-}
+});

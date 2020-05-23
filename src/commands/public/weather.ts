@@ -2,7 +2,7 @@ import { Message, MessageEmbed } from "discord.js";
 import weather from "weather-js";
 import Command from "../../util/Command.js";
 
-export default <Command> {
+export default Command.create({
     args: "<region> <c/f>",
     description: "Get the weather for the specified region (city)",
     call (message: Message, args: string): void {
@@ -37,4 +37,4 @@ export default <Command> {
            }
         });
     }
-}
+});

@@ -19,7 +19,7 @@ function compare(choice1: string, choice2: string, choices: string[]): string {
     }
 }
 
-export default <Command> {
+export default Command.create({
     args: ["rock|paper|scissors"],
     description: "Play rock paper scissors against the bot",
     call (message: Message, args: string[]) {
@@ -30,4 +30,4 @@ export default <Command> {
 
         message.channel.send(`You play ${choice1}, I play ${choice2}, ${compare(choice1, choice2, choices)}!`);
     }
-}
+});

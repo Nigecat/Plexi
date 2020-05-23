@@ -1,7 +1,13 @@
 import { Message, Client } from "discord.js";
 import Database from "./Database";
 
-export default interface Command {
+export default class {
+    static create(data: Command): Command {
+        return <Command> data;
+    }
+}
+
+export interface Command {
     args?: ( string | string[] );
     perms?: string[];
     description: string;

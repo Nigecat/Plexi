@@ -5,7 +5,7 @@ import Database from "./util/Database.js";
 import { existsSync, promises as fs } from "fs";
 import { formatMarkdown } from "./util/util.js";
 import User from "./util/User.js";
-import Command from "./util/Command.js";
+import { Command } from "./util/Command.js";
 
 
 async function runCommand(data: Command, message: Message, args: (string | string[]), database: Database, client: Client) {

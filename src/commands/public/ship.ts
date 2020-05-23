@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
 import Command from "../../util/Command.js";
 
-export default <Command> {
+export default Command.create({
     args: ["@user1", "@user2"],
     description: "Ship two users (merge their usernames)",
     call (message: Message): void {
@@ -13,4 +13,4 @@ export default <Command> {
         // Combine the first half of user1's username with the second half of user2's username
         message.channel.send(`**${user1} 💞 ${user2} = ${firsthalf}${secondhalf}**`);
     }
-}
+});

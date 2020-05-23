@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
 import Command from "../../util/Command.js";
 
-export default <Command> {
+export default Command.create({
     args: "question",
     description: "Ask the 8 ball a question",
     call (message: Message, args: string): void {
@@ -16,4 +16,4 @@ export default <Command> {
         // Get user tag and remove the 4 digits after the hashtag then pick random element of response array
         message.channel.send(`🎱** | ${message.author.username} asked:** ${args}\n🎱 **| Answer:** ${responses[Math.floor(Math.random() * responses.length)]}`);
     }
-}
+});

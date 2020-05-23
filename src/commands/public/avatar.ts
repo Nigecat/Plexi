@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from "discord.js";
 import Command from "../../util/Command.js";
 
-export default <Command> {
+export default Command.create({
     args: ["@user"],
     description: "Get a user's avatar",
     call (message: Message): void {
@@ -12,4 +12,4 @@ export default <Command> {
 
         message.channel.send({ embed });
     }
-}
+});

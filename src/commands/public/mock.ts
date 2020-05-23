@@ -2,7 +2,7 @@ import { Message, MessageEmbed } from "discord.js";
 import { lastMessage } from "../../util/util.js";
 import Command from "../../util/Command.js";
 
-export default <Command> {
+export default Command.create({
     description: "Mock the previous message",
     async call (message: Message): Promise<void> {
         const data: Message = await lastMessage(message.channel);
@@ -18,4 +18,4 @@ export default <Command> {
         
         message.channel.send({ embed });
     }
-}
+});

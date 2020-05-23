@@ -2,7 +2,7 @@ import { Message } from "discord.js";
 import ud from "urban-dictionary";
 import Command from "../../util/Command.js";
 
-export default <Command> {
+export default Command.create({
     args: "word",
     description: "Get the definition of a word (or phrase)",
     call (message: Message, args: string): void {
@@ -14,4 +14,4 @@ export default <Command> {
             }
         });
     }
-}
+});

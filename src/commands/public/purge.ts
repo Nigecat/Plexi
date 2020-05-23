@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
 import Command from "../../util/Command.js";
 
-export default <Command> {
+export default Command.create({
     args: ["limit"],
     perms: ["ADMINISTRATOR"],
     description: "Delete the <limit> most recent messages in the current channel",
@@ -18,4 +18,4 @@ export default <Command> {
             message.channel.send("Limit must be a number!");
         }
     }
-}
+});

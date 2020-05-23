@@ -3,7 +3,7 @@ import Command from "../../util/Command.js";
 import Database from "../../util/Database.js";
 import Server from "../../util/Server.js";
 
-export default <Command> {
+export default Command.create({
     args: ["set|clear", "@role"],
     perms: ["ADMINISTRATOR"],
     description: "Assign a role to be automatically added to a user when they join this server",
@@ -21,4 +21,4 @@ export default <Command> {
             server.update("autorole", id);
         } 
     }
-}
+});
