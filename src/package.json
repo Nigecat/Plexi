@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "convert-units": "^2.3.4",
+        "dblapi.js": "^2.4.0",
         "discord.js": "^12.2.0",
         "jimp": "^0.12.1",
         "node-fetch": "^2.6.0",

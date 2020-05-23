@@ -3,21 +3,30 @@ import log from "./util/logger.js";
 import processCommand from "./commandHelper.js";
 import { Message, Client, GuildMember, Role } from "discord.js";
 import Server from "./util/Server.js";
+import DBL from "dblapi.js";
 const client: Client = new Client();
 
 export default class Plexi {
     private token: string;
+    private topggapikey: string;
+    private dbl: DBL;
     public owner: string;
     private database: Database;
 
-    public constructor(token: string, owner: string, databasePath: string) {
+    public constructor(token: string, topggapikey: string, owner: string, databasePath: string) {
         this.token = token;
+        this.topggapikey = topggapikey;
         this.owner = owner;
         this.database = new Database(databasePath);
     }
 
     /** Start the bot */
     public start(): void {
+        if (this.topggapikey != "") {
+            this.dbl = new DBL(this.topggapikey, client);
+            this.dbl.on("posted", () => log("debug", "DBL Server count posted!"));
+        }
+
         process.on("uncaughtException", err => log("error", err));
         process.on("UnhandledPromiseRejectionWarning", err => log("error", err));
         client.on("warn", err => log("error", err));
