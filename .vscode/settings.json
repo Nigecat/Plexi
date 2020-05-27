@@ -2,7 +2,6 @@
     "files.exclude": {
         "**/.git": true,
         "**/node_modules/": true,
-        "**/package-lock.json": true,
         "**/*.js": { "when": "$(basename).ts" },
         "**/*.js.map": { "when": "$(basename)" }
     }
