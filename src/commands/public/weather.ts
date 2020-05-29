@@ -5,7 +5,7 @@ import Command from "../../util/Command.js";
 export default Command.create({
     args: "<region> <c/f>",
     description: "Get the weather for the specified region (city)",
-    call (message: Message, args: string): void {
+    async call (message: Message, args: string): Promise<void> {
         let region: string = args;
 
         // Check if user included the C/F
