@@ -33,9 +33,8 @@ export default class Plexi {
         client.on("error", err => log("error", err));
         client.on("ready", this.ready.bind(this));
         client.on("message", this.processMessage.bind(this));
-        client.on("guildMemberAdd", this.autoRole.bind(this));
-        client.on("guildCreate", this.setStatus);
-        client.on("guildDelete", this.setStatus);
+        client.on("guildMemberAdd", (member: GuildMember) => { this.autoRole(member); this.updateStatus(); });
+        client.on("guildMemberRemove", this.updateStatus.bind(this));
         client.on("debug", info => log("debug", info));
         client.login(this.token);
     }
@@ -43,11 +42,11 @@ export default class Plexi {
     /** Gets called when the client is ready */
     private ready(): void {
         log("ready", `Logged in as ${client.user.tag} serving ${client.users.cache.size} users across ${client.channels.cache.size} channels in ${client.guilds.cache.size} servers`);
-        this.setStatus();
+        this.updateStatus();
     }
 
     /** Update the bot's status */
-    private setStatus(): void {
+    private updateStatus(): void {
         client.user.setPresence({ activity: { type: "WATCHING", "name": `${client.users.cache.size} users | $help` }, status: "online" });
     }
 
