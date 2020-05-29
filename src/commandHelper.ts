@@ -9,9 +9,12 @@ import { Command } from "./util/Command.js";
 
 
 async function runCommand(data: Command, message: Message, args: (string | string[]), database: Database, client: Client) {
-    message.channel.startTyping();
-    await data.call(message, args, database, client);
-    message.channel.stopTyping();
+    const result = data.call(message, args, database, client);
+    if (result instanceof Promise) {
+        message.channel.startTyping();
+        await result;
+        message.channel.stopTyping();
+    }
 }
 
 
@@ -127,7 +130,7 @@ export default async function processCommand(message: Message, database: Databas
             const data: Command = (await import(file)).default;
 
             // Ensure the user has the permissions to run this command
-            if (!data.perms && !message.member.hasPermission(<BitFieldResolvable<PermissionString>> data.perms)) {
+            if (!data.perms && !message.member.hasPermission(data.perms as BitFieldResolvable<PermissionString>)) {
                 message.channel.send(`It appears you are missing the permission(s) \`${data.perms.join(" ")}\` to run this command`);
             }
 

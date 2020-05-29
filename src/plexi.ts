@@ -22,7 +22,7 @@ export default class Plexi {
 
     /** Start the bot */
     public start(): void {
-        if (this.topggapikey != "") {
+        if (this.topggapikey !== "") {
             this.dbl = new DBL(this.topggapikey, client);
             this.dbl.on("posted", () => log("debug", "DBL Server count posted!"));
         }
@@ -48,7 +48,7 @@ export default class Plexi {
 
     /** Update the bot's status */
     private setStatus(): void {
-        client.user.setPresence({ activity: { type: "PLAYING", "name": `$help | ${client.guilds.cache.size} servers` }, status: "online" });
+        client.user.setPresence({ activity: { type: "WATCHING", "name": `${client.users.cache.size} users | $help` }, status: "online" });
     }
 
     /** Autorole handler */

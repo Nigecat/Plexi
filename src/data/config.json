@@ -5,7 +5,7 @@
         "enabled": true,
 
         "debug": true,
-        "database": true,
+        "database": false,
         "ready": true,
         "status": true,
         "error": true
