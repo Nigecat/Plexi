@@ -1,0 +1,17 @@
+{
+    "name": "plexi-archive",
+    "version": "0.0.1",
+    "description": "A server archiver addon for plexi",
+    "author": "Nigecat",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Nigecat/Plexi.git"
+    },
+    "scripts": {
+        "start": "node ./main.js"
+    },
+    "dependencies": {
+        "cli-progress": "^3.8.2",
+        "discord.js": "^12.2.0"
+    }
+}

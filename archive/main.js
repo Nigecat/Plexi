@@ -1,15 +1,10 @@
-const moment = require('moment');
-const cliProgress = require('cli-progress'); 
-const progress = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
-const Discord = require('discord.js');
-const client = new Discord.Client();
-const maxMessageFetch = 50;
-const PREFIX = "a%";
+const { Client, MessageEmbed, SnowflakeUtil } = require("discord.js");
+const cliProgress = require("cli-progress");
+const client = new Client();
+const allowed = ["307429254017056769", "547881813088010241"];
+var lock = false;
 
-function formatTime(timestamp) {
-    //console.log(`Conveting timestamp ${timestamp} to human readable format...`);
-    return moment(timestamp).format("DD/MM/YYYY - hh:mm:ss a").replace("pm", "PM").replace("am", "AM"); 
-}
+Array.prototype.last = () => this[this.length - 1];
 
 function sleep(ms) {
     return new Promise(resolve => {
@@ -17,154 +12,103 @@ function sleep(ms) {
     });
 }
 
-function getFirstMessage(channel) {
-    return new Promise(async resolve => {
-        console.log("Locating first message in target channel...");
-        let messages = await channel.messages.fetch({ limit: maxMessageFetch });    // get most recent messages
-        while (messages.size == maxMessageFetch) {      // check if got max number of messages
-            console.log(`Performing message jump (${formatTime(messages.last().createdAt)})`);
-            messages = await channel.messages.fetch({ limit: maxMessageFetch, before: messages.last().id });    // if not move search backwards in time to the earliest pulled messages
-        }
-        console.log(`First message located!  (${formatTime(messages.last().createdAt)})`);
-        // return once less then the max messages have been found, this means that the search is at the start of the channel
-        resolve(messages.last());
-    });
+function formatSnowflake(snowflake) {
+    const date = SnowflakeUtil.deconstruct(snowflake).date;
+    return `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`;
 }
 
-function getMessages(targetChannel) {
-    return new Promise(async resolve => {
-        let messages = [];
-        let position = await getFirstMessage(targetChannel).id;
-    
-        while (messages.length % maxMessageFetch == 0) {  // run until not multiple of max message fetch, this will stop only after all messages from a channel have been pulled
-            let data = await targetChannel.messages.fetch({ limit: maxMessageFetch, before: position });  // get first chunk of messages after first message
-            position = data.last().id;  // set position to latest message
-            data = Array.from(data.values());
-            data.forEach(message => {
-                if (message.type != "GUILD_MEMBER_JOIN") {
-                    // add message data to array
-                    if (message.embeds.length > 0) {
-                        messages.push({ timestamp: message.createdTimestamp, author: message.author, content: message.content, embed: message.embeds[0] });
-                    } else if (message.attachments.size > 0) {
-                        messages.push({ timestamp: message.createdTimestamp, author: message.author, content: message.content, attachments: Array.from(message.attachments.values()).map(attachment => attachment.attachment) });
-                    } else if (message.reactions.cache.size > 0) {
-                        messages.push({ timestamp: message.createdTimestamp, author: message.author, content: message.content, reactions: message.reactions.cache });
-                    } else {
-                        messages.push({ timestamp: message.createdTimestamp, author: message.author, content: message.content });
-                    }
-                } else {
-                    messages.push({ timestamp: message.createdTimestamp, author: `${message.author} joined the server!`, content: "" });
-                }
-            });
-        }
-    
-        messages.reverse();   // put in chronological order
-        resolve(messages);
-    });
+function formatMessage(message) {
+    const content = `${formatSnowflake(message.id)} ${message.author} ${message.content}`;
+         
+    if (message.type === "GUILD_MEMBER_JOIN") return { content: `${message.author} joined the server!`, reactions: message.reactions.cache };
+    else if (message.embeds.length > 0) return { content, embed: message.embeds[0], reactions: message.reactions.cache };
+    else if (message.attachments.size > 0) return { content, files: Array.from(message.attachments.values()).map(attachment => attachment.attachment), reactions: message.reactions.cache };
+    else return { content, reactions: message.reactions.cache };
 }
 
-async function sendData(messages, destinationChannel) {
-    console.log(`Sending ${messages.length} messages from target channel to destination channel. ETA: ${(messages.length * 750) / 60000} minutes`);
-    progress.start(messages.length, 0);
-   
-    for (let i = 0; i < messages.length; i++) {
-        let message = messages[i];
-        if (message.content == "") {
-            var data = `${formatTime(message.timestamp)} ${message.author}`;
-        } else {
-            var data = `${formatTime(message.timestamp)} ${message.author} ${message.content}`;
-        }
+/* Returns an array of all the messages in a given channel, the zeroth element is the first message in that channel */
+async function getMessages(channel) {
+    let messages = [];
 
-        if (message.embed) {
-            await destinationChannel.send(data, { embed: message.embed } ).catch(() => {});
-        }
-        else if (message.attachments) {
-            try {
-                await destinationChannel.send(data, { files: message.attachments } ).catch(() => {});
-            } catch (err) {
-                await destinationChannel.send(data).catch(() => {});
-            }
-        } else if (message.reactions) {
-            let temp = await destinationChannel.send(data).catch(() => {});
-            await message.reactions.each(async emoji => await temp.react(emoji._emoji).catch(() => {}));
-        } else {
-            await destinationChannel.send(data).catch(() => {});
-        }
-        progress.update(i + 1);
-        await sleep(750);
+    // Get most recent message in channel
+    const firstMessage = (await channel.messages.fetch({ limit: 2 })).first();
+    messages.push(formatMessage(firstMessage));
+    let pos = firstMessage.id;
+
+    while (true) {
+        const found = await channel.messages.fetch({ limit: 50, before: pos });
+        if (found.array().length === 0) break;
+        pos = found.last().id;
+        messages = messages.concat(found.map(formatMessage));
+        console.log(`Performing message jump [${formatSnowflake(found.last().id)}] | ${messages.length} messages found`);
     }
+
+    messages.reverse();
+    return messages;
+}
+
+/** Send an array of messages to a channel */
+async function sendMessages(channel, messages, startFrom = 0) {
+    const progress = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+    progress.start(messages.length, startFrom);
+    for (let i = startFrom; i < messages.length; i++) {
+        progress.update(i);
+        const sent = await channel.send(messages[i]);
+        messages[i].reactions.array().forEach(async emoji => {
+            await sent.react(emoji._emoji);
+        });
+        await sleep(500);
+    }
+    progress.update(messages.length);
     progress.stop();
-    console.log("Finished!");
 }
 
-async function serverInfo(message, targetServer) {
-    let embed = new Discord.MessageEmbed()
-        .setTitle(targetServer.name)
-        .setThumbnail(targetServer.iconURL())
-        .addField("ID:", targetServer.id)
-        .addField("Created at:", targetServer.createdAt)
-        .addField("Owner:", `${targetServer.owner} (${targetServer.ownerID})`);
-    message.channel.send({embed});
-}
-
-client.on("ready", () => { 
-    console.log(`Logged in as ${client.user.tag}`);
-    client.user.setPresence({ status: "dnd" });
-});
+// Disable debug output if something is running (it messes with the progress bar)
+client.on("debug", info => { if (!lock) console.log(info) });
 
 client.on("message", async message => {
-    if (!message.author.bot && message.content.startsWith(PREFIX)) {
+    if (!allowed.includes(message.author.id)) return;
 
-        let args = message.content.split(PREFIX)[1].split(" ");
+    if (message.content === "a%abort") {
+        console.log("-----ABORTING-----");
+        process.exit(1);
+    }
 
-        if (message.content.startsWith(`${PREFIX}info`)) {
-            let targetServer = Array.from(client.guilds.cache.values()).filter(guild => guild.id == args[1]);
-            
-            if (targetServer.length > 0) {
-                targetServer = targetServer[0];
-                serverInfo(message, targetServer);
-                
-            } else {
-                message.channel.send("Invalid target server, make sure this bot is in the server you are trying to target!");
-            }
+    else if (message.content.startsWith("a%info") && message.content.split(" ").length == 2) {
+        const server = client.guilds.cache.get(message.content.split(" ")[1]);
+        const embed = new MessageEmbed()
+            .setTitle(server.name)
+            .setThumbnail(server.iconURL())
+            .addField("ID:", server.id)
+            .addField("Created at:", server.createdAt)
+            .addField("Owner:", `${server.owner} (${server.ownerID})`);
+        message.channel.send({ embed });
+    }
 
-        } else if (args.length == 4) {
-            let targetServer = Array.from(client.guilds.cache.values()).filter(guild => guild.id == args[0]);
-            let destinationServer = Array.from(client.guilds.cache.values()).filter(guild => guild.id == args[1]);
-
-            if (targetServer.length > 0) {
-                targetServer = targetServer[0];
-
-                if (destinationServer.length > 0) {
-                    destinationServer = destinationServer[0];
-                    targetChannel = Array.from(targetServer.channels.cache.values()).filter(channel => channel.id == args[2]);
-                    
-                    if (targetChannel.length > 0) {
-                        targetChannel = targetChannel[0];
-                        destinationChannel = Array.from(destinationServer.channels.cache.values()).filter(channel => channel.id == args[3]);
-
-                        if (destinationChannel.length > 0) {
-                            destinationChannel = destinationChannel[0];
-
-                            let messages = await getMessages(targetChannel);
-                            sendData(messages, destinationChannel);
-
-                        } else {
-                            message.channal.send("Invalid destination channel, make sure this bot is in the server you are trying to target!");
-                        }
-                    } else {
-                        message.channal.send("Invalid target channel, make sure this bot is in the server you are trying to target!");
-                    }
-                } else {
-                    message.channal.send("Invalid destination server, make sure this bot is in the server you are trying to target!");
-                }
-            } else {
-                message.channal.send("Invalid target server, make sure this bot is in the server you are trying to target!");
-            }
-        } else {
-            message.channel.send(`Invalid number of args, run \`${PREFIX}help\` for more details`);
+    else if (message.content.startsWith("a%") && message.content.split(" ").length === 3) {
+        if (lock) {
+            message.channel.send("A clone is already in progress, please wait for it to finish first!");
+            return;
         }
+
+
+        lock = true;
+
+        const type = message.content.split(" ")[0].substring(2);
+        const source = client.channels.cache.get(message.content.split(" ")[1]);
+        const destination = client.channels.cache.get(message.content.split(" ")[2]);
+
+        message.channel.send(`Performing operation ${type}, reading source \`#${source.name} in ${source.guild.name}\` to destination \`#${destination.name} in ${destination.guild.name}\``);
+        const messages = await getMessages(source);
+
+        if (type === "clone") {
+            await sendMessages(destination, messages);
+        } else if (type === "resume") {
+            await sendMessages(destination, messages, (await getMessages(destination)).length);
+        }
+
+        lock = false;
     }
 });
 
-client.login("NjIxMTc5Mjg5NDkxOTk2Njgz.XqYI1A.jlBux-KtGhuOqH72CJJ2omK_-oo");
+client.login(require("../src/data/auth.json").token);
