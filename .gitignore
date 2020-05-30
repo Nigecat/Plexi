@@ -1,6 +1,7 @@
 *.js
 *.map
-!archive/main.js
+!archive/*.js
+!explorer/*.js
 
 auth.json
 node_modules/
