@@ -15,8 +15,9 @@ function formatSnowflake(snowflake) {
 }
 
 function formatMessage(message) {
-    if (message.type === "GUILD_MEMBER_JOIN") return `${message.author.id}@${message.author.tag} joined the server!`;
-    else return `${formatSnowflake(message.id)} ${message.author.id}@${message.author.tag} ${message.content}`;
+    if (message.type === "GUILD_MEMBER_JOIN") return `\u001b[31m${message.author.id}@${message.author.tag} joined the server!\x1b[0m`;
+    else if (message.attachments.size > 0) return `\u001b[34m${formatSnowflake(message.id)} ${message.author.id}@${message.author.tag}\x1b[0m \u001b[36m${Array.from(message.attachments.values()).map(attachment => attachment.attachment)[0]}\x1b[0m`;
+    else return `\u001b[34m${formatSnowflake(message.id)} ${message.author.id}@${message.author.tag}\x1b[0m \u001b[36m${message.content}\x1b[0m`;
 }
 
 module.exports.send = async function(client, pos, content) {
@@ -34,25 +35,30 @@ module.exports.send = async function(client, pos, content) {
 }
 
 module.exports.users = async function(client, pos) {
-    console.log("\u001b[36m%s\x1b[0m", getGuild(client, pos).members.cache.map(member => `${member.user.id}@${member.user.tag}[${member.nickname || ""}] (${member.roles.cache.map(role => role.name).join(" | ")})`).join("\n"));
+    console.log(getGuild(client, pos).members.cache.map(member => `\u001b[34m${member.user.id}@${member.user.tag}[${member.nickname || ""}]\x1b[0m \u001b[36m(${member.roles.cache.map(role => role.name).join(" | ")})\x1b[0m ${member.user.bot ? "\u001b[31m[BOT]\x1b[0m" : ""}`).join("\n"));
     return pos;
 }
 
-module.exports.shutdown = async function(client, pos) {
+module.exports.exit = async function(client, pos) {
     client.destroy();
     process.exit(0);
 }
 
 module.exports.cd = async function(client, pos, args) {
     const depth = pos.split("/").length - 1;
+
+    // Return to root
+    if (args == "~" || args == "/") {
+        return "~";
+    }
     
     // Go up a folder
-    if (args == "..") {
+    else if (args == "..") {
         return pos.split("/").slice(0, -1).join("/");
     }
 
     // If user enters <ID>@<NAME> strip it to just the id
-    if (args.includes("@")) {
+    else if (args.includes("@")) {
         args = args.split("@")[0];
     }
 
