@@ -17,7 +17,7 @@ client.on("ready", async () => {
     while (true) {
         const res = await input(`\n\u001b[32m${user} ${pos}\x1b[0m\n$ `);
         const command = res.split(" ")[0];
-        const args = res.split(" ").slice(1);
+        const args = res.split(" ").slice(1).join(" ");
 
         if (command in commands) {
             pos = await commands[command](client, pos, args);
