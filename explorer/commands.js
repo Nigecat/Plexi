@@ -1,10 +1,13 @@
 const { SnowflakeUtil } = require("discord.js");
 
+function getGuild(client, pos) {
+    return client.guilds.cache.get(pos.split("/")[1]);
+}
+
 function validURLImage(url) {
     // true if this url is a png or jpg image.
     return url.endsWith("png") || url.endsWith("jpg");
 }
-
 
 function formatSnowflake(snowflake) {
     const date = SnowflakeUtil.deconstruct(snowflake).date;
@@ -12,8 +15,8 @@ function formatSnowflake(snowflake) {
 }
 
 function formatMessage(message) {
-    if (message.type === "GUILD_MEMBER_JOIN") return `${message.author} joined the server!`;
-    else return `${formatSnowflake(message.id)} ${message.author} ${message.content}`;
+    if (message.type === "GUILD_MEMBER_JOIN") return `${message.author.id}@${message.author.tag} joined the server!`;
+    else return `${formatSnowflake(message.id)} ${message.author.id}@${message.author.tag} ${message.content}`;
 }
 
 module.exports.send = async function(client, pos, content) {
@@ -27,6 +30,11 @@ module.exports.send = async function(client, pos, content) {
         console.log(`Sent message: ${content}`);
     }
 
+    return pos;
+}
+
+module.exports.users = async function(client, pos) {
+    console.log("\u001b[36m%s\x1b[0m", getGuild(client, pos).members.cache.map(member => `${member.user.id}@${member.user.tag}[${member.nickname || ""}]          (${member.roles.cache.map(role => role.name).join(" | ")})`).join("\n"));
     return pos;
 }
 
@@ -65,10 +73,10 @@ module.exports.cd = async function(client, pos, args) {
     else if (depth === 1) {
         // If not a number
         if (!/\d/.test(args)) {
-            args = client.guilds.cache.get(pos.split("/")[1]).channels.cache.find(channel => channel.name === args).id;
+            args = getGuild(client, pos).channels.cache.find(channel => channel.name === args).id;
         }
         // If specified channel id exists in guild
-        if (client.guilds.cache.get(pos.split("/")[1]).channels.cache.get(args)) {
+        if (getGuild(client, pos).channels.cache.get(args)) {
             return `${pos}/${args}`;
         }
     }
@@ -92,7 +100,7 @@ module.exports.ls = async function(client, pos, args) {
     // This means we are in a server, list all channels (with categories)
     else if (depth === 1) {
         console.log("\u001b[34m");
-        client.guilds.cache.get(pos.split("/")[1]).channels.cache.each(channel => {
+        getGuild(client, pos).channels.cache.each(channel => {
             if (channel.type !== "category") {
                 console.log(`${channel.type === "text" ? "[text]  " : "[voice] "} ${channel.id}@${channel.name}`);
             }
@@ -102,9 +110,9 @@ module.exports.ls = async function(client, pos, args) {
 
     // This means we are in a channel, list args most recent messages MAX 50, will default to 5
     else if (depth === 2) {
-        args = parseInt(args) || 5;
+        args = parseInt(args) || 10;
         if (args[0] > 50) args = 50;
-        messages = await client.guilds.cache.get(pos.split("/")[1]).channels.cache.get(pos.split("/")[2]).messages.fetch({ limit: args });
+        messages = await getGuild(client, pos).channels.cache.get(pos.split("/")[2]).messages.fetch({ limit: args });
         console.log("\u001b[36m%s\x1b[0m", messages.map(formatMessage).reverse().join("\n"));
     }
 
