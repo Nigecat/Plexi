@@ -34,7 +34,7 @@ module.exports.send = async function(client, pos, content) {
 }
 
 module.exports.users = async function(client, pos) {
-    console.log("\u001b[36m%s\x1b[0m", getGuild(client, pos).members.cache.map(member => `${member.user.id}@${member.user.tag}[${member.nickname || ""}]          (${member.roles.cache.map(role => role.name).join(" | ")})`).join("\n"));
+    console.log("\u001b[36m%s\x1b[0m", getGuild(client, pos).members.cache.map(member => `${member.user.id}@${member.user.tag}[${member.nickname || ""}] (${member.roles.cache.map(role => role.name).join(" | ")})`).join("\n"));
     return pos;
 }
 
