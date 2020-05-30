@@ -1,35 +1,13 @@
-const { SnowflakeUtil } = require("discord.js");
-
-function getGuild(client, pos) {
-    return client.guilds.cache.get(pos.split("/")[1]);
-}
-
-function validURLImage(url) {
-    // true if this url is a png or jpg image.
-    return url.endsWith("png") || url.endsWith("jpg");
-}
-
-function formatSnowflake(snowflake) {
-    const date = SnowflakeUtil.deconstruct(snowflake).date;
-    return `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`;
-}
-
-function formatMessage(message) {
-    if (message.type === "GUILD_MEMBER_JOIN") return `\u001b[31m${message.author.id}@${message.author.tag} joined the server!\x1b[0m`;
-    else if (message.attachments.size > 0) return `\u001b[34m${formatSnowflake(message.id)} ${message.author.id}@${message.author.tag}\x1b[0m \u001b[36m${Array.from(message.attachments.values()).map(attachment => attachment.attachment)[0]}\x1b[0m`;
-    else return `\u001b[34m${formatSnowflake(message.id)} ${message.author.id}@${message.author.tag}\x1b[0m \u001b[36m${message.content}\x1b[0m`;
-}
+const { getGuild, validURLImage, formatMessage } = require("./util.js");
 
 module.exports.send = async function(client, pos, content) {
+    console.log(`Sending image: ${content}`);
     if (validURLImage(content)) {
-        console.log(`Sending image: ${content}`);
         await client.guilds.cache.get(pos.split("/")[1]).channels.cache.get(pos.split("/")[2]).send({ files: [content] });
-        console.log(`Sent image: ${content}`);
     } else {
-        console.log(`Sending message: ${content}`);
         await client.guilds.cache.get(pos.split("/")[1]).channels.cache.get(pos.split("/")[2]).send(content);
-        console.log(`Sent message: ${content}`);
     }
+    console.log(`Sent message: ${content}`);
 
     return pos;
 }
