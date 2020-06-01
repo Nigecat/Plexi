@@ -18,15 +18,12 @@ function formatSnowflake(snowflake) {
 }
 
 function formatMessage(message) {
-    try {
-        const content = `${formatSnowflake(message.id)} ${message.author} ${message.content}`;
-        if (message.type === "GUILD_MEMBER_JOIN") return { content: `${message.author} joined the server!`, reactions: message.reactions.cache };
-        else if (message.embeds.length > 0) return { content, embed: message.embeds[0], reactions: message.reactions.cache };
-        else if (message.attachments.size > 0) return { content, files: Array.from(message.attachments.values()).map(attachment => attachment.attachment), reactions: message.reactions.cache };
-        else return { content, reactions: message.reactions.cache };
-    } catch (err) {
-        return { content: "undefined" };
-    }
+    const content = `${formatSnowflake(message.id)} ${message.author} ${message.content}`;
+    
+    if (message.type === "GUILD_MEMBER_JOIN") return { content: `${message.author} joined the server!`, reactions: message.reactions.cache };
+    else if (message.embeds.length > 0) return { content, embed: message.embeds[0], reactions: message.reactions.cache };
+    else if (message.attachments.size > 0) return { content, files: Array.from(message.attachments.values()).map(attachment => attachment.attachment), reactions: message.reactions.cache };
+    else return { content, reactions: message.reactions.cache };
 }
 
 /* Returns an array of all the messages in a given channel, the zeroth element is the first message in that channel */
