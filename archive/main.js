@@ -107,6 +107,8 @@ client.on("message", async message => {
             await sendMessages(destination, messages, (await getMessages(destination)).length);
         }
 
+        message.author.send(`Operation ${type}, \`#${source.name} in ${source.guild.name}\` => \`#${destination.name} in ${destination.guild.name}\` finished!`);
+
         lock = false;
     }
 });
