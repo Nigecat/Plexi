@@ -9,10 +9,11 @@ module.exports.invite = async function(client, pos) {
 
 /***  Send a message to the current channel  */
 module.exports.send = async function(client, pos, content) {
-    console.log(`Sending image: ${content}`);
     if (validURLImage(content)) {
+        console.log(`Sending image: ${content}`);
         await client.guilds.cache.get(pos.split("/")[1]).channels.cache.get(pos.split("/")[2]).send({ files: [content] });
     } else {
+        console.log(`Sending message: ${content}`);
         await client.guilds.cache.get(pos.split("/")[1]).channels.cache.get(pos.split("/")[2]).send(content);
     }
     console.log(`Sent message: ${content}`);
