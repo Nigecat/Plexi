@@ -1,7 +1,7 @@
 const { getGuild, validURLImage, formatMessage } = require("./util.js");
 
 /** Change the bot's nick */
-module.exports.nick = function(client, pos, name) {
+module.exports.nick = async function(client, pos, name) {
     getGuild(client, pos).members.cache.get(client.user.id).setNickname(name);
     return pos;
 }
@@ -124,7 +124,7 @@ module.exports.ls = async function(client, pos, args) {
 
 
 /**  View all server roles */
-module.exports.roles = function(client, pos) {
+module.exports.roles = async function(client, pos) {
     getGuild(client, pos).roles.cache.each(role => {
         console.log(`${role.id}@${role.name}`);
     });
