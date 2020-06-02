@@ -17,7 +17,7 @@ export default Command.create({
             if (args.toLowerCase().startsWith("https://youtube.com/") || args.toLowerCase().startsWith("https://youtu.be/")) {
                 play(message, args);
             } else {
-                message.channel.send("This must be a url! Search terms aren't supporterd yet.");
+                message.channel.send("This must be a url, search terms aren't supporterd yet.");
             }
         } else {
             message.channel.send("You must be in a vc to run this!");
