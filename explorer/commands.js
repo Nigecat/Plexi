@@ -114,3 +114,13 @@ module.exports.ls = async function(client, pos, args) {
 
     return pos;
 }
+
+
+/**  View all server roles */
+module.exports.roles = function(client, pos) {
+    getGuild(client, pos).roles.cache.each(role => {
+        console.log(`${role.id}@${role.name}`);
+    });
+
+    return pos;
+}
