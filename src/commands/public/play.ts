@@ -1,8 +1,6 @@
 import { Message } from "discord.js";
 import ytdl from "ytdl-core";
 import Command from "../../util/Command.js";
-import auth from "../../data/auth.json";
-import youtubeSearch from "youtube-search";
 
 function play(message: Message, url: string) {
     message.member.voice.channel.join().then(connection => {
