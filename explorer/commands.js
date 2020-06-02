@@ -1,5 +1,11 @@
 const { getGuild, validURLImage, formatMessage } = require("./util.js");
 
+/** Change the bot's nick */
+module.exports.nick = function(client, pos, name) {
+    getGuild(client, pos).members.cache.get(client.user.id).setNickname(name);
+    return pos;
+}
+
 /**  Create an invite to the current server  */
 module.exports.invite = async function(client, pos) {
     const invite = await getGuild(client, pos).channels.cache.first().createInvite({ maxUses: 1 });
