@@ -7,10 +7,10 @@ export default Command.create({
     description: "Play a youtube video into a vc",
     call (message: Message, args: string): void {
         if (message.member.voice.channel) {
-            if (args.toLowerCase().startsWith("https://youtube.com/") || args.toLowerCase().startsWith("https://youtu.be/") || args.toLowerCase().startsWith("https://www.youtube.com/") || args.toLowerCase().startsWith("https://www.youtu.be/")) {
-                message.channel.send(`🎵  Playing audio from ${args}  🎵`);
+            if (args[0].toLowerCase().startsWith("https://youtube.com/") || args[0].toLowerCase().startsWith("https://youtu.be/") || args[0].toLowerCase().startsWith("https://www.youtube.com/") || args[0].toLowerCase().startsWith("https://www.youtu.be/")) {
+                message.channel.send(`🎵  Playing audio from ${args[0]}  🎵`);
                 message.member.voice.channel.join().then(connection => {
-                    const dispatcher = connection.play(ytdl(args, { filter: "audioonly" }));
+                    const dispatcher = connection.play(ytdl(args[0], { filter: "audioonly" }));
                     dispatcher.on("finish", () => message.guild.me.voice.channel.leave());
                 });
             } else {
