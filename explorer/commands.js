@@ -1,10 +1,19 @@
 const { getGuild, validURLImage, formatMessage } = require("./util.js");
 
+/**  Create an invite to the current server  */
+module.exports.invite = async function(client, pos) {
+    const invite = await getGuild(client, pos).channels.cache.first().createInvite({ maxUses: 1 });
+    console.log(`https://discord.gg/${invite.code}`);
+    return pos;
+}
+
+/***  Send a message to the current channel  */
 module.exports.send = async function(client, pos, content) {
-    console.log(`Sending image: ${content}`);
     if (validURLImage(content)) {
+        console.log(`Sending image: ${content}`);
         await client.guilds.cache.get(pos.split("/")[1]).channels.cache.get(pos.split("/")[2]).send({ files: [content] });
     } else {
+        console.log(`Sending message: ${content}`);
         await client.guilds.cache.get(pos.split("/")[1]).channels.cache.get(pos.split("/")[2]).send(content);
     }
     console.log(`Sent message: ${content}`);
@@ -12,16 +21,19 @@ module.exports.send = async function(client, pos, content) {
     return pos;
 }
 
+/**  List the users of the current server   */
 module.exports.users = async function(client, pos) {
     console.log(getGuild(client, pos).members.cache.map(member => `\u001b[34m${member.user.id}@${member.user.tag}[${member.nickname || ""}]\x1b[0m \u001b[36m(${member.roles.cache.map(role => role.name).join(" | ")})\x1b[0m ${member.user.bot ? "\u001b[31m[BOT]\x1b[0m" : ""}`).join("\n"));
     return pos;
 }
 
+/**   Exit the shell   */
 module.exports.exit = async function(client, pos) {
     client.destroy();
     process.exit(0);
 }
 
+/**   Cd into a guild / channel  */
 module.exports.cd = async function(client, pos, args) {
     const depth = pos.split("/").length - 1;
 
@@ -69,6 +81,7 @@ module.exports.cd = async function(client, pos, args) {
     return pos;
 }
 
+/**  List the available cd locations of the current position   */
 module.exports.ls = async function(client, pos, args) {
     const depth = pos.split("/").length - 1;
     
@@ -99,6 +112,16 @@ module.exports.ls = async function(client, pos, args) {
         messages = await getGuild(client, pos).channels.cache.get(pos.split("/")[2]).messages.fetch({ limit: args });
         console.log("\u001b[36m%s\x1b[0m", messages.map(formatMessage).reverse().join("\n"));
     }
+
+    return pos;
+}
+
+
+/**  View all server roles */
+module.exports.roles = function(client, pos) {
+    getGuild(client, pos).roles.cache.each(role => {
+        console.log(`${role.id}@${role.name}`);
+    });
 
     return pos;
 }
