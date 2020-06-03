@@ -50,6 +50,7 @@ module.exports.cd = async function(client, pos, args) {
     
     // Go up a folder
     else if (args == "..") {
+        if (pos == "~") return "~";
         return pos.split("/").slice(0, -1).join("/");
     }
 
@@ -62,7 +63,10 @@ module.exports.cd = async function(client, pos, args) {
     if (depth === 0) {
         // If not a number
         if (!/\d/.test(args)) {
-            args = client.guilds.cache.find(guild => guild.name === args).id;
+            // Catch if guild does not exist
+            try {
+                args = client.guilds.cache.find(guild => guild.name === args).id;
+            } catch (err) {};
         }
         
         // If specified guild id exists
@@ -75,15 +79,18 @@ module.exports.cd = async function(client, pos, args) {
     else if (depth === 1) {
         // If not a number
         if (!/\d/.test(args)) {
-            args = getGuild(client, pos).channels.cache.find(channel => channel.name === args).id;
-        }
+            // Catch if channel does not exist
+            try {
+                args = getGuild(client, pos).channels.cache.find(channel => channel.name === args).id;
+            } catch (err) {};
+    }
         // If specified channel id exists in guild
         if (getGuild(client, pos).channels.cache.get(args)) {
             return `${pos}/${args}`;
         }
     }
 
-    console.log(`cd: ${args}: No such file or directory`);
+    console.log(`cd: ${args}: The system cannot find the path specified.`);
     return pos;
 }
 
