@@ -19,8 +19,7 @@
         "@types/node": "^14.0.4",
         "@types/node-fetch": "^2.5.7",
         "@types/sqlite3": "^3.1.6",
-        "tslint": "^6.1.2",
-        "typescript": "^3.9.3"
+        "tslint": "^6.1.2"
     },
     "dependencies": {
         "@discordjs/opus": "^0.3.2",
@@ -31,6 +30,7 @@
         "jimp": "^0.12.1",
         "node-fetch": "^2.6.0",
         "sqlite3": "^4.2.0",
+        "typescript": "^3.9.3",
         "urban-dictionary": "^2.2.1",
         "weather-js": "^2.0.0",
         "word-definition": "^2.1.6",
