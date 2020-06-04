@@ -1,6 +1,7 @@
 # This workflow will do a clean install of node dependencies and build the source code
+#       it will also run the linter
 
-name: Node.js CI
+name: build
 
 on:
   push:
@@ -29,13 +30,8 @@ jobs:
 
       - name: Install dependencies
         working-directory: ${{ env.working-directory }}
-        continue-on-error: true
         run: npm install
           
       - name: Run lint
         working-directory: ${{ env.working-directory }}
         run: npm run lint
-
-      - name: Run test
-        working-directory: ${{ env.working-directory }}
-        run: npm run test
