@@ -30,7 +30,6 @@ jobs:
 
       - name: Install dependencies
         working-directory: ${{ env.working-directory }}
-        continue-on-error: true
         run: npm install
           
       - name: Run lint
