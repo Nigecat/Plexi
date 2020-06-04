@@ -4,7 +4,7 @@
     "debug": {
         "enabled": true,
 
-        "debug": true,
+        "debug": false,
         "database": false,
         "ready": true,
         "status": true,
