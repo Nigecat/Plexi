@@ -4,7 +4,7 @@ import User from "../../util/User.js";
 import Database from "../../util/Database.js";
 
 export default Command.create({
-    description: "Claim 50 daily catrd coins",
+    description: "Claim 50 daily coins",
     async call (message: Message, args: string, database: Database): Promise<void> {
         const user: User = new User(message.author.id, database);
         const now: number = +new Date();
