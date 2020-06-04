@@ -20,7 +20,7 @@ export default class User {
         this.dailyclaimtime = data[0].dailyclaimtime;
     }
 
-    public update(key: string, value: string): void {
+    public update(key: "peanuts" | "coins" | "dailyclaimtime", value: string): void {
         this[key] = value;
         this.database.run(`UPDATE User SET ${key} = ? WHERE id = ?`, [value, this.id]);
     }
