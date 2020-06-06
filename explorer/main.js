@@ -20,7 +20,11 @@ client.on("ready", async () => {
         const args = res.split(" ").slice(1).join(" ");
 
         if (command in commands) {
-            pos = await commands[command](client, pos, args);
+            try {
+                pos = await commands[command](client, pos, args);
+            } catch (err) {
+                console.log("\x1b[31m%s: %s\x1b[0m", err.name, err.message);
+            }
         } else {
             console.log(`${command}: command not found`);
         }
