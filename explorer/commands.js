@@ -185,7 +185,7 @@ module.exports.ls = async function(client, pos, args) {
 */
 module.exports.roles = async function(client, pos) {
     getGuild(client, pos).roles.cache.each(role => {
-        console.log(`${role.id}@${role.name}`);
+        console.log(`\u001b[34m${role.id}@${role.name}\x1b[0m`);
     });
 
     return pos;
