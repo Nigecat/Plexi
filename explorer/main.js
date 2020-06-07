@@ -16,14 +16,22 @@ client.on("ready", async () => {
 
     while (true) {
         const res = await input(`\n\u001b[32m${user} ${pos}\x1b[0m\n$ `);
-        const command = res.split(" ")[0];
-        const args = res.split(" ").slice(1).join(" ");
+        const data = res.split("&&").map(cmd => cmd.trim());
 
-        if (command in commands) {
-            pos = await commands[command](client, pos, args);
-        } else {
-            console.log(`${command}: command not found`);
-        }
+        for (let i = 0; i < data.length; i++) {
+            const command = data[i].split(" ")[0];
+            const args = data[i].split(" ").slice(1).join(" ");
+            
+            if (command in commands) {
+                try {
+                    pos = await commands[command](client, pos, args);
+                } catch (err) {
+                    console.log("\x1b[31m%s: %s\x1b[0m", err.name, err.message);
+                }
+            } else {
+                console.log(`${command}: command not found`);
+            }
+        };
     }
 });
 
