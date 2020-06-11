@@ -12,6 +12,8 @@ async function runCommand(data: Command, message: Message, args: (string | strin
     const result = data.call(message, args, database, client);
     if (result instanceof Promise) {
         message.channel.startTyping();
+        // Force stop typing after 5 seconds because the bot sometimes gets stuck
+        setTimeout(message.channel.stopTyping, 5000);
         await result;
         message.channel.stopTyping();
     }
