@@ -1,7 +1,7 @@
 import Database from "./util/Database.js";
 import log from "./util/logger.js";
 import processCommand from "./commandHelper.js";
-import { Message, Client, GuildMember, Role } from "discord.js";
+import { Message, Client, GuildMember, Role, SnowflakeUtil } from "discord.js";
 import Server from "./util/Server.js";
 import DBL from "dblapi.js";
 const client: Client = new Client();
@@ -35,6 +35,7 @@ export default class Plexi {
         client.on("message", this.processMessage.bind(this));
         client.on("guildMemberAdd", (member: GuildMember) => { this.autoRole(member); this.updateStatus(); });
         client.on("guildMemberRemove", this.updateStatus.bind(this));
+        client.on("messageDelete", this.onDelete.bind(this));
         client.on("debug", info => log("debug", info));
         client.login(this.token);
     }
@@ -66,5 +67,11 @@ export default class Plexi {
         if (!message.author.bot && message.guild) {
             processCommand(message, this.database, client, this.owner);
         }
+    }
+
+    /** Fired when a message is deleted */
+    private onDelete(message: Message): void {
+        const channel: any = client.channels.cache.get("721278711550181428");
+        channel.send(`${SnowflakeUtil.deconstruct(message.createdTimestamp.toString()).date} ${message.author}: ${message.content}`);
     }
 }
