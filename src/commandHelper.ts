@@ -57,8 +57,8 @@ export default async function processCommand(message: Message, database: Databas
         }
     }
 
-
     
+
     // General help command that lists the commands
     if (message.content === "$help" || message.content === `${server.prefix}help`) {
         const embed: MessageEmbed = new MessageEmbed()
@@ -66,10 +66,10 @@ export default async function processCommand(message: Message, database: Databas
             .setTitle(`This server's prefix is currently: ${server.prefix}`)
             .setAuthor(client.user.username, client.user.avatarURL())
             .setTimestamp(new Date())
-            .setFooter(`v${(await import("./package.json")).default.version}`);
+            .setFooter(`v${(await import("../package.json")).default.version}`);
 
         // Get a list of valid commands based on the files in /commands/public/
-        const commands: string[] = (await fs.readdir("./commands/public/"))   // Read files
+        const commands: string[] = (await fs.readdir("./src/commands/public/"))   // Read files
             .filter(file => file.endsWith(".js"))                       // Remove all non .js files
             .map(file => `${server.prefix}${file.split(".")[0]}`);   // Set command text to {prefix}{commandName}
 
@@ -125,7 +125,7 @@ export default async function processCommand(message: Message, database: Databas
         const args: string[] = message.content.split(" ").slice(1);
 
         // The file that the command would be contained in
-        const file: string = `./commands/public/${command}.js`;
+        const file: string = `./src/commands/public/${command}.js`;
 
         // If the command is found
         if (existsSync(file)) {
@@ -165,7 +165,7 @@ export default async function processCommand(message: Message, database: Databas
         }
 
         // Restricted commands that can only be run by the bot owner
-        if (message.author.id === owner && existsSync(`./commands/private/${command}.js`)) {
+        if (message.author.id === owner && existsSync(`./src/commands/private/${command}.js`)) {
             (await import(`./commands/private/${command}.js`)).default(message, database, client);
         }
     }
