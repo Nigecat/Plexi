@@ -1,4 +1,4 @@
-import { Client } from "discord.js";
+import { Client, MessageEmbed } from "discord.js";
 import Archiver from "./archiver.js";
 import auth from "../src/data/auth.json";
 const client = new Client();
@@ -22,6 +22,9 @@ client.on("message", message => {
         if (message.content.startsWith("a%help")) {
             message.channel.send(`\`\`\`markdown
 # Usage:
+    a%info <serverID>
+        Get server info
+
     a%clone <targetChannelID> <destinationChannelID>
         This will clone the contents of a channel to another channel
 
@@ -34,16 +37,27 @@ client.on("message", message => {
             \`\`\``);
         }
 
+        else if (message.content.startsWith("a%info")) {
+            const server = client.guilds.cache.get(message.content.split(" ")[1]);
+            const embed = new MessageEmbed()
+                .setTitle(server.name)
+                .setThumbnail(server.iconURL())
+                .addField("ID:", server.id)
+                .addField("Created at:", server.createdAt)
+                .addField("Owner:", `${server.owner} (${server.ownerID})`);
+            message.channel.send({ embed });
+        }
+
         else if (message.content.startsWith("a%clone") || message.content.startsWith("a%resume")) {
-            let targetChannel = message.content.split(" ")[1];
-            let destinationChannel = message.content.split(" ")[2];
+            const targetChannel = message.content.split(" ")[1];
+            const destinationChannel = message.content.split(" ")[2];
     
             // Ensure both channels are found in the client's channel cache
             if (client.channels.cache.has(targetChannel) && client.channels.cache.has(destinationChannel)) {
                 if (message.content.startsWith("a%clone")) {
-                    archiver.startClone(message.channel, client.channels.cache.get(targetChannel), client.channels.cache.get(destinationChannel));
+                    archiver.start(message.channel, client.channels.cache.get(targetChannel), client.channels.cache.get(destinationChannel));
                 } else if (message.content.startsWith("a%resume")) {
-                    archiver.resumeClone(message.channel, client.channels.cache.get(targetChannel), client.channels.cache.get(destinationChannel));
+                    archiver.resume(message.channel, client.channels.cache.get(targetChannel), client.channels.cache.get(destinationChannel));
                 }
             } else {
                 message.channel.send("Channel not found! One of the channels you specified could not be found... Maybe this bot is not in the server that the channel resides in.")
