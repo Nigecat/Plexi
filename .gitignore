@@ -1,6 +1,6 @@
 *.js
 *.map
-!archive/*.js
+!archiver/*.js
 !explorer/*.js
 
 auth.json
