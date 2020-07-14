@@ -55,7 +55,7 @@ client.on("message", message => {
             // Ensure both channels are found in the client's channel cache
             if (client.channels.cache.has(targetChannel) && client.channels.cache.has(destinationChannel)) {
                 if (message.content.startsWith("a%clone")) {
-                    archiver.start(message.channel, client.channels.cache.get(targetChannel), client.channels.cache.get(destinationChannel));
+                    archiver.clone(message.channel, client.channels.cache.get(targetChannel), client.channels.cache.get(destinationChannel));
                 } else if (message.content.startsWith("a%resume")) {
                     archiver.resume(message.channel, client.channels.cache.get(targetChannel), client.channels.cache.get(destinationChannel));
                 }
