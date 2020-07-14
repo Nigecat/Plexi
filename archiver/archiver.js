@@ -1,3 +1,4 @@
+import { Message } from "discord.js";
 
 export default class Archiver {
     client;
@@ -9,11 +10,13 @@ export default class Archiver {
         this.whitelist = whitelist;
     }
 
-    startClone(targetChannel, destinationChannel) {
+    startClone(originChannel, targetChannel, destinationChannel) {
+        originChannel.send(`Starting clone from target ${targetChannel} to destination ${destinationChannel}`);
 
+        
     }
 
-    resumeClone(targetChannel, destinationChannel) {
+    resumeClone(originChannel, targetChannel, destinationChannel) {
 
     }
 }

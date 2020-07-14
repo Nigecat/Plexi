@@ -41,9 +41,9 @@ client.on("message", message => {
             // Ensure both channels are found in the client's channel cache
             if (client.channels.cache.has(targetChannel) && client.channels.cache.has(destinationChannel)) {
                 if (message.content.startsWith("a%clone")) {
-                    archiver.startClone(targetChannel, destinationChannel);
+                    archiver.startClone(message.channel, client.channels.cache.get(targetChannel), client.channels.cache.get(destinationChannel));
                 } else if (message.content.startsWith("a%resume")) {
-                    archiver.resumeClone(targetChannel, destinationChannel);
+                    archiver.resumeClone(message.channel, client.channels.cache.get(targetChannel), client.channels.cache.get(destinationChannel));
                 }
             } else {
                 message.channel.send("Channel not found! One of the channels you specified could not be found... Maybe this bot is not in the server that the channel resides in.")

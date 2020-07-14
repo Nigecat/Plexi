@@ -13,8 +13,8 @@
         "build": "tsc",
         "clean": "tsc --build --clean",
         "start": "npm run build && node --experimental-modules --experimental-json-modules src/launcher.js",
-        "start-archiver": "node --experimental-json-modules archiver/main.js",
-        "start-explorer": "node --experimental-json-modules explorer/main.js"
+        "start-archiver": "node --experimental-modules --experimental-json-modules archiver/main.js",
+        "start-explorer": "node --experimental-modules --experimental-json-modules explorer/main.js"
     },
     "devDependencies": {
         "@types/convert-units": "^2.3.1",
