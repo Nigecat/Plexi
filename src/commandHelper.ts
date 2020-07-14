@@ -80,11 +80,9 @@ export default async function processCommand(message: Message, database: Databas
 
     // Help command to get information on a specific command
     else if (message.content.startsWith(`${server.prefix}help`)) {
-        const file: string = `./commands/public/${message.content.split(" ")[1]}.js`;
-
         // If the command exists
-        if (existsSync(file)) {
-            const data: Command = (await import(file)).default;
+        if (existsSync(`./src/commands/public/${message.content.split(" ")[1]}.js`)) {
+            const data: Command = (await import(`./commands/public/${message.content.split(" ")[1]}.js`)).default;
 
             // If no perms default to displaying NONE
             if (!data.perms) {
@@ -124,12 +122,9 @@ export default async function processCommand(message: Message, database: Databas
         // Extract everything apart from the first word
         const args: string[] = message.content.split(" ").slice(1);
 
-        // The file that the command would be contained in
-        const file: string = `./src/commands/public/${command}.js`;
-
         // If the command is found
-        if (existsSync(file)) {
-            const data: Command = (await import(file)).default;
+        if (existsSync(`./src/commands/public/${command}.js`)) {
+            const data: Command = (await import(`./commands/public/${command}.js`)).default;
 
             // Ensure the user has the permissions to run this command
             if (!data.perms && !message.member.hasPermission(data.perms as BitFieldResolvable<PermissionString>)) {
