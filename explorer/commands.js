@@ -1,9 +1,9 @@
-const { getGuild, validURLImage, formatMessage } = require("./util.js");
+import { getGuild, validURLImage, formatMessage } from "./util.js";
 
 /** Kick a user from the current server (option arg, reason)
 * @example kick <snowflake> <reason?>
 */
-module.exports.kick = async function(client, pos, args) {
+export async function kick(client, pos, args) {
     if (args.includes("@")) {
         args = args.split("@")[0];
     }
@@ -22,7 +22,7 @@ module.exports.kick = async function(client, pos, args) {
 /** Ban a user from the current server (option arg, reason) 
 * @example ban <snowflake> <reason?>
 */
-module.exports.ban = async function(client, pos, args) {
+export async function ban(client, pos, args) {
     if (args.includes("@")) {
         args = args.split("@")[0];
     }
@@ -41,7 +41,7 @@ module.exports.ban = async function(client, pos, args) {
 /** Change the bot's nick 
  * @example nick <newnick>
 */
-module.exports.nick = async function(client, pos, name) {
+export async function nick(client, pos, name) {
     getGuild(client, pos).members.cache.get(client.user.id).setNickname(name);
     return pos;
 }
@@ -49,7 +49,7 @@ module.exports.nick = async function(client, pos, name) {
 /**  Create an invite to the current server  
  * @example nick
 */
-module.exports.invite = async function(client, pos) {
+export async function invite(client, pos) {
     const invite = await getGuild(client, pos).channels.cache.first().createInvite({ maxUses: 1 });
     console.log(`https://discord.gg/${invite.code}`);
     return pos;
@@ -58,7 +58,7 @@ module.exports.invite = async function(client, pos) {
 /**  Send a message to the current channel  
  * @example send <text>
 */
-module.exports.send = async function(client, pos, content) {
+export async function send(client, pos, content) {
     if (validURLImage(content)) {
         await client.guilds.cache.get(pos.split("/")[1]).channels.cache.get(pos.split("/")[2]).send({ files: [content] });
     } else {
@@ -72,7 +72,7 @@ module.exports.send = async function(client, pos, content) {
 /**  List the users of the current server   
  * @example users
 */
-module.exports.users = async function(client, pos) {
+export async function users(client, pos) {
     console.log(getGuild(client, pos).members.cache.map(member => `\u001b[34m${member.user.id}@${member.user.tag}[${member.nickname || ""}]\x1b[0m \u001b[36m(${member.roles.cache.map(role => role.name).join(" | ")})\x1b[0m ${member.user.bot ? "\u001b[31m[BOT]\x1b[0m" : ""}`).join("\n"));
     return pos;
 }
@@ -80,7 +80,7 @@ module.exports.users = async function(client, pos) {
 /**   Exit the shell   
  * @example exit
 */
-module.exports.exit = async function(client, pos) {
+export async function exit(client, pos) {
     client.destroy();
     process.exit(0);
 }
@@ -88,7 +88,7 @@ module.exports.exit = async function(client, pos) {
 /**   Cd into a guild / channel  
  * @example cd <(guild/channel)snowflake>
 */
-module.exports.cd = async function(client, pos, args) {
+export async function cd(client, pos, args) {
     const depth = pos.split("/").length - 1;
 
     // Return to root
@@ -145,7 +145,7 @@ module.exports.cd = async function(client, pos, args) {
 /**  List the available cd locations of the current position   
  * @example ls
 */
-module.exports.ls = async function(client, pos, args) {
+export async function ls(client, pos, args) {
     const depth = pos.split("/").length - 1;
     
     // This means we are at root, list all servers
@@ -183,7 +183,7 @@ module.exports.ls = async function(client, pos, args) {
 /**  View all server roles 
  * @example roles
 */
-module.exports.roles = async function(client, pos) {
+export async function roles(client, pos) {
     getGuild(client, pos).roles.cache.each(role => {
         console.log(`\u001b[34m${role.id}@${role.name}\x1b[0m`);
     });

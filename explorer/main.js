@@ -1,7 +1,9 @@
-const { Client } = require("discord.js");
-const commands = require("./commands.js");
+import { Client } from "discord.js";
+import { createInterface } from "readline";
+import auth from "../src/data/auth.json";
+import * as commands from "./commands.js";
 const client = new Client();
-const readline = require("readline").createInterface({
+const readline = createInterface({
     input: process.stdin,
     output: process.stdout
 });
@@ -35,4 +37,4 @@ client.on("ready", async () => {
     }
 });
 
-client.login(require("../src/data/auth.json").token);
+client.login(auth.token);

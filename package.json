@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "2.3.2",
+    "version": "2.4.1",
     "description": "A general purpose fun/moderation discord bot",
     "author": "Nigecat",
     "type": "module",
@@ -12,7 +12,9 @@
         "lint": "tslint --fix src/**/*.ts",
         "build": "tsc",
         "clean": "tsc --build --clean",
-        "start": "npm run build && node --experimental-modules --experimental-json-modules src/launcher.js"
+        "start": "npm run build && node --experimental-modules --experimental-json-modules src/launcher.js",
+        "start-archiver": "node --experimental-modules --experimental-json-modules archiver/main.js",
+        "start-explorer": "node --experimental-modules --experimental-json-modules explorer/main.js"
     },
     "devDependencies": {
         "@types/convert-units": "^2.3.1",
@@ -23,6 +25,7 @@
     },
     "dependencies": {
         "@discordjs/opus": "^0.3.2",
+        "cli-progress": "^3.8.2",
         "convert-units": "^2.3.4",
         "dblapi.js": "^2.4.0",
         "discord.js": "^12.2.0",
