@@ -9,11 +9,13 @@ function sleep(ms) {
     });
 }
 
+/*  Format a discord snowflake into something human readable   */
 function formatSnowflake(snowflake) {
     const date = SnowflakeUtil.deconstruct(snowflake).date;
     return `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`;
 }
 
+/*   Convert a message to the format that sendMessages is expecting   */
 function formatMessage(message) {
     if (message.type === "GUILD_MEMBER_JOIN") return { content: `${message.author} joined the server!`, reactions: message.reactions.cache };
     else if (message.embeds.length > 0) return { id: message.id, author: message.author, content: message.content, reactions: message.reactions.cache, payload: { embed: message.embeds[0] } };
@@ -38,6 +40,7 @@ async function getMessages(channel) {
         console.log(`Performing message jump [${formatSnowflake(found.last().id)}] | ${messages.length} messages found`);
     }
 
+    // Reverse the messages so the oldest message is at the start of the array
     messages.reverse();
     return messages;
 }
@@ -51,10 +54,13 @@ async function sendMessages(channel, messages, startFrom = 0) {
         await hook.delete("Clearing space");
     }
     
+    // This will hold any webhooks we create during the sending process
+    //  They will be mapped to the user snowflake that they represent
     let users = {};
 
     const progress = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
     progress.start(messages.length, startFrom);
+
     for (let i = startFrom; i < messages.length; i++) {
         progress.update(i);
 
@@ -76,8 +82,8 @@ async function sendMessages(channel, messages, startFrom = 0) {
 
         // Send the message content using the webhook
         //  If the previous message was by the same person don't include the extra author details
-        if (messages[i].author.id == messages[i > 0 ? i - 1 : i].author.id) {
-            var sent = await users[messages[i].author.id].send("no");
+        if (i != 0 && messages[i].author.id == messages[i > 0 ? i - 1 : i].author.id) {
+            var sent = await users[messages[i].author.id].send(Object.assign({}, messages[i].payload, { content: messages[i].content, allowedMentions: { users : [] } }));
         } else {
             messages[i].content = `[${messages[i].author} | ${formatSnowflake(messages[i].id)}]\n${messages[i].content}`
             var sent = await users[messages[i].author.id].send(Object.assign({}, messages[i].payload, { content: messages[i].content, allowedMentions: { users : [] } }));
