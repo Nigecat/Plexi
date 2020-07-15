@@ -127,6 +127,13 @@ export default class Archiver {
     }
 
     async resume(originChannel, targetChannel, destinationChannel) {
+        originChannel.send(`Resuming from target ${targetChannel} to destination ${destinationChannel}`);
+        this.active = true;
 
+        const messages = await getMessages(targetChannel);
+        const startAt = (await getMessages(destinationChannel)).length;
+        sendMessages(destinationChannel, messages, startAt);
+        
+        this.active = false;
     }
 }
