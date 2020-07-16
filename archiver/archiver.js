@@ -79,9 +79,9 @@ async function sendMessages(channel, messages, startFrom = 0) {
         }
 
         // If this message and the previous message are not within 5 mintues of each other add a timestamp
-        if (SnowflakeUtil.deconstruct(messages[i > 0 ? i - 1 : 0].id).date > SnowflakeUtil.deconstruct(messages[i].id).date - 300000) {
+        if (i == 0 || SnowflakeUtil.deconstruct(messages[i - 1].id).date < SnowflakeUtil.deconstruct(messages[i].id).date - 300000) {
             //messages[i].content = `[${messages[i].author} | ${formatSnowflake(messages[i].id)}]\n${messages[i].content}`
-            messages[i].content = `[${formatSnowflake(messages[i].id)}]\n${messages[i].content}`
+            messages[i].content = `[${formatSnowflake(messages[i].id)}] ${messages[i].content}`
 
         }
 
@@ -130,7 +130,7 @@ export default class Archiver {
         this.active = true;
 
         const messages = await getMessages(targetChannel);
-        sendMessages(destinationChannel, messages, 0);
+        await sendMessages(destinationChannel, messages, 0);
 
         this.active = false;
     }
@@ -141,7 +141,7 @@ export default class Archiver {
 
         const messages = await getMessages(targetChannel);
         const startAt = (await getMessages(destinationChannel)).length;
-        sendMessages(destinationChannel, messages, startAt);
+        await sendMessages(destinationChannel, messages, startAt);
         
         this.active = false;
     }
