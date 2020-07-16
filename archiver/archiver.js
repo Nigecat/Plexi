@@ -66,11 +66,9 @@ async function sendMessages(channel, messages, startFrom = 0) {
 
         // If we don't have a webhook for this user
         if (!(messages[i].author.id in users)) {
-            // If we have 10 webhooks which is the max then remove all of them before making this new one
+            // If we have 10 webhooks which is the max then remove a random one before making this new one
             if (Object.keys(users).length >= 10) {
-                for (let user in users) {
-                    await users[user].delete("Clearing space");
-                }
+                await users[Math.floor(Math.random() * users.length)].delete("Clearing space");
             }
 
             // Make one
