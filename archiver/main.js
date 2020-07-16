@@ -56,11 +56,10 @@ client.on("message", async message => {
             if (client.channels.cache.has(targetChannel) && client.channels.cache.has(destinationChannel)) {
                 if (message.content.startsWith("a%clone")) {
                     await archiver.clone(message.channel, client.channels.cache.get(targetChannel), client.channels.cache.get(destinationChannel));
-                    message.author.send("Archive finished!");
                 } else if (message.content.startsWith("a%resume")) {
                     await archiver.resume(message.channel, client.channels.cache.get(targetChannel), client.channels.cache.get(destinationChannel));
-                    message.author.send("Archive finished!");
                 }
+                message.author.send("Archive finished!");
             } else {
                 message.channel.send("Channel not found! One of the channels you specified could not be found... Maybe this bot is not in the server that the channel resides in.")
             }
