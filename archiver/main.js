@@ -14,7 +14,7 @@ client.on("ready", () => {
     console.log("\u001b[32mReady to begin archiving!\u001b[0m");
 });
 
-client.on("message", message => {
+client.on("message", async message => {
     // If the is on our whitelist
     if (archiver.whitelist.includes(message.author.id)) {
         // Valid commands are: a%help | a%clone | a%resume
@@ -55,10 +55,11 @@ client.on("message", message => {
             // Ensure both channels are found in the client's channel cache
             if (client.channels.cache.has(targetChannel) && client.channels.cache.has(destinationChannel)) {
                 if (message.content.startsWith("a%clone")) {
-                    archiver.clone(message.channel, client.channels.cache.get(targetChannel), client.channels.cache.get(destinationChannel));
+                    await archiver.clone(message.channel, client.channels.cache.get(targetChannel), client.channels.cache.get(destinationChannel));
                 } else if (message.content.startsWith("a%resume")) {
-                    archiver.resume(message.channel, client.channels.cache.get(targetChannel), client.channels.cache.get(destinationChannel));
+                    await archiver.resume(message.channel, client.channels.cache.get(targetChannel), client.channels.cache.get(destinationChannel));
                 }
+                message.author.send("Archive finished!");
             } else {
                 message.channel.send("Channel not found! One of the channels you specified could not be found... Maybe this bot is not in the server that the channel resides in.")
             }
