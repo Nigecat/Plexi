@@ -1,6 +1,5 @@
-import { existsSync } from "fs";
 import sqlite3 from "sqlite3";
-import { rejects } from "assert";
+import { existsSync } from "fs";
 
 export default class Database {
     connection: sqlite3.Database;
@@ -30,6 +29,7 @@ export default class Database {
         }
     }
 
+    /** Get a row from the database */
     get(table: string, id: string): Promise<any> {
         return new Promise(resolve => {
             this.connection.get(`SELECT * FROM ${table} WHERE id = ?`, [id], (err, row) => {
@@ -44,6 +44,7 @@ export default class Database {
         });
     }
 
+    /** Update data in the database */
     set(table: string, id: string, key: string, value: string): Promise<any> {
         return new Promise(resolve => {
             this.connection.run(`UPDATE ${table} SET ${key} = ? WHERE id = ?`, [value, id], err => {
@@ -52,7 +53,10 @@ export default class Database {
         });
     }
 
+    /** Close the database connection for this class */
     close() {
-        this.connection.close();
+        return new Promise(resolve => {
+            this.connection.close(() => { resolve() });
+        });
     }
 }

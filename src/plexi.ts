@@ -25,7 +25,7 @@ export default class Plexi {
     private processMessage(message: Message) {
         // Prevent the bot from responding to other bots and in dm channels
         if (!message.author.bot && message.guild) {
-            processCommand(message, this.database, this.owner);
+            processCommand(message, this.database, this.client, this.owner);
         }
     }
 }
