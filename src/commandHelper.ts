@@ -20,6 +20,10 @@ export default async function processCommand(message: Message, database: Databas
             // Import the command
             const data: Command = (await import(`./commands/public/${commands[0]}`)).default;
 
+            // Extract the args from the message by removing the command from it
+            const args = message.content.split(" ");
+            args.shift();
+
             // Verify that the incoming arguments match the command exports
             if (data.args) {
                 
@@ -27,10 +31,14 @@ export default async function processCommand(message: Message, database: Databas
 
             // Verify the the user's permissions match the incoming command permissions
             if (data.perms) {
-                
+                // If they aren't all found in the message author
+                if (!data.perms.every(perm => message.member.permissions.has(perm))) {
+                    message.channel.send(`You are missing permission(s) \`[${data.perms.join(", ")}]\` to run this command.`);
+                    return;
+                }
             }
 
-            data.call(<CommandData>{ client, message, database });
+            data.call(<CommandData>{ client, message, args, database });
         }
     }
 }

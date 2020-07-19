@@ -1,14 +1,14 @@
 import Database from "./models/database.js";
-import { Message, Client, Role, User, PermissionFlags, NewsChannel, TextChannel } from "discord.js";
+import { Message, Client, Role, User, NewsChannel, TextChannel, PermissionString } from "discord.js";
 
 /** An optional command argument */
 export type Optional<T> = T;
 
 /** Each command must export one of these */
 export interface Command {
-    args?: Array<string | number | Role | User | Optional<string | number | Role | User>>,
+    args?: Array<string | number | typeof Role | typeof User | Array<string | number | typeof Role | typeof User> | Optional<string | number | typeof Role | typeof User>>,
     description?: string,
-    perms?: PermissionFlags,
+    perms?: PermissionString[], 
     call: (args0: CommandData) => void | Promise<void>
 }
 
@@ -16,7 +16,8 @@ export interface Command {
 export interface CommandData {
     client?: Client,
     message?: CommandMessage,
-    database?: Database
+    database?: Database,
+    args: Array<string | number | Role | User>
 }
 
 /** The message type that gets passed to our commands

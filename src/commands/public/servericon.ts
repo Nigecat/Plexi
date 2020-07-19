@@ -1,7 +1,7 @@
 import { MessageEmbed } from "discord.js";
 import { Command, CommandData } from "../../types.js";
 
-export default <Command>{
+export default <Command> {
     description: "Get the current server's icon",
     call({ message }: CommandData) {
         const embed = new MessageEmbed({
