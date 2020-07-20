@@ -38,6 +38,19 @@ export default async function processCommand(message: Message, database: Databas
         user.update("peanuts", (Number(user.peanuts) + (message.content.toLowerCase().match(/peanut/g) || []).length).toString());
     }   
 
+    // @someone feature replication see https://youtu.be/BeG5FqTpl9U
+    //  Requires a role called 'someone' to exist and be pinged
+    if (message.mentions.roles.size > 0 && message.mentions.roles.some(role => role.name == "someone")) {
+        //message.guild.members.cache.random().roles.add(message.guild.roles.cache.find(role => role.name == "someone")).then(member => {
+        message.guild.members.cache.random().roles.add(message.guild.roles.cache.find(role => role.name == "someone")).then(member => {
+            message.channel.send("<@&" + message.guild.roles.cache.find(role => role.name == "someone").id + ">").then(msg => {
+                msg.delete().then(() => {
+                    member.roles.remove(message.guild.roles.cache.find(role => role.name == "someone"));
+                });
+            });
+        });
+    }
+
 
     // Literally just pseudo-nitro (since bots can use emotes like how nitro does)
     if (message.content.startsWith("g`")) {
