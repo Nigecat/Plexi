@@ -33,18 +33,18 @@ export default class Plexi {
 
             // @someone feature replication see https://youtu.be/BeG5FqTpl9U
             //  Requires a role called 'someone' to exist
-            if (message.mentions.roles.size > 0 && message.mentions.roles.some(role => role.name == "someone")) {
+            if (message.mentions.roles.size > 0 && message.mentions.roles.some(role => role.name === "someone")) {
                 // Assign the 'someone' role to a random member
-                const member = await message.guild.members.cache.random().roles.add(message.guild.roles.cache.find(role => role.name == "someone"));
+                const member = await message.guild.members.cache.random().roles.add(message.guild.roles.cache.find(role => role.name === "someone"));
 
                 // Ping the @someone role, this will ping the person who it was assigned to
-                const msg = await message.channel.send("<@&" + message.guild.roles.cache.find(role => role.name == "someone").id + ">");
+                const msg = await message.channel.send("<@&" + message.guild.roles.cache.find(role => role.name === "someone").id + ">");
                 
                 // Delete the role ping message
                 msg.delete();
                 
                 // Remove the role from the user
-                member.roles.remove(message.guild.roles.cache.find(role => role.name == "someone"));
+                member.roles.remove(message.guild.roles.cache.find(role => role.name === "someone"));
             }
 
 

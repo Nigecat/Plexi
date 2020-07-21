@@ -6,7 +6,7 @@ export type Optional<T> = T;
 
 /** Each command must export one of these 
  *      NOTE: The args are purely for the help command, argument checking must be done by the command itself
-*/
+ */
 export interface Command {
     args?: string[],
     description?: string,

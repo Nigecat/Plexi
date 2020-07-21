@@ -8,7 +8,7 @@ export default async function processCommand(message: Message, database: Databas
     const server = await Server(database, message.guild.id);
 
     // Check if this is the global help command
-    if (message.content == `${server.prefix}help`) {
+    if (message.content === `${server.prefix}help`) {
         const files = readdirSync("src/commands/public/");
         const embed = new MessageEmbed({
             title: `This server's is currently: ${server.prefix}`,
@@ -23,11 +23,11 @@ export default async function processCommand(message: Message, database: Databas
 
     // Check if this is a normal help command
     else if (message.content.startsWith(`${server.prefix}help`)) {
-        if (message.content.split(" ").length != 2) return;
-        let command = message.content.split(" ")[1];
+        if (message.content.split(" ").length !== 2) return;
+        const command = message.content.split(" ")[1];
         if (existsSync(`src/commands/public/${command}.js`)) {
-            let data: Command = (await import(`./commands/public/${command}.js`)).default;
-            let help = [{ header: "Command", value: `${server.prefix}${command} ${data.args ? data.args.join(" ") : ""}` }, { header: "Description", value: data.description }];
+            const data: Command = (await import(`./commands/public/${command}.js`)).default;
+            const help = [{ header: "Command", value: `${server.prefix}${command} ${data.args ? data.args.join(" ") : ""}` }, { header: "Description", value: data.description }];
             if (data.perms) help.push({ header: "Required Permissions", value: data.perms.join(" | ") });
             message.channel.send("```markdown\n" + help.map(section => `# ${section.header}\n${section.value}`).join("\n\n") + "\n```");
         }
@@ -60,7 +60,7 @@ export default async function processCommand(message: Message, database: Databas
             message.channel.startTyping();
 
             try {
-                await data.call(<CommandData>{ client, message, args, database });
+                await data.call({ client, message, args, database } as CommandData);
             } catch (err) {
                 // If the command throws an invalid argument error then send the expected arguments
                 if (err instanceof InvalidArgument) {
@@ -74,8 +74,8 @@ export default async function processCommand(message: Message, database: Databas
         }
 
         // Trigger any private commands as well
-        if (message.author.id == owner && existsSync(`src/commands/private/${command}.js`)) {
-            (await import(`./commands/private/${command}.js`)).default(<CommandData>{ client, message, args, database });
+        if (message.author.id === owner && existsSync(`src/commands/private/${command}.js`)) {
+            (await import(`./commands/private/${command}.js`)).default({ client, message, args, database } as CommandData);
         }
     }
 }
