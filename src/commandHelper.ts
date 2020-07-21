@@ -1,14 +1,28 @@
-import { existsSync } from "fs";
 import Server from "./models/server.js";
 import Database from "./models/database.js";
-import { Message, Client } from "discord.js";
+import { existsSync, readdirSync } from "fs";
+import { Message, Client, MessageEmbed } from "discord.js";
 import { Command, CommandData, InvalidArgument } from "./types.js";
 
 export default async function processCommand(message: Message, database: Database, client: Client, owner: string) {
     const server = await Server(database, message.guild.id);
 
+    // Check if this is the help command
+    if (message.content.startsWith(`${server.prefix}help`)) {
+        const files = readdirSync("src/commands/public/");
+        const embed = new MessageEmbed({
+            title: `This server's is currently: ${server.prefix}`,
+            author: { name: client.user.username, iconURL: client.user.avatarURL({ format: "png", dynamic: true }) },
+            timestamp: new Date(),
+            color: "#7289DA",
+            footer: { text: `v${(await import("../package.json")).default.version}` },
+            fields: [{ name: `Use ${server.prefix}help <command> to get more details`, value: files.filter(file => file.endsWith(".ts")).map(file => server.prefix + file.split(".")[0]) }]
+        });
+        message.channel.send({ embed });
+    }
+
     // If the message starts with the same prefix as this server
-    if (message.content.startsWith(server.prefix)) {
+    else if (message.content.startsWith(server.prefix)) {
         // Remove the prefix from the message content then get the first word
         const command = message.content.replace(server.prefix, "").split(" ")[0];
 
