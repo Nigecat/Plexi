@@ -38,14 +38,14 @@ export default async function processCommand(message: Message, database: Databas
         // Remove the prefix from the message content then get the first word
         const command = message.content.replace(server.prefix, "").split(" ")[0];
 
+        // Extract the args from the message by removing the command from it
+        const args = message.content.split(" ");
+        args.shift();
+
         // If we found a matching command
         if (existsSync(`src/commands/public/${command}.js`)) {
             // Import the command
             const data: Command = (await import(`./commands/public/${command}.js`)).default;
-
-            // Extract the args from the message by removing the command from it
-            const args = message.content.split(" ");
-            args.shift();
 
             // Verify the the user's permissions match the incoming command permissions
             if (data.perms) {
@@ -71,6 +71,11 @@ export default async function processCommand(message: Message, database: Databas
             } finally {
                 message.channel.stopTyping(true);
             }
+        }
+
+        // Trigger any private commands as well
+        if (message.author.id == owner && existsSync(`src/commands/private/${command}.js`)) {
+            (await import(`./commands/private/${command}.js`)).default(<CommandData>{ client, message, args, database });
         }
     }
 }
