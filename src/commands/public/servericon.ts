@@ -6,9 +6,9 @@ export default {
     call({ message }: CommandData) {
         const embed = new MessageEmbed({
             color: "#0099ff",
-            title: message.guild.name
+            title: message.guild.name,
+            image: { url: message.guild.iconURL({ dynamic: true, format: "png", size: 512 }) }
         });
-        embed.setImage(message.guild.iconURL({ dynamic: true, format: "png", size: 512 }));
         message.channel.send({ embed });
     }
 } as Command
