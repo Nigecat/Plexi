@@ -1,12 +1,14 @@
 import Database from "./models/database.js";
-import { Message, Client, Role, User, NewsChannel, TextChannel, PermissionString } from "discord.js";
+import { Message, Client, NewsChannel, TextChannel, PermissionString } from "discord.js";
 
 /** An optional command argument */
 export type Optional<T> = T;
 
-/** Each command must export one of these */
+/** Each command must export one of these 
+ *      NOTE: The args are purely for the help command, argument checking must be done by the command itself
+*/
 export interface Command {
-    args?: Array<string | number | typeof Role | typeof User | Array<string | number | typeof Role | typeof User> | Optional<string | number | typeof Role | typeof User>>,
+    args?: string[],
     description?: string,
     perms?: PermissionString[], 
     call: (args0: CommandData) => void | Promise<void>
@@ -17,7 +19,7 @@ export interface CommandData {
     client?: Client,
     message?: CommandMessage,
     database?: Database,
-    args: Array<string | number | Role | User>
+    args?: string[]
 }
 
 /** The message type that gets passed to our commands
@@ -26,3 +28,6 @@ export interface CommandData {
 interface CommandMessage extends Omit<Message, "channel"> {
     channel: TextChannel | NewsChannel
 }
+
+/** Custom error class that commands are expected to throw if an invalid argument is sent */
+export class InvalidArgument extends Error { }

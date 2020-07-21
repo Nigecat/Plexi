@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import Server from "./models/server.js";
 import Database from "./models/database.js";
 import { Message, Client } from "discord.js";
-import { Command, CommandData } from "./types.js";
+import { Command, CommandData, InvalidArgument } from "./types.js";
 
 export default async function processCommand(message: Message, database: Database, client: Client, owner: string) {
     const server = await Server(database, message.guild.id);
@@ -24,11 +24,6 @@ export default async function processCommand(message: Message, database: Databas
             const args = message.content.split(" ");
             args.shift();
 
-            // Verify that the incoming arguments match the command exports
-            if (data.args) {
-                
-            }
-
             // Verify the the user's permissions match the incoming command permissions
             if (data.perms) {
                 // If they aren't all found in the message author
@@ -38,7 +33,21 @@ export default async function processCommand(message: Message, database: Databas
                 }
             }
 
-            data.call(<CommandData>{ client, message, args, database });
+            // Make the bot display as typing for the duration of the command
+            message.channel.startTyping();
+
+            try {
+                await data.call(<CommandData>{ client, message, args, database });
+            } catch (err) {
+                // If the command throws an invalid argument error then send the expected arguments
+                if (err instanceof InvalidArgument) {
+                    await message.channel.send(`Invalid command syntax, expected syntax: \`${server.prefix}${command} ${data.args.join(" ")}\``);
+                } else {
+                    await message.channel.send(`Oops!\nIt appears that you have somehow managed to cause a fatel error, attempting to run the command again will usually fix the issue. If all else fails please contact <@${owner}>.\nHere are the error details:\n\`\`\`Time: ${(new Date()).toLocaleString()}\n\nContent: ${message.content}\n\nLocation: commands/public/${command}.ts\n\nError: ${err}\n\n---------- BEGIN STACK TRACE ----------\n${err.stack}\n---------- END STACK TRACE ----------\`\`\``);
+                }
+            } finally {
+                message.channel.stopTyping(true);
+            }
         }
     }
 }
