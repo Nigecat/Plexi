@@ -1,4 +1,4 @@
-import { promises as fs } from "fs";
+import { existsSync } from "fs";
 import Server from "./models/server.js";
 import Database from "./models/database.js";
 import { Message, Client } from "discord.js";
@@ -12,13 +12,10 @@ export default async function processCommand(message: Message, database: Databas
         // Remove the prefix from the message content then get the first word
         const command = message.content.replace(server.prefix, "").split(" ")[0];
 
-        // Compare the entered command against the files in commands/public and get any matching .js files
-        const commands = (await fs.readdir("src/commands/public")).filter(cmd => cmd == command + ".js");
-        
         // If we found a matching command
-        if (commands.length > 0) {
+        if (existsSync(`src/commands/public/${command}.js`)) {
             // Import the command
-            const data: Command = (await import(`./commands/public/${commands[0]}`)).default;
+            const data: Command = (await import(`./commands/public/${command}.js`)).default;
 
             // Extract the args from the message by removing the command from it
             const args = message.content.split(" ");
