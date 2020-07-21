@@ -7,8 +7,8 @@ import { Command, CommandData, InvalidArgument } from "./types.js";
 export default async function processCommand(message: Message, database: Database, client: Client, owner: string) {
     const server = await Server(database, message.guild.id);
 
-    // Check if this is the help command
-    if (message.content.startsWith(`${server.prefix}help`)) {
+    // Check if this is the global help command
+    if (message.content == `${server.prefix}help`) {
         const files = readdirSync("src/commands/public/");
         const embed = new MessageEmbed({
             title: `This server's is currently: ${server.prefix}`,
@@ -19,6 +19,18 @@ export default async function processCommand(message: Message, database: Databas
             fields: [{ name: `Use ${server.prefix}help <command> to get more details`, value: files.filter(file => file.endsWith(".ts")).map(file => server.prefix + file.split(".")[0]) }]
         });
         message.channel.send({ embed });
+    }
+
+    // Check if this is a normal help command
+    else if (message.content.startsWith(`${server.prefix}help`)) {
+        if (message.content.split(" ").length != 2) return;
+        let command = message.content.split(" ")[1];
+        if (existsSync(`src/commands/public/${command}.js`)) {
+            let data: Command = (await import(`./commands/public/${command}.js`)).default;
+            let help = [{ header: "Command", value: `${server.prefix}${command} ${data.args ? data.args.join(" ") : ""}` }, { header: "Description", value: data.description }];
+            if (data.perms) help.push({ header: "Required Permissions", value: data.perms.join(" | ") });
+            message.channel.send("```markdown\n" + help.map(section => `# ${section.header}\n${section.value}`).join("\n\n") + "\n```");
+        }
     }
 
     // If the message starts with the same prefix as this server
