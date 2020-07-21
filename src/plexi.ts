@@ -29,6 +29,8 @@ export default class Plexi {
             processCommand(message, this.database, this.client, this.owner);
 
 
+            /*  Special handlers  */
+
             // @someone feature replication see https://youtu.be/BeG5FqTpl9U
             //  Requires a role called 'someone' to exist
             if (message.mentions.roles.size > 0 && message.mentions.roles.some(role => role.name == "someone")) {
@@ -43,6 +45,12 @@ export default class Plexi {
                 
                 // Remove the role from the user
                 member.roles.remove(message.guild.roles.cache.find(role => role.name == "someone"));
+            }
+
+
+            // Custom code for 264163117078937601 (Pinpointpotato#9418) AKA the ideas man
+            if (message.author.id === "264163117078937601" && message.content.toLowerCase().includes("you know why they call me the ideas man")) {
+                message.channel.send("cuz i CLEEEEEEAaaan up");
             }
         }
     }
