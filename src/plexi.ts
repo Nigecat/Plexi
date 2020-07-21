@@ -22,10 +22,28 @@ export default class Plexi {
     }
 
     /** Process an incoming message */
-    private processMessage(message: Message) {
+    private async processMessage(message: Message) {
         // Prevent the bot from responding to other bots and in dm channels
         if (!message.author.bot && message.guild) {
+            // Send the message through to the general command processing function
             processCommand(message, this.database, this.client, this.owner);
+
+
+            // @someone feature replication see https://youtu.be/BeG5FqTpl9U
+            //  Requires a role called 'someone' to exist
+            if (message.mentions.roles.size > 0 && message.mentions.roles.some(role => role.name == "someone")) {
+                // Assign the 'someone' role to a random member
+                const member = await message.guild.members.cache.random().roles.add(message.guild.roles.cache.find(role => role.name == "someone"));
+
+                // Ping the @someone role, this will ping the person who it was assigned to
+                const msg = await message.channel.send("<@&" + message.guild.roles.cache.find(role => role.name == "someone").id + ">");
+                
+                // Delete the role ping message
+                msg.delete();
+                
+                // Remove the role from the user
+                member.roles.remove(message.guild.roles.cache.find(role => role.name == "someone"));
+            }
         }
     }
 }
