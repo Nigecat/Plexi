@@ -2,6 +2,7 @@
 *.map
 !archiver/*.js
 !explorer/*.js
+!createCommand.js
 
 auth.json
 node_modules/

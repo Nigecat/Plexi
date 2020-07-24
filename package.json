@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "3.0.3",
+    "version": "3.0.4",
     "description": "A general purpose fun/moderation discord bot",
     "author": "Nigecat",
     "type": "module",
@@ -14,7 +14,8 @@
         "clean": "tsc --build --clean",
         "start": "npm run build && node --experimental-modules --experimental-json-modules src/launcher.js",
         "start-archiver": "node --experimental-modules --experimental-json-modules archiver/main.js",
-        "start-explorer": "node --experimental-modules --experimental-json-modules explorer/main.js"
+        "start-explorer": "node --experimental-modules --experimental-json-modules explorer/main.js",
+        "create-command": "node ./createCommand.js "
     },
     "devDependencies": {
         "@types/convert-units": "^2.3.1",
