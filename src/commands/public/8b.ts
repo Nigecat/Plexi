@@ -1,4 +1,4 @@
-import { Command, CommandData, InvalidArgument } from "../../types.js";
+import { Command, CommandData } from "../../types.js";
 
 export default {
     description: "Ask the 8 ball a question",
