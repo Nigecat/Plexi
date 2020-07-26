@@ -1,42 +1,23 @@
 {
     "name": "plexi",
-    "version": "2.4.2",
+    "version": "4.0.0",
     "description": "A general purpose fun/moderation discord bot",
-    "author": "Nigecat",
-    "type": "module",
+    "author": "src/main.js",
+    "main": "module",
     "repository": {
         "type": "git",
         "url": "https://github.com/Nigecat/Plexi.git"
     },
     "scripts": {
-        "lint": "tslint --fix src/**/*.ts",
-        "build": "tsc",
-        "clean": "tsc --build --clean",
-        "start": "npm run build && node --experimental-modules --experimental-json-modules src/launcher.js",
+        "start": "node src/main.js",
         "start-archiver": "node --experimental-modules --experimental-json-modules archiver/main.js",
         "start-explorer": "node --experimental-modules --experimental-json-modules explorer/main.js"
     },
-    "devDependencies": {
-        "@types/convert-units": "^2.3.1",
-        "@types/node": "^14.0.4",
-        "@types/node-fetch": "^2.5.7",
-        "@types/sqlite3": "^3.1.6",
-        "tslint": "^6.1.2"
-    },
     "dependencies": {
         "@discordjs/opus": "^0.3.2",
-        "cli-progress": "^3.8.2",
-        "convert-units": "^2.3.4",
-        "dblapi.js": "^2.4.0",
-        "discord.js": "^12.2.0",
-        "ffmpeg-static": "^4.2.2",
-        "jimp": "^0.12.1",
-        "node-fetch": "^2.6.0",
-        "sqlite3": "^4.2.0",
-        "typescript": "^3.9.3",
-        "urban-dictionary": "^2.2.1",
-        "weather-js": "^2.0.0",
-        "word-definition": "^2.1.6",
-        "ytdl-core": "^3.0.0"
+        "bufferutil": "^4.0.1",
+        "eris": "^0.13.3",
+        "pako": "^1.0.11",
+        "sodium-native": "^3.2.0"
     }
 }
