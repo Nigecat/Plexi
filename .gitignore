@@ -1,2 +1,4 @@
+*.js
+*.js.map
 auth.json
 node_modules/
