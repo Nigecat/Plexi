@@ -1,7 +1,8 @@
 import chalk from "chalk";
+import Server from "./models/server.js";
 import Database from "./models/database.js";
-import { Client, Message } from "discord.js";
 import processCommand from "./commandHelper.js";
+import { Client, Message, GuildMember } from "discord.js";
 
 export default class Plexi {
     client: Client;
@@ -14,11 +15,20 @@ export default class Plexi {
         this.client.on("debug", console.log);
         this.client.on("message", this.processMessage.bind(this));
         this.client.on("ready", () => { console.log(chalk.greenBright(`Logged in as ${this.client.user.tag}`)) });
+        this.client.on("guildMemberAdd", this.autoroleHandler.bind(this));
     }
 
     /** Start the bot */
     start() {
         this.client.login(this.token);
+    }
+
+    /** Autorole handler, gets called when a member joins a server */
+    private async autoroleHandler(member: GuildMember) {
+        const server = await Server(this.database, member.guild.id);
+        if (server.autorole) {
+            member.roles.add(server.autorole);
+        }
     }
 
     /** Process an incoming message */

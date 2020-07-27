@@ -58,7 +58,6 @@ export default async function processCommand(message: Message, database: Databas
 
             // Make the bot display as typing for the duration of the command
             message.channel.startTyping();
-            setTimeout(message.channel.stopTyping, 5000);
 
             try {
                 await data.call({ client, message, args, database } as CommandData);
