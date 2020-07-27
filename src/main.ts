@@ -7,11 +7,12 @@ const client = new CommandoClient(config);
 
 client.on("ready", () => {
     console.log(`Logged in as ${client.user.tag}`);
-    client.user.setPresence({ status: "online", activity: { type: "PLAYING", name: "Visual Studio Code" } });
+    client.user.setPresence({ status: "online", activity: { type: "PLAYING", name: config.commandPrefix + "help" } });
 });
 
 client.on("debug", console.log);
 client.on("error", console.error);
+process.on("unhandledRejection", console.error);
 
 client.registry
     .registerDefaultTypes()
