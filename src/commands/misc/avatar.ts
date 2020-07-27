@@ -11,7 +11,7 @@ export default class Avatar extends Command {
             args: [
                 {
                     key: "user",
-                    prompt: "The user to get the avatar of.",
+                    prompt: "What user do you want to get the avatar of?",
                     type: "user"
                 }
             ] 
