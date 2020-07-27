@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "4.0.0",
+    "version": "4.0.2",
     "description": "A general purpose discord bot",
     "author": "src/main.js",
     "main": "module",

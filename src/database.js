@@ -4,7 +4,7 @@ const sqlite3 = require("sqlite3");
 const { open } = require("sqlite");
 
 /** Get a proxy mirroring the database */
-module.exports.Database = async function(path) {
+module.exports.Database = async function(path, onChange) {
     const db = await open({ filename: path, driver: sqlite3.Database });
     const target = {};
 
@@ -18,6 +18,7 @@ module.exports.Database = async function(path) {
             //  (the id is still in the object so anything that gets only the object knows the id)
             target[name][row.id] = new Proxy(row, {
                 set(target, key, value) {
+                    onChange(row.id, key, value);
                     db.run(`UPDATE ${name} SET '${key}' = ? WHERE id = '${row.id}'`, [value]);
                     return Reflect.set(target, key, value);
                 }
