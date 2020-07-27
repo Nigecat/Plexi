@@ -18,7 +18,7 @@ async function main() {
         const commandName = command.split(".").slice(0, -1).join(" ");
         // Add our extra arguments 
         client.registerCommand(commandName, async (message, args) => {
-            message.channel.sendTyping();
+            await message.channel.sendTyping();
             return await data.call({ message, args, database, client });
         }, data.options);
     });
