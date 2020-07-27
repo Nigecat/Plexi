@@ -3,28 +3,39 @@
 const sqlite3 = require("sqlite3");
 const { open } = require("sqlite");
 
-/** Get a proxy mirroring the database */
-module.exports.Database = async function(path, onChange) {
-    const db = await open({ filename: path, driver: sqlite3.Database });
-    const target = {};
-
-    // Read all the tables in the database
-    const tables = await db.all("SELECT name FROM sqlite_master WHERE type='table'");
-    for (const { name } of tables) {
-        target[name] = {};
-        const rows = await db.all(`SELECT * FROM ${name}`);
-        for (const row of rows) {
-            // Copy over the row with the id as the key 
-            //  (the id is still in the object so anything that gets only the object knows the id)
-            target[name][row.id] = new Proxy(row, {
-                set(target, key, value) {
-                    onChange(row.id, key, value);
-                    db.run(`UPDATE ${name} SET '${key}' = ? WHERE id = '${row.id}'`, [value]);
-                    return Reflect.set(target, key, value);
-                }
-            });
-        }
+module.exports = class Database {
+    constructor(path) {
+        this.path = path;
     }
 
-    return target;
+    async connect() {
+        this.connection = await open({ filename: this.path, driver: sqlite3.Database });
+    }
+
+    async getServer(id) {
+        return await this.#getRow("Server", id);
+    }
+
+    async setServer(id, key, value) {
+        await this.#setRow("Server", id, key, value);
+    }
+    
+
+    /** Generic function to get a row from a table by the id */
+    async #getRow(table, id) {
+        const row = await this.connection.get(`SELECT * FROM ${table} WHERE id = ?`, [id]);
+        // If this does not exist in the database then add it
+        if (row === undefined) {
+            await this.connection.run(`INSERT OR IGNORE INTO ${table} ( id ) VALUES ( ? )`, [id]);
+            return await getRow(table, id);
+        }
+        return row;
+    }
+    
+    /** Generic function to set a value of a row from a table by the id with the column */
+    async #setRow(table, id, key, value) {
+        // Get the row to make sure it exists before we attempt to update it
+        await this.#getRow(table, id);
+        await this.connection.run(`UPDATE Server SET ${key} = ? WHERE id = ${id}`, [value]);
+    }
 }
