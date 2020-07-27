@@ -27,7 +27,7 @@ import { CommandoClient, SQLiteProvider } from "discord.js-commando";
             ["misc", "Miscellaneous"]
         ])
         .registerDefaultGroups()
-        .registerDefaultCommands()
+        .registerDefaultCommands({ unknownCommand: false })
         .registerCommandsIn(pathJoin(pathJoin(pathResolve(), "src"), "commands"));
     
     client.login(token);
