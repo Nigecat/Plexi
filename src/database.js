@@ -1,5 +1,3 @@
-"use strict";
-
 const sqlite3 = require("sqlite3");
 const { open } = require("sqlite");
 
@@ -23,9 +21,17 @@ module.exports = class Database {
         await this.#setRow("Server", id, key, value);
     }
 
+    async getAllServers() {
+        return await this.connection.all(`SELECT * FROM Server`);
+    }
+
+    async disconnect() {
+        await this.connection.disconnect();
+    }
+
 
     /** Generic function to get a row from a table by the id */
-    async #getRow(table, id) {
+    #getRow = async function(table, id) {
         const row = await this.connection.get(`SELECT * FROM ${table} WHERE id = ?`, [id]);
         // If this does not exist in the database then add it
         if (row === undefined) {
@@ -36,7 +42,7 @@ module.exports = class Database {
     }
     
     /** Generic function to set a value of a row from a table by the id with the column */
-    async #setRow(table, id, key, value) {
+    #setRow = async function(table, id, key, value) {
         // Get the row to make sure it exists before we attempt to update it
         await this.#getRow(table, id);
         await this.connection.run(`UPDATE Server SET ${key} = ? WHERE id = ${id}`, [value]);
