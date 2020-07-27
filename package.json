@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "4.0.9",
+    "version": "4.0.10",
     "description": "A general purpose discord bot",
     "author": "Nigecat",
     "repository": {
@@ -10,7 +10,7 @@
     "scripts": {
         "build": "tsc",
         "clean": "tsc --build --clean",
-        "start": "npm run build && node --experimental-modules --experimental-json-modules src/main.js",
+        "start": "npm run build && node src/main.js",
         "explore": "node explorer/main.js"
     },
     "devDependencies": {
