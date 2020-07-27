@@ -1,8 +1,7 @@
 *.js
 *.map
 !archiver/*.js
-!explorer/*.js
 
+temp/
 auth.json
 node_modules/
-src/commands/resources/temp/
