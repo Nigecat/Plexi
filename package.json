@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "3.0.5",
+    "version": "3.0.6",
     "description": "A general purpose fun/moderation discord bot",
     "author": "Nigecat",
     "type": "module",
@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "@discordjs/opus": "^0.3.2",
+        "bufferutil": "^4.0.1",
         "chalk": "^4.1.0",
         "cli-progress": "^3.8.2",
         "convert-units": "^2.3.4",
@@ -37,6 +38,7 @@
         "sqlite3": "^4.2.0",
         "typescript": "^3.9.3",
         "urban-dictionary": "^2.2.1",
+        "utf-8-validate": "^5.0.2",
         "weather-js": "^2.0.0",
         "word-definition": "^2.1.6",
         "ytdl-core": "^3.0.0"
