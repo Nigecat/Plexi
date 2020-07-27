@@ -9,8 +9,8 @@ import { CommandoClient, SQLiteProvider } from "discord.js-commando";
 (async() => {
     const client = new CommandoClient(clientConfig);
 
-    const db = await open({ filename: config.databasePath, driver: Database });
-    client.setProvider(new SQLiteProvider(db));
+    // Set the client settings provider to a sqlite database, this is only used for storing prefixes by commando
+    client.setProvider(new SQLiteProvider(await open({ filename: config.settingsProvider, driver: Database })));
 
     client.on("ready", () => {
         console.log(`Logged in as ${client.user.tag}`);
