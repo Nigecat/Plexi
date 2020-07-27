@@ -1,9 +1,10 @@
 {
     "name": "plexi",
-    "version": "4.1.1",
+    "version": "4.1.2",
     "description": "A general purpose discord bot",
     "author": "src/main.js",
     "type": "module",
+    "module": "system",
     "repository": {
         "type": "git",
         "url": "https://github.com/Nigecat/Plexi.git"

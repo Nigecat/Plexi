@@ -9,6 +9,7 @@
         "resolveJsonModule": true,
         "moduleResolution": "node",
         "sourceMap": true,
+        "module": "ESNext",
 
         "sourceRoot": "./",
         "rootDir": "./",
