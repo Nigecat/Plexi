@@ -4,8 +4,10 @@ const sqlite3 = require("sqlite3");
 const { open } = require("sqlite");
 
 module.exports = class Database {
-    constructor(path) {
+    /** onPrefixChange is a special callback that gets fired when a server prefix changes */
+    constructor(path, onPrefixChange) {
         this.path = path;
+        this.onPrefixChange = onPrefixChange;
     }
 
     async connect() {
@@ -17,9 +19,10 @@ module.exports = class Database {
     }
 
     async setServer(id, key, value) {
+        if (key === "prefix") this.onPrefixChange(id, value);
         await this.#setRow("Server", id, key, value);
     }
-    
+
 
     /** Generic function to get a row from a table by the id */
     async #getRow(table, id) {
