@@ -7,6 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import * as token from "./config/auth.json";
 (() => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(token.default.token);
 }))();
 //# sourceMappingURL=main.js.map

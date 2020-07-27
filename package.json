@@ -10,7 +10,7 @@
     },
     "scripts": {
         "build": "tsc",
-        "start": "npm run build && node src/main.js"
+        "start": "npm run build && node --experimental-json-modules src/main.js"
     },
     "dependencies": {
         "@discordjs/opus": "^0.3.2",
