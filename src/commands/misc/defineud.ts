@@ -23,9 +23,9 @@ export default class DefineUD extends Command {
     async run(message: CommandoMessage, { word }: { word: string }) {
         message.channel.startTyping();
         
-        const result = await (async() => {
+        const result: any = await (async() => {
             return new Promise(resolve => term(word, (err: any, entries: any) => resolve({ err, entries })));
-        })() as any;
+        })();
 
         message.channel.stopTyping();
 

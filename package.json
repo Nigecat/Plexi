@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "4.2.4",
+    "version": "4.2.5",
     "description": "A general purpose discord bot",
     "author": "Nigecat",
     "repository": {
@@ -14,10 +14,10 @@
         "explore": "node explorer/main.js"
     },
     "devDependencies": {
-        "@types/node": "^14.0.4"
+        "@types/node": "^14.0.4",
+        "@types/node-fetch": "^2.5.7"
     },
     "dependencies": {
-        "@types/node-fetch": "^2.5.7",
         "bufferutil": "^4.0.1",
         "discord.js": "^12.2.0",
         "discord.js-commando": "github:discordjs/Commando",
@@ -31,6 +31,7 @@
         "typescript": "^3.9.7",
         "urban-dictionary": "^2.2.1",
         "utf-8-validate": "^5.0.2",
+        "weather-js": "^2.0.0",
         "word-definition": "^2.1.6"
     }
 }
