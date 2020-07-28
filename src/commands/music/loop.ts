@@ -9,6 +9,7 @@ export default class Loop extends Command {
             name: "loop",
             memberName: "loop",
             group: "music",
+            guildOnly: true,
             description: "Loop the supplied song into your voice channel",
             args: [
                 {
