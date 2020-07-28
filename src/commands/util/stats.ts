@@ -1,3 +1,4 @@
+import { version } from "../../../package.json";
 import { MessageEmbed } from "discord.js";
 import { botInvite } from "../../config/config.json";
 import { invite } from "../../config/clientConfig.json";
@@ -25,7 +26,8 @@ export default class Stats extends Command {
                 { name: "Memory Usage (MB)", value: process.memoryUsage().heapUsed / 1024 / 1024 },
                 { name: "Uptime (hours)", value: process.uptime() / 3600, inline: true },
                 { name: "Useful Links", value: `[Invite Me](${botInvite}) | [Support Server](${invite})` }
-            ]
+            ],
+            footer: { text: "v" + version }
         });
         return message.embed(embed);
     }
