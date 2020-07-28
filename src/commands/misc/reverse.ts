@@ -1,4 +1,4 @@
-import { Command, Client, CommandoClient, CommandoMessage } from "discord.js-commando";
+import { Command, Client, CommandoMessage } from "discord.js-commando";
 
 export default class Reverse extends Command {
     constructor(client: Client) {
