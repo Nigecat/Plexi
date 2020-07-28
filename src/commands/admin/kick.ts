@@ -8,6 +8,7 @@ export default class Kick extends Command {
             name: "kick",
             memberName: "kick",
             group: "admin",
+            guildOnly: true,
             clientPermissions: ["KICK_MEMBERS"],
             userPermissions: ["KICK_MEMBERS"],
             description: "Kick a user",
