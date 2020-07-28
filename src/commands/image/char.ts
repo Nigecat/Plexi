@@ -1,3 +1,4 @@
+import { Message } from "discord.js";
 import { isURL, manipulateImage } from "../../util.js";
 import { Command, Client, CommandoMessage } from "discord.js-commando";
 
@@ -22,15 +23,17 @@ export default class Char extends Command {
     }
 
     async run(message: CommandoMessage, { url }: { url: string }) {
+        let response: Promise<Message | Message[]>;
         message.channel.startTyping();
 
         try {
             const result = await manipulateImage(url, 1);
-            message.channel.stopTyping();
-            return message.say({ files: [ result ] });
+            response = message.say({ files: [ result ] });
         } catch {
-            message.channel.stopTyping();
-            return message.say("Unsupported file type.");
+            response = message.say("Unsupported file type.");
         }
+
+        message.channel.stopTyping();
+        return response;
     }
 }
