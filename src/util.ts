@@ -79,3 +79,13 @@ export const EMOJIS = {
     u: "🇺", v: "🇻", w: "🇼", x: "🇽", y: "🇾",
     z: "🇿", " ": "  "
 }
+
+/** Communism word replacements */
+export const COMMUNISM = {
+    "my": "our",
+    "i": "we",
+    "me": "we",
+    "your": "our",
+    "you": "we",
+    "any reason": "for the great communist nation"
+}
