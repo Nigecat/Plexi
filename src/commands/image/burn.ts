@@ -8,6 +8,8 @@ export default class Burn extends Command {
             memberName: "burn",
             group: "image",
             description: "Burn an image",
+            userPermissions: ["EMBED_LINKS", "ATTACH_FILES"],
+            clientPermissions: ["EMBED_LINKS", "ATTACH_FILES"],
             args: [
                 {
                     key: "url",
@@ -21,8 +23,14 @@ export default class Burn extends Command {
 
     async run(message: CommandoMessage, { url }: { url: string }) {
         message.channel.startTyping();
-        const result = await manipulateImage(url, 3, 0.75);
-        message.channel.stopTyping();
-        return message.say({ files: [ result ] });
+
+        try {
+            const result = await manipulateImage(url, 3);
+            message.channel.stopTyping();
+            return message.say({ files: [ result ] });
+        } catch {
+            message.channel.stopTyping();
+            return message.say("Unsupported file type.");
+        }
     }
 }

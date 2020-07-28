@@ -38,8 +38,12 @@ export function isURL(url: string) {
  * 
  * @returns The path of the output file
  */
-export async function manipulateImage(url: string, posterize: number, contrast: number, pixelate: number = Math.floor(Math.random() * 2 + 2)) {
-    const { path } = await file({ postfix: ".png" });
+export async function manipulateImage(url: string, posterize: number, contrast: number = 0.75, pixelate: number = Math.floor(Math.random() * 2 + 2)) {
+    // Get the file extension from the supplied url
+    const ext = "." + url.split(".").pop().split(/\#|\?/)[0];
+
+    // Create a temporary file with the matching extension so discord knows what to do with it when we upload the file
+    const { path } = await file({ postfix: ext });
 
     (await jimpRead(url))
         .pixelate(pixelate)

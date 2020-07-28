@@ -8,6 +8,8 @@ export default class Deepfry extends Command {
             memberName: "deepfry",
             group: "image",
             description: "Deepfry an image",
+            userPermissions: ["EMBED_LINKS", "ATTACH_FILES"],
+            clientPermissions: ["EMBED_LINKS", "ATTACH_FILES"],
             args: [
                 {
                     key: "url",
@@ -21,8 +23,14 @@ export default class Deepfry extends Command {
 
     async run(message: CommandoMessage, { url }: { url: string }) {
         message.channel.startTyping();
-        const result = await manipulateImage(url, 8, 0.75);
-        message.channel.stopTyping();
-        return message.say({ files: [ result ] });
+
+        try {
+            const result = await manipulateImage(url, 8);
+            message.channel.stopTyping();
+            return message.say({ files: [ result ] });
+        } catch {
+            message.channel.stopTyping();
+            return message.say("Unsupported file type.");
+        }
     }
 }

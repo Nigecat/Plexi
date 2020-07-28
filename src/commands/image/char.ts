@@ -8,6 +8,8 @@ export default class Char extends Command {
             memberName: "char",
             group: "image",
             description: "Char an image",
+            userPermissions: ["EMBED_LINKS", "ATTACH_FILES"],
+            clientPermissions: ["EMBED_LINKS", "ATTACH_FILES"],
             args: [
                 {
                     key: "url",
@@ -21,8 +23,14 @@ export default class Char extends Command {
 
     async run(message: CommandoMessage, { url }: { url: string }) {
         message.channel.startTyping();
-        const result = await manipulateImage(url, 1, 0.75);
-        message.channel.stopTyping();
-        return message.say({ files: [ result ] });
+
+        try {
+            const result = await manipulateImage(url, 1);
+            message.channel.stopTyping();
+            return message.say({ files: [ result ] });
+        } catch {
+            message.channel.stopTyping();
+            return message.say("Unsupported file type.");
+        }
     }
 }
