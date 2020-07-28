@@ -49,3 +49,29 @@ export async function manipulateImage(url: string, posterize: number, contrast: 
 
     return path;
 }
+
+
+/**
+ *  Convert the given string to a string using regional indicators
+ * @param text The text to convert
+ * 
+ * @returns The converted text as a string of emojis
+ */
+export function toEmoji(text: string) {
+    let converted = text.toLowerCase().replace(/[^A-Za-z\s]/g, "").split("");
+
+    converted.forEach((char, i) => {
+        converted[i] = EMOJIS[char];
+    });
+    return converted.join(" ");
+}
+
+/** Regional indicator emojis */
+export const EMOJIS = {
+    a: "🇦", b: "🇧", c: "🇨", d: "🇩", e: "🇪",
+    f: "🇫", g: "🇬", h: "🇭", i: "🇮", j: "🇯",
+    k: "🇰", l: "🇱", m: "🇲", n: "🇳", o: "🇴",
+    p: "🇵", q: "🇶", r: "🇷", s: "🇸", t: "🇹",
+    u: "🇺", v: "🇻", w: "🇼", x: "🇽", y: "🇾",
+    z: "🇿", " ": "  "
+}
