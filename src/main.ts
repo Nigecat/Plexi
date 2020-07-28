@@ -35,7 +35,8 @@ import { CommandoClient, SQLiteProvider } from "discord.js-commando";
         .registerGroups([
             ["misc", "Miscellaneous"],
             ["image", "Image Manipulation"],
-            ["music", "Music"]
+            ["music", "Music"],
+            ["admin", "Administrative"]
         ])
         .registerDefaultGroups()
         .registerDefaultCommands({ unknownCommand: false })

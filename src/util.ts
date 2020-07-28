@@ -1,6 +1,6 @@
 import { file } from "tmp-promise";
 import { read as jimpRead } from "jimp";
-import { TextChannel, NewsChannel, DMChannel } from "discord.js";
+import { TextChannel, NewsChannel, DMChannel, GuildMember } from "discord.js";
 
 /**
  * Get the second last message in a given channel
@@ -52,6 +52,32 @@ export async function manipulateImage(url: string, posterize: number, contrast: 
         .write(path);
 
     return path;
+}
+
+/**
+ * Returns a bool of whether user1 has a higher role that user2, this takes the highest role that each user has and checked it against the overall guild roles
+ * 
+ * @param user1 The first user
+ * @param user2 The second user
+ * 
+ * @returns Whether the first user has a higher top role than the second user
+ */
+export function hasHigherRole(user1: GuildMember, user2: GuildMember) {
+    const user1Role = user1.roles.highest.id;
+    const user2Role = user2.roles.highest.id;
+
+    // We have to sort the roles of the guild to ensure they are in the correct order
+    const guildRoles = user1.guild.roles.cache.sort((b, a) => a.position - b.position || (a.id as any) - (b.id as any)).map(role => role.id);
+
+    for (const i in guildRoles) {
+        if (guildRoles[i] === user1Role) {
+            return true;
+        } else if (guildRoles[i] === user2Role) {
+            return false;
+        }
+    }
+
+    throw new Error("Could not find user role!");
 }
 
 
