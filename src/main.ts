@@ -21,7 +21,6 @@ import { CommandoClient, SQLiteProvider } from "discord.js-commando";
     
     client.on("debug", console.log);
     client.on("error", console.error);
-    process.on("unhandledRejection", console.error);
     
     client.registry
         .registerDefaultTypes()

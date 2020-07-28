@@ -9,7 +9,6 @@ export default class DefineUD extends Command {
             memberName: "defineud",
             group: "misc",
             description: "Get the urban dictionary definition of a word",
-            nsfw: true,
             args: [
                 {
                     key: "word",
@@ -25,7 +24,7 @@ export default class DefineUD extends Command {
         message.channel.startTyping();
         
         const result = await (async() => {
-            return new Promise(resolve => term(word, (err, entries) => resolve({ err, entries })));
+            return new Promise(resolve => term(word, (err: any, entries: any) => resolve({ err, entries })));
         })() as any;
 
         message.channel.stopTyping();
@@ -33,11 +32,15 @@ export default class DefineUD extends Command {
         if (result.err) {
             return message.say("Word not found!");
         }
+        
+        const embed = new MessageEmbed({ 
+            title: "Urban dictionary word definition: " + word,
+            color: "#0099ff"
+        });
 
-        const embed = new MessageEmbed({ title: "Urban dictionary word definition: " + word });
-        for (const definition in result.entries) {
-            console.log(definition);
-        }
+        // Add all the definitions to the embed
+        result.entries.forEach((definition: any, i: number) => embed.addField(i + 1, definition.definition));
+
         return message.embed(embed);
     }
 }
