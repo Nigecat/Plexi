@@ -19,6 +19,14 @@ import { CommandoClient, SQLiteProvider } from "discord.js-commando";
         client.user.setPresence({ status: "online", activity: { type: "PLAYING", name: clientConfig.commandPrefix + "help" } });
     });
     
+    // If all users have left a voice channel the bot is in then we leave as well
+    client.on("voiceStateUpdate", (oldState, newState) => {
+        // Check if we are the only user in the voice channel
+        if (oldState.channel && oldState.channel.members.size === 1 && oldState.channel.members.first().id === client.user.id) {
+            oldState.channel.guild.me.voice.channel.leave();
+        }
+    });
+
     client.on("debug", console.log);
     client.on("error", console.error);
     

@@ -1,17 +1,15 @@
 import { YouTube } from "popyt";
 import * as ytdl from "ytdl-core";
-import { CommandoMessage, Command, Client } from "discord.js-commando";
+import { Command, Client, CommandoMessage } from "discord.js-commando";
+import { VoiceConnection } from "discord.js";
 
-export default class Play extends Command {
+export default class Loop extends Command {
     constructor(client: Client) {
         super(client, {
-            name: "play",
-            memberName: "play",
-            aliases: ["p"],
-            clientPermissions: ["CONNECT"],
+            name: "loop",
+            memberName: "loop",
             group: "music",
-            guildOnly: true,
-            description: "Play music into your voice channel (takes either a search query or a youtube url)",
+            description: "Loop the supplied song into your voice channel",
             args: [
                 {
                     key: "search",
@@ -39,16 +37,19 @@ export default class Play extends Command {
         } finally {
             message.channel.stopTyping();
         }
-        
+
         const url = `https://www.youtube.com/watch?v=${video.data.id}`;
+
         const connection = await message.member.voice.channel.join();
+        this.play(connection, url);
 
-        const dispather = connection.play(ytdl(url, { filter: "audioonly" }));
-
-        // Disconnnect from the voice channel after we are finished playing
-        dispather.on("finish", () => message.guild.me.voice.channel.leave());
 
         return message.say(`🎵  Found video: \`${video.data.snippet.title}\`  🎵\n(Url: ${url})`);
     }
 
+    /** Loop a song */
+    play(connection: VoiceConnection, url: string) {
+        const dispatcher = connection.play(ytdl(url, { filter: "audioonly" }));
+        dispatcher.on("finish", () => this.play(connection, url));
+    }
 }

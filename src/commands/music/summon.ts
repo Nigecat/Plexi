@@ -12,7 +12,7 @@ export default class Leave extends Command {
     }
 
     run(message: CommandoMessage) {
-        if (message.guild.me.voice.channel.id === message.member.voice.channel.id) {
+        if (message.member.voice.channel) {
             message.member.voice.channel.join();
             return Promise.resolve(undefined);
         } else {
