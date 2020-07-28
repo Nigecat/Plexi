@@ -21,9 +21,3 @@ export default class Clap extends Command {
         return message.say(`👏 ${text.replace(" ", " 👏 ")} 👏`);
     }
 }
-
-/*
-Where are you up to?
-What are your queries about last week's questions?
-Who is your favourite character so far and why
-*/
