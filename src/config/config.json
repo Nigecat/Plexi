@@ -1,3 +1,4 @@
 {
-    "settingsProvider": "src/data/settings.sqlite"
+    "settingsProvider": "src/data/settings.sqlite",
+    "botInvite": "https://discordapp.com/oauth2/authorize?client_id=621179289491996683&permissions=8&scope=bot"
 }
