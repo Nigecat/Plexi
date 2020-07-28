@@ -29,6 +29,8 @@
         "sqlite3": "^5.0.0",
         "tmp-promise": "^3.0.2",
         "typescript": "^3.9.7",
-        "utf-8-validate": "^5.0.2"
+        "urban-dictionary": "^2.2.1",
+        "utf-8-validate": "^5.0.2",
+        "word-definition": "^2.1.6"
     }
 }
