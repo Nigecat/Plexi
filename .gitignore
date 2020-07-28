@@ -2,6 +2,6 @@
 *.map
 !archiver/*.js
 
+.env
 temp/
-auth.json
 node_modules/
