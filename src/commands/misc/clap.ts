@@ -23,6 +23,6 @@ export default class Clap extends Command {
         // Check if we are defaulting to the previous message as the target text
         if (text === "USE_PREVIOUS") text = (await lastMessage(message.channel)).content;
 
-        return message.say(`👏 ${text.replace(" ", " 👏 ")} 👏`);
+        return message.say(`👏 ${text.replace(" ", " 👏 ")} 👏`, { allowedMentions: { roles: [], users: [] } });
     }
 }

@@ -23,6 +23,6 @@ export default class Google extends Command {
         // Check if we are defaulting to the previous message as the target text
         if (text === "USE_PREVIOUS") text = (await lastMessage(message.channel)).content;
         
-        return message.say(encodeURI("http://lmgtfy.com/?q=" + text));
+        return message.say(encodeURI("http://lmgtfy.com/?q=" + text), { allowedMentions: { roles: [], users: [] } });
     }
 }

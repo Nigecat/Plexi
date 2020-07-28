@@ -27,6 +27,6 @@ export default class EightBall extends Command {
         ];
 
         // Respond with a random response
-        return message.say(`🎱** | ${message.author.username} asked:** ${question}\n🎱 **| Answer:** ${responses[Math.floor(Math.random() * responses.length)]}`);
+        return message.say(`🎱** | ${message.author.username} asked:** ${question}\n🎱 **| Answer:** ${responses[Math.floor(Math.random() * responses.length)]}`, { allowedMentions: { roles: [], users: [] } });
     }
 } 

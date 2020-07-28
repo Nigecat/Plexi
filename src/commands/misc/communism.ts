@@ -27,6 +27,6 @@ export default class Communism extends Command {
         // Convert the text with a search and replace of communism words
         const converted = text.split(" ").map(word => word in COMMUNISM ? COMMUNISM[word] : word).join(" ");
     
-        return message.say("☭ " + converted + " ☭");
+        return message.say("☭ " + converted + " ☭", { allowedMentions: { roles: [], users: [] } });
     }
 }

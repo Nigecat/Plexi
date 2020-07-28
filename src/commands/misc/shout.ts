@@ -20,6 +20,6 @@ export default class Shout extends Command {
 
     async run(message: CommandoMessage, { text }: { text: string }) {
         const emojis = toEmoji(text);
-        return message.say(emojis);
+        return message.say(emojis, { allowedMentions: { roles: [], users: [] } });
     }
 }

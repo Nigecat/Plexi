@@ -26,6 +26,6 @@ export default class Mock extends Command {
             image: { url: "attachment://spongebob_mocking.png" }
         });
 
-        return message.say(embed);
+        return message.embed(embed);
     }
 }
