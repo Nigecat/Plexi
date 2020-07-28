@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "4.0.17",
+    "version": "4.1.0",
     "description": "A general purpose discord bot",
     "author": "Nigecat",
     "repository": {
@@ -20,9 +20,11 @@
         "bufferutil": "^4.0.1",
         "discord.js": "^12.2.0",
         "discord.js-commando": "github:discordjs/Commando",
+        "jimp": "^0.14.0",
         "libsodium-wrappers": "^0.7.6",
         "sqlite": "^4.0.12",
         "sqlite3": "^5.0.0",
+        "tmp-promise": "^3.0.2",
         "typescript": "^3.9.7",
         "utf-8-validate": "^5.0.2"
     }
