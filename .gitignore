@@ -3,5 +3,4 @@
 !archiver/*.js
 
 .env
-temp/
 node_modules/
