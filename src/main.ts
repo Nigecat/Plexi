@@ -12,7 +12,7 @@ import { resolve as pathResolve, join as pathJoin } from "path";
     loadEnv();
 
     const client = new PlexiClient(clientConfig);
-    client.data.autoroles = new Keyv(`sqlite://${config.database}`, { namespace: "autoroles" });
+    client.data.servers.autoroles = new Keyv(`sqlite://${config.serverDatabase}`, { namespace: "autorole" });
 
     // Set the client settings provider to a sqlite database, this is only used for storing prefixes by commando
     client.setProvider(new SQLiteProvider(await open({ filename: config.settingsProvider, driver: Database })));
@@ -32,7 +32,7 @@ import { resolve as pathResolve, join as pathJoin } from "path";
 
     // On member join event for autorole handler
     client.on("guildMemberAdd", async member => {
-        const role = await client.data.autoroles.get(member.guild.id);
+        const role = await client.data.servers.autoroles.get(member.guild.id);
         // If this server has an autorole set
         if (role) {
             member.roles.add(role);

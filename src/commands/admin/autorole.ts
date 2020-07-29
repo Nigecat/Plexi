@@ -36,7 +36,7 @@ export default class AutoRole extends Command {
             if (role) {
                 // Check if we have a higher role than the target
                 if (isHigherRole(message.guild.me.roles.highest, role)) {
-                    await (this.client as PlexiClient).data.autoroles.set(message.guild.id, role.id);
+                    await (this.client as PlexiClient).data.servers.autoroles.set(message.guild.id, role.id);
                     return message.say("Autorole set!");
                 } else {
                     return message.say("I must have a higher role than the autorole you are setting!");
@@ -45,10 +45,15 @@ export default class AutoRole extends Command {
                 return message.say("You must also specify the role to set!");
             }
         } else if (action === "clear") {
-            await (this.client as PlexiClient).data.autoroles.delete(message.guild.id);
+            await (this.client as PlexiClient).data.servers.autoroles.delete(message.guild.id);
             return message.say("Autorole cleared!");
         } else if (action === "view") {
-            return message.say(`This server's autorole is currently: ${message.guild.roles.cache.get(await (this.client as PlexiClient).data.autoroles.get(message.guild.id))}`, { allowedMentions: { roles: [], users: [] } })
+            const current = message.guild.roles.cache.get(await (this.client as PlexiClient).data.servers.autoroles.get(message.guild.id));
+            if (current) {
+                return message.say(`This server's autorole is currently: ${current}`, { allowedMentions: { roles: [], users: [] } });
+            } else {
+                return message.say("This server does not have an autorole set!");
+            }
         }
     }
 }
