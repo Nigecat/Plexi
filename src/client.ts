@@ -1,4 +1,4 @@
-import * as Keyv from "keyv";
+import DataStore from "./datastore.js";
 import { CommandoClient, CommandoClientOptions } from "discord.js-commando";
 
 export class PlexiClient extends CommandoClient {
@@ -11,7 +11,7 @@ export class PlexiClient extends CommandoClient {
 
     data: {
         servers: {
-            autoroles?: Keyv
+            autoroles?: DataStore
         }
     }
 }

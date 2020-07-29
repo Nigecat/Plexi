@@ -1,3 +1,4 @@
+import { PlexiClient } from "../../client";
 import { Command, Client } from "discord.js-commando";
 
 export default class ShutDown extends Command {
@@ -13,6 +14,7 @@ export default class ShutDown extends Command {
     }
 
     async run() {
+        await (this.client as PlexiClient).data.servers.autoroles.disconnect();
         this.client.destroy();
         process.exit();
         return Promise.resolve(undefined);
