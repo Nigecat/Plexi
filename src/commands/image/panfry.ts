@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { isURL, manipulateImage } from "../../util.js";
+import { isURL, manipulateImage, lastMessage } from "../../util.js";
 import { Command, Client, CommandoMessage } from "discord.js-commando";
 
 export default class Panfry extends Command {
@@ -8,7 +8,7 @@ export default class Panfry extends Command {
             name: "panfry",
             memberName: "panfry",
             group: "image",
-            description: "Panfry an image",
+            description: "Panfry an image, NOTE: If no url is supplied it will act on the previous message",
             userPermissions: ["EMBED_LINKS", "ATTACH_FILES"],
             clientPermissions: ["EMBED_LINKS", "ATTACH_FILES"],
             args: [
@@ -16,7 +16,8 @@ export default class Panfry extends Command {
                     key: "url",
                     prompt: "What is the url of the image you want to panfry?",
                     type: "string",
-                    validate: isURL
+                    validate: isURL,
+                    default: "USE_PREVIOUS"
                 }
             ]
         });
@@ -27,6 +28,9 @@ export default class Panfry extends Command {
         message.channel.startTyping();
 
         try {
+            // Check if we are defaulting to the previous message as the target text
+            if (url === "USE_PREVIOUS") url = (await lastMessage(message.channel)).attachments.first().url;
+
             const result = await manipulateImage(url, 9, 0.3);
             response = message.say({ files: [ result ] });
         } catch {

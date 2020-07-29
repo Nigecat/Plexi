@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { isURL, manipulateImage } from "../../util.js";
+import { isURL, manipulateImage, lastMessage } from "../../util.js";
 import { Command, Client, CommandoMessage } from "discord.js-commando";
 
 export default class Deepfry extends Command {
@@ -8,7 +8,7 @@ export default class Deepfry extends Command {
             name: "deepfry",
             memberName: "deepfry",
             group: "image",
-            description: "Deepfry an image",
+            description: "Deepfry an image, NOTE: If no url is supplied it will act on the previous message",
             userPermissions: ["EMBED_LINKS", "ATTACH_FILES"],
             clientPermissions: ["EMBED_LINKS", "ATTACH_FILES"],
             args: [
@@ -16,7 +16,8 @@ export default class Deepfry extends Command {
                     key: "url",
                     prompt: "What is the url of the image you want to deepfry?",
                     type: "string",
-                    validate: isURL
+                    validate: isURL,
+                    default: "USE_PREVIOUS"
                 }
             ]
         });
@@ -27,6 +28,9 @@ export default class Deepfry extends Command {
         message.channel.startTyping();
 
         try {
+            // Check if we are defaulting to the previous message as the target text
+            if (url === "USE_PREVIOUS") url = (await lastMessage(message.channel)).attachments.first().url;
+
             const result = await manipulateImage(url, 8);
             response = message.say({ files: [ result ] });
         } catch {
