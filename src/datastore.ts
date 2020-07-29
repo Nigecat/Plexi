@@ -6,6 +6,11 @@ export default class DataStore {
 
     constructor(private filename: string, public readonly namespace: string) { }
 
+    /** Convert an id to the id used in the database (namespace:id) */
+    private translateID(id: string) {
+        return `${this.namespace}:${id}`;
+    }
+
     /** Connect to the database */
     async connect() {
         console.log(`Connecting to database ${this.filename} with namespace: ${this.namespace}`);
@@ -24,19 +29,35 @@ export default class DataStore {
 
     /** Set a value */
     async set(id: string, value: string) {
-        console.log(`Setting value for ${this.namespace}:${id} to ${value}`);
-        await this.connection.run("INSERT OR REPLACE INTO data ( id, value ) VALUES ( ?, ? )", [`${this.namespace}:${id}`, value, value]);
+        console.log(`Setting value for ${this.translateID(id)} to ${value}`);
+        // First we get the value to check if it exists
+        if (await this.get(id)) {
+            // If this id already exists then we update it
+            await this.connection.run("UPDATE data SET value = ? WHERE id = ?", [value, this.translateID(id)]);
+        }
+        // Otherwise we insert a new row
+        else {
+            await this.connection.run("INSERT INTO data ( id, value ) VALUES ( ?, ? )", [this.translateID(id), value]);
+        }
     }
 
     /** Get a value */
-    async get(id: string) {
-        console.log(`Retrieving value for ${this.namespace}:${id}`);
-        return await this.connection.get("SELECT value FROM data WHERE id = ?", [id]);
+    async get(id: string): Promise<string> {
+        console.log(`Retrieving value for ${this.translateID(id)}`);
+       const result = await this.connection.get("SELECT value FROM data WHERE id = ?", [this.translateID(id)]);
+       // If we found something
+       if (result) {
+           return result.value;
+       }
+       // Otherwise just return undefined
+       else {
+           return undefined;
+       }
     }
 
     /** Delete a value */
     async delete(id: string) {
-        console.log(`Deleting value for ${this.namespace}:${id}`);
-        await this.connection.run("DELETE FROM data WHERE id = ?", [id]);
+        console.log(`Deleting value for ${this.translateID(id)}`);
+        await this.connection.run("DELETE FROM data WHERE id = ?", [this.translateID(id)]);
     }
 }
