@@ -15,19 +15,14 @@ export default class Cat extends Command {
     async run(message: CommandoMessage) {
         message.channel.startTyping();
 
-        // Get 1000 random posts from r/cats
-        const posts = await fetch("https://www.reddit.com/r/cats/random.json?limit=1000");
+        // Get a random cat image from the cat api
+        const data = await fetch("https://api.thecatapi.com/v1/images/search");
 
-        // Convert the posts to json data
-        const data = (await posts.json()).data;
-
-        // Pick a random post from the returned data
-        const post = data.children[Math.floor(Math.random() * data.children.length)].data;
+        const url = (await data.json())[0].url;
 
         const embed = new MessageEmbed({
             color: "#7289da",
-            title: post.title,
-            image: { url: post.url }
+            image: { url }
         });
 
         message.channel.stopTyping();
