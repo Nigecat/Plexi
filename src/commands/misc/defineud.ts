@@ -23,7 +23,7 @@ export default class DefineUD extends Command {
     async run(message: CommandoMessage, { word }: { word: string }) {
         message.channel.startTyping();
         
-        const result: any = await (async() => {
+        let result: any = await (async() => {
             return new Promise(resolve => term(word, (err: any, entries: any) => resolve({ err, entries })));
         })();
 
@@ -37,6 +37,9 @@ export default class DefineUD extends Command {
             title: "Urban dictionary word definition: " + word,
             color: "#0099ff"
         });
+
+        // Remove any definitions greater than the max embed field character limit
+        result.entries = result.entries.filter((definition: any) => definition.definition.length <= 1024);
 
         // Add all the definitions to the embed
         result.entries.forEach((definition: any, i: number) => embed.addField(i + 1, definition.definition));
