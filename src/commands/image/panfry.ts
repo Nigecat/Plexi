@@ -9,7 +9,6 @@ export default class Panfry extends Command {
             memberName: "panfry",
             group: "image",
             description: "Panfry an image, NOTE: If no url is supplied it will act on the previous message",
-            userPermissions: ["EMBED_LINKS", "ATTACH_FILES"],
             clientPermissions: ["EMBED_LINKS", "ATTACH_FILES"],
             args: [
                 {
@@ -23,18 +22,16 @@ export default class Panfry extends Command {
         });
     }
 
-    async run(message: CommandoMessage, { url }: { url: string }) {
+    async run(message: CommandoMessage) {
         let response: Promise<Message | Message[]>;
         message.channel.startTyping();
 
         try {
-            // Check if we are defaulting to the previous message as the target text
-            if (url === "USE_PREVIOUS") url = (await lastMessage(message.channel)).attachments.first().url;
-
+            const url = (await lastMessage(message.channel)).attachments.first().url;
             const result = await manipulateImage(url, 9, 0.3);
             response = message.say({ files: [ result ] });
         } catch {
-            response = message.say("Unsupported file type.");
+            response = message.say("Unsupported file type (or the previous message was not an image)");
         }
 
         message.channel.stopTyping();

@@ -8,9 +8,8 @@ export default class Burn extends Command {
             name: "burn",
             memberName: "burn",
             group: "image",
-            description: "Burn an image, NOTE: If no url is supplied it will act on the previous message",
-            userPermissions: ["EMBED_LINKS", "ATTACH_FILES"],
-            clientPermissions: ["EMBED_LINKS", "ATTACH_FILES"],
+            description: "Burn an image, NOTE: This will act on the image in the previous message",
+            clientPermissions: ["ATTACH_FILES"],
             args: [
                 {
                     key: "url",
@@ -23,18 +22,16 @@ export default class Burn extends Command {
         });
     }
 
-    async run(message: CommandoMessage, { url }: { url: string }) {
+    async run(message: CommandoMessage) {
         let response: Promise<Message | Message[]>;
         message.channel.startTyping();
 
         try {
-            // Check if we are defaulting to the previous message as the target text
-            if (url === "USE_PREVIOUS") url = (await lastMessage(message.channel)).attachments.first().url;
-
+            const url = (await lastMessage(message.channel)).attachments.first().url;
             const result = await manipulateImage(url, 3);
             response = message.say({ files: [ result ] });
         } catch {
-            response = message.say("Unsupported file type.");
+            response = message.say("Unsupported file type (or the previous message was not an image)");
         }
 
         message.channel.stopTyping();
