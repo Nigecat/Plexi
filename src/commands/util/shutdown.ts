@@ -8,6 +8,7 @@ export default class ShutDown extends Command {
             memberName: "shutdown",
             description: "Shutdown the bot",
             group: "util",
+            guarded: true,
             ownerOnly: true,
             hidden: true
         });
