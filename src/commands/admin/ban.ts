@@ -1,5 +1,5 @@
 import { GuildMember } from "discord.js";
-import { hasHigherRole } from "../../util.js";
+import { isHigherRole } from "../../util.js";
 import { Command, Client, CommandoMessage } from "discord.js-commando";
 
 export default class Ban extends Command {
@@ -30,7 +30,7 @@ export default class Ban extends Command {
     }
 
     async run(message: CommandoMessage, { user, reason }: { user: GuildMember, reason: string[] }) {
-        if (user.bannable && hasHigherRole(message.member, user)) {
+        if (user.bannable && isHigherRole(message.member.roles.highest, user.roles.highest)) {
             await user.ban({ reason: `${reason.join(" ")} (banned by ${message.author.tag})` });
             return message.say(`${user} successfully banned by ${message.author}\nReason: ${reason.join(" ")}`, { allowedMentions: { roles: [], users: [] } });
         } else {
