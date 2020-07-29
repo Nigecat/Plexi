@@ -1,12 +1,12 @@
-# This workflow will do a clean install of node dependencies and build the source code
+# This workflow will do a clean install of node dependencies, run a lint, and build the source code
 
 name: build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ rewrite ]
   pull_request:
-    branches: [ master ]
+    branches: [ rewrite ]
 
 jobs:
   build:
@@ -30,6 +30,10 @@ jobs:
       - name: Install dependencies
         working-directory: ${{ env.working-directory }}
         run: npm install
+
+      - name: Run lint
+        working-directory: ${{ env.working-directory }}
+        run: npm run lint
           
       - name: Run typescript build
         working-directory: ${{ env.working-directory }}
