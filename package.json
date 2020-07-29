@@ -10,6 +10,7 @@
     "scripts": {
         "build": "tsc",
         "start": "npm run build && node src/main.js",
+        "clean": "tsc --build --clean",
         "lint": "eslint src/ --ext .ts"
     },
     "dependencies": {
