@@ -1,6 +1,6 @@
-import * as Keyv from "keyv";
 import { open } from "sqlite";
 import { Database } from "sqlite3";
+import DataStore from "./datastore.js";
 import { PlexiClient } from "./client.js";
 import { config as loadEnv } from "dotenv";
 import * as config from "./config/config.json";
@@ -12,7 +12,8 @@ import { resolve as pathResolve, join as pathJoin } from "path";
     loadEnv();
 
     const client = new PlexiClient(clientConfig);
-    client.data.servers.autoroles = new Keyv(`sqlite://${config.serverDatabase}`, { namespace: "autorole" });
+    client.data.servers.autoroles = new DataStore(config.serverDatabase, "autorole");
+    await client.data.servers.autoroles.connect();
 
     // Set the client settings provider to a sqlite database, this is only used for storing prefixes by commando
     client.setProvider(new SQLiteProvider(await open({ filename: config.settingsProvider, driver: Database })));
