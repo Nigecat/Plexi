@@ -1,6 +1,6 @@
 import { version } from "../../../package.json";
 import { MessageEmbed } from "discord.js";
-import { botInvite } from "../../config/config.json";
+import { invitePermissionLevel } from "../../config/config.json";
 import { invite } from "../../config/clientConfig.json";
 import { Command, Client, CommandoMessage } from "discord.js-commando";
 
@@ -25,7 +25,7 @@ export default class Stats extends Command {
                 { name: "Total (Cached) Channels", value: this.client.channels.cache.size, inline: true },
                 { name: "Memory Usage (MB)", value: process.memoryUsage().heapUsed / 1024 / 1024 },
                 { name: "Uptime (hours)", value: process.uptime() / 3600, inline: true },
-                { name: "Useful Links", value: `[Invite Me](${botInvite}) | [Support Server](${invite})` }
+                { name: "Useful Links", value: `[Invite Me](https://discordapp.com/oauth2/authorize?client_id=${this.client.user.id}&permissions=${invitePermissionLevel}&scope=bot) | [Support Server](${invite})` }
             ],
             footer: { text: "v" + version }
         });

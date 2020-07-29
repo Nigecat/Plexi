@@ -1,5 +1,5 @@
 {
     "settingsProvider": "src/data/settings.sqlite",
     "serverDatabase": "src/data/servers.sqlite",
-    "botInvite": "https://discordapp.com/oauth2/authorize?client_id=621179289491996683&permissions=8&scope=bot"
+    "invitePermissionLevel": "2088234238"
 }
