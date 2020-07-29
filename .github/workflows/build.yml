@@ -1,13 +1,12 @@
 # This workflow will do a clean install of node dependencies and build the source code
-#       it will also run the linter
 
 name: build
 
 on:
   push:
-    branches: [ rewrite-commando ]
+    branches: [ master ]
   pull_request:
-    branches: [ rewrite-commando ]
+    branches: [ master ]
 
 jobs:
   build:
