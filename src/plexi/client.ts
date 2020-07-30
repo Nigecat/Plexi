@@ -69,7 +69,8 @@ export class PlexiClient extends Client {
         // If the message matches our prefix
         if (this.prefixCache[prefix].test(message.content)) {
             const commandName = message.content.match(this.prefixCache[prefix])[2];
-            const args = message.content.replace(this.prefixCache[prefix], "").toLowerCase().trim().split(" ");
+            // Extract the args and remove any blank entries
+            const args = message.content.replace(this.prefixCache[prefix], "").toLowerCase().trim().split(" ").filter(arg => arg);
 
             // If this command is registered
             if (commandName in this.commands) {
@@ -78,18 +79,46 @@ export class PlexiClient extends Client {
                 // If it is an owner only command and someone tries to run it then do nothing
                 if (command.ownerOnly && message.author.id !== this.owner) return;
 
+                // If a server only command is being run in a dm
                 if (command.guildOnly && !message.guild) {
                     message.channel.send("You can only run this command in a server!");
                     return
                 }
 
-                console.log(args);
+                // If a dm only command is being run in a server
+                if (command.dmOnly && message.guild) {
+                    message.channel.send("You can only run this command in a dm!");
+                    return
+                }
+
+                // If the user does not have all the permission they need (NOTE: Permissions are only checked if the command is running in a server)
+                if (message.guild && !command.userPermissions.every(perm => message.member.hasPermission(perm))) {
+                    message.channel.send(`You must have permission(s) \`${command.userPermissions.join(" | ")}\` to run this command!`);
+                    return;
+                }
+
+                // If the client does not have all the permissions we need (NOTE: Permissions are only checked if the command is running in a server)
+                if (message.guild && !command.clientPermissions.every(perm => message.guild.me.hasPermission(perm))) {
+                    message.channel.send(`I need the permission(s) \`${command.userPermissions.join(" | ")}\` to run this command, please get an administrator to add them!`);
+                    return;
+                }
+
+                // If the args are valid
+                if (this.verifyArgs(args, command.args)) {
+                    // Format the args into what the command is expecting
+                    const formatted = new Map(command.args.map((arg, i) => [arg.key, args[i]]));
+                    command.run(message, formatted);
+                } else {
+                    message.channel.send("INVALID ARGS");
+                }
             }
         }
     }
 
     private verifyArgs(incomingArgs: string[], requiredArgs: CommandArgument[]) {
-        return false;
+        console.log(incomingArgs, requiredArgs);
+        // Skip any checks if there are no args
+        if (incomingArgs.length === 0 && requiredArgs.length === 0) return true;
     }
 }
 

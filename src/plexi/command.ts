@@ -28,7 +28,7 @@ export class Command {
         this.args = options.args || [];
     }
 
-    run(message: Message) {
+    run(message: Message, args: any) {
         message.channel.send("Error: Command not implemented!");
     }
 }
