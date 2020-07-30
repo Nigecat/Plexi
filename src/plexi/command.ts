@@ -5,6 +5,7 @@ export class Command {
     public client: PlexiClient;
     public readonly name: CommandOptions["name"];
     public readonly description: CommandOptions["description"];
+    public readonly group: CommandOptions["group"];
     public readonly userPermissions: CommandOptions["userPermissions"];
     public readonly clientPermissions: CommandOptions["clientPermissions"];
     public readonly hidden: CommandOptions["hidden"];
@@ -17,6 +18,7 @@ export class Command {
         this.client = client;
         this.name = options.name;
         this.description = options.description;
+        this.group = options.group;
         this.userPermissions = options.userPermissions || [];
         this.clientPermissions = options.clientPermissions || [];
         this.hidden = options.hidden || false;
@@ -34,6 +36,7 @@ export class Command {
 export interface CommandOptions {
     name: string,
     description: string,
+    group?: string,
     userPermissions?: PermissionResolvable[],
     clientPermissions?: PermissionResolvable[],
     hidden?: boolean,

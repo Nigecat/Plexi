@@ -1,6 +1,6 @@
+import { Message } from "discord.js";
 import { Command } from "plexi/command";
 import { PlexiClient } from "plexi/client";
-import { Message } from "discord.js";
 
 export default class Ping extends Command {
     constructor(client: PlexiClient) {
@@ -8,5 +8,9 @@ export default class Ping extends Command {
             name: "ping",
             description: "Ping the bot"
         });
+    }
+
+    run(message: Message) {
+        message.channel.send("pong");
     }
 }
