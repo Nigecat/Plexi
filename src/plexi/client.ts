@@ -4,15 +4,76 @@ import { resolve, extname } from "path";
 import { Command, CommandArgument } from "./command";
 import { Client, ClientOptions, Message } from "discord.js";
 
+/**
+ * The main client, the bot should start here.
+ * @class
+ * @extends Client
+ */
 export class PlexiClient extends Client {
+    /**
+     * The owner of the bot
+     * @type {string}
+     * @public
+     * @readonly
+     * @property
+     */
     public readonly owner: string;
+
+    /**
+     * The default prefix the bot will respond to, this is used whenever a guild does not have a custom prefix set.
+     * @type {string}
+     * @public
+     * @readonly
+     * @property
+     */
     public readonly defaultPrefix: string;
+
+    /**
+     * The path of the database, this is where all persistent data will be stored.
+     * @type {string}
+     * @public
+     * @readonly
+     * @property
+     */
     public readonly databasePath: string;
+
+    /**
+     * A map containing all registered commands, when attempting to execute a command the bot will search for it in here.
+     * This will remain empty until {@link registerCommands} has been run.
+     * @type {Record<string, Command>}
+     * @public
+     * @readonly
+     * @property
+     */
     public readonly commands: Record<string, Command>;
+
+    /**
+     * A cache containing regular expressions mapped by prefixes, this allowed us to more easily respond to a mention of the bot (and to improve speed).
+     * This cache is automatically filled as the bot recieves messages.
+     * @type {Record<string, RegExp>}
+     * @public
+     * @readonly
+     * @property
+     */
     public readonly prefixCache: Record<string, RegExp>;
+
+    /**
+     * An object containing any persistent data the client needs to access.
+     * @type {object}
+     * @public
+     * @readonly
+     * @property
+     */
     public readonly data: { prefixes: DataStore };
 
+    /**
+     * Create a client
+     * @param {PlexiOptions} options - The options for the client 
+     * @constructor
+     */
     constructor(options: PlexiOptions) {
+        // We have to call super() before we can access 'this' but we can't pass our extra data to the other constructor,
+        //      So we have to create a variable for each one and remove it from the original options object
         const owner = options.owner;
         const defaultPrefix = options.defaultPrefix;
         const databasePath = options.databasePath;
@@ -20,7 +81,6 @@ export class PlexiClient extends Client {
         delete options.defaultPrefix;
         delete options.databasePath;
         super(options);
-
         this.owner = owner;
         this.defaultPrefix = defaultPrefix;
         this.databasePath = databasePath;
@@ -28,13 +88,26 @@ export class PlexiClient extends Client {
         this.prefixCache = {};
         this.data = { prefixes: new DataStore(this.databasePath, "prefix") };
 
+        // Assign our on message handler
         this.on("message", this.onMessage);
     }
 
+    /**
+     * Register a directory of commands to the client
+     * 
+     * Inside the specified folder, the function is expecting there to be subfolders for command groups.
+     * Inside each group directory, each file should default export a class extending the {@link Command} class.
+     * If the super() call of it specifies the {@link Command#group} property then that will override the directory it is in.
+     * This function also connects to the database so it must be run before attempting to login the bot.
+     * @param {string} - The directory the commands are contained in
+     * @function
+     */
     async registerCommands(dir: string) {
         await this.data.prefixes.connect();
 
+        // Loop through each group
         for (const group of await fs.readdir(dir)) {
+            // Loop through each file contained in the group
             for (const file of await fs.readdir(resolve(dir, group))) {
                 // Ignore any non javascript files
                 if (extname(file).toLowerCase() !== ".js") continue;
@@ -46,12 +119,16 @@ export class PlexiClient extends Client {
                 command.group = command.group || group;
 
                 console.log(`Registered command ${command.group}:${command.name}`);
-
                 this.commands[command.name] = command;
             }
         }
     }
 
+    /**
+     * The message handler, this is fired whenever we recieve an incoming message
+     * @param {Message} message - The incoming message
+     * @function
+     */
     async onMessage(message: Message) {
         // Ignore bot messages
         if (message.author.bot) return;
@@ -115,6 +192,13 @@ export class PlexiClient extends Client {
         }
     }
 
+    /**
+     * Check if a set of arguments match the expected arguments.
+     * @param {string[]} incomingArgs - The incoming args
+     * @param {CommandArgument[]} requiredArgs - The args that the incoming args should match
+     * @function
+     * @returns Whether or not they match
+     */
     private verifyArgs(incomingArgs: string[], requiredArgs: CommandArgument[]) {
         console.log(incomingArgs, requiredArgs);
         // Skip any checks if there are no args
@@ -122,6 +206,14 @@ export class PlexiClient extends Client {
     }
 }
 
+/** 
+ * An extended version of the discord.js [ClientOptions]{@link https://discord.js.org/#/docs/main/stable/typedef/ClientOptions} object.
+ * @typedef {object} PlexiOptions
+ * @property {string} defaultPrefix - The default prefix for the bot
+ * @property {string} databasePath - The path of the database to store data in
+ * @property {string} owner - The [Snowflake]{@link https://discord.js.org/#/docs/main/stable/typedef/Snowflake} of the bot owner
+ * 
+*/
 export interface PlexiOptions extends ClientOptions {
     defaultPrefix: string,
     databasePath: string,
