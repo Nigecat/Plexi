@@ -9,4 +9,4 @@ loadEnv();
 client.registerCommands("src/commands");
 client.on("debug", console.log);
 
-//client.login(process.env.TOKEN);
+client.login(process.env.TOKEN);

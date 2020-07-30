@@ -47,10 +47,12 @@ export interface CommandOptions {
 }
 
 export interface CommandArgument {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     key: string,
     validator?: (arg: any) => boolean,
     type?: "string" | "number" | "role" | "member" | "user" | "channel" | "text-channel" | "voice-channel"
     oneOf?: string[],
     infinite?: boolean,
     default?: any
+    /* eslint-enable @typescript-eslint/no-explicit-any */
 }

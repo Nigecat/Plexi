@@ -4,8 +4,11 @@ import { resolve, extname } from "path";
 import { Client, ClientOptions, Message } from "discord.js";
 
 export class PlexiClient extends Client {
+    /* eslint-disable @typescript-eslint/ban-types */
     public readonly defaultPrefix: string;
     public readonly commands: {(name: string): Command}[] | {};
+    public readonly prefixCache: {(id: string): RegExp}[] | {};
+    /* eslint-enable @typescript-eslint/ban-types */
 
     constructor(options: PlexiOptions) {
         const defaultPrefix = options.defaultPrefix;
@@ -14,6 +17,7 @@ export class PlexiClient extends Client {
 
         this.defaultPrefix = defaultPrefix;
         this.commands = {};
+        this.prefixCache = {};
 
         this.on("message", this.onMessage);
     }
@@ -29,6 +33,8 @@ export class PlexiClient extends Client {
                 
                 // Assume the command group based off the parent folder if we aren't explicitly told
                 command.group = command.group || group;
+
+                console.log(`Registered command ${command.group}:${command.name}`);
 
                 this.commands[command.name] = command;
             }
