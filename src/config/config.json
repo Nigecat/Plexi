@@ -1,5 +1,6 @@
 {
     "defaultPrefix": "$",
+    "owner": "307429254017056769",
     "databasePath": "src/data/data.sqlite",
     "allowedMentions": { "roles": [], "users": [] },
     "disableMentions": "everyone",

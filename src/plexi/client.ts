@@ -1,23 +1,27 @@
 import { promises as fs } from "fs";
-import { Command } from "./command";
 import { DataStore } from "./datastore";
 import { resolve, extname } from "path";
+import { Command, CommandArgument } from "./command";
 import { Client, ClientOptions, Message } from "discord.js";
 
 export class PlexiClient extends Client {
+    public readonly owner: string;
     public readonly defaultPrefix: string;
     public readonly databasePath: string;
-    public readonly commands: {(name: string): Command}[] | {};
-    public readonly prefixCache: {(id: string): RegExp}[] | {};
+    public readonly commands: Record<string, Command>;
+    public readonly prefixCache: Record<string, RegExp>;
     public readonly data: { prefixes: DataStore };
 
     constructor(options: PlexiOptions) {
+        const owner = options.owner;
         const defaultPrefix = options.defaultPrefix;
         const databasePath = options.databasePath;
+        delete options.owner;
         delete options.defaultPrefix;
         delete options.databasePath;
         super(options);
 
+        this.owner = owner;
         this.defaultPrefix = defaultPrefix;
         this.databasePath = databasePath;
         this.commands = {};
@@ -49,8 +53,12 @@ export class PlexiClient extends Client {
     }
 
     async onMessage(message: Message) {
+        // Ignore bot messages
+        if (message.author.bot) return;
+
         // Get this server's prefix, or default to the set default prefix if it does not exist
-        const prefix = await this.data.prefixes.get(message.guild.id) || this.defaultPrefix;
+        //  If the command was run from a dm, we use the default prefix
+        const prefix = message.guild ? await this.data.prefixes.get(message.guild.id) || this.defaultPrefix : this.defaultPrefix;
 
         // If we don't have the prefix regex cached then we generate it
         if (!(prefix in this.prefixCache)) { 
@@ -60,12 +68,33 @@ export class PlexiClient extends Client {
 
         // If the message matches our prefix
         if (this.prefixCache[prefix].test(message.content)) {
-            console.log(message.content);
+            const commandName = message.content.match(this.prefixCache[prefix])[2];
+            const args = message.content.replace(this.prefixCache[prefix], "").toLowerCase().trim().split(" ");
+
+            // If this command is registered
+            if (commandName in this.commands) {
+                const command = this.commands[commandName];
+
+                // If it is an owner only command and someone tries to run it then do nothing
+                if (command.ownerOnly && message.author.id !== this.owner) return;
+
+                if (command.guildOnly && !message.guild) {
+                    message.channel.send("You can only run this command in a server!");
+                    return
+                }
+
+                console.log(args);
+            }
         }
+    }
+
+    private verifyArgs(incomingArgs: string[], requiredArgs: CommandArgument[]) {
+        return false;
     }
 }
 
 export interface PlexiOptions extends ClientOptions {
     defaultPrefix: string,
-    databasePath: string
+    databasePath: string,
+    owner: string
 }   
