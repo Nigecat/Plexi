@@ -26,7 +26,7 @@ export class Command {
         this.args = options.args || [];
     }
 
-    async run(message: Message, args?: any) {
+    run(message: Message) {
         message.channel.send("Error: Command not implemented!");
     }
 }

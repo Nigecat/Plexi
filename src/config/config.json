@@ -1,0 +1,6 @@
+{
+    "defaultPrefix": "$",
+    "allowedMentions": { "roles": [], "users": [] },
+    "disableMentions": "everyone",
+    "presence": { "status": "online", "activity": { "name": "$help" } }
+}

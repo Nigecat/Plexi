@@ -9,8 +9,4 @@ export default class Ping extends Command {
             description: "Ping the bot"
         });
     }
-
-    async run(message: Message) {
-        message.channel.send("pong!");
-    }
 }

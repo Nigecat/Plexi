@@ -1,11 +1,8 @@
-import { PlexiClient } from "plexi/client";
+import config from "./config/config.json";
 import { config as loadEnv } from "dotenv";
+import { PlexiClient, PlexiOptions } from "plexi/client";
 
-const client = new PlexiClient({
-    allowedMentions: { roles: [], users: [] },
-    disableMentions: "everyone",
-    presence: { status: "online", activity: { name: "$help" } }
-});
+const client = new PlexiClient(config as PlexiOptions);
 
 loadEnv();
 
