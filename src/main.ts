@@ -1,4 +1,4 @@
-import { PlexiClient } from "./client";
+import { PlexiClient } from "plexi/client";
 import { config as loadEnv } from "dotenv";
 
 const client = new PlexiClient({

@@ -9,7 +9,7 @@
     },
     "scripts": {
         "build": "tsc",
-        "start": "npm run build && node src/main.js",
+        "start": "npm run build && node -r tsconfig-paths/register src/main.js",
         "clean": "tsc --build --clean",
         "lint": "eslint src/ --ext .ts"
     },
@@ -22,6 +22,7 @@
         "erlpack": "github:discord/erlpack",
         "libsodium-wrappers": "^0.7.6",
         "ms": "^2.1.2",
+        "tsconfig-paths": "^3.9.0",
         "typescript": "^3.9.7",
         "utf-8-validate": "^5.0.2",
         "zlib-sync": "^0.1.7"
