@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "5.0.4",
+    "version": "5.0.5",
     "description": "A general purpose discord bot",
     "author": "Nigecat",
     "repository": {
@@ -22,6 +22,8 @@
         "erlpack": "github:discord/erlpack",
         "libsodium-wrappers": "^0.7.6",
         "ms": "^2.1.2",
+        "sqlite": "^4.0.12",
+        "sqlite3": "^5.0.0",
         "tsconfig-paths": "^3.9.0",
         "typescript": "^3.9.7",
         "utf-8-validate": "^5.0.2",
