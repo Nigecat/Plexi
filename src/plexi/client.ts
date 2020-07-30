@@ -26,6 +26,10 @@ export class PlexiClient extends Client {
 
                 // Import the command and create a new instance of it
                 const command: Command = new (await import(resolve(dir, group, file))).default(this);
+                
+                // Assume the command group based off the parent folder if we aren't explicitly told
+                command.group = command.group || group;
+
                 this.commands[command.name] = command;
             }
         }

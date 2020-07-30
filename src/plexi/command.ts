@@ -5,7 +5,7 @@ export class Command {
     public client: PlexiClient;
     public readonly name: CommandOptions["name"];
     public readonly description: CommandOptions["description"];
-    public readonly group: CommandOptions["group"];
+    public group: CommandOptions["group"];
     public readonly userPermissions: CommandOptions["userPermissions"];
     public readonly clientPermissions: CommandOptions["clientPermissions"];
     public readonly hidden: CommandOptions["hidden"];
