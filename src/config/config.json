@@ -1,5 +1,6 @@
 {
     "defaultPrefix": "$",
+    "databasePath": "src/data/data.sqlite",
     "allowedMentions": { "roles": [], "users": [] },
     "disableMentions": "everyone",
     "presence": { "status": "online", "activity": { "name": "$help" } }
