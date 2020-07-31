@@ -217,92 +217,92 @@ export class PlexiClient extends Client {
         // This function is also responsible for formatting the arguments
         const formattedArgs = {};
 
-        // Skip any checks if there are no args
-        if (incomingArgs.length === 0 && requiredArgs.length === 0) return { success: true, formattedArgs };
+        // If we do not have the matching number of arguments then exit (this is bypassed if one of the args is infinite)
+        if (!requiredArgs.some(arg => arg.infinite) && incomingArgs.length !== requiredArgs.length) return { success: false };
 
-        // If we have any infinite args
-        if (requiredArgs.some(arg => arg.infinite)) {
-            throw new Error("Infinite args not supported yet!");
-        }
-
-        else {
-            // If we do not have the matching number of arguments then exit
-            if (incomingArgs.length !== requiredArgs.length) return { success: false };
-
-            // Loop through each argument so we can verify them seperately
-            for (let i = 0; i < incomingArgs.length; i++) {
-                // If the one of property is there we check that first and can short circuit the rest of the checks
-                if (requiredArgs[i].oneOf) {
-                    if (requiredArgs[i].oneOf.includes(incomingArgs[i])) {
-                        formattedArgs[requiredArgs[i].key] = incomingArgs[i];
-                        continue;
-                    } else {
-                        return { success: false };
-                    }
-                }
-
-                // If there are anything other than digits in the argument
-                if (requiredArgs[i].type === "number") {
-                    if (!/^\d+$/.test(incomingArgs[i])) return { success: false };
-                    else formattedArgs[requiredArgs[i].key] = parseInt(incomingArgs[i]);
-                }
-
-                // Otherwise if it is not a string, then it must be a mention (and one was specified)
-                else if (requiredArgs[i].type && requiredArgs[i].type !== "string") {
-                    // Extract the mention id
-                    const id = incomingArgs[i].match(/[\\<>@#&!]/g)[1];
-
-                    switch (requiredArgs[i].type) {
-                        case "role": {
-                            if (!message.guild.roles.cache.has(id)) return { success: false };
-                            formattedArgs[requiredArgs[i].key] = message.guild.roles.cache.get(id);
-                            break;
-                        }
-
-                        case "channel": {
-                            if (!message.guild.channels.cache.has(id)) return { success: false };
-                            formattedArgs[requiredArgs[i].key] = message.guild.channels.cache.get(id);
-                            break;
-                        }
-
-                        case "member": {
-                            if (!message.guild.members.cache.has(id)) return { success: false };
-                            formattedArgs[requiredArgs[i].key] = message.guild.members.cache.get(id);
-                            break;
-                        }
-
-                        case "user": {
-                            if (!this.users.cache.has(id)) return { success: false };
-                            formattedArgs[requiredArgs[i].key] = this.users.cache.get(id);
-                            break;
-                        }
-
-                        case "text-channel": {
-                            if (!message.guild.channels.cache.filter(channel => channel.type === "text").has(id)) return { success: false };
-                            formattedArgs[requiredArgs[i].key] = message.guild.channels.cache.get(id);
-                            break;
-                        }
-
-                        case "voice-channel": {
-                            if (!message.guild.channels.cache.filter(channel => channel.type === "voice").has(id)) return { success: false };
-                            formattedArgs[requiredArgs[i].key] = message.guild.channels.cache.get(id);
-                            break;
-                        }
-
-                        // The string type can be anything
-                        case "string": {
-                            break;
-                        }
-                    }
-                }
-
-                // Now we know that it is the right format, we then run the validator on it if it has one
-                if (requiredArgs[i].validator && !requiredArgs[i].validator(incomingArgs[i])) return { success: false };
+        // Loop through each argument so we can verify them seperately
+        for (let i = 0; i < requiredArgs.length; i++) {
+            // If this argument is infinite then we skip everything after it and condense them into a single string
+            if (requiredArgs[i].infinite) {
+                const text = incomingArgs.slice(i).join(" ");
+                // We still require something to have been said
+                if (text) {
+                    formattedArgs[requiredArgs[i].key] = text;
+                    return { success: true, formattedArgs };
+                } else return { success: false }
             }
 
-            /*   If we get this far then the argument *should* be valid   */
-            return { success: true, formattedArgs };
+            // If the one of property is there we check that first and can short circuit the rest of the checks
+            if (requiredArgs[i].oneOf) {
+                if (requiredArgs[i].oneOf.includes(incomingArgs[i])) {
+                    formattedArgs[requiredArgs[i].key] = incomingArgs[i];
+                    continue;
+                } else {
+                    return { success: false };
+                }
+            }
+
+            // If there are anything other than digits in the argument
+            if (requiredArgs[i].type === "number") {
+                if (!Number.isInteger(incomingArgs[i])) return { success: false };
+                else formattedArgs[requiredArgs[i].key] = parseInt(incomingArgs[i]);
+            }
+
+            // If it is a string we allow anything through
+            else if (requiredArgs[i].type === "string") {
+                formattedArgs[requiredArgs[i].key] = incomingArgs[i];
+            }
+
+            // Otherwise it must be a mention (and one was specified)
+            else if (requiredArgs[i].type && requiredArgs[i].type !== "string") {
+                // Extract the mention id
+                const id = incomingArgs[i].match(/^<@(&?)!?(\d+)>$/).pop();
+
+                switch (requiredArgs[i].type) {
+                    case "role": {
+                        if (!message.guild.roles.cache.has(id)) return { success: false };
+                        formattedArgs[requiredArgs[i].key] = message.guild.roles.cache.get(id);
+                        break;
+                    }
+
+                    case "channel": {
+                        if (!message.guild.channels.cache.has(id)) return { success: false };
+                        formattedArgs[requiredArgs[i].key] = message.guild.channels.cache.get(id);
+                        break;
+                    }
+
+                    case "member": {
+                        if (!message.guild.members.cache.has(id)) return { success: false };
+                        formattedArgs[requiredArgs[i].key] = message.guild.members.cache.get(id);
+                        break;
+                    }
+
+                    case "user": {
+                        if (!this.users.cache.has(id)) return { success: false };
+                        formattedArgs[requiredArgs[i].key] = this.users.cache.get(id);
+                        break;
+                    }
+
+                    case "text-channel": {
+                        if (!message.guild.channels.cache.filter(channel => channel.type === "text").has(id)) return { success: false };
+                        formattedArgs[requiredArgs[i].key] = message.guild.channels.cache.get(id);
+                        break;
+                    }
+
+                    case "voice-channel": {
+                        if (!message.guild.channels.cache.filter(channel => channel.type === "voice").has(id)) return { success: false };
+                        formattedArgs[requiredArgs[i].key] = message.guild.channels.cache.get(id);
+                        break;
+                    }
+                }
+            }
+
+            // Now we know that it is the right format, we then run the validator on it if it has one
+            if (requiredArgs[i].validator && !requiredArgs[i].validator(incomingArgs[i])) return { success: false };
         }
+
+        /*   If we get this far then the argument *should* be valid   */
+        return { success: true, formattedArgs };
     }
 }
 
