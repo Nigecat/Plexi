@@ -250,7 +250,7 @@ export class PlexiClient extends Client {
                 // Otherwise if it is not a string, then it must be a mention (and one was specified)
                 else if (requiredArgs[i].type && requiredArgs[i].type !== "string") {
                     // Extract the mention id
-                    const id = incomingArgs[i].match(/^<@!?(\d+)>$/)[1];
+                    const id = incomingArgs[i].match(/[\\<>@#&!]/g)[1];
 
                     switch (requiredArgs[i].type) {
                         case "role": {
