@@ -31,11 +31,21 @@ export class PlexiClient extends Client {
     /**
      * The path of the database, this is where all persistent data will be stored.
      * @type {string}
+     * @private
+     * @readonly
+     * @property
+     */
+    private readonly databasePath: string;
+
+    /**
+     * An invite link to the bot's support server
+     * @type {string}
      * @public
      * @readonly
      * @property
      */
-    public readonly databasePath: string;
+    public readonly supportInvite: string;
+
 
     /**
      * A map containing all registered commands, when attempting to execute a command the bot will search for it in here.
@@ -74,16 +84,16 @@ export class PlexiClient extends Client {
     constructor(options: PlexiOptions) {
         // We have to call super() before we can access 'this' but we can't pass our extra data to the other constructor,
         //      So we have to create a variable for each one and remove it from the original options object
-        const owner = options.owner;
-        const defaultPrefix = options.defaultPrefix;
-        const databasePath = options.databasePath;
+        const { owner, defaultPrefix, databasePath, supportInvite } = options;
         delete options.owner;
         delete options.defaultPrefix;
         delete options.databasePath;
+        delete options.supportInvite;
         super(options);
         this.owner = owner;
         this.defaultPrefix = defaultPrefix;
         this.databasePath = databasePath;
+        this.supportInvite = supportInvite;
         this.commands = {};
         this.prefixCache = {};
 
@@ -280,12 +290,14 @@ export class PlexiClient extends Client {
 /** 
  * An extended version of the discord.js [ClientOptions]{@link https://discord.js.org/#/docs/main/stable/typedef/ClientOptions} object.
  * @typedef {object} PlexiOptions
+ * @property {stirng} supportInvite - An invite to the bot's support server
  * @property {string} defaultPrefix - The default prefix for the bot
  * @property {string} databasePath - The path of the database to store data in
  * @property {string} owner - The [Snowflake]{@link https://discord.js.org/#/docs/main/stable/typedef/Snowflake} of the bot owner
  * 
 */
 export interface PlexiOptions extends ClientOptions {
+    supportInvite?: string,
     defaultPrefix: string,
     databasePath: string,
     owner: string
