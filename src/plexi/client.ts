@@ -99,6 +99,7 @@ export class PlexiClient extends Client {
 
         // Init our data storage
         this.data = { prefixes: new DataStore(this.databasePath, "prefix") };
+        this.data.prefixes.on("debug", data => this.emit("debug", data));
         this.data.prefixes.connect();
 
         // Assign our on message handler
@@ -129,7 +130,7 @@ export class PlexiClient extends Client {
                 // Assume the command group based off the parent folder if we aren't explicitly told
                 command.group = command.group || group;
 
-                console.log(`Registered command ${command.group}:${command.name}`);
+                this.emit("debug", `Registered command ${command.group}:${command.name}`);
                 this.commands[command.name] = command;
             }
         }
@@ -152,7 +153,7 @@ export class PlexiClient extends Client {
         // If we don't have the prefix regex cached then we generate it
         if (!(prefix in this.prefixCache)) { 
             this.prefixCache[prefix] = new RegExp(`^(<@!?${this.user.id}>\\s+(?:\\${prefix}\\s*)?|\\${prefix}\\s*)([^\\s]+)`, "i");
-            console.log(`Built command pattern for prefix "${prefix}": ${this.prefixCache[prefix]}`)
+            this.emit("debug", `Built command pattern for prefix "${prefix}": ${this.prefixCache[prefix]}`)
         }
 
         // If the message matches our prefix
