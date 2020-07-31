@@ -86,7 +86,10 @@ export class PlexiClient extends Client {
         this.databasePath = databasePath;
         this.commands = {};
         this.prefixCache = {};
+
+        // Init our data storage
         this.data = { prefixes: new DataStore(this.databasePath, "prefix") };
+        this.data.prefixes.connect();
 
         // Assign our on message handler
         this.on("message", this.onMessage);
@@ -103,8 +106,6 @@ export class PlexiClient extends Client {
      * @function
      */
     async registerCommands(dir: string) {
-        await this.data.prefixes.connect();
-
         // Loop through each group
         for (const group of await fs.readdir(dir)) {
             // Loop through each file contained in the group
@@ -127,6 +128,7 @@ export class PlexiClient extends Client {
     /**
      * The message handler, this is fired whenever we recieve an incoming message
      * @param {Message} message - The incoming message
+     * @private
      * @function
      */
     async onMessage(message: Message) {
@@ -181,7 +183,7 @@ export class PlexiClient extends Client {
                 }
 
                 // If the args are valid
-                if (this.verifyArgs(args, command.args)) {
+                if (this.verifyArgs(message, args, command.args)) {
                     // Format the args into what the command is expecting
                     const formatted = new Map(command.args.map((arg, i) => [arg.key, args[i]]));
                     command.run(message, formatted);
@@ -194,15 +196,84 @@ export class PlexiClient extends Client {
 
     /**
      * Check if a set of arguments match the expected arguments.
+     * @param {Message} message - The corrosponding message object
      * @param {string[]} incomingArgs - The incoming args
      * @param {CommandArgument[]} requiredArgs - The args that the incoming args should match
      * @function
+     * @private
      * @returns Whether or not they match
      */
-    private verifyArgs(incomingArgs: string[], requiredArgs: CommandArgument[]) {
-        console.log(incomingArgs, requiredArgs);
+    private verifyArgs(message: Message, incomingArgs: string[], requiredArgs: CommandArgument[]) {
         // Skip any checks if there are no args
         if (incomingArgs.length === 0 && requiredArgs.length === 0) return true;
+
+        // If we have any infinite args
+        if (requiredArgs.some(arg => arg.infinite)) {
+            throw new Error("Infinite args not supported yet!");
+        }
+
+        else {
+            // If we do not have the matching number of arguments then exit
+            if (incomingArgs.length !== requiredArgs.length) return false;
+
+            // Loop through each argument so we can verify them seperately
+            for (let i = 0; i < incomingArgs.length; i++) {
+                // If the one of property is there we check that first and can short circuit the rest of the checks
+                if (requiredArgs[i].oneOf) return requiredArgs[i].oneOf.includes(incomingArgs[i]);
+
+                // If there are anything other than digits in the argument
+                if (requiredArgs[i].type === "number" && !/^\d+$/.test(incomingArgs[i])) return false;
+
+                // Otherwise if it is not a string, then it must be a mention
+                else if (requiredArgs[i].type !== "string") {
+                    // Extract the mention id
+                    const id = incomingArgs[i].match(/^<@!?(\d+)>$/)[0];
+
+                    switch (requiredArgs[i].type) {
+                        case "role": {
+                            if (!message.guild.roles.cache.has(id)) return false;
+                            break;
+                        }
+
+                        case "channel": {
+                            if (!message.guild.channels.cache.has(id)) return false;
+                            break;
+                        }
+
+                        case "member": {
+                            if (!message.guild.members.cache.has(id)) return false;
+                            break;
+                        }
+
+                        case "user": {
+                            if (!this.users.cache.has(id)) return false;
+                            break;
+                        }
+
+                        case "text-channel": {
+                            if (!message.guild.channels.cache.filter(channel => channel.type === "text").has(id)) return false;
+                            break;
+                        }
+
+                        case "voice-channel": {
+                            if (!message.guild.channels.cache.filter(channel => channel.type === "voice").has(id)) return false;
+                            break;
+                        }
+
+                        // The string type can be anything
+                        case "string": {
+                            break;
+                        }
+                    }
+                }
+
+                // Now we know that it is the right format, we then run the validator on it if it has one
+                if (requiredArgs[i].validator && !requiredArgs[i].validator(incomingArgs[i])) return false;
+
+
+                /*   If we get this far then the argument *should* be valid   */
+            }
+        }
     }
 }
 
