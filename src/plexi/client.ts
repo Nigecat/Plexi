@@ -193,10 +193,10 @@ export class PlexiClient extends Client {
                 }
 
                 // If the args are valid
-                if (this.verifyArgs(message, args, command.args)) {
+                const result = this.verifyArgs(message, args, command.args);
+                if (result.success) {
                     // Format the args into what the command is expecting
-                    const formatted = new Map(command.args.map((arg, i) => [arg.key, args[i]]));
-                    command.run(message, formatted);
+                    command.run(message, result.formattedArgs);
                 } else {
                     message.channel.send("INVALID ARGS");
                 }
@@ -211,11 +211,14 @@ export class PlexiClient extends Client {
      * @param {CommandArgument[]} requiredArgs - The args that the incoming args should match
      * @function
      * @private
-     * @returns Whether or not they match
+     * @returns Whether or not they match and the formatted arguments if they do
      */
     private verifyArgs(message: Message, incomingArgs: string[], requiredArgs: CommandArgument[]) {
+        // This function is also responsible for formatting the arguments
+        const formattedArgs = {};
+
         // Skip any checks if there are no args
-        if (incomingArgs.length === 0 && requiredArgs.length === 0) return true;
+        if (incomingArgs.length === 0 && requiredArgs.length === 0) return { success: true, formattedArgs };
 
         // If we have any infinite args
         if (requiredArgs.some(arg => arg.infinite)) {
@@ -224,49 +227,65 @@ export class PlexiClient extends Client {
 
         else {
             // If we do not have the matching number of arguments then exit
-            if (incomingArgs.length !== requiredArgs.length) return false;
+            if (incomingArgs.length !== requiredArgs.length) return { success: false };
 
             // Loop through each argument so we can verify them seperately
             for (let i = 0; i < incomingArgs.length; i++) {
                 // If the one of property is there we check that first and can short circuit the rest of the checks
-                if (requiredArgs[i].oneOf) return requiredArgs[i].oneOf.includes(incomingArgs[i]);
+                if (requiredArgs[i].oneOf) {
+                    if (requiredArgs[i].oneOf.includes(incomingArgs[i])) {
+                        formattedArgs[requiredArgs[i].key] = incomingArgs[i];
+                        continue;
+                    } else {
+                        return { success: false };
+                    }
+                }
 
                 // If there are anything other than digits in the argument
-                if (requiredArgs[i].type === "number" && !/^\d+$/.test(incomingArgs[i])) return false;
+                if (requiredArgs[i].type === "number") {
+                    if (!/^\d+$/.test(incomingArgs[i])) return { success: false };
+                    else formattedArgs[requiredArgs[i].key] = parseInt(incomingArgs[i]);
+                }
 
-                // Otherwise if it is not a string, then it must be a mention
-                else if (requiredArgs[i].type !== "string") {
+                // Otherwise if it is not a string, then it must be a mention (and one was specified)
+                else if (requiredArgs[i].type && requiredArgs[i].type !== "string") {
                     // Extract the mention id
-                    const id = incomingArgs[i].match(/^<@!?(\d+)>$/)[0];
+                    const id = incomingArgs[i].match(/^<@!?(\d+)>$/)[1];
 
                     switch (requiredArgs[i].type) {
                         case "role": {
-                            if (!message.guild.roles.cache.has(id)) return false;
+                            if (!message.guild.roles.cache.has(id)) return { success: false };
+                            formattedArgs[requiredArgs[i].key] = message.guild.roles.cache.get(id);
                             break;
                         }
 
                         case "channel": {
-                            if (!message.guild.channels.cache.has(id)) return false;
+                            if (!message.guild.channels.cache.has(id)) return { success: false };
+                            formattedArgs[requiredArgs[i].key] = message.guild.channels.cache.get(id);
                             break;
                         }
 
                         case "member": {
-                            if (!message.guild.members.cache.has(id)) return false;
+                            if (!message.guild.members.cache.has(id)) return { success: false };
+                            formattedArgs[requiredArgs[i].key] = message.guild.members.cache.get(id);
                             break;
                         }
 
                         case "user": {
-                            if (!this.users.cache.has(id)) return false;
+                            if (!this.users.cache.has(id)) return { success: false };
+                            formattedArgs[requiredArgs[i].key] = this.users.cache.get(id);
                             break;
                         }
 
                         case "text-channel": {
-                            if (!message.guild.channels.cache.filter(channel => channel.type === "text").has(id)) return false;
+                            if (!message.guild.channels.cache.filter(channel => channel.type === "text").has(id)) return { success: false };
+                            formattedArgs[requiredArgs[i].key] = message.guild.channels.cache.get(id);
                             break;
                         }
 
                         case "voice-channel": {
-                            if (!message.guild.channels.cache.filter(channel => channel.type === "voice").has(id)) return false;
+                            if (!message.guild.channels.cache.filter(channel => channel.type === "voice").has(id)) return { success: false };
+                            formattedArgs[requiredArgs[i].key] = message.guild.channels.cache.get(id);
                             break;
                         }
 
@@ -278,11 +297,11 @@ export class PlexiClient extends Client {
                 }
 
                 // Now we know that it is the right format, we then run the validator on it if it has one
-                if (requiredArgs[i].validator && !requiredArgs[i].validator(incomingArgs[i])) return false;
-
-
-                /*   If we get this far then the argument *should* be valid   */
+                if (requiredArgs[i].validator && !requiredArgs[i].validator(incomingArgs[i])) return { success: false };
             }
+
+            /*   If we get this far then the argument *should* be valid   */
+            return { success: true, formattedArgs };
         }
     }
 }
