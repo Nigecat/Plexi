@@ -1,8 +1,7 @@
 import { version } from "../../../package.json";
 import { MessageEmbed } from "discord.js";
-import { invitePermissionLevel } from "../../config/config.json";
-import { invite } from "../../config/clientConfig.json";
 import { Command, Client, CommandoMessage } from "discord.js-commando";
+import { invitePermissionLevel, invite } from "../../config/config.json";
 
 export default class Stats extends Command {
     constructor(client: Client) {
