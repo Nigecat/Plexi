@@ -1,4 +1,4 @@
-name: build
+name: lint
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ rewrite2 ]
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,8 +29,5 @@ jobs:
     - name: Install Dependencies
       run: npm ci
 
-    - name: Build
-      run: npm run build
-
-    - name: Clean
-      run: npm run clean
+    - name: Lint
+      run: npm run lint
