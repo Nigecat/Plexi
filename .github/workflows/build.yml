@@ -34,6 +34,10 @@ jobs:
       - name: Run lint
         working-directory: ${{ env.working-directory }}
         run: npm run lint
+
+      - name: Run test
+        working-directory: ${{ env.working-directory }}
+        run: npm run test
           
       - name: Run typescript build
         working-directory: ${{ env.working-directory }}

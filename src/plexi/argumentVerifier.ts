@@ -21,7 +21,7 @@ export const ARGUMENT_TYPES: ArgumentTypes = {
 
 export interface ArgumentTypes {
     [type: string]: {
-        check: (val: string, data: { message: Message, client: PlexiClient }) => boolean,
+        check: (val: string, data?: { message: Message, client: PlexiClient }) => boolean,
         format: (val: string) => any
     }
 }
