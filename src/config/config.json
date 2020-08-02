@@ -1,6 +1,0 @@
-{
-    "settingsProvider": "src/data/settings.sqlite",
-    "serverDatabase": "src/data/servers.sqlite",
-    "invitePermissionLevel": "8",
-    "invite": "https://discord.gg/ZbaXJDF"
-}
