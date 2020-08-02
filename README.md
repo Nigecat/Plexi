@@ -1,5 +1,6 @@
 # Plexi
 ![build](https://github.com/Nigecat/Plexi/workflows/build/badge.svg)
+![lint](https://github.com/Nigecat/Plexi/workflows/lint/badge.svg)
 
 A general purpose discord bot
 
