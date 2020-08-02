@@ -1,10 +1,26 @@
 {
     "name": "plexi",
-    "version": "4.5.9",
+    "version": "5.0.1",
     "description": "A general purpose discord bot",
     "author": "Nigecat",
     "repository": {
         "type": "git",
         "url": "https://github.com/Nigecat/Plexi.git"
+    },
+    "scripts": {
+        "build": "tsc",
+        "start": "npm run build && node src/launcher.js"
+    },
+    "devDependencies": {
+        "@types/node": "^14.0.27"
+    },
+    "dependencies": {
+        "bufferutil": "^4.0.1",
+        "discord.js": "^12.2.0",
+        "erlpack": "github:discord/erlpack",
+        "libsodium-wrappers": "^0.7.6",
+        "typescript": "^3.9.7",
+        "utf-8-validate": "^5.0.2",
+        "zlib-sync": "^0.1.7"
     }
 }
