@@ -154,7 +154,7 @@ export interface CommandArgument {
     /* eslint-disable @typescript-eslint/no-explicit-any */
     key: string,
     validator?: (arg: any) => boolean,
-    type?: "string" | "number" | "role" | "member" | "user" | "channel" | "text-channel" | "voice-channel"
+    type?: "string" | "number" | "role" | "member" | "user"
     oneOf?: string[],
     infinite?: boolean,
     default?: any

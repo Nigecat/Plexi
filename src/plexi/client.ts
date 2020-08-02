@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import { DataStore } from "./datastore";
 import { resolve, extname } from "path";
+import { ARGUMENT_TYPES } from "./argumentVerifier";
 import { Command, CommandArgument } from "./command";
 import { Client, ClientOptions, Message } from "discord.js";
 
@@ -194,10 +195,8 @@ export class PlexiClient extends Client {
                 }
 
                 // If the args are valid
-                const result = this.verifyArgs(message, args, command.args);
-                if (result.success) {
-                    // Format the args into what the command is expecting
-                    command.run(message, result.formattedArgs);
+                if (this.verifyArgs(message, args, command.args)) {
+                    message.channel.send("VALID ARGS");
                 } else {
                     message.channel.send("INVALID ARGS");
                 }
@@ -214,96 +213,8 @@ export class PlexiClient extends Client {
      * @private
      * @returns Whether or not they match and the formatted arguments if they do
      */
-    private verifyArgs(message: Message, incomingArgs: string[], requiredArgs: CommandArgument[]) {
-        // This function is also responsible for formatting the arguments
-        const formattedArgs = {};
-
-        // If we do not have the matching number of arguments then exit (this is bypassed if one of the args is infinite)
-        if (!requiredArgs.some(arg => arg.infinite) && incomingArgs.length !== requiredArgs.length) return { success: false };
-
-        // Loop through each argument so we can verify them seperately
-        for (let i = 0; i < requiredArgs.length; i++) {
-            // If this argument is infinite then we skip everything after it and condense them into a single string
-            if (requiredArgs[i].infinite) {
-                const text = incomingArgs.slice(i).join(" ");
-                // We still require something to have been said
-                if (text) {
-                    formattedArgs[requiredArgs[i].key] = text;
-                    return { success: true, formattedArgs };
-                } else return { success: false }
-            }
-
-            // If the one of property is there we check that first and can short circuit the rest of the checks
-            if (requiredArgs[i].oneOf) {
-                if (requiredArgs[i].oneOf.includes(incomingArgs[i])) {
-                    formattedArgs[requiredArgs[i].key] = incomingArgs[i];
-                    continue;
-                } else {
-                    return { success: false };
-                }
-            }
-
-            // If there are anything other than digits in the argument
-            if (requiredArgs[i].type === "number") {
-                if (!Number.isInteger(incomingArgs[i])) return { success: false };
-                else formattedArgs[requiredArgs[i].key] = parseInt(incomingArgs[i]);
-            }
-
-            // If it is a string we allow anything through
-            else if (requiredArgs[i].type === "string") {
-                formattedArgs[requiredArgs[i].key] = incomingArgs[i];
-            }
-
-            // Otherwise it must be a mention (and one was specified)
-            else if (requiredArgs[i].type && requiredArgs[i].type !== "string") {
-                // Extract the mention id
-                const id = incomingArgs[i].match(/^<@(&?)!?(\d+)>$/).pop();
-
-                switch (requiredArgs[i].type) {
-                    case "role": {
-                        if (!message.guild.roles.cache.has(id)) return { success: false };
-                        formattedArgs[requiredArgs[i].key] = message.guild.roles.cache.get(id);
-                        break;
-                    }
-
-                    case "channel": {
-                        if (!message.guild.channels.cache.has(id)) return { success: false };
-                        formattedArgs[requiredArgs[i].key] = message.guild.channels.cache.get(id);
-                        break;
-                    }
-
-                    case "member": {
-                        if (!message.guild.members.cache.has(id)) return { success: false };
-                        formattedArgs[requiredArgs[i].key] = message.guild.members.cache.get(id);
-                        break;
-                    }
-
-                    case "user": {
-                        if (!this.users.cache.has(id)) return { success: false };
-                        formattedArgs[requiredArgs[i].key] = this.users.cache.get(id);
-                        break;
-                    }
-
-                    case "text-channel": {
-                        if (!message.guild.channels.cache.filter(channel => channel.type === "text").has(id)) return { success: false };
-                        formattedArgs[requiredArgs[i].key] = message.guild.channels.cache.get(id);
-                        break;
-                    }
-
-                    case "voice-channel": {
-                        if (!message.guild.channels.cache.filter(channel => channel.type === "voice").has(id)) return { success: false };
-                        formattedArgs[requiredArgs[i].key] = message.guild.channels.cache.get(id);
-                        break;
-                    }
-                }
-            }
-
-            // Now we know that it is the right format, we then run the validator on it if it has one
-            if (requiredArgs[i].validator && !requiredArgs[i].validator(incomingArgs[i])) return { success: false };
-        }
-
-        /*   If we get this far then the argument *should* be valid   */
-        return { success: true, formattedArgs };
+    private async verifyArgs(message: Message, incomingArgs: string[], requiredArgs: CommandArgument[]) {
+        return false;
     }
 }
 
