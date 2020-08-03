@@ -1,5 +1,5 @@
 import { Plexi } from "../Plexi";
-import { PermissionResolvable, Message } from "discord.js";
+import { PermissionResolvable, Message, Snowflake } from "discord.js";
 
 /** A command that can be run in a client */
 export class Command {
@@ -10,15 +10,33 @@ export class Command {
         this.name = options.name;
 
         // Set the defaults
-        this.options.description = this.options.description ?? "";
-        this.options.details = this.options.details ?? "";
-        this.options.guildOnly = this.options.guildOnly ?? false;
-        this.options.ownerOwnly = this.options.ownerOwnly ?? false;
-        this.options.clientPermissions = this.options.clientPermissions ?? [];
-        this.options.userPermissions = this.options.userPermissions ?? [];
-        this.options.nsfw = this.options.nsfw ?? false;
-        this.options.args = this.options.args ?? [];
-        this.options.hidden = this.options.hidden ?? false;
+        this.options.description = this.options.description || "";
+        this.options.details = this.options.details || "";
+        this.options.guildOnly = this.options.guildOnly || false;
+        this.options.dmOnly = this.options.dmOnly || false;
+        this.options.ownerOwnly = this.options.ownerOwnly || false;
+        this.options.clientPermissions = this.options.clientPermissions || [];
+        this.options.userPermissions = this.options.userPermissions || [];
+        this.options.nsfw = this.options.nsfw || false;
+        this.options.args = this.options.args || [];
+        this.options.hidden = this.options.hidden || false;
+    }
+
+    /** Given a message check if the options of this command will allow it to run
+     * @param {Message} message - The message object that this would be running with
+     * @internal
+     */
+    canRun(message: Message): boolean {
+        return !(
+            (this.options.dmOnly && message.channel.type !== "dm") ||
+            (this.options.guildOnly && !message.guild) ||
+            (this.options.ownerOwnly && message.author.id !== this.client.config.owner) ||
+            (message.guild && !this.options.clientPermissions.every((perm) => message.member.hasPermission(perm))) ||
+            (message.guild && !this.options.userPermissions.every((perm) => message.member.hasPermission(perm))) ||
+            (this.options.nsfw && (message.channel.type !== "dm" ? !message.channel.nsfw : false)) ||
+            (this.options.whitelist && !this.options.whitelist.includes(message.author.id)) ||
+            (this.options.blacklist && this.options.blacklist.includes(message.author.id))
+        );
     }
 
     /** The function to run this command, this should be overridden by the inherited class
@@ -44,6 +62,8 @@ export interface CommandInfo {
     details?: string;
     /** [guildOnly=false] Whether or not this command should only function in a guild channel */
     guildOnly?: boolean;
+    /** [guildOnly=false] Whether or not this command should only function in a dm channel */
+    dmOnly?: boolean;
     /** [ownerOwnly=false] Whether or not the command is usable only by an owner */
     ownerOwnly?: boolean;
     /** Permissions required by the client to use the command (Must be a valid [PermissionResolvable]{@link https://discord.js.org/#/docs/main/stable/typedef/PermissionResolvable} array) */
@@ -57,9 +77,9 @@ export interface CommandInfo {
     /** [hidden=false] Whether the command should be hidden from the help command */
     hidden?: boolean;
     /** A whitelist of users who can use this command, if this is not specified anyone will be able to use it */
-    whitelist?: boolean;
+    whitelist?: Snowflake[];
     /** A blacklist of users who can't run this command, if this is not specified anyone will be able to use it */
-    blacklist?: boolean;
+    blacklist?: Snowflake[];
 }
 
 export interface Argument {

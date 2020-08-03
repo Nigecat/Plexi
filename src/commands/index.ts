@@ -12,9 +12,7 @@ export default async function loadCommands(client: Plexi): Promise<Collection<st
     const files = await glob(resolve(__dirname, "commands", "**", "*", "*.js"));
     for (let i = 0; i < files.length; i++) {
         const command = new (await import(files[i])).default(client);
-        if (command.validate) {
-            commands.set(command.name, command);
-        }
+        commands.set(command.name.toLowerCase(), command);
     }
 
     return commands;
