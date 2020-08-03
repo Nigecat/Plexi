@@ -1,11 +1,20 @@
 import { Plexi } from "./src/Plexi";
-import config from "./config/config";
 import { config as loadEnv } from "dotenv";
 import { existsSync, mkdirSync } from "fs";
 import { createLogger, format, transports } from "winston";
 
 // Create the bot
-const client = new Plexi(config);
+const client = new Plexi({
+    client: {
+        allowedMentions: { roles: [], users: [] },
+    },
+    plexi: {
+        supportServer: "621181741972979722",
+        owner: "307429254017056769",
+        databasePath: "./data/data.sqlite",
+        prefix: "$",
+    },
+});
 
 // Load any environment variables into process.env
 loadEnv();
