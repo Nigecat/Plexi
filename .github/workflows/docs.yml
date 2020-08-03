@@ -39,6 +39,6 @@ jobs:
         git commit -m "CI: Automated build push"
         
     - name: Push changes
-      uses: ad-m/github-push-action@master
+      uses: ad-m/github-push-action@rewrite2
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
