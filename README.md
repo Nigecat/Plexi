@@ -17,3 +17,11 @@ The finished file should look something like the following (when not in a produc
 DISCORD_TOKEN=xxxxxxx
 YOUTUBE_TOKEN=xxxxxxx
 ```
+
+For a production environment (and not using the environment variables), the file should look like this:
+```
+DISCORD_TOKEN=xxxxxxx
+YOUTUBE_TOKEN=xxxxxxx
+TOPGG_TOKEN=xxxxxxx
+NODE_ENV=production
+```
