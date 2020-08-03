@@ -1,4 +1,4 @@
-import { Options } from "../src/Plexi";
+import { Options } from "../Plexi";
 
 const CONFIG: Options = {
     client: {
