@@ -1,5 +1,5 @@
 import { Plexi } from "./src/Plexi";
-import config from "./src/config/config";
+import config from "./config/config";
 import { config as loadEnv } from "dotenv";
 import { existsSync, mkdirSync } from "fs";
 import { createLogger, format, transports } from "winston";
