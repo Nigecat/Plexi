@@ -2,9 +2,8 @@ name: build
 
 on:
   push:
-    branches: [ rewrite2 ]
-  pull_request:
-    branches: [ rewrite2 ]
+    branches-ignore:
+      - "**"
 
 jobs:
   build:
