@@ -35,7 +35,7 @@ export default class Help extends Command {
             message.author.send(stripIndents`
                 To run a command use \`${prefix}command\` or \`@${this.client.user.tag} command\`.
 
-                Use \`${prefix} <command>\` to view detailed information about a specific command.
+                Use \`${prefix}help <command>\` to view detailed information about a specific command.
                 Use \`${prefix}help\` to view this page.
 
                 ${groups.map((group) => stripIndents`
@@ -47,7 +47,7 @@ export default class Help extends Command {
                             **${command.name}:** ${command.options.description}${command.options.nsfw ? " (NSFW) " : ""}
                         `).join("\n")}
                 `).join("\n\n")}
-            `);
+            `, { split: true });
             /* eslint-enable prettier/prettier */
 
             if (message.channel.type !== "dm") {

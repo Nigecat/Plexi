@@ -1,7 +1,7 @@
 import { Plexi } from "../Plexi";
-import { Snowflake, Message } from "discord.js";
 import { Command } from "../commands/Command";
 import { stripIndents, oneLine } from "common-tags";
+import { Snowflake, Message, TextChannel, NewsChannel, DMChannel } from "discord.js";
 
 /** Generates the regex for detecting when a string starts with either a prefix or a user/bot mention
  *  NOTE: This *requires* there to be text after the match, the string can't only contain the prefix/mention
@@ -58,4 +58,18 @@ export async function getPrefix(message: Message, client: Plexi): Promise<RegExp
             ? client.prefixes.cache.get(message.guild.id)
             : await client.prefixes.fetch(message.guild.id)
         : client.defaultPrefix;
+}
+
+/**
+ * Get the second last message in a given channel
+ *
+ * @remarks
+ * Useful for finding the message before a command
+ *
+ * @param channel The channel to look in
+ * @returns A promise containing the message that was found
+ */
+export async function lastMessage(channel: TextChannel | NewsChannel | DMChannel): Promise<Message> {
+    const messages = await channel.messages.fetch({ limit: 2 });
+    return messages.get(Array.from(messages.keys())[1]);
 }
