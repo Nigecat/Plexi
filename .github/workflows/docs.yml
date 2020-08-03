@@ -2,7 +2,8 @@ name: docs
 
 on:
   push:
-    branches: [ rewrite2 ]
+    branches-ignore:
+      - "**"
 
 jobs:
   build:
