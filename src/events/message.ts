@@ -9,5 +9,8 @@ export default async function (message: Message, client: Plexi): Promise<void> {
             : await client.prefixes.fetch(message.guild)
         : client.defaultPrefix;
 
-    console.log(prefix);
+    // If this message matches the prefix
+    if (message.content.match(prefix)) {
+        client.emit("debug", message.content);
+    }
 }

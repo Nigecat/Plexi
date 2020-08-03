@@ -1,3 +1,4 @@
+import * as Knex from "knex";
 import events from "./events";
 import { generateRegExp } from "./utils/misc";
 import { Client, ClientOptions } from "discord.js";
@@ -20,6 +21,9 @@ export class Plexi extends Client {
      *  it is dynamically generated based on the config and the client id. */
     public defaultPrefix: RegExp;
 
+    /** The database connection, this will only be set if we get a databasePath config flag */
+    public database: Knex;
+
     /** Create a new bot
      * @param {Options} options - The options for this client
      */
@@ -31,13 +35,21 @@ export class Plexi extends Client {
     }
 
     /** Init the bot, this runs after we have connected to the gateway */
-    init(): void {
+    async init(): Promise<void> {
         // Generate the regex for the supplied prefix
         this.defaultPrefix = generateRegExp(this.config.prefix, this.user.id);
 
-        // Create our prefix manager (only if we have a database)
+        // Do database setup if we got a path
         if (this.config.databasePath) {
-            this.prefixes = new PrefixManager(this);
+            // Connect to the database
+            this.database = Knex({
+                useNullAsDefault: true,
+                client: "sqlite3",
+                connection: { filename: this.config.databasePath },
+            });
+            // Create our prefix manager
+            this.prefixes = new PrefixManager(this, this.database);
+            await this.prefixes.init();
         }
 
         // Register our event handlers
