@@ -8,11 +8,12 @@ A general purpose discord bot
 
 ## Setup
 The bot pulls it's tokens from environment variables.  
-So, first make a file called `.env` in the root directory of the files (same directory as the package.json file).  
-This file should contain two tokens, the [bot token](https://discord.com/developers/applications) (TOKEN) and a [youtube data api v3 token](https://console.developers.google.com/apis/credentials) (YOUTUBE_API_TOKEN)
+So, first make a file called `.env` in the root directory (they can also be loaded from the device environment variables, this is preferred in a production environment).  
+This file should contain two tokens, the [bot token](https://discord.com/developers/applications) (DISCORD_TOKEN) and a [youtube data api v3 token](https://console.developers.google.com/apis/credentials) (YOUTUBE_TOKEN).
+If the NODE_ENV flag is set to 'production' (`NODE_ENV=production`) a third flag is also required, this should be a [top.gg api token](https://top.gg/api/docs#mybots) (TOPGG_TOKEN)
 
-The finished file should look sometehing like the following:
+The finished file should look something like the following (when not in a production environment):
 ```
-TOKEN=xxxxxxx
-YOUTUBE_API_TOKEN=xxxxx
+DISCORD_TOKEN=xxxxxxx
+YOUTUBE_TOKEN=xxxxxxx
 ```
