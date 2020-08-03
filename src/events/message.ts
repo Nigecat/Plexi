@@ -23,10 +23,12 @@ export default async function (message: Message, client: Plexi): Promise<void> {
         const command = client.commands.get(commandName);
 
         // Check if we can run this command
-        if (command.canRun(message)) {
-            message.channel.send(`Recieved args: ${args.join(", ")}`);
-        } else {
-            message.channel.send("INVALID ARGS");
+        try {
+            if (command.canRun(message)) {
+                command.run(message, command.validateArgs(args));
+            }
+        } catch (err) {
+            message.channel.send(err.message);
         }
     }
 }

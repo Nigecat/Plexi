@@ -19,6 +19,11 @@ export default class PrefixManager {
         this.cache = new Collection();
     }
 
+    /** Destroy the connection to the database */
+    async destroy(): Promise<void> {
+        await this.database.destroy();
+    }
+
     /** Connect to the database and load the values */
     async init(): Promise<void> {
         // Create the table if it does not exist

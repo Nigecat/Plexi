@@ -1,5 +1,6 @@
 import { Plexi } from "../Plexi";
-import { PermissionResolvable, Message, Snowflake } from "discord.js";
+import { oneLine } from "common-tags";
+import { PermissionResolvable, Message, Snowflake, User, GuildMember, Role } from "discord.js";
 
 /** A command that can be run in a client */
 export class Command {
@@ -24,19 +25,67 @@ export class Command {
 
     /** Given a message check if the options of this command will allow it to run
      * @param {Message} message - The message object that this would be running with
+     * @returns {boolean} Whether this is runnable or not, it will through an error if it is not with the details
      * @internal
      */
     canRun(message: Message): boolean {
-        return !(
-            (this.options.dmOnly && message.channel.type !== "dm") ||
-            (this.options.guildOnly && !message.guild) ||
-            (this.options.ownerOwnly && message.author.id !== this.client.config.owner) ||
-            (message.guild && !this.options.clientPermissions.every((perm) => message.member.hasPermission(perm))) ||
-            (message.guild && !this.options.userPermissions.every((perm) => message.member.hasPermission(perm))) ||
-            (this.options.nsfw && (message.channel.type !== "dm" ? !message.channel.nsfw : false)) ||
-            (this.options.whitelist && !this.options.whitelist.includes(message.author.id)) ||
-            (this.options.blacklist && this.options.blacklist.includes(message.author.id))
-        );
+        // If this command is dm only and this is a non-dm channel
+        if (this.options.dmOnly && message.channel.type !== "dm") {
+            throw new Error("This command must be run in a dm channel.");
+        }
+
+        // If this command is guild only and we don't have a guild in the message
+        if (this.options.guildOnly && !message.guild) {
+            throw new Error("This command must be run in a guild channel.");
+        }
+
+        // We want to fail silently if normal users aren't meant to run this command
+        if (this.options.ownerOwnly && message.author.id !== this.client.config.owner) {
+            return false;
+        }
+
+        // If this command was sent in a guild and the client does not have all the required permissions
+        if (message.guild && !this.options.clientPermissions.every((perm) => message.guild.me.hasPermission(perm))) {
+            throw new Error(oneLine`
+                I am missing permission(s) \`${this.options.clientPermissions.join(" | ")}\` to run this command. 
+                Please get an administrator to add them before running this command.
+            `);
+        }
+
+        // If this command was sent in a guild and the member does not have all the required permissions
+        if (message.guild && !this.options.userPermissions.every((perm) => message.member.hasPermission(perm))) {
+            throw new Error(
+                `You are missing permission(s) \`${this.options.clientPermissions.join(" | ")}\` to run this command.`,
+            );
+        }
+
+        // If this is an nsfw command and we are not in an nsfw channel (this rule is skipped in dm channels)
+        if (this.options.nsfw && (message.channel.type !== "dm" ? !message.channel.nsfw : false)) {
+            throw new Error("This command must be run in an nsfw channel.");
+        }
+
+        // Check if a whitelist has been set and this user is not in our whitelist (this will fail silently)
+        if (this.options.whitelist && !this.options.whitelist.includes(message.author.id)) {
+            return false;
+        }
+
+        // Check if a blacklist has been set and this user is in our blacklist
+        if (this.options.blacklist && this.options.blacklist.includes(message.author.id)) {
+            throw new Error(
+                "It appears you have been force blacklisted from this command by the bot owner :thinking:, you probably already know why.",
+            );
+        }
+
+        return true;
+    }
+
+    /** Given an array of arguments check if they match the specified args of this command.
+     * If any of the args are invalid this will through an error
+     * @param {string[]} args - The args to check
+     * @returns The formatted arguments (converts things to their actual objects)
+     */
+    validateArgs(args: string[]): Array<string | number | User | GuildMember | Role> {
+        return args;
     }
 
     /** The function to run this command, this should be overridden by the inherited class
@@ -46,7 +95,7 @@ export class Command {
      * @abstract
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    run(message: Message, args: string[]): void {
+    run(message: Message, args: Array<string | number | User | GuildMember | Role>): void {
         throw new Error("Command not implemented! Create a run() function in the inherited class.");
     }
 }
