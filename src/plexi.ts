@@ -1,4 +1,3 @@
-import winston from "winston";
 import { Client, ClientOptions } from "discord.js";
 
 /**
