@@ -9,3 +9,11 @@ import { Snowflake } from "discord.js";
 export function generateRegExp(prefix: string, id: Snowflake): RegExp {
     return new RegExp(`^(<@!?${id}>\\s+(?:\\${prefix}\\s*)?|\\${prefix}\\s*)([^\\s]+)`, "i");
 }
+
+/** Given a string extract all the digits in it, returns a continous string of all the contained digits
+ * @param {string} text - The text to extract from
+ * @returns {string} The extracted digits
+ */
+export function extractDigits(text: string): string {
+    return (text.match(/\d+/g) || []).join("");
+}

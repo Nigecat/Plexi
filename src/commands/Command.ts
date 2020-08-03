@@ -105,9 +105,9 @@ export class Command {
         // Check each argument seperately
         args = args.map((arg, i) => {
             // Check if this argument is valid
-            if (argumentTypes[this.options.args[i].type].validate(arg)) {
+            if (argumentTypes[this.options.args[i].type].validate(arg, this.client)) {
                 // If it is then parse it to the expected object
-                return argumentTypes[this.options.args[i].type].parse(arg);
+                return argumentTypes[this.options.args[i].type].parse(arg, this.client);
             } else {
                 throw new Error("INVALID ARGS: TODO ERROR");
             }
