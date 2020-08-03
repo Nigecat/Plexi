@@ -3,5 +3,5 @@
 !archiver/*.js
 
 .env
-temp/
+*.log
 node_modules/

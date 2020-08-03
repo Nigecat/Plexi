@@ -11,7 +11,8 @@
         "lint": "eslint src/ --ext .ts",
         "clean": "tsc --build --clean",
         "build": "tsc",
-        "start": "npm run build && node src/launcher.js"
+        "start": "npm run build && node src/launcher.js",
+        "build:docs": "typedoc --out docs/ src/"
     },
     "devDependencies": {
         "@types/node": "^14.0.27",
@@ -20,7 +21,8 @@
         "eslint": "^7.6.0",
         "eslint-config-prettier": "^6.11.0",
         "eslint-plugin-prettier": "^3.1.4",
-        "prettier": "^2.0.5"
+        "prettier": "^2.0.5",
+        "typedoc": "^0.17.8"
     },
     "dependencies": {
         "bufferutil": "^4.0.1",

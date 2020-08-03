@@ -9,7 +9,7 @@
         "allowSyntheticDefaultImports": true,
         "resolveJsonModule": true,
         "moduleResolution": "node",
-        "sourceMap": true,
+        "inlineSourceMap": true,
 
         "sourceRoot": "./",
         "rootDir": "./",
