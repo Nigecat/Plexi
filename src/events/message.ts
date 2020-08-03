@@ -1,13 +1,10 @@
 import { Plexi } from "../Plexi";
 import { Message } from "discord.js";
+import { getPrefix } from "../utils/misc";
 
 export default async function (message: Message, client: Plexi): Promise<void> {
     // Figure out what prefix we are using for this server
-    const prefix = client.prefixes
-        ? client.prefixes.cache.has(message.guild.id)
-            ? client.prefixes.cache.get(message.guild.id)
-            : await client.prefixes.fetch(message.guild)
-        : client.defaultPrefix;
+    const prefix = await getPrefix(message, client);
 
     // If this message matches the prefix
     if (message.content.match(prefix)) {
@@ -32,7 +29,13 @@ export default async function (message: Message, client: Plexi): Promise<void> {
                 command.run(message, command.validateArgs(args));
             }
         } catch (err) {
-            message.channel.send(err.message);
+            // Throw the error (if it isn't just an invalid syntax warning)
+            if (!err.message.includes("Command") && !err.message.includes("Format")) {
+                client.emit("error", err);
+            } else {
+                // Otherwise it's an invalid syntax warning so we send it through to the user
+                message.channel.send(err.message);
+            }
         }
     }
 }

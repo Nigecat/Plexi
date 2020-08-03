@@ -7,6 +7,13 @@ import { createLogger, format, transports } from "winston";
 const client = new Plexi({
     client: {
         allowedMentions: { roles: [], users: [] },
+        presence: {
+            status: "online",
+            activity: {
+                type: "PLAYING",
+                name: "$help",
+            },
+        },
     },
     plexi: {
         supportServer: "621181741972979722",

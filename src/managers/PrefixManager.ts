@@ -1,6 +1,6 @@
 import * as Knex from "knex";
 import { Plexi } from "../Plexi";
-import { Collection, Guild, Snowflake } from "discord.js";
+import { Collection, Snowflake } from "discord.js";
 import { generateRegExp } from "../utils/misc";
 
 /**
@@ -39,18 +39,23 @@ export default class PrefixManager {
         rows.forEach((row) => this.cache.set(row.id, generateRegExp(row.prefix, this.client.user.id)));
     }
 
+    /**
+     * Get the raw prefix for a guild, this directly queries the database
+     * @param {Snoflake} id - The guild to get the prefix of
+     */
+    async getRaw(id: Snowflake): Promise<string> {
+        return await this.database("prefixes").select("prefix").where({ id }).limit(1).first();
+    }
+
     /** Fetch the prefix for a guild, this will return the value of the cache if it is already cached.
      *  Otherwise it will cache it and return the value;
-     * @param {Guild | Snowflake} guild - The guild object or snowflake to retrieve
+     * @param {Snowflake} guild - The guild to retrieve
      */
-    async fetch(guild: Guild | Snowflake): Promise<RegExp> {
-        // Get the id from the guild object or just use the snowflake
-        const id = typeof guild === "string" ? guild : guild.id;
-
+    async fetch(id: Snowflake): Promise<RegExp> {
         if (this.cache.has(id)) return this.cache.get(id);
 
         // Find if we have a prefix for this id saved
-        const prefix = await this.database("prefixes").select("prefix").where({ id }).limit(1).first();
+        const prefix = await this.getRaw(id);
 
         // If we do then convert it into a regular expression, add it do the cache and return it
         if (prefix) {

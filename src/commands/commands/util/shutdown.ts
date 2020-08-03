@@ -6,8 +6,9 @@ export default class Shutdown extends Command {
         super(client, {
             name: "shutdown",
             description: "Shutdown the bot and disconnect from the gateway",
-            group: "util",
+            group: "Util",
             ownerOwnly: true,
+            hidden: true,
         });
     }
 

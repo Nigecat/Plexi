@@ -6,7 +6,7 @@ export default class Avatar extends Command {
     constructor(client: Plexi) {
         super(client, {
             name: "avatar",
-            group: "misc",
+            group: "Miscellaneous",
             description: "Get a user's avatar",
             args: [{ name: "user", type: "user" }],
         });

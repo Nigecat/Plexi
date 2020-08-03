@@ -7,7 +7,7 @@ export default class Ping extends Command {
     constructor(client: Plexi) {
         super(client, {
             name: "ping",
-            group: "misc",
+            group: "Miscellaneous",
             description: "Check the bot's ping to the Discord server",
         });
     }

@@ -1,12 +1,16 @@
 import { Plexi } from "../Plexi";
 import argumentTypes from "./types";
 import { oneLine } from "common-tags";
+import { generateHelp } from "../utils/misc";
 import { PermissionResolvable, Message, Snowflake, User, GuildMember, Role } from "discord.js";
 
 /** A command that can be run in a client */
 export class Command {
     /** The name of this command */
     public readonly name: string;
+
+    /** The format of the command (this is auto generated for the help command) */
+    public readonly format: string;
 
     constructor(public readonly client: Plexi, public readonly options: CommandInfo) {
         this.name = options.name;
@@ -22,6 +26,12 @@ export class Command {
         this.options.nsfw = this.options.nsfw || false;
         this.options.args = this.options.args || [];
         this.options.hidden = this.options.hidden || false;
+
+        this.format = this.options.args.reduce((prev, arg) => {
+            const wrapL = arg.default !== null ? "[" : "<";
+            const wrapR = arg.default !== null ? "]" : ">";
+            return `${prev}${prev ? " " : ""}${wrapL}${arg.name}${arg.infinite ? "..." : ""}${wrapR}`;
+        }, "");
     }
 
     /** Given a message check if the options of this command will allow it to run
@@ -100,7 +110,7 @@ export class Command {
         }
 
         // If we don't have the matching number of arguments now then we know something must have gone wrong
-        if (args.length !== this.options.args.length) throw new Error("INVALID ARGS: TODO ERROR");
+        if (args.length !== this.options.args.length) throw new Error(generateHelp(this));
 
         // Check each argument seperately
         args = args.map((arg, i) => {
@@ -109,7 +119,7 @@ export class Command {
                 // If it is then parse it to the expected object
                 return argumentTypes[this.options.args[i].type].parse(arg, this.client);
             } else {
-                throw new Error("INVALID ARGS: TODO ERROR");
+                throw new Error(generateHelp(this));
             }
         });
 

@@ -7,7 +7,7 @@ export default class EightBall extends Command {
     constructor(client: Plexi) {
         super(client, {
             name: "8b",
-            group: "misc",
+            group: "Miscellaneous",
             description: "Ask the 8ball a question",
             args: [{ name: "question", type: "string", infinite: true }],
         });
