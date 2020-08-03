@@ -1,8 +1,10 @@
 import * as Knex from "knex";
 import events from "./events";
+import loadCommands from "./commands";
+import { Command } from "./commands/Command";
 import { generateRegExp } from "./utils/misc";
-import { Client, ClientOptions } from "discord.js";
 import PrefixManager from "./managers/PrefixManager";
+import { Client, ClientOptions, Collection } from "discord.js";
 
 /**
  * An extended version of the discord.js client
@@ -23,6 +25,9 @@ export class Plexi extends Client {
 
     /** The database connection, this will only be set if we get a databasePath config flag */
     public database: Knex;
+
+    /** The commands this client has access to, mapped by their name */
+    public commands: Collection<string, Command>;
 
     /** Create a new bot
      * @param {Options} options - The options for this client
@@ -51,6 +56,9 @@ export class Plexi extends Client {
             this.prefixes = new PrefixManager(this, this.database);
             await this.prefixes.init();
         }
+
+        // Load our commands
+        this.commands = await loadCommands(this);
 
         // Register our event handlers
         Object.keys(events).forEach((event) => {

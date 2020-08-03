@@ -3,24 +3,39 @@ import { PermissionResolvable, Message } from "discord.js";
 
 /** A command that can be run in a client */
 export class Command {
-    constructor(public readonly client: Plexi, public readonly options: CommandInfo) {}
+    /** The name of this command */
+    public readonly name: string;
+
+    constructor(public readonly client: Plexi, public readonly options: CommandInfo) {
+        this.name = options.name;
+
+        // Set the defaults
+        this.options.description = this.options.description ?? "";
+        this.options.details = this.options.details ?? "";
+        this.options.guildOnly = this.options.guildOnly ?? false;
+        this.options.ownerOwnly = this.options.ownerOwnly ?? false;
+        this.options.clientPermissions = this.options.clientPermissions ?? [];
+        this.options.userPermissions = this.options.userPermissions ?? [];
+        this.options.nsfw = this.options.nsfw ?? false;
+        this.options.args = this.options.args ?? [];
+        this.options.hidden = this.options.hidden ?? false;
+    }
 
     /** The function to run this command, this should be overridden by the inherited class
      * @param {Message} message - The incoming message object
      * @param {string[]} args - The incoming arguments, this will be an array matching the specified {@link Argument} array
      * (each element will be automatically converted to the specified type prior to calling the run function).
+     * @abstract
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     run(message: Message, args: string[]): void {
-        throw new Error("Command not implemented! Create a run() function in the command class...");
+        throw new Error("Command not implemented! Create a run() function in the inherited class.");
     }
 }
 
 export interface CommandInfo {
     /** The name of the command */
     name: string;
-    /** Alternative names for the command */
-    aliases?: string[];
     /** The name of the group this command belongs to */
     group: string;
     /** A short description of this command */
