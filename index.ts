@@ -1,4 +1,5 @@
 import { Plexi } from "./src/Plexi";
+import { version } from "./package.json";
 import { config as loadEnv } from "dotenv";
 import { existsSync, mkdirSync } from "fs";
 import { createLogger, format, transports } from "winston";
@@ -16,10 +17,11 @@ const client = new Plexi({
         },
     },
     plexi: {
-        supportServer: "621181741972979722",
+        supportServer: "https://discord.gg/ZbaXJDF",
         owner: "307429254017056769",
         databasePath: "./data/data.sqlite",
         prefix: "$",
+        version: version,
     },
 });
 

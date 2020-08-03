@@ -80,7 +80,7 @@ export interface Options {
 
 /** The options specific to our client */
 export interface PlexiOptions {
-    /** The id of the bot support server */
+    /** An invite link to the bot's support server */
     supportServer?: string;
     /** The id of the bot owner */
     owner?: string;
@@ -88,4 +88,6 @@ export interface PlexiOptions {
     databasePath?: string;
     /** The default prefix for the bot */
     prefix: string;
+    /** The current version of the bot */
+    version?: string;
 }
