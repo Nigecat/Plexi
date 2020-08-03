@@ -15,7 +15,11 @@ export default async function (message: Message, client: Plexi): Promise<void> {
         const commandName = message.content.match(prefix)[2].toLowerCase();
 
         // Extract the args and remove any blank entries
-        const args = message.content.replace(prefix, "").trim().split(" ");
+        const args = message.content
+            .replace(prefix, "")
+            .trim()
+            .split(" ")
+            .filter((arg) => arg); // This line prevents any blank arguments from getting through, things will break if it is removed
 
         // Do nothing if we do not have a command with this name
         if (!client.commands.has(commandName)) return;

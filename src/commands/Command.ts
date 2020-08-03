@@ -1,4 +1,5 @@
 import { Plexi } from "../Plexi";
+import argumentTypes from "./types";
 import { oneLine } from "common-tags";
 import { PermissionResolvable, Message, Snowflake, User, GuildMember, Role } from "discord.js";
 
@@ -81,21 +82,48 @@ export class Command {
 
     /** Given an array of arguments check if they match the specified args of this command.
      * If any of the args are invalid this will through an error
-     * @param {string[]} args - The args to check
+     * @param {ArgumentArray} args - The args to check
      * @returns The formatted arguments (converts things to their actual objects)
+     * @internal
      */
-    validateArgs(args: string[]): Array<string | number | User | GuildMember | Role> {
+    validateArgs(args: string[]): ArgumentTypeArray {
+        // Assign any default values if we need them
+        this.options.args.forEach((arg, i) => {
+            if (arg.default && args[i] === undefined) args[i] = arg.default;
+        });
+
+        // If we have any infinite args then collapse the end arguments into a single string
+        if (this.options.args.some((arg) => arg.infinite)) {
+            args[this.options.args.length - 1] = args.slice(this.options.args.length - 1).join(" ");
+            // Shorten the array to remove any trailing arguments
+            args.length = this.options.args.length;
+        }
+
+        // If we don't have the matching number of arguments now then we know something must have gone wrong
+        if (args.length !== this.options.args.length) throw new Error("INVALID ARGS: TODO ERROR");
+
+        // Check each argument seperately
+        args = args.map((arg, i) => {
+            // Check if this argument is valid
+            if (argumentTypes[this.options.args[i].type].validate(arg)) {
+                // If it is then parse it to the expected object
+                return argumentTypes[this.options.args[i].type].parse(arg);
+            } else {
+                throw new Error("INVALID ARGS: TODO ERROR");
+            }
+        });
+
         return args;
     }
 
     /** The function to run this command, this should be overridden by the inherited class
      * @param {Message} message - The incoming message object
-     * @param {string[]} args - The incoming arguments, this will be an array matching the specified {@link Argument} array
+     * @param {Array<string | number | User | GuildMember | Role>} args - The incoming arguments, this will be an array matching the specified {@link Argument} array
      * (each element will be automatically converted to the specified type prior to calling the run function).
      * @abstract
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    run(message: Message, args: Array<string | number | User | GuildMember | Role>): void {
+    run(message: Message, args: ArgumentTypeArray): void {
         throw new Error("Command not implemented! Create a run() function in the inherited class.");
     }
 }
@@ -132,12 +160,14 @@ export interface CommandInfo {
 }
 
 export interface Argument {
+    /** The name of the argument, this is used for the help screen */
+    name: string;
     /** The expected argument type */
     type: "string" | "number" | "user" | "member" | "role";
     /** The default value of this command, if this is set then this argument becomes optional.
      *  Default values can only appear at the end of the command argument array.
      */
-    default?: boolean;
+    default?: string;
     /** Whether this can be of infinite length, by default each argument is a single word.
      * This can only be specified in the last argument of the array.
      */
@@ -145,3 +175,5 @@ export interface Argument {
     /** A function to check if an argument is valid, this is purely optional for stricter checking  */
     validator?: (val: Argument["type"]) => boolean;
 }
+
+export type ArgumentTypeArray = Array<string | number | User | GuildMember | Role>;

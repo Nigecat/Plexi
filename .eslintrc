@@ -10,6 +10,7 @@
         "plugin:prettier/recommended"
     ],
     "rules": {
-        "no-console": "warn"
+        "no-console": "warn",
+        "eqeqeq": "error"
     }
 }
