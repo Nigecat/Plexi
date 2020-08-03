@@ -1,10 +1,14 @@
-import { config } from "dotenv";
-import { Plexi } from "./src/plexi";
+import { Plexi } from "./src/Plexi";
+import config from "./src/config/config";
+import { config as loadEnv } from "dotenv";
 import { existsSync, mkdirSync } from "fs";
 import { createLogger, format, transports } from "winston";
 
+// Create the bot
+const client = new Plexi(config);
+
 // Load any environment variables into process.env
-config();
+loadEnv();
 
 // If our log output dir does not exist create it
 if (!existsSync("logs")) {
@@ -31,14 +35,15 @@ if (process.env.NODE_ENV !== "production") {
             format: format.simple(),
         }),
     );
+} else {
+    // Only block all errors in production
+    process.on("uncaughtException", (reason) => logger.error(reason));
+    process.on("unhandledRejection", (reason) => logger.error(reason));
+    client.on("error", (data) => logger.error(data));
 }
 
-const client = new Plexi();
-
+// eslint-disable-next-line no-console
 client.on("ready", () => console.log(`Logged in as ${client.user.tag}`));
 client.on("debug", (data) => logger.info(data));
-client.on("error", (data) => logger.error(data));
-process.on("uncaughtException", (data) => logger.error(data));
-process.on("unhandledRejection", (data) => logger.error(data));
 
 client.login(process.env.DISCORD_TOKEN);
