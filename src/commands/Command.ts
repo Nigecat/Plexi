@@ -106,7 +106,7 @@ export class Command {
      * @returns The formatted arguments (converts things to their actual objects)
      * @internal
      */
-    validateArgs(args: string[]): { isValid: boolean; formattedArgs: ArgumentTypeArray } {
+    validateArgs(args: string[], message: Message): { isValid: boolean; formattedArgs: ArgumentTypeArray } {
         let isValid = true;
 
         // Assign any default values if we need them
@@ -130,9 +130,9 @@ export class Command {
         // Check each argument seperately
         args = args.map((arg, i) => {
             // Check if this argument is valid
-            if (argumentTypes[this.options.args[i].type].validate(arg, this.client)) {
+            if (argumentTypes[this.options.args[i].type].validate(arg, this.client, message)) {
                 // If it is then parse it to the expected object
-                const parsed = argumentTypes[this.options.args[i].type].parse(arg, this.client);
+                const parsed = argumentTypes[this.options.args[i].type].parse(arg, this.client, message);
                 if (this.options.args[i].validate ? this.options.args[i].validate(arg) : true) {
                     return parsed;
                 } else {

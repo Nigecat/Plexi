@@ -27,7 +27,7 @@ export default async function (message: Message, client: Plexi): Promise<void> {
         // Check if we can run this command
         const { canRun, invalidRunReason } = command.canRun(message);
         if (canRun) {
-            const { isValid, formattedArgs } = command.validateArgs(args);
+            const { isValid, formattedArgs } = command.validateArgs(args, message);
             if (isValid) {
                 command.run(message, formattedArgs);
             } else {
