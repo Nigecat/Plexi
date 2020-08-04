@@ -1,7 +1,6 @@
 import { Plexi } from "../Plexi";
 import argumentTypes from "./types";
 import { oneLine } from "common-tags";
-import { generateHelp } from "../utils/misc";
 import { PermissionResolvable, Message, Snowflake, User, GuildMember, Role } from "discord.js";
 
 /** A command that can be run in a client */
@@ -97,6 +96,8 @@ export class Command {
      * @internal
      */
     validateArgs(args: string[]): ArgumentTypeArray {
+        let valid = true;
+
         // Assign any default values if we need them
         this.options.args.forEach((arg, i) => {
             if (arg.default && args[i] === undefined) args[i] = arg.default;
@@ -110,25 +111,35 @@ export class Command {
         }
 
         // If we don't have the matching number of arguments now then we know something must have gone wrong
-        if (args.length !== this.options.args.length) throw new Error(generateHelp(this));
+        if (args.length !== this.options.args.length) {
+            valid = false;
+            throw new Error("INVALID_COMMAND_SYNTAX");
+        }
 
         // Check each argument seperately
         args = args.map((arg, i) => {
             // Check if this argument is valid
             if (argumentTypes[this.options.args[i].type].validate(arg, this.client)) {
                 // If it is then parse it to the expected object
-                return argumentTypes[this.options.args[i].type].parse(arg, this.client);
+                const parsed = argumentTypes[this.options.args[i].type].parse(arg, this.client);
+                if (this.options.args[i].validator ? this.options.args[i].validator(arg) : true) {
+                    return parsed;
+                } else {
+                    valid = false;
+                }
             } else {
-                throw new Error(generateHelp(this));
+                valid = false;
             }
         });
+
+        if (!valid) throw new Error("INVALID_COMMAND_SYNTAX");
 
         return args;
     }
 
     /** The function to run this command, this should be overridden by the inherited class
      * @param {Message} message - The incoming message object
-     * @param {Array<string | number | User | GuildMember | Role>} args - The incoming arguments, this will be an array matching the specified {@link Argument} array
+     * @param {ArgumentTypeArray} args - The incoming arguments, this will be an array matching the specified {@link Argument} array
      * (each element will be automatically converted to the specified type prior to calling the run function).
      * @abstract
      */
@@ -183,7 +194,7 @@ export interface Argument {
      */
     infinite?: boolean;
     /** A function to check if an argument is valid, this is purely optional for stricter checking  */
-    validator?: (val: Argument["type"]) => boolean;
+    validator?: (val: string | number | User | GuildMember | Role) => boolean;
 }
 
 export type ArgumentTypeArray = Array<string | number | User | GuildMember | Role>;

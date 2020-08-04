@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "5.1.4",
+    "version": "5.1.6",
     "description": "A general purpose discord bot",
     "author": "Nigecat",
     "repository": {
@@ -45,8 +45,10 @@
         "node-fetch": "^2.6.0",
         "sqlite3": "^5.0.0",
         "typescript": "^3.9.7",
+        "urban-dictionary": "^2.2.1",
         "utf-8-validate": "^5.0.2",
         "winston": "^3.3.3",
+        "word-definition": "^2.1.6",
         "zlib-sync": "^0.1.7"
     }
 }

@@ -1,6 +1,7 @@
 import { Plexi } from "../Plexi";
 import { Message } from "discord.js";
 import { getPrefix } from "../utils/misc";
+import { stripIndents } from "common-tags";
 
 export default async function (message: Message, client: Plexi): Promise<void> {
     // Figure out what prefix we are using for this server
@@ -30,11 +31,18 @@ export default async function (message: Message, client: Plexi): Promise<void> {
             }
         } catch (err) {
             // Throw the error (if it isn't just an invalid syntax warning)
-            if (!err.message.includes("Command") && !err.message.includes("Format")) {
+            if (!err.message.includes("INVALID_COMMAND_SYNTAX")) {
                 client.emit("error", err);
             } else {
                 // Otherwise it's an invalid syntax warning so we send it through to the user
-                message.channel.send(err.message);
+                const prefix = message.guild
+                    ? (await client.prefixes.getRaw(message.guild.id)) || client.config.prefix
+                    : client.config.prefix;
+
+                message.channel.send(stripIndents`
+                    Invalid command syntax, expect syntax: \`${prefix}${command.name} ${command.format}\`
+                    Run \`${prefix}help ${command.name}\` for more details
+                `);
             }
         }
     }
