@@ -2,11 +2,8 @@ name: docs
 
 on:
   push:
-    branches:
-      - rewrite2
-  pull_request:
-    branchs:
-      - rewrite2
+    branches-ignore:
+      - "**"
 
 jobs:
   build:
