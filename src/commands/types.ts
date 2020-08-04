@@ -1,6 +1,6 @@
 import { Plexi } from "../Plexi";
 import { extractDigits } from "../utils/misc";
-import { User, Message, GuildMember } from "discord.js";
+import { User, Message, GuildMember, Role } from "discord.js";
 
 const argumentTypes: ArgumentTypes = {
     string: {
@@ -28,6 +28,13 @@ const argumentTypes: ArgumentTypes = {
 
         parse: (val: string, _: Plexi, message: Message): GuildMember =>
             message.guild.members.cache.get(extractDigits(val)),
+    },
+
+    role: {
+        validate: (val: string, _: Plexi, message: Message): boolean =>
+            message.guild.roles.cache.has(extractDigits(val)),
+
+        parse: (val: string, _: Plexi, message: Message): Role => message.guild.roles.cache.get(extractDigits(val)),
     },
 };
 

@@ -2,19 +2,20 @@ import { expect } from "chai";
 import { Plexi } from "../src/Plexi";
 import { describe, it } from "mocha";
 import argumentTypes from "../src/commands/types";
-import { User, Message, Guild, TextChannel, GuildMember } from "discord.js";
+import { User, Message, Guild, TextChannel, GuildMember, Role } from "discord.js";
 
 // Create mock data we can use for the testing
 const mockClient = new Plexi({ plexi: { prefix: "$" } });
-const mockUser = new User(mockClient, { id: "307429254017056769" });
-mockClient.users.cache.set("307429254017056769", mockUser);
-
 const mockGuild = new Guild(mockClient, { id: "621181741972979722" });
-mockClient.guilds.cache.set("621181741972979722", mockGuild);
-const mockMember = new GuildMember(mockClient, { id: "307429254017056769" }, mockGuild);
-mockGuild.members.cache.set("307429254017056769", mockMember);
+const mockRole = new Role(mockClient, { id: "703164955763146754" }, mockGuild);
+const mockUser = new User(mockClient, { id: "307429254017056769" });
 const mockChannel = new TextChannel(mockGuild, { id: "703798620738027552" });
 const mockMessage = new Message(mockClient, { id: "740028702448025610", guild: mockGuild }, mockChannel);
+const mockMember = new GuildMember(mockClient, { id: "307429254017056769" }, mockGuild);
+mockClient.users.cache.set("307429254017056769", mockUser);
+mockClient.guilds.cache.set("621181741972979722", mockGuild);
+mockGuild.roles.cache.set("703164955763146754", mockRole);
+mockGuild.members.cache.set("307429254017056769", mockMember);
 
 describe("argumentTypes", () => {
     describe("string", () => {
@@ -79,6 +80,24 @@ describe("argumentTypes", () => {
             );
             expect(argumentTypes.member.parse("<@307429254017056769>", mockClient, mockMessage)).to.equal(
                 mockClient.guilds.cache.get(mockGuild.id).members.cache.get("307429254017056769"),
+            );
+        });
+    });
+
+    describe("role", () => {
+        it("validate", () => {
+            expect(argumentTypes.role.validate("703164955763146754", mockClient, mockMessage)).to.equal(true);
+            expect(argumentTypes.role.validate("<@703164955763146754>", mockClient, mockMessage)).to.equal(true);
+            expect(argumentTypes.role.validate("12345", mockClient, mockMessage)).to.equal(false);
+            expect(argumentTypes.role.validate("<@12345>", mockClient, mockMessage)).to.equal(false);
+        });
+
+        it("parse", () => {
+            expect(argumentTypes.role.parse("703164955763146754", mockClient, mockMessage)).to.equal(
+                mockClient.guilds.cache.get(mockGuild.id).roles.cache.get("703164955763146754"),
+            );
+            expect(argumentTypes.role.parse("<@703164955763146754>", mockClient, mockMessage)).to.equal(
+                mockClient.guilds.cache.get(mockGuild.id).roles.cache.get("703164955763146754"),
             );
         });
     });

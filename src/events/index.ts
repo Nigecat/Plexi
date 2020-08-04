@@ -1,7 +1,8 @@
 import message from "./message";
 import { Plexi } from "../Plexi";
+import guildMemberAdd from "./guildMemberAdd";
 
-export default <EventHandlers>{ message };
+export default <EventHandlers>{ message, guildMemberAdd };
 
 export interface EventHandlers {
     [key: string]: EventHandler;

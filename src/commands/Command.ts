@@ -129,15 +129,15 @@ export class Command {
 
         // Check each argument seperately
         args = args.map((arg, i) => {
+            // Skip any checks if we are using the default argument
+            if (arg === this.options.args[i].default) return arg;
+
             // Check if this argument is valid
             if (argumentTypes[this.options.args[i].type].validate(arg, this.client, message)) {
                 // If it is then parse it to the expected object
                 const parsed = argumentTypes[this.options.args[i].type].parse(arg, this.client, message);
-                // Only check the validator if we aren't using the default
-                if (
-                    arg === this.options.args[i].default ||
-                    (this.options.args[i].validate ? this.options.args[i].validate(arg) : true)
-                ) {
+                // Check the validator
+                if (this.options.args[i].validate ? this.options.args[i].validate(arg) : true) {
                     return parsed;
                 } else {
                     isValid = false;

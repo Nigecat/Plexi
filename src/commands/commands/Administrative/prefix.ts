@@ -8,6 +8,7 @@ export default class Prefix extends Command {
         super(client, {
             name: "prefix",
             group: "Administrative",
+            guildOnly: true,
             userPermissions: ["ADMINISTRATOR"],
             description: oneLine`
                 Set the prefix for this server, 
@@ -25,10 +26,7 @@ export default class Prefix extends Command {
 
     async run(message: Message, [prefix]: [string]): Promise<void> {
         if (prefix === "DISPLAY_DEFAULT") {
-            const prefix = message.guild
-                ? (await this.client.prefixes.getRaw(message.guild.id)) || this.client.config.prefix
-                : this.client.config.prefix;
-
+            prefix = await this.client.prefixes.get(message.guild.id, true);
             message.channel.send(`The current prefix for this server is: \`${prefix}\``);
         } else {
             this.client.prefixes.set(message.guild.id, prefix);

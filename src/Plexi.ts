@@ -4,6 +4,7 @@ import loadCommands from "./commands";
 import { Command } from "./commands/Command";
 import { generateRegExp } from "./utils/misc";
 import PrefixManager from "./managers/PrefixManager";
+import AutoroleManager from "./managers/AutoroleManager";
 import { Client, ClientOptions, Collection } from "discord.js";
 
 /**
@@ -18,6 +19,11 @@ export class Plexi extends Client {
      *  NOTE: This is only created if the databasePath config option is specified.
      */
     public prefixes: PrefixManager;
+
+    /** The autorole manager for this client.
+     *  NOTE: This is only created if the databasePath config option is specified.
+     */
+    public autoroles: AutoroleManager;
 
     /** This is the default prefix used for responding to messages,
      *  it is dynamically generated based on the config and the client id. */
@@ -52,9 +58,14 @@ export class Plexi extends Client {
                 client: "sqlite3",
                 connection: { filename: this.config.databasePath },
             });
+
             // Create our prefix manager
             this.prefixes = new PrefixManager(this, this.database);
             await this.prefixes.init();
+
+            // Create our autorole manager
+            this.autoroles = new AutoroleManager(this, this.database);
+            await this.autoroles.init();
         }
 
         // Load our commands

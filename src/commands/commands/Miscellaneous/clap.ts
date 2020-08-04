@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
+import { oneLine } from "common-tags";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
-import { stripIndents } from "common-tags";
 import { lastMessage } from "../../../utils/misc";
 
 export default class Clap extends Command {
@@ -9,7 +9,7 @@ export default class Clap extends Command {
         super(client, {
             name: "clap",
             group: "Miscellaneous",
-            description: stripIndents`
+            description: oneLine`
                 Put the 👏 emoji in the spaces of the specified text, 
                 if no text is supplied it will use the previous message
             `,

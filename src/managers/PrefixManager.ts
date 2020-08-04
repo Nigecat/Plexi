@@ -3,17 +3,16 @@ import { Plexi } from "../Plexi";
 import { generateRegExp } from "../utils/misc";
 import { Collection, Snowflake } from "discord.js";
 
-/**
- * A manager of prefixes belonging to a client
- */
+/** A manager of prefixes belonging to a client */
 export default class PrefixManager {
-    /** The cache of prefixes of this manager,
-     *  these are stored by regular expressions which will match the prefix and a client mention */
-    public readonly cache: Collection<string, RegExp>;
+    /** The cache of prefixes of this manager */
+    private cache: Collection<string, RegExp>;
 
-    /** Create a prefix manager
+    /**
+     * Create a prefix manager
+     *
      * @param {Plexi} client - The client this manager belongs to
-     * @param {Knex} database - The databse to store the data in
+     * @param {Knex} database - The database to store the data in
      */
     constructor(public readonly client: Plexi, private readonly database: Knex) {
         this.cache = new Collection();
@@ -24,7 +23,7 @@ export default class PrefixManager {
         await this.database.destroy();
     }
 
-    /** Connect to the database and load the values */
+    /** Connect to the database and create the table if we need to */
     async init(): Promise<void> {
         // Create the table if it does not exist
         if (!(await this.database.schema.hasTable("prefixes"))) {
@@ -33,47 +32,46 @@ export default class PrefixManager {
                 table.string("prefix");
             });
         }
-
-        // Read all the data and load it into our collection
-        const rows = await this.database("prefixes").select("*");
-        rows.forEach((row) => this.cache.set(row.id, generateRegExp(row.prefix, this.client.user.id)));
     }
+
+    async get(guild: Snowflake): Promise<RegExp>;
+    async get(guild: Snowflake, getRaw: boolean): Promise<string>;
 
     /**
-     * Get the raw prefix for a guild, this directly queries the database
-     * @param {Snoflake} id - The guild to get the prefix of
+     * Get a prefix, this will automatically pull from the cache if it exists there
+     *
+     * @param {Snowflake} guild - The id of the guild to get the prefix of
+     * @param getRaw [getRaw=false] - Whether to get the raw prefix,
+     *                          if this is true then this function will not return a regular expression,
+     *                          but the direct string representation of the prefix.
+     * @returns {RegExp | string} The prefix, this will be the default prefix if it is not found
      */
-    async getRaw(id: Snowflake): Promise<string> {
-        return await this.database("prefixes").select("prefix").where({ id }).limit(1).first();
-    }
-
-    /** Fetch the prefix for a guild, this will return the value of the cache if it is already cached.
-     *  Otherwise it will cache it and return the value;
-     * @param {Snowflake} id - The guild id to retrieve
-     */
-    async fetch(id: Snowflake): Promise<RegExp> {
+    async get(guild: Snowflake, getRaw = false): Promise<RegExp | string> {
+        const id = guild;
         if (this.cache.has(id)) return this.cache.get(id);
-
-        // Find if we have a prefix for this id saved
-        const prefix = await this.getRaw(id);
-
-        // If we do then convert it into a regular expression, add it do the cache and return it
-        if (prefix) {
-            const regex = generateRegExp(prefix, this.client.user.id);
-            this.cache.set(id, regex);
-            return regex;
+        const result = await this.database("prefixes").select("prefix").where({ id }).limit(1).first();
+        if (getRaw) {
+            return result ? result.prefix : this.client.config.prefix;
         } else {
-            // Otherwise return the default prefix regex
-            return this.client.defaultPrefix;
+            return result ? generateRegExp(result.prefix, this.client.user.id) : this.client.defaultPrefix;
         }
     }
 
-    /** Set a prefix
-     * @param {Snowflake} guild - The guild id to set
-     * @param {string} prefix - The prefix
+    /**
+     * Set a prefix, this will automatically update the databse
+     *
+     * @param {Snowflake} guild - The id of the guild to set the prefix of
+     * @param {string} prefix - The prefix set
      */
-    async set(id: Snowflake, prefix: string): Promise<void> {
+    async set(guild: Snowflake, prefix: string): Promise<void> {
+        const id = guild;
+        // First we have to get it to see if it exists
+        const current = await this.get(id);
+        if (current) {
+            await this.database("prefixes").where({ id }).update({ prefix });
+        } else {
+            await this.database("prefixes").insert({ id, prefix });
+        }
         this.cache.set(id, generateRegExp(prefix, this.client.user.id));
-        this.database("prefixes").where({ id }).update({ prefix });
     }
 }
