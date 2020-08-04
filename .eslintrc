@@ -11,6 +11,9 @@
     ],
     "rules": {
         "no-console": "warn",
-        "eqeqeq": "error"
+        "eqeqeq": "error",
+        "spaced-comment": "warn",
+        "no-loss-of-precision": "error",
+        "generator-star-spacing": "warn"
     }
 }
