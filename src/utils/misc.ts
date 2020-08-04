@@ -39,7 +39,7 @@ export function generateHelp(command: Command): string {
     `;
 
     if (command.options.userPermissions.length > 0) {
-        help += `\n**Required Permissions:** ${command.options.userPermissions.join(" | ")}`;
+        help += `\n**Required Permissions:** \`${command.options.userPermissions.join(" | ")}\``;
     }
 
     if (command.options.details) help += `\n**Details:** ${command.options.details}`;

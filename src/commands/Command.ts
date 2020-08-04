@@ -133,7 +133,11 @@ export class Command {
             if (argumentTypes[this.options.args[i].type].validate(arg, this.client, message)) {
                 // If it is then parse it to the expected object
                 const parsed = argumentTypes[this.options.args[i].type].parse(arg, this.client, message);
-                if (this.options.args[i].validate ? this.options.args[i].validate(arg) : true) {
+                // Only check the validator if we aren't using the default
+                if (
+                    arg === this.options.args[i].default ||
+                    (this.options.args[i].validate ? this.options.args[i].validate(arg) : true)
+                ) {
                     return parsed;
                 } else {
                     isValid = false;
