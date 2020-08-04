@@ -1,6 +1,6 @@
 import { Plexi } from "../Plexi";
 import argumentTypes from "./types";
-import { oneLine } from "common-tags";
+import { oneLine, stripIndents } from "common-tags";
 import { PermissionResolvable, Message, Snowflake, User, GuildMember, Role } from "discord.js";
 
 /** A command that can be run in a client */
@@ -38,55 +38,66 @@ export class Command {
      * @returns {boolean} Whether this is runnable or not, it will through an error if it is not with the details
      * @internal
      */
-    canRun(message: Message): boolean {
+    canRun(message: Message): { canRun: boolean; invalidRunReason: string } {
+        let canRun = true;
+        let invalidRunReason = "";
+
         // If this command is dm only and this is a non-dm channel
         if (this.options.dmOnly && message.channel.type !== "dm") {
-            throw new Error("This command must be run in a dm channel.");
+            canRun = false;
+            invalidRunReason = "This command must be run in a dm channel.";
         }
 
         // If this command is guild only and we don't have a guild in the message
         if (this.options.guildOnly && !message.guild) {
-            throw new Error("This command must be run in a guild channel.");
+            canRun = false;
+            invalidRunReason = "This command must be run in a guild channel.";
         }
 
         // We want to fail silently if normal users aren't meant to run this command
         if (this.options.ownerOwnly && message.author.id !== this.client.config.owner) {
-            return false;
+            canRun = false;
         }
 
         // If this command was sent in a guild and the client does not have all the required permissions
         if (message.guild && !this.options.clientPermissions.every((perm) => message.guild.me.hasPermission(perm))) {
-            throw new Error(oneLine`
+            canRun = false;
+            invalidRunReason = oneLine`
                 I am missing permission(s) \`${this.options.clientPermissions.join(" | ")}\` to run this command. 
                 Please get an administrator to add them before running this command.
-            `);
+            `;
         }
 
         // If this command was sent in a guild and the member does not have all the required permissions
         if (message.guild && !this.options.userPermissions.every((perm) => message.member.hasPermission(perm))) {
-            throw new Error(
-                `You are missing permission(s) \`${this.options.clientPermissions.join(" | ")}\` to run this command.`,
-            );
+            canRun = false;
+            invalidRunReason = oneLine`
+                You are missing permission(s) \`${this.options.clientPermissions.join(" | ")}\` 
+                to run this command.
+            `;
         }
 
         // If this is an nsfw command and we are not in an nsfw channel (this rule is skipped in dm channels)
         if (this.options.nsfw && (message.channel.type !== "dm" ? !message.channel.nsfw : false)) {
-            throw new Error("This command must be run in an nsfw channel.");
+            canRun = false;
+            invalidRunReason = "This command must be run in an nsfw channel.";
         }
 
         // Check if a whitelist has been set and this user is not in our whitelist (this will fail silently)
         if (this.options.whitelist && !this.options.whitelist.includes(message.author.id)) {
-            return false;
+            canRun = false;
         }
 
         // Check if a blacklist has been set and this user is in our blacklist
         if (this.options.blacklist && this.options.blacklist.includes(message.author.id)) {
-            throw new Error(
-                "It appears you have been force blacklisted from this command by the bot owner :thinking:, you probably already know why.",
-            );
+            canRun = false;
+            invalidRunReason = stripIndents`
+                It appears you have been force blacklisted from this command by the bot owner :thinking:,
+                you probably already know why.
+            `;
         }
 
-        return true;
+        return { canRun, invalidRunReason };
     }
 
     /** Given an array of arguments check if they match the specified args of this command.
@@ -95,8 +106,8 @@ export class Command {
      * @returns The formatted arguments (converts things to their actual objects)
      * @internal
      */
-    validateArgs(args: string[]): ArgumentTypeArray {
-        let valid = true;
+    validateArgs(args: string[]): { isValid: boolean; formattedArgs: ArgumentTypeArray } {
+        let isValid = true;
 
         // Assign any default values if we need them
         this.options.args.forEach((arg, i) => {
@@ -112,8 +123,8 @@ export class Command {
 
         // If we don't have the matching number of arguments now then we know something must have gone wrong
         if (args.length !== this.options.args.length) {
-            valid = false;
-            throw new Error("INVALID_COMMAND_SYNTAX");
+            isValid = false;
+            return { isValid, formattedArgs: args };
         }
 
         // Check each argument seperately
@@ -125,16 +136,14 @@ export class Command {
                 if (this.options.args[i].validate ? this.options.args[i].validate(arg) : true) {
                     return parsed;
                 } else {
-                    valid = false;
+                    isValid = false;
                 }
             } else {
-                valid = false;
+                isValid = false;
             }
         });
 
-        if (!valid) throw new Error("INVALID_COMMAND_SYNTAX");
-
-        return args;
+        return { isValid, formattedArgs: args };
     }
 
     /** The function to run this command, this should be overridden by the inherited class

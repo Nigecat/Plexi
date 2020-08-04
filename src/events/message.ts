@@ -25,16 +25,13 @@ export default async function (message: Message, client: Plexi): Promise<void> {
         const command = client.commands.get(commandName);
 
         // Check if we can run this command
-        try {
-            if (command.canRun(message)) {
-                command.run(message, command.validateArgs(args));
-            }
-        } catch (err) {
-            // Throw the error (if it isn't just an invalid syntax warning)
-            if (!err.message.includes("INVALID_COMMAND_SYNTAX")) {
-                client.emit("error", err);
+        const { canRun, invalidRunReason } = command.canRun(message);
+        if (canRun) {
+            const { isValid, formattedArgs } = command.validateArgs(args);
+            if (isValid) {
+                command.run(message, formattedArgs);
             } else {
-                // Otherwise it's an invalid syntax warning so we send it through to the user
+                // Otherwise it's an invalid syntax warning so we send the expected syntax
                 const prefix = message.guild
                     ? (await client.prefixes.getRaw(message.guild.id)) || client.config.prefix
                     : client.config.prefix;
@@ -44,6 +41,8 @@ export default async function (message: Message, client: Plexi): Promise<void> {
                     Run \`${prefix}help ${command.name}\` for more details
                 `);
             }
+        } else {
+            message.channel.send(invalidRunReason);
         }
     }
 }
