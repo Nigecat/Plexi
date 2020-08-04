@@ -1,7 +1,6 @@
 import { Message } from "discord.js";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
-import { stripIndents } from "common-tags";
 import { lastMessage } from "../../../utils/misc";
 import { isDiscordURL, manipulateImage } from "../../../utils/image";
 
@@ -10,10 +9,8 @@ export default class Panfry extends Command {
         super(client, {
             name: "panfry",
             group: "Image",
-            description: stripIndents`
-                Panfry an image. 
-                NOTE: If no url is supplied it will act on the previous message, the url MUST be a discord attachment.
-            `,
+            description: "Panfry an image",
+            details: "If no url is supplied it will act on the previous message, the url MUST be a discord attachment.",
             userPermissions: ["EMBED_LINKS", "ATTACH_FILES"],
             clientPermissions: ["EMBED_LINKS", "ATTACH_FILES"],
             args: [
@@ -42,7 +39,7 @@ export default class Panfry extends Command {
 
             message.channel.send("", { files: [output] });
         } catch {
-            message.channel.send("Unsupported file type (or the previous message was not an image)");
+            message.channel.send("Unsupported file type (or the previous message was not an attachment)");
         } finally {
             message.channel.stopTyping();
         }
