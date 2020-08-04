@@ -11,6 +11,11 @@ const argumentTypes: ArgumentTypes = {
         validate: (val: string, client: Plexi): boolean => client.users.cache.has(extractDigits(val)),
         parse: (val: string, client: Plexi): User => client.users.cache.get(extractDigits(val)),
     },
+    number: {
+        validate: (val: string): boolean =>
+            val.trim() !== "" ? (Number.isFinite ? Number.isFinite(+val) : isFinite(+val)) : false,
+        parse: (val: string): number => parseFloat(val),
+    },
 };
 
 export default argumentTypes;

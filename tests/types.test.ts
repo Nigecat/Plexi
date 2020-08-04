@@ -39,4 +39,20 @@ describe("argumentTypes", () => {
             );
         });
     });
+
+    describe("number", () => {
+        it("validate", () => {
+            expect(argumentTypes.number.validate("123", mockClient)).to.equal(true);
+            expect(argumentTypes.number.validate("abc", mockClient)).to.equal(false);
+            expect(argumentTypes.number.validate("12.2", mockClient)).to.equal(true);
+            expect(argumentTypes.number.validate("-4", mockClient)).to.equal(true);
+            expect(argumentTypes.number.validate("5a", mockClient)).to.equal(false);
+        });
+
+        it("parse", () => {
+            expect(argumentTypes.number.parse("123", mockClient)).to.equal(123);
+            expect(argumentTypes.number.parse("2.5", mockClient)).to.equal(2.5);
+            expect(argumentTypes.number.parse("-7", mockClient)).to.equal(-7);
+        });
+    });
 });
