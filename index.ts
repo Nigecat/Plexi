@@ -1,4 +1,4 @@
-import * as DBL from "dblapi.js";
+import DBL from "dblapi.js";
 import { Plexi } from "./src/Plexi";
 import { version } from "./package.json";
 import { config as loadEnv } from "dotenv";
@@ -8,6 +8,7 @@ import { createLogger, format, transports } from "winston";
 // Create the bot
 const client = new Plexi({
     client: {
+        disableMentions: "all",
         allowedMentions: { roles: [], users: [] },
         presence: {
             status: "online",

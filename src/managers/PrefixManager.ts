@@ -1,4 +1,4 @@
-import * as Knex from "knex";
+import Knex from "knex";
 import { Plexi } from "../Plexi";
 import { EventEmitter } from "events";
 import { generateRegExp } from "../utils/misc";
@@ -52,7 +52,7 @@ export default class PrefixManager extends EventEmitter {
      */
     async get(guild: Snowflake, getRaw = false): Promise<RegExp | string> {
         const id = guild;
-        if (this.cache.has(id)) return this.cache.get(id);
+        if (!getRaw && this.cache.has(id)) return this.cache.get(id);
         this.emit("debug", `Getting prefix for guild: ${id}`);
         const result = await this.database("prefixes").select("prefix").where({ id }).limit(1).first();
         if (getRaw) {

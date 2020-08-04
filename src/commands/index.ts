@@ -1,7 +1,7 @@
 import { resolve } from "path";
+import glob from "glob-promise";
 import { Plexi } from "../Plexi";
 import { Command } from "./Command";
-import * as glob from "glob-promise";
 import { Collection } from "discord.js";
 
 export default async function loadCommands(client: Plexi): Promise<Collection<string, Command>> {

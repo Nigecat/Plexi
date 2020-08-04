@@ -1,4 +1,4 @@
-import * as Knex from "knex";
+import Knex from "knex";
 import events from "./events";
 import loadCommands from "./commands";
 import { Command } from "./commands/Command";

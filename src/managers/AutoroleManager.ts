@@ -1,4 +1,4 @@
-import * as Knex from "knex";
+import Knex from "knex";
 import { Plexi } from "../Plexi";
 import { EventEmitter } from "events";
 import { Collection, Role, Snowflake } from "discord.js";
