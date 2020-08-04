@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "5.2.4",
+    "version": "5.3.0",
     "description": "A general purpose discord bot",
     "author": "Nigecat",
     "repository": {
@@ -35,12 +35,14 @@
         "typedoc": "^0.17.8"
     },
     "dependencies": {
+        "@discordjs/opus": "^0.3.2",
         "bufferutil": "^4.0.1",
         "common-tags": "^1.8.0",
         "dblapi.js": "^2.4.0",
         "discord.js": "^12.2.0",
         "dotenv": "^8.2.0",
         "erlpack": "github:discord/erlpack",
+        "ffmpeg-static": "^4.2.6",
         "glob-promise": "^3.4.0",
         "jimp": "^0.14.0",
         "knex": "^0.21.2",
@@ -48,6 +50,7 @@
         "moment": "^2.27.0",
         "ms": "^2.1.2",
         "node-fetch": "^2.6.0",
+        "popyt": "^4.1.1",
         "sqlite3": "^5.0.0",
         "tmp-promise": "^3.0.2",
         "typescript": "^3.9.7",
@@ -56,6 +59,7 @@
         "weather-js": "^2.0.0",
         "winston": "^3.3.3",
         "word-definition": "^2.1.6",
+        "ytdl-core": "^3.2.0",
         "zlib-sync": "^0.1.7"
     }
 }
