@@ -9,7 +9,7 @@ export class Command {
     public readonly name: string;
 
     /** The format of the command (this is auto generated for the help command) */
-    public readonly format: string;
+    public format: string;
 
     constructor(public readonly client: Plexi, public readonly options: CommandInfo) {
         this.name = options.name;
