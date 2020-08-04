@@ -72,7 +72,7 @@ export class Command {
         if (message.guild && !this.options.userPermissions.every((perm) => message.member.hasPermission(perm))) {
             canRun = false;
             invalidRunReason = oneLine`
-                You are missing permission(s) \`${this.options.clientPermissions.join(" | ")}\` 
+                You are missing permission(s) \`${this.options.userPermissions.join(" | ")}\` 
                 to run this command.
             `;
         }
