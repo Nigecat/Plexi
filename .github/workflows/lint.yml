@@ -2,12 +2,15 @@ name: lint
 
 on:
   push:
-    branches-ignore:
-      - "**"
+    branches:
+      - rewrite2
+  pull_request:
+    branchs:
+      - rewrite2
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     timeout-minutes: 5
 
     steps:
