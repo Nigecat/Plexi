@@ -14,7 +14,7 @@ export default class DefineUD extends Command {
                 {
                     name: "word",
                     type: "string",
-                    validator: (word: string) => !word.includes(" "),
+                    validate: (word: string) => !word.includes(" "),
                 },
             ],
         });

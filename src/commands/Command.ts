@@ -122,7 +122,7 @@ export class Command {
             if (argumentTypes[this.options.args[i].type].validate(arg, this.client)) {
                 // If it is then parse it to the expected object
                 const parsed = argumentTypes[this.options.args[i].type].parse(arg, this.client);
-                if (this.options.args[i].validator ? this.options.args[i].validator(arg) : true) {
+                if (this.options.args[i].validate ? this.options.args[i].validate(arg) : true) {
                     return parsed;
                 } else {
                     valid = false;
@@ -194,7 +194,7 @@ export interface Argument {
      */
     infinite?: boolean;
     /** A function to check if an argument is valid, this is purely optional for stricter checking  */
-    validator?: (val: string | number | User | GuildMember | Role) => boolean;
+    validate?: (val: string | number | User | GuildMember | Role) => boolean;
 }
 
 export type ArgumentTypeArray = Array<string | number | User | GuildMember | Role>;
