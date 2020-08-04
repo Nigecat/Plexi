@@ -1,7 +1,7 @@
 import * as Knex from "knex";
 import { Plexi } from "../Plexi";
-import { Collection, Snowflake } from "discord.js";
 import { generateRegExp } from "../utils/misc";
+import { Collection, Snowflake } from "discord.js";
 
 /**
  * A manager of prefixes belonging to a client
@@ -49,7 +49,7 @@ export default class PrefixManager {
 
     /** Fetch the prefix for a guild, this will return the value of the cache if it is already cached.
      *  Otherwise it will cache it and return the value;
-     * @param {Snowflake} guild - The guild to retrieve
+     * @param {Snowflake} id - The guild id to retrieve
      */
     async fetch(id: Snowflake): Promise<RegExp> {
         if (this.cache.has(id)) return this.cache.get(id);
@@ -66,5 +66,14 @@ export default class PrefixManager {
             // Otherwise return the default prefix regex
             return this.client.defaultPrefix;
         }
+    }
+
+    /** Set a prefix
+     * @param {Snowflake} guild - The guild id to set
+     * @param {string} prefix - The prefix
+     */
+    async set(id: Snowflake, prefix: string): Promise<void> {
+        this.cache.set(id, generateRegExp(prefix, this.client.user.id));
+        this.database("prefixes").where({ id }).update({ prefix });
     }
 }
