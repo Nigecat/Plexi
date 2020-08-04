@@ -68,6 +68,9 @@ export async function lastMessage(channel: TextChannel | NewsChannel | DMChannel
  * @returns Whether the first role is higher than the second one
  */
 export function isHigherRole(role1: Role, role2: Role): boolean {
+    // Return false if the roles are the same
+    if (role1.id === role2.id) return false;
+
     // We have to sort the roles of the guild to ensure they are in the correct order
     const guildRoles = role1.guild.roles.cache
         .sort((b, a) => a.position - b.position || ((a.id as unknown) as number) - ((b.id as unknown) as number))
