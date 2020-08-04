@@ -31,6 +31,7 @@ export default async function (message: Message, client: Plexi): Promise<void> {
         if (canRun) {
             const { isValid, formattedArgs } = command.validateArgs(args, message);
             if (isValid) {
+                client.emit("debug", `Running command ${command.options.group}:${commandName}`);
                 command.run(message, formattedArgs);
             } else {
                 // Otherwise it's an invalid syntax warning so we send the expected syntax

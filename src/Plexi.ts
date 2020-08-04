@@ -61,10 +61,12 @@ export class Plexi extends Client {
 
             // Create our prefix manager
             this.prefixes = new PrefixManager(this, this.database);
+            this.prefixes.on("debug", (data) => this.emit("debug", data));
             await this.prefixes.init();
 
             // Create our autorole manager
             this.autoroles = new AutoroleManager(this, this.database);
+            this.autoroles.on("debug", (data) => this.emit("debug", data));
             await this.autoroles.init();
         }
 
