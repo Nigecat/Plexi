@@ -1,3 +1,4 @@
+import * as DBL from "dblapi.js";
 import { Plexi } from "./src/Plexi";
 import { version } from "./package.json";
 import { config as loadEnv } from "dotenv";
@@ -67,8 +68,15 @@ logger.error = (err: any): any => {
 // eslint-disable-next-line no-console
 client.on("ready", () => console.log(`Logged in as ${client.user.tag}`));
 client.on("debug", (data) => logger.info(data));
-client.on("error", (data) => logger.error(data));
+client.on("error", (err) => logger.error(err));
 process.on("uncaughtException", (reason) => logger.error(reason));
 process.on("unhandledRejection", (reason) => logger.error(reason));
+
+// Authenticate to the top.gg api if we are in production mode and have a token
+if (process.env.NODE_ENV === "production" && process.env.TOPGG_TOKEN) {
+    const dbl = new DBL(process.env.TOPGG_TOKEN, client);
+    dbl.on("posted", () => logger.info("Server count posted!"));
+    dbl.on("error", (err) => logger.error(err));
+}
 
 client.login(process.env.DISCORD_TOKEN);

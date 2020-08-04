@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "5.2.0",
+    "version": "5.2.1",
     "description": "A general purpose discord bot",
     "author": "Nigecat",
     "repository": {
@@ -36,6 +36,7 @@
     "dependencies": {
         "bufferutil": "^4.0.1",
         "common-tags": "^1.8.0",
+        "dblapi.js": "^2.4.0",
         "discord.js": "^12.2.0",
         "dotenv": "^8.2.0",
         "erlpack": "github:discord/erlpack",
