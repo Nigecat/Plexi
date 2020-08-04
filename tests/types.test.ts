@@ -83,3 +83,5 @@ describe("argumentTypes", () => {
         });
     });
 });
+
+mockClient.destroy();
