@@ -1,6 +1,7 @@
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
 import { stripIndents } from "common-tags";
+import { Message } from "discord.js";
 
 export default class CreateRolePreset extends Command {
     constructor(client: Plexi) {
@@ -8,6 +9,8 @@ export default class CreateRolePreset extends Command {
             name: "create-role-preset",
             group: "Administrative",
             description: "Create a role preset",
+            userPermissions: ["MANAGE_ROLES"],
+            clientPermissions: ["MANAGE_ROLES"],
             details: stripIndents`
                 TODO
             `,
@@ -19,5 +22,9 @@ export default class CreateRolePreset extends Command {
                 },
             ],
         });
+    }
+
+    async run(message: Message, [preset]: ["muted" | "warning"]): Promise<void> {
+        console.log(preset);
     }
 }
