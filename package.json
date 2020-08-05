@@ -52,7 +52,6 @@
         "sqlite3": "^5.0.0",
         "tmp-promise": "^3.0.2",
         "typescript": "^3.9.7",
-        "urban-dictionary": "^2.2.1",
         "utf-8-validate": "^5.0.2",
         "weather-js": "^2.0.0",
         "winston": "^3.3.3",
