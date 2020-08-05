@@ -1,3 +1,4 @@
+import { get } from "https";
 import { Command } from "../commands/Command";
 import { stripIndents, oneLine } from "common-tags";
 import { Snowflake, Message, TextChannel, NewsChannel, DMChannel, Role } from "discord.js";
@@ -85,4 +86,27 @@ export function isHigherRole(role1: Role, role2: Role): boolean {
     }
 
     throw new Error("Could not find role!");
+}
+
+/**
+ * Make a http request and return the result
+ * @param {string} url - The url to make the request to
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function fetch(url: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        get(url, (resp) => {
+            let data = "";
+
+            resp.on("data", (chunk) => {
+                data += chunk;
+            });
+
+            resp.on("end", () => {
+                resolve(JSON.parse(data));
+            });
+
+            resp.on("error", reject);
+        });
+    });
 }
