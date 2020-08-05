@@ -1,6 +1,6 @@
-import fetch from "node-fetch";
-import { Command } from "../../Command";
 import { Plexi } from "../../../Plexi";
+import { Command } from "../../Command";
+import { fetch } from "../../../utils/misc";
 import { Message, MessageEmbed } from "discord.js";
 
 export default class Cat extends Command {
@@ -16,9 +16,7 @@ export default class Cat extends Command {
         message.channel.startTyping();
 
         // Get a random cat image from thecatapi
-        const data = await fetch("https://api.thecatapi.com/v1/images/search");
-
-        const url = (await data.json())[0].url;
+        const url = (await fetch("https://api.thecatapi.com/v1/images/search"))[0].url;
 
         const embed = new MessageEmbed({
             color: "#7289da",
