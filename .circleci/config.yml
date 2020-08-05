@@ -10,12 +10,6 @@ workflows:
 
   build:
     jobs:
-      - typescript/build
-
-  formatting:
-    jobs:
-      - typescript/check-formatting
-
-  lint:
-    jobs:
-      - eslint/eslint
+      - run:
+        name: build
+        command: npm run build
