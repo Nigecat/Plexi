@@ -110,3 +110,71 @@ export function fetch(url: string): Promise<any> {
         });
     });
 }
+
+/**
+ * Attempt to convert the supplied text to milliseconds
+ * @param {string} val - The value to convert
+ * @returns {number} The number of milliseconds or undefined
+ */
+export function convertMs(val: string): number {
+    // Convert the time metrics to milliseconds
+    const second = 1000;
+    const minute = second * 60;
+    const hour = minute * 60;
+    const day = hour * 24;
+    const week = day * 7;
+    const year = day * 365.25;
+
+    if (String(val).length > 100) return;
+
+    const match = /^(-?(?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec(
+        val,
+    );
+
+    if (!match) return;
+
+    const num = parseFloat(match[1]);
+    const type = (match[2] || "ms").toLowerCase();
+    switch (type) {
+        case "years":
+        case "year":
+        case "yrs":
+        case "yr":
+        case "y":
+            return num * year;
+        case "weeks":
+        case "week":
+        case "w":
+            return num * week;
+        case "days":
+        case "day":
+        case "d":
+            return num * day;
+        case "hours":
+        case "hour":
+        case "hrs":
+        case "hr":
+        case "h":
+            return num * hour;
+        case "minutes":
+        case "minute":
+        case "mins":
+        case "min":
+        case "m":
+            return num * minute;
+        case "seconds":
+        case "second":
+        case "secs":
+        case "sec":
+        case "s":
+            return num * second;
+        case "milliseconds":
+        case "millisecond":
+        case "msecs":
+        case "msec":
+        case "ms":
+            return num;
+        default:
+            return undefined;
+    }
+}

@@ -1,8 +1,8 @@
-import ms from "ms";
 import { promises as fs } from "fs";
 import { Message } from "discord.js";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
+import { convertMs } from "../../../utils/misc";
 
 export default class GetLogs extends Command {
     constructor(client: Plexi) {
@@ -16,7 +16,7 @@ export default class GetLogs extends Command {
                 {
                     name: "timeframe",
                     type: "string",
-                    validate: (timeframe: string) => ms(timeframe) !== undefined,
+                    validate: (timeframe: string) => convertMs(timeframe) !== undefined,
                 },
                 {
                     name: "level",
@@ -33,7 +33,7 @@ export default class GetLogs extends Command {
             .filter((line) => line)
             .map((line) => JSON.parse(line));
 
-        const expected = new Date(Date.now() - ms(timeframe));
+        const expected = new Date(Date.now() - convertMs(timeframe));
 
         const output = data
             .filter(
