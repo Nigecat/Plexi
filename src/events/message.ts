@@ -2,9 +2,12 @@ import { Plexi } from "../Plexi";
 import { Message } from "discord.js";
 import { stripIndents } from "common-tags";
 
+/** Main handler for incoming commands */
 export default async function (message: Message, client: Plexi): Promise<void> {
     // Ignore bot messages
     if (message.author.bot) return;
+
+    checkSomeone(message);
 
     // Figure out what prefix we are using for this server
     const prefix = await client.prefixes.get(message.guild ? message.guild.id : "");
@@ -44,6 +47,26 @@ export default async function (message: Message, client: Plexi): Promise<void> {
             }
         } else {
             message.channel.send(invalidRunReason);
+        }
+    }
+}
+
+/**
+ * @ someone feature replication see https://youtu.be/BeG5FqTpl9U
+ * Requires a role called 'someone' to exist and be pinged
+ * @param {Message} message - The incoming message
+ */
+async function checkSomeone(message: Message): Promise<void> {
+    if (message.mentions.roles.size > 0 && message.mentions.roles.some((role) => role.name === "someone")) {
+        const role = message.guild.roles.cache.find((role) => role.name === "someone");
+        if (role) {
+            const member = await message.guild.members.cache.random().roles.add(role);
+            const ping = await message.channel.send(role, {
+                allowedMentions: { roles: [role.id] },
+                disableMentions: "everyone",
+            });
+            await ping.delete();
+            await member.roles.remove(role);
         }
     }
 }
