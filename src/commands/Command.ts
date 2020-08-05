@@ -138,6 +138,11 @@ export class Command {
             // Skip any checks if we are using the default argument
             if (arg === this.options.args[i].default) return arg;
 
+            // If we have the 'oneOf' property set then check if the argument we are receiving is not in it
+            if (this.options.args[i].oneOf && !this.options.args[i].oneOf.includes(arg.toLowerCase())) {
+                isValid = false;
+            }
+
             // Check if this argument is valid
             if (argumentTypes[this.options.args[i].type].validate(arg, this.client, message)) {
                 // If it is then parse it to the expected object
@@ -214,6 +219,8 @@ export interface Argument {
     infinite?: boolean;
     /** A function to check if an argument is valid, this is purely optional for stricter checking  */
     validate?: (val: string | number | User | GuildMember | Role) => boolean;
+    /** The incoming argument must be one of these, this array should be all lowercase */
+    oneOf?: string[];
 }
 
 export type ArgumentTypeArray = Array<string | number | User | GuildMember | Role>;
