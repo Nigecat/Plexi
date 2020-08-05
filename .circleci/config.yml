@@ -1,7 +1,21 @@
 version: 2.1
 orbs:
   node: circleci/node@3.0.0
+  eslint: arrai/eslint@2.0.0
+  typescript: vidsy/typescript@1.0.0
 workflows:
   node-tests:
     jobs:
       - node/test
+
+  build:
+    jobs:
+      - typescript/build
+
+  formatting:
+    jobs:
+      - typescript/check-formatting
+
+  lint:
+    jobs:
+      - eslint/eslint
