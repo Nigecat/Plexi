@@ -1,3 +1,4 @@
+import { inspect } from "util";
 import { Message } from "discord.js";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
@@ -30,12 +31,20 @@ export default class Eval extends Command {
             const hrStart = process.hrtime();
             const result = await eval(script);
             const hrDiff = process.hrtime(hrStart);
-            message.channel.send(stripIndents`
-                Executed in ${hrDiff[1]}ms: 
+            message.channel.send(
+                stripIndents`
+                Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s ` : ""}${hrDiff[1] / 1000000}ms:
+                \`\`\`javascript
+                ${inspect(result, { depth: 0, breakLength: 4 }).replace(this.client.token, "--snip--")}
                 \`\`\`
-                ${result}
-                \`\`\`
-            `);
+            `,
+                {
+                    split: {
+                        prepend: "```javascript\n",
+                        append: "\n```",
+                    },
+                },
+            );
         } catch (err) {
             message.channel.send(`Error while evaluating: \`${err}\``);
         }
