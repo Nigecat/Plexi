@@ -21,6 +21,7 @@ export default class Kick extends Command {
                     name: "reason",
                     type: "string",
                     default: "No reason specified",
+                    infinite: true,
                 },
             ],
         });

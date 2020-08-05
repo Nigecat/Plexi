@@ -117,6 +117,12 @@ export class Command {
         // If we have any infinite args then collapse the end arguments into a single string
         if (this.options.args.some((arg) => arg.infinite)) {
             args[this.options.args.length - 1] = args.slice(this.options.args.length - 1).join(" ");
+            // If the infinite argument is empty then invalidate the arguments,
+            //  We do not want an empty string to be parsed
+            if (args[this.options.args.length - 1] === "") {
+                isValid = false;
+                return { isValid, formattedArgs: args };
+            }
             // Shorten the array to remove any trailing arguments
             args.length = this.options.args.length;
         }
