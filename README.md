@@ -1,4 +1,5 @@
 # Plexi
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=Nigecat/Plexi&identifier=207711753)](https://dependabot.com)
 
 A general purpose discord bot
 
