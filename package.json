@@ -42,7 +42,6 @@
         "dotenv": "^8.2.0",
         "erlpack": "github:discord/erlpack",
         "ffmpeg-static": "^4.2.6",
-        "glob-promise": "^3.4.0",
         "jimp": "^0.14.0",
         "knex": "^0.21.2",
         "libsodium-wrappers": "^0.7.8",
