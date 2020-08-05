@@ -15,19 +15,19 @@ export default class CreateRolePreset extends Command {
                 **Muted** - Creates a role called 'Muted' that has the permission to send messages in all channels denied.
                 This role will be able to join voice channels, but unable to speak. 
                 This role **must be manually hoisted** as high as possible to be effective. 
-                Giving this role to a user will 'mute' them and render them unable to talk.
+                Giving this role to a user will 'mute' them and render them unable to talk (as long as the muted role is higher than their top role).
             `,
             args: [
                 {
                     name: "preset",
                     type: "string",
-                    oneOf: ["muted", "warning"],
+                    oneOf: ["muted"],
                 },
             ],
         });
     }
 
-    async run(message: Message, [preset]: ["muted" | "warning"]): Promise<void> {
+    async run(message: Message, [preset]: ["muted"]): Promise<void> {
         if (preset === "muted") {
             // Check if a role with this name already exists
             if (!message.guild.roles.cache.some((role) => role.name.toLowerCase() === "muted")) {
