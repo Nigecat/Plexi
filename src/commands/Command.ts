@@ -27,6 +27,7 @@ export class Command {
         this.options.hidden = this.options.hidden || false;
 
         this.format = this.options.args.reduce((prev, arg) => {
+            if (arg.oneOf) arg.name = arg.oneOf.join(" | ");
             const wrapL = arg.default !== null ? "[" : "<";
             const wrapR = arg.default !== null ? "]" : ">";
             return `${prev}${prev ? " " : ""}${wrapL}${arg.name}${arg.infinite ? "..." : ""}${wrapR}`;
