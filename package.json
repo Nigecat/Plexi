@@ -14,7 +14,7 @@
         "build": "tsc",
         "start": "npm run build && node index.js",
         "tests": "npm run build && mocha -r ts-node/register tests/**/*.test.ts",
-        "test": "npm run build && npm run tests && npm run lint"
+        "test": "npm run build && mocha -r ts-node/register tests/**/*.test.ts && npm run lint"
     },
     "devDependencies": {
         "@types/chai": "^4.2.12",
