@@ -29,6 +29,7 @@ export default class Eval extends Command {
 
         try {
             const hrStart = process.hrtime();
+            // eslint-disable-next-line no-eval
             const result = await eval(script);
             const hrDiff = process.hrtime(hrStart);
             message.channel.send(

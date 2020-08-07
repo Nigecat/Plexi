@@ -27,7 +27,7 @@ export async function manipulateImage(
     pixelate: number = Math.floor(Math.random() * 2 + 2),
 ): Promise<string> {
     // Get the file extension from the supplied url
-    const ext = "." + url.split(".").pop().split(/\#|\?/)[0];
+    const ext = "." + url.split(".").pop().split(/#|\?/)[0];
 
     // Create a temporary file with the matching extension so discord knows what to do with it when we upload the file
     const { path } = await file({ postfix: ext });

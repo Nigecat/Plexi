@@ -5,6 +5,7 @@
         "sourceType": "module"
     },
     "extends": [
+        "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
         "prettier/@typescript-eslint",
         "plugin:prettier/recommended"
@@ -15,6 +16,8 @@
         "spaced-comment": "warn",
         "no-loss-of-precision": "error",
         "generator-star-spacing": "warn",
+        "no-eval": "error",
+        "prefer-arrow-callback": "warn",
         "capitalized-comments": [
             "error",
             "always",
