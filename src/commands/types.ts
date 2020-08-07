@@ -12,11 +12,11 @@ const argumentTypes: ArgumentTypes = {
     user: {
         validate: (val: string, client: Plexi): boolean =>
             client.users.cache.has(extractDigits(val)) ||
-            client.users.cache.some((user) => user.tag.toLowerCase() === val),
+            client.users.cache.some((user) => user.tag.toLowerCase() === val.toLowerCase()),
 
         parse: (val: string, client: Plexi): User =>
             client.users.cache.get(extractDigits(val)) ||
-            client.users.cache.find((user) => user.tag.toLowerCase() === val),
+            client.users.cache.find((user) => user.tag.toLowerCase() === val.toLowerCase()),
     },
 
     number: {
@@ -29,11 +29,11 @@ const argumentTypes: ArgumentTypes = {
     member: {
         validate: (val: string, _: Plexi, message: Message): boolean =>
             message.guild.members.cache.has(extractDigits(val)) ||
-            message.guild.members.cache.some((member) => member.user.tag.toLowerCase() === val),
+            message.guild.members.cache.some((member) => member.user.tag.toLowerCase() === val.toLowerCase()),
 
         parse: (val: string, _: Plexi, message: Message): GuildMember =>
             message.guild.members.cache.get(extractDigits(val)) ||
-            message.guild.members.cache.find((member) => member.user.tag.toLowerCase() === val),
+            message.guild.members.cache.find((member) => member.user.tag.toLowerCase() === val.toLowerCase()),
     },
 
     role: {
