@@ -17,7 +17,8 @@ export default class Help extends Command {
     async run(message: Message, [command]: [string]): Promise<void> {
         // If it is a specific help command
         if (command !== "SHOW_ALL") {
-            if (this.client.commands.has(command)) {
+            // Only show the help if we have the command and it is not owner only
+            if (this.client.commands.has(command) && !this.client.commands.get(command).options.ownerOwnly) {
                 message.channel.send(generateHelp(this.client.commands.get(command)));
             }
         }
