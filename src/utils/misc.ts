@@ -178,3 +178,14 @@ export function convertMs(val: string): number {
             return undefined;
     }
 }
+
+/**
+ * Fetch a random reddit image from the specified subreddit
+ * @param {string} subreddit - The subreddit to get the image from, this should just be the name e.g 'aww'
+ * @returns A url to the image
+ */
+export async function fetchReddit(subreddit: string): Promise<string> {
+    const response = await fetch(`https://imgur.com/r/${subreddit}/hot.json`);
+    const post = response.data[Math.floor(Math.random() * response.data.length)];
+    return `http://imgur.com/${post.hash}.${post.mimetype.replace(/.+?(?=\/)/, "").substr(1)}`;
+}

@@ -7,7 +7,7 @@ export default class Cat extends Command {
     constructor(client: Plexi) {
         super(client, {
             name: "cat",
-            group: "Miscellaneous",
+            group: "Image",
             description: "Get a random cat image",
         });
     }
