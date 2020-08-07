@@ -2,7 +2,6 @@ import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
 import { stripIndents } from "common-tags";
 import { Message, Role } from "discord.js";
-import { isHigherRole } from "../../../utils/misc";
 
 export default class Autorole extends Command {
     constructor(client: Plexi) {
@@ -42,7 +41,7 @@ export default class Autorole extends Command {
             message.channel.send("Autorole cleared!");
         } else {
             // If we have a higher role than the autorole
-            if (isHigherRole(message.guild.me.roles.highest, role)) {
+            if (message.guild.me.roles.highest.position > role.position) {
                 await this.client.autoroles.set(message.guild.id, role.id);
                 message.channel.send(`Autorole set to: ${role}`);
             } else {

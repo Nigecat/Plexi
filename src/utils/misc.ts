@@ -2,7 +2,7 @@ import { get as httpGet } from "http";
 import { get as httpsGet } from "https";
 import { Command } from "../commands/Command";
 import { stripIndents, oneLine } from "common-tags";
-import { Snowflake, Message, TextChannel, NewsChannel, DMChannel, Role } from "discord.js";
+import { Snowflake, Message, TextChannel, NewsChannel, DMChannel } from "discord.js";
 
 /** Generates the regex for detecting when a string starts with either a prefix or a user/bot mention
  *  NOTE: This *requires* there to be text after the match, the string can't only contain the prefix/mention
@@ -60,33 +60,6 @@ export function generateHelp(command: Command): string {
 export async function lastMessage(channel: TextChannel | NewsChannel | DMChannel): Promise<Message> {
     const messages = await channel.messages.fetch({ limit: 2 });
     return messages.get(Array.from(messages.keys())[1]);
-}
-
-/**
- * Returns a bool of whether role1 is higher than role2
- *
- * @param {Role} role1 The first user
- * @param {Role} role2 The second user
- * @returns Whether the first role is higher than the second one
- */
-export function isHigherRole(role1: Role, role2: Role): boolean {
-    // Return false if the roles are the same
-    if (role1.id === role2.id) return false;
-
-    // We have to sort the roles of the guild to ensure they are in the correct order
-    const guildRoles = role1.guild.roles.cache
-        .sort((b, a) => a.position - b.position || ((a.id as unknown) as number) - ((b.id as unknown) as number))
-        .map((role) => role.id);
-
-    for (const i in guildRoles) {
-        if (guildRoles[i] === role1.id) {
-            return true;
-        } else if (guildRoles[i] === role2.id) {
-            return false;
-        }
-    }
-
-    throw new Error("Could not find role!");
 }
 
 /**
