@@ -13,17 +13,14 @@ export default class Cat extends Command {
     }
 
     async run(message: Message): Promise<void> {
-        message.channel.startTyping();
-
         // Get a random cat image from thecatapi
         const url = (await fetch("https://api.thecatapi.com/v1/images/search"))[0].url;
 
         const embed = new MessageEmbed({
-            color: "#7289da",
+            color: "RANDOM",
             image: { url },
         });
 
-        message.channel.stopTyping();
         message.channel.send({ embed });
     }
 }
