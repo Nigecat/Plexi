@@ -8,10 +8,27 @@ import { User, Message, Guild, TextChannel, GuildMember, Role } from "discord.js
 const mockClient = new Plexi({ plexi: { prefix: "$" } });
 const mockGuild = new Guild(mockClient, { id: "621181741972979722" });
 const mockRole = new Role(mockClient, { id: "703164955763146754" }, mockGuild);
+
+// For some reason we can't assign a tag in the User object constructor
+// And since the .tag property is readonly we have to redefine it so we can add our own tag
 const mockUser = new User(mockClient, { id: "307429254017056769" });
+Object.defineProperty(mockUser, "tag", {
+    value: "Nigecat#2288",
+    writable: true,
+    enumerable: true,
+});
+
 const mockChannel = new TextChannel(mockGuild, { id: "703798620738027552" });
 const mockMessage = new Message(mockClient, { id: "740028702448025610", guild: mockGuild }, mockChannel);
-const mockMember = new GuildMember(mockClient, { id: "307429254017056769" }, mockGuild);
+
+// We also can't assign a tag in the GuildMember object constructor (and it doesn't get the one from the other user object)
+const mockMember = new GuildMember(mockClient, { id: "307429254017056769", user: mockUser }, mockGuild);
+Object.defineProperty(mockMember.user, "tag", {
+    value: "Nigecat#2288",
+    writable: true,
+    enumerable: true,
+});
+
 mockClient.users.cache.set("307429254017056769", mockUser);
 mockClient.guilds.cache.set("621181741972979722", mockGuild);
 mockGuild.roles.cache.set("703164955763146754", mockRole);
@@ -38,6 +55,8 @@ describe("argumentTypes", () => {
             expect(argumentTypes.user.validate("<@307429254017056769>", mockClient, mockMessage)).to.equal(true);
             expect(argumentTypes.user.validate("12345", mockClient, mockMessage)).to.equal(false);
             expect(argumentTypes.user.validate("<@12345>", mockClient, mockMessage)).to.equal(false);
+            expect(argumentTypes.user.validate("Nigecat#2288", mockClient, mockMessage)).to.equal(true);
+            expect(argumentTypes.user.validate("Nigecat#0115", mockClient, mockMessage)).to.equal(false);
         });
 
         it("parse", () => {
@@ -45,6 +64,9 @@ describe("argumentTypes", () => {
                 mockClient.users.cache.get("307429254017056769"),
             );
             expect(argumentTypes.user.parse("<@307429254017056769>", mockClient, mockMessage)).to.equal(
+                mockClient.users.cache.get("307429254017056769"),
+            );
+            expect(argumentTypes.user.parse("Nigecat#2288", mockClient, mockMessage)).to.equal(
                 mockClient.users.cache.get("307429254017056769"),
             );
         });
@@ -72,6 +94,8 @@ describe("argumentTypes", () => {
             expect(argumentTypes.member.validate("<@307429254017056769>", mockClient, mockMessage)).to.equal(true);
             expect(argumentTypes.member.validate("12345", mockClient, mockMessage)).to.equal(false);
             expect(argumentTypes.member.validate("<@12345>", mockClient, mockMessage)).to.equal(false);
+            expect(argumentTypes.member.validate("Nigecat#2288", mockClient, mockMessage)).to.equal(true);
+            expect(argumentTypes.member.validate("Nigecat#0115", mockClient, mockMessage)).to.equal(false);
         });
 
         it("parse", () => {
@@ -79,6 +103,9 @@ describe("argumentTypes", () => {
                 mockClient.guilds.cache.get(mockGuild.id).members.cache.get("307429254017056769"),
             );
             expect(argumentTypes.member.parse("<@307429254017056769>", mockClient, mockMessage)).to.equal(
+                mockClient.guilds.cache.get(mockGuild.id).members.cache.get("307429254017056769"),
+            );
+            expect(argumentTypes.member.parse("Nigecat#2288", mockClient, mockMessage)).to.equal(
                 mockClient.guilds.cache.get(mockGuild.id).members.cache.get("307429254017056769"),
             );
         });

@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "5.3.4",
+    "version": "5.3.5",
     "description": "A general purpose discord bot",
     "author": "Nigecat",
     "repository": {
@@ -13,7 +13,7 @@
         "clean": "tsc --build --clean",
         "build": "tsc",
         "start": "npm run build && node index.js",
-        "tests": "mocha -r ts-node/register tests/**/*.test.ts",
+        "tests": "npm run build && mocha -r ts-node/register tests/**/*.test.ts",
         "test": "npm run build && npm run tests && npm run lint"
     },
     "devDependencies": {
