@@ -1,7 +1,6 @@
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
 import { Message, GuildMember } from "discord.js";
-import { isHigherRole } from "../../../utils/misc";
 
 export default class Ban extends Command {
     constructor(client: Plexi) {
@@ -35,7 +34,7 @@ export default class Ban extends Command {
 
         if (user.bannable) {
             // If the user has a higher role than the person they are trying to ban
-            if (isHigherRole(message.member.roles.highest, user.roles.highest)) {
+            if (message.member.roles.highest.position > user.roles.highest.position) {
                 user.ban({
                     reason: `${reason} (Banned by ${message.author.tag} | ${message.author.id})`,
                     days: 0,

@@ -1,7 +1,8 @@
-import { get } from "https";
+import { get as httpGet } from "http";
+import { get as httpsGet } from "https";
 import { Command } from "../commands/Command";
 import { stripIndents, oneLine } from "common-tags";
-import { Snowflake, Message, TextChannel, NewsChannel, DMChannel, Role } from "discord.js";
+import { Snowflake, Message, TextChannel, NewsChannel, DMChannel } from "discord.js";
 
 /** Generates the regex for detecting when a string starts with either a prefix or a user/bot mention
  *  NOTE: This *requires* there to be text after the match, the string can't only contain the prefix/mention
@@ -62,40 +63,14 @@ export async function lastMessage(channel: TextChannel | NewsChannel | DMChannel
 }
 
 /**
- * Returns a bool of whether role1 is higher than role2
- *
- * @param {Role} role1 The first user
- * @param {Role} role2 The second user
- * @returns Whether the first role is higher than the second one
- */
-export function isHigherRole(role1: Role, role2: Role): boolean {
-    // Return false if the roles are the same
-    if (role1.id === role2.id) return false;
-
-    // We have to sort the roles of the guild to ensure they are in the correct order
-    const guildRoles = role1.guild.roles.cache
-        .sort((b, a) => a.position - b.position || ((a.id as unknown) as number) - ((b.id as unknown) as number))
-        .map((role) => role.id);
-
-    for (const i in guildRoles) {
-        if (guildRoles[i] === role1.id) {
-            return true;
-        } else if (guildRoles[i] === role2.id) {
-            return false;
-        }
-    }
-
-    throw new Error("Could not find role!");
-}
-
-/**
  * Make a http request and return the result
  * @param {string} url - The url to make the request to
+ * @param useHttp - Whether to make the request over http, this is false by default
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function fetch(url: string): Promise<any> {
+export function fetch(url: string, useHttp = false): Promise<any> {
     return new Promise((resolve, reject) => {
-        get(url, (resp) => {
+        (useHttp ? httpGet : httpsGet)(url, (resp) => {
             let data = "";
 
             resp.on("data", (chunk) => {
@@ -177,4 +152,15 @@ export function convertMs(val: string): number {
         default:
             return undefined;
     }
+}
+
+/**
+ * Fetch a random reddit image from the specified subreddit
+ * @param {string} subreddit - The subreddit to get the image from, this should just be the name e.g 'aww'
+ * @returns A url to the image
+ */
+export async function fetchReddit(subreddit: string): Promise<string> {
+    const response = await fetch(`https://imgur.com/r/${subreddit}/hot.json`);
+    const post = response.data[Math.floor(Math.random() * response.data.length)];
+    return `http://imgur.com/${post.hash}.${post.mimetype.replace(/.+?(?=\/)/, "").substr(1)}`;
 }

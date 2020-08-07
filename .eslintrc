@@ -14,6 +14,13 @@
         "eqeqeq": "error",
         "spaced-comment": "warn",
         "no-loss-of-precision": "error",
-        "generator-star-spacing": "warn"
+        "generator-star-spacing": "warn",
+        "capitalized-comments": [
+            "error",
+            "always",
+            {
+                "ignoreConsecutiveComments": true
+            }
+        ]
     }
 }
