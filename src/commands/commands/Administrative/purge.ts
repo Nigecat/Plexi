@@ -8,11 +8,14 @@ export default class Purge extends Command {
         super(client, {
             name: "purge",
             group: "Administrative",
+            userPermissions: ["ADMINISTRATOR"],
+            clientPermissions: ["MANAGE_MESSAGES"],
             description: "Delete the most recent <limit> messages in this channel. Max 50 messages at a time.",
             args: [
                 {
                     name: "limit",
                     type: "number",
+                    validate: (limit: number) => limit <= 50,
                 },
             ],
         });
@@ -24,15 +27,26 @@ export default class Purge extends Command {
             Are you sure you want to continue?
         `);
 
-        await confirm.react("🇾");
-        await confirm.react("🇳");
+        confirm.react("🇾");
+        confirm.react("🇳");
 
         const collected = await confirm.awaitReactions(
             (reaction: MessageReaction) =>
-                reaction.emoji.name === "regional_indicator_y" || reaction.emoji.name === "regional_indicator_n",
-            { time: 10000 },
+                ["🇾", "🇳"].includes(reaction.emoji.name) &&
+                reaction.users.cache.some((user) => user.id === message.author.id),
+            { time: 10000, max: 1 },
         );
 
-        console.log(collected);
+        if (collected.first()) {
+            if (collected.first().emoji.name === "🇾") {
+                await message.channel.bulkDelete(limit);
+            } else {
+                await confirm.reactions.removeAll();
+                await confirm.edit("Operation cancelled");
+            }
+        } else {
+            await confirm.reactions.removeAll();
+            await confirm.edit("Operation cancelled (you took too long to react)");
+        }
     }
 }
