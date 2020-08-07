@@ -1,4 +1,5 @@
-import { get } from "https";
+import { get as httpGet } from "http";
+import { get as httpsGet } from "https";
 import { Command } from "../commands/Command";
 import { stripIndents, oneLine } from "common-tags";
 import { Snowflake, Message, TextChannel, NewsChannel, DMChannel, Role } from "discord.js";
@@ -91,11 +92,12 @@ export function isHigherRole(role1: Role, role2: Role): boolean {
 /**
  * Make a http request and return the result
  * @param {string} url - The url to make the request to
+ * @param useHttp - Whether to make the request over http, this is false by default
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function fetch(url: string): Promise<any> {
+export function fetch(url: string, useHttp = false): Promise<any> {
     return new Promise((resolve, reject) => {
-        get(url, (resp) => {
+        (useHttp ? httpGet : httpsGet)(url, (resp) => {
             let data = "";
 
             resp.on("data", (chunk) => {
