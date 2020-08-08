@@ -1,3 +1,4 @@
+import { resolve } from "path";
 import loadCommands from "../../";
 import { Message } from "discord.js";
 import { Plexi } from "../../../Plexi";
@@ -18,15 +19,18 @@ export default class Reload extends Command {
     async run(message: Message): Promise<void> {
         try {
             // Loop through each command and remove it from the module cache
-            for (const commandName of this.client.commands.keys()) {
-                delete require.cache[`${commandName}.js`];
-            }
+            this.client.commands.forEach(
+                (command) =>
+                    delete require.cache[
+                        require.resolve(resolve(__dirname, "..", command.options.group, `${command.name}.js`))
+                    ],
+            );
 
             // Now that they are all unloaded we can load them again normally
-            console.log(this.client.commands.get("invite").options.description);
+            this.client.emit("debug", this.client.commands.get("invite").options.description);
             this.client.commands.clear();
             this.client.commands = await loadCommands(this.client);
-            console.log(this.client.commands.get("invite").options.description);
+            this.client.emit("debug", this.client.commands.get("invite").options.description);
 
             message.channel.send(`Successfully reloaded ${this.client.commands.size} commands!`);
             this.client.emit("debug", `Reloaded ${this.client.commands.size} commands`);
