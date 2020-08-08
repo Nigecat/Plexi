@@ -11,7 +11,7 @@ export default async function (message: Message, client: Plexi): Promise<void> {
     cleanUp(message);
 
     // Figure out what prefix we are using for this server
-    const prefix = await client.prefixes.get(message.guild ?.id);
+    const prefix = await client.prefixes.get(message.guild?.id);
 
     // If this message matches the prefix
     if (message.content.match(prefix)) {
