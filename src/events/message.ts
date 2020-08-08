@@ -11,7 +11,7 @@ export default async function (message: Message, client: Plexi): Promise<void> {
     cleanUp(message);
 
     // Figure out what prefix we are using for this server
-    const prefix = await client.prefixes.get(message.guild?.id);
+    const prefix = await client.prefixes.get(message.guild ? message.guild.id : "");
 
     // If this message matches the prefix
     if (message.content.match(prefix)) {
@@ -39,7 +39,7 @@ export default async function (message: Message, client: Plexi): Promise<void> {
                 command.run(message, formattedArgs);
             } else {
                 // Otherwise it's an invalid syntax warning so we send the expected syntax
-                const prefix = await client.prefixes.get(message.guild?.id, true);
+                const prefix = await client.prefixes.get(message.guild ? message.guild.id : "", true);
 
                 message.channel.send(stripIndents`
                     Invalid command syntax, expect syntax: \`${prefix}${command.name} ${command.format}\`
