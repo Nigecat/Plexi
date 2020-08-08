@@ -25,7 +25,7 @@ export default class Help extends Command {
 
         // Otherwise it is a general help command
         else {
-            const prefix = await this.client.prefixes.get(message.guild ? message.guild.id : "", true);
+            const prefix = await this.client.prefixes.get(message.guild?.id, true);
 
             // Extract the command groups
             const groups = [...new Set(this.client.commands.array().map((command) => command.options.group))];
