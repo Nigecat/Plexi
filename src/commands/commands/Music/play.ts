@@ -8,6 +8,7 @@ export default class Play extends Command {
     constructor(client: Plexi) {
         super(client, {
             name: "play",
+            aliases: ["p"],
             clientPermissions: ["CONNECT"],
             userPermissions: ["SPEAK"],
             group: "Music",

@@ -17,6 +17,7 @@ export class Command {
         // Set the defaults
         this.options.description = this.options.description ?? "";
         this.options.details = this.options.details ?? "";
+        this.options.aliases = this.options.aliases ?? [];
         this.options.guildOnly = this.options.guildOnly ?? false;
         this.options.dmOnly = this.options.dmOnly ?? false;
         this.options.ownerOwnly = this.options.ownerOwnly ?? false;
@@ -177,6 +178,8 @@ export class Command {
 export interface CommandInfo {
     /** The name of the command */
     name: string;
+    /** Alternative command names */
+    aliases?: string[];
     /** The name of the group this command belongs to */
     group: string;
     /** A short description of this command */
