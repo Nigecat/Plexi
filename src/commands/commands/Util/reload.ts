@@ -23,12 +23,10 @@ export default class Reload extends Command {
             }
 
             // Now that they are all unloaded we can load them again normally
+            console.log(this.client.commands.get("invite").options.description);
             this.client.commands.clear();
-            const commands = await loadCommands(this.client);
-
-            for (const commandName of commands.keys()) {
-                this.client.commands.set(commandName, commands.get(commandName));
-            }
+            this.client.commands = await loadCommands(this.client);
+            console.log(this.client.commands.get("invite").options.description);
 
             message.channel.send(`Successfully reloaded ${this.client.commands.size} commands!`);
             this.client.emit("debug", `Reloaded ${this.client.commands.size} commands`);
