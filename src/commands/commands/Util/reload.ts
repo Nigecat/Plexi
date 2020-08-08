@@ -4,12 +4,11 @@ import { Message } from "discord.js";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
 
-/* WORK IN PROGRESS */
 export default class Reload extends Command {
     constructor(client: Plexi) {
         super(client, {
             name: "reload",
-            description: "Reload ALL commands",
+            description: "Reload ALL commands, this will NOT re-compile them.",
             group: "Util",
             ownerOwnly: true,
             hidden: true,
