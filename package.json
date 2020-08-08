@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "5.3.8",
+    "version": "5.3.9",
     "description": "A general purpose discord bot",
     "author": "Nigecat",
     "repository": {
@@ -14,6 +14,7 @@
         "build": "tsc",
         "build:watch": "tsc --watch",
         "start": "npm run build && node index.js",
+        "start:nobuild": "node index.js",
         "tests": "npm run build && mocha -r ts-node/register tests/**/*.test.ts",
         "test": "npm run build && mocha -r ts-node/register tests/**/*.test.ts && npm run lint"
     },
