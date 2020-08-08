@@ -1,5 +1,5 @@
 import ytdl from "ytdl-core";
-import { YouTube } from "popyt";
+import { YouTube, Video } from "popyt";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
 import { Message, VoiceConnection } from "discord.js";
@@ -30,8 +30,7 @@ export default class Loop extends Command {
             return;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let video: any;
+        let video: Video;
         const result = await message.channel.send("Searching for video...");
         const youtube = new YouTube(process.env.YOUTUBE_TOKEN);
         try {
