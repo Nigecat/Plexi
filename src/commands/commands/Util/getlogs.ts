@@ -40,7 +40,8 @@ export default class GetLogs extends Command {
                 (line) =>
                     new Date(line.timestamp) >= expected &&
                     (level === "all" || line.level === level) &&
-                    !line.message.includes("token"),
+                    !line.message.toLowerCase().includes("token") &&
+                    !line.message.toLowerCase().includes("secret_key"),
             )
             .map((line) => `${line.level}: ${line.message} (${line.timestamp})`);
 

@@ -3,7 +3,7 @@ import { Message } from "discord.js";
 import { stripIndents } from "common-tags";
 
 /** Main handler for incoming commands */
-export default async function (message: Message, client: Plexi): Promise<void> {
+export default async function (client: Plexi, [message]: [Message]): Promise<void> {
     // Ignore bot messages
     if (message.author.bot) return;
 

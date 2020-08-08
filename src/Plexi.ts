@@ -76,7 +76,7 @@ export class Plexi extends Client {
         // Register our event handlers
         Object.keys(events).forEach((event) => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            this.on(event as any, (data) => events[event](data, this));
+            this.on(event as any, (...data) => events[event](this, data));
         });
     }
 }
