@@ -6,21 +6,18 @@ A general purpose discord bot
 
 
 ## Setup
-The bot pulls it's tokens from environment variables.  
-So, first make a file called `.env` in the root directory (they can also be loaded from the device environment variables, this is preferred in a production environment).  
-This file should contain two tokens, the [bot token](https://discord.com/developers/applications) (DISCORD_TOKEN) and a [youtube data api v3 token](https://console.developers.google.com/apis/credentials) (YOUTUBE_TOKEN).
-If the NODE_ENV flag is set to 'production' (`NODE_ENV=production`) a third flag is also required, this should be a [top.gg api token](https://top.gg/api/docs#mybots) (TOPGG_TOKEN)
+Dependencies can be installed by running `npm ci --no-optional`.
 
-The finished file should look something like the following (when not in a production environment):
-```
-DISCORD_TOKEN=xxxxxxx
-YOUTUBE_TOKEN=xxxxxxx
-```
+The bot pulls it's tokens from environment variables. There are four fields it checks for:
+ - `DISCORD_TOKEN` - the [bot token](https://discord.com/developers/applications).
+ - `YOUTUBE_TOKEN` - a [youtube data api v3 token](https://console.developers.google.com/apis/credentials).
+ - `TOPGG_TOKEN` - the [top.gg token](https://top.gg/api/docs#mybots).
+ - And finally if `NODE_ENV` is set to `production` the console.logs will be disabled and written to the logs/ directory.
 
-For a production environment (and not using the environment variables), the file should look like this:
+The only required token is the discord token. Everything else is technically optional (if music commands are run without a youtube token it will cause an error). 
+The top.gg token will only be used if it is specified and we are in production mode.
+
+The environment variables can also be automatically loaded from a `.env` file. A minimal setup would look like:
 ```
-DISCORD_TOKEN=xxxxxxx
-YOUTUBE_TOKEN=xxxxxxx
-TOPGG_TOKEN=xxxxxxx
-NODE_ENV=production
+DISCORD_TOKEN=xxxxxxxxxxx
 ```
