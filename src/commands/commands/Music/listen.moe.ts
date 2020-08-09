@@ -1,6 +1,6 @@
-import { Message } from "discord.js";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
+import { Message, VoiceConnection } from "discord.js";
 
 export default class ListenMoe extends Command {
     constructor(client: Plexi) {
@@ -21,9 +21,15 @@ export default class ListenMoe extends Command {
         await message.react(["👍", "👌"][Math.floor(Math.random() * 2)]);
 
         const connection = await message.member.voice.channel.join();
-        connection.play("https://listen.moe/opus", {
+        this.play(connection);
+    }
+
+    /** Loop a song */
+    async play(connection: VoiceConnection): Promise<void> {
+        const dispatcher = connection.play("https://listen.moe/opus", {
             volume: false,
             highWaterMark: 50,
         });
+        dispatcher.on("finish", () => this.play(connection));
     }
 }
