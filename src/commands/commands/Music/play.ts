@@ -1,4 +1,4 @@
-import ytdl from "ytdl-core";
+import ytdl from "ytdl-core-discord";
 import { Message } from "discord.js";
 import { YouTube, Video } from "popyt";
 import { Plexi } from "../../../Plexi";
@@ -46,9 +46,13 @@ export default class Play extends Command {
 
         const connection = await message.member.voice.channel.join();
 
-        const dispather = connection.play(ytdl(url, { filter: "audioonly" }));
+        const dispatcher = connection.play(await ytdl(url, { filter: "audioonly" }), {
+            volume: false,
+            type: "opus",
+            highWaterMark: 50,
+        });
 
         // Disconnnect from the voice channel after we are finished playing
-        dispather.on("finish", () => message.guild.me.voice.channel.leave());
+        dispatcher.on("finish", () => message.guild.me.voice.channel.leave());
     }
 }

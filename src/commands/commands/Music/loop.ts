@@ -1,4 +1,4 @@
-import ytdl from "ytdl-core";
+import ytdl from "ytdl-core-discord";
 import { YouTube, Video } from "popyt";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
@@ -48,8 +48,12 @@ export default class Loop extends Command {
     }
 
     /** Loop a song */
-    play(connection: VoiceConnection, url: string): void {
-        const dispatcher = connection.play(ytdl(url, { filter: "audioonly" }));
+    async play(connection: VoiceConnection, url: string): Promise<void> {
+        const dispatcher = connection.play(await ytdl(url, { filter: "audioonly" }), {
+            volume: false,
+            type: "opus",
+            highWaterMark: 50,
+        });
         dispatcher.on("finish", () => this.play(connection, url));
     }
 }
