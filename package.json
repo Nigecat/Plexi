@@ -39,6 +39,7 @@
         "dblapi.js": "^2.4.0",
         "discord.js": "^12.2.0",
         "dotenv": "^8.2.0",
+        "ffmpeg-static": "^4.2.6",
         "jimp": "^0.14.0",
         "knex": "^0.21.2",
         "popyt": "^4.1.1",
