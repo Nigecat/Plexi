@@ -15,17 +15,17 @@ export class Command {
         this.name = options.name;
 
         // Set the defaults
-        this.options.description = this.options.description ?? "";
-        this.options.details = this.options.details ?? "";
-        this.options.aliases = this.options.aliases ?? [];
-        this.options.guildOnly = this.options.guildOnly ?? false;
-        this.options.dmOnly = this.options.dmOnly ?? false;
-        this.options.ownerOwnly = this.options.ownerOwnly ?? false;
-        this.options.clientPermissions = this.options.clientPermissions ?? [];
-        this.options.userPermissions = this.options.userPermissions ?? [];
-        this.options.nsfw = this.options.nsfw ?? false;
-        this.options.args = this.options.args ?? [];
-        this.options.hidden = this.options.hidden ?? false;
+        this.options.description = this.options.description || "";
+        this.options.details = this.options.details || "";
+        this.options.aliases = this.options.aliases || [];
+        this.options.guildOnly = this.options.guildOnly || false;
+        this.options.dmOnly = this.options.dmOnly || false;
+        this.options.ownerOwnly = this.options.ownerOwnly || false;
+        this.options.clientPermissions = this.options.clientPermissions || [];
+        this.options.userPermissions = this.options.userPermissions || [];
+        this.options.nsfw = this.options.nsfw || false;
+        this.options.args = this.options.args || [];
+        this.options.hidden = this.options.hidden || false;
 
         this.format = this.options.args.reduce((prev, arg) => {
             if (arg.oneOf) arg.name = arg.oneOf.join(" | ");
