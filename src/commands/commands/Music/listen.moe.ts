@@ -21,12 +21,9 @@ export default class ListenMoe extends Command {
         await message.react(["👍", "👌"][Math.floor(Math.random() * 2)]);
 
         const connection = await message.member.voice.channel.join();
-        const dispather = connection.play("https://listen.moe/opus", {
+        connection.play("https://listen.moe/opus", {
             volume: false,
             highWaterMark: 50,
         });
-
-        // Disconnnect from the voice channel after we are finished playing
-        dispather.on("finish", () => message.guild.me.voice.channel.leave());
     }
 }
