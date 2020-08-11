@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
-import { lastMessage, fetch, generateHelp } from "../../../utils/misc";
+import { lastMessage, fetch } from "../../../utils/misc";
 
 export default class WhatAnime extends Command {
     constructor(client: Plexi) {
@@ -47,8 +47,9 @@ export default class WhatAnime extends Command {
                 result.edit("I could not find anything close to that...");
             }
         } else {
-            const prefix = await this.client.prefixes.get(message.guild ? message.guild.id : "", true);
-            message.channel.send(generateHelp(this, prefix));
+            // TODO: Re-enable
+            // const prefix = await this.client.prefixes.get(message.guild ? message.guild.id : "", true);
+            // message.channel.send(generateHelp(this, prefix));
         }
     }
 }

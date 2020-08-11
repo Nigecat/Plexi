@@ -15,6 +15,6 @@ export default class DatabaseManager extends EventEmitter {
 
     /** Connect to the database */
     async init(): Promise<void> {
-        await mongoose.connect(this.uri);
+        await mongoose.connect(this.uri, { useNewUrlParser: true, useUnifiedTopology: true });
     }
 }

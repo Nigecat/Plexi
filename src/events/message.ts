@@ -1,9 +1,6 @@
-import { Plexi } from "../Plexi";
-import { Message } from "discord.js";
-import { generateHelp } from "../utils/misc";
-
 /** Main handler for incoming commands */
-export default async function (client: Plexi, [message]: [Message]): Promise<void> {
+export default async function (): Promise<void> {
+    /*
     // Ignore bot messages
     if (message.author.bot) return;
 
@@ -48,12 +45,14 @@ export default async function (client: Plexi, [message]: [Message]): Promise<voi
             message.channel.send(invalidRunReason);
         }
     }
+    */
 }
 
 /**
  * @ someone feature replication see https://youtu.be/BeG5FqTpl9U
  * Requires a role called 'someone' to exist and be pinged
  */
+/*
 async function someone(message: Message): Promise<void> {
     if (message.mentions.roles.size > 0 && message.mentions.roles.some((role) => role.name === "someone")) {
         const role = message.guild.roles.cache.find((role) => role.name === "someone");
@@ -68,8 +67,10 @@ async function someone(message: Message): Promise<void> {
         }
     }
 }
+*/
 
 /** Custom code for 264163117078937601 (Pinpointpotato#9418) AKA the ideas man */
+/*
 function cleanUp(message: Message): void {
     if (
         message.author.id === "264163117078937601" &&
@@ -78,3 +79,4 @@ function cleanUp(message: Message): void {
         message.channel.send("cuz i CLEEEEEEAaaan up");
     }
 }
+*/

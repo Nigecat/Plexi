@@ -1,10 +1,9 @@
-import Knex from "knex";
-import events from "./events";
-import loadCommands from "./commands";
+// TODO: Re-enable
+// import events from "./events";
+// import loadCommands from "./commands";
 import { Command } from "./commands/Command";
 import { generateRegExp } from "./utils/misc";
-import PrefixManager from "./managers/PrefixManager";
-import AutoroleManager from "./managers/AutoroleManager";
+import DatabaseManager from "./managers/DatabaseManager";
 import { Client, ClientOptions, Collection } from "discord.js";
 
 /**
@@ -15,22 +14,14 @@ export class Plexi extends Client {
     /** The options for this client */
     public readonly config: PlexiOptions;
 
-    /** The prefix manager for this client.
-     *  NOTE: This is only created if the databasePath config option is specified.
+    /** The database manager for this client.
+     *  NOTE: This is only created if the process.env.DATABASE_URI environment variable option is set.
      */
-    public prefixes: PrefixManager;
-
-    /** The autorole manager for this client.
-     *  NOTE: This is only created if the databasePath config option is specified.
-     */
-    public autoroles: AutoroleManager;
+    public database: DatabaseManager;
 
     /** This is the default prefix used for responding to messages,
      *  it is dynamically generated based on the config and the client id. */
     public defaultPrefix: RegExp;
-
-    /** The database connection, this will only be set if we get a databasePath config flag */
-    public database: Knex;
 
     /** The commands this client has access to, mapped by their name */
     public commands: Collection<string, Command>;
@@ -51,33 +42,20 @@ export class Plexi extends Client {
         this.defaultPrefix = generateRegExp(this.config.prefix, this.user.id);
 
         // Do database setup if we got a path
-        if (this.config.databasePath) {
+        if (process.env.DATABASE_URI) {
             // Connect to the database
-            this.database = Knex({
-                useNullAsDefault: true,
-                client: "sqlite3",
-                connection: { filename: this.config.databasePath },
-            });
-
-            // Create our prefix manager
-            this.prefixes = new PrefixManager(this, this.database);
-            this.prefixes.on("debug", (data) => this.emit("debug", data));
-            await this.prefixes.init();
-
-            // Create our autorole manager
-            this.autoroles = new AutoroleManager(this, this.database);
-            this.autoroles.on("debug", (data) => this.emit("debug", data));
-            await this.autoroles.init();
+            this.database = new DatabaseManager(this, process.env.DATABASE_URI);
+            await this.database.init();
         }
 
         // Load our commands
-        this.commands = await loadCommands(this);
+        // this.commands = await loadCommands(this);
 
         // Register our event handlers
-        Object.keys(events).forEach((event) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            this.on(event as any, (...data) => events[event](this, data));
-        });
+        // Object.keys(events).forEach((event) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // this.on(event as any, (...data) => events[event](this, data));
+        // });
     }
 }
 
@@ -97,8 +75,6 @@ export interface PlexiOptions {
     supportServer?: string;
     /** The id of the bot owner */
     owner?: string;
-    /** The path of the database to store persistant data in */
-    databasePath?: string;
     /** The default prefix for the bot */
     prefix: string;
     /** The current version of the bot */
