@@ -1,6 +1,6 @@
 {
     "name": "plexi",
-    "version": "5.3.11",
+    "version": "5.4.0",
     "description": "A general purpose discord bot",
     "author": "Nigecat",
     "repository": {
@@ -22,6 +22,7 @@
         "@types/chai": "^4.2.12",
         "@types/common-tags": "^1.8.0",
         "@types/mocha": "^8.0.1",
+        "@types/mongoose": "^5.7.36",
         "@typescript-eslint/eslint-plugin": "^3.8.0",
         "@typescript-eslint/parser": "^3.8.0",
         "chai": "^4.2.0",
@@ -42,6 +43,7 @@
         "ffmpeg-static": "^4.2.6",
         "jimp": "^0.16.0",
         "knex": "^0.21.3",
+        "mongoose": "^5.9.28",
         "popyt": "^4.1.1",
         "sqlite3": "^5.0.0",
         "tmp-promise": "^3.0.2",
