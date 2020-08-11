@@ -14,18 +14,18 @@ export default class Help extends Command {
     }
 
     async run(message: Message, [command]: [string]): Promise<void> {
+        const prefix = await this.client.prefixes.get(message.guild ? message.guild.id : "", true);
+
         // If it is a specific help command
         if (command !== "SHOW_ALL") {
             // Only show the help if we have the command and it is not owner only
             if (this.client.commands.has(command) && !this.client.commands.get(command).options.ownerOwnly) {
-                message.channel.send(generateHelp(this.client.commands.get(command)));
+                message.channel.send(generateHelp(this.client.commands.get(command), prefix));
             }
         }
 
         // Otherwise it is a general help command
         else {
-            const prefix = await this.client.prefixes.get(message.guild ? message.guild.id : "", true);
-
             const groups = [...new Set(this.client.commands.array().map((command) => command.options.group))];
 
             const embed = new MessageEmbed({

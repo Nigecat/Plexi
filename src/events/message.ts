@@ -1,6 +1,6 @@
 import { Plexi } from "../Plexi";
 import { Message } from "discord.js";
-import { stripIndents } from "common-tags";
+import { generateHelp } from "../utils/misc";
 
 /** Main handler for incoming commands */
 export default async function (client: Plexi, [message]: [Message]): Promise<void> {
@@ -38,13 +38,11 @@ export default async function (client: Plexi, [message]: [Message]): Promise<voi
                 client.emit("debug", `Running command ${command.options.group}:${commandName}`);
                 command.run(message, formattedArgs);
             } else {
-                // Otherwise it's an invalid syntax warning so we send the expected syntax
+                // Otherwise it's an invalid syntax warning so we send the help page
                 const prefix = await client.prefixes.get(message.guild ? message.guild.id : "", true);
 
-                message.channel.send(stripIndents`
-                    Invalid command syntax, expect syntax: \`${prefix}${command.name} ${command.format}\`
-                    Run \`${prefix}help ${command.name}\` for more details
-                `);
+                // If it is not valid we just send the help page
+                message.channel.send(generateHelp(command, prefix));
             }
         } else {
             message.channel.send(invalidRunReason);

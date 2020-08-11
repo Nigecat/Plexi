@@ -1,7 +1,7 @@
 import { get as httpGet } from "http";
 import { get as httpsGet } from "https";
+import { stripIndents } from "common-tags";
 import { Command } from "../commands/Command";
-import { stripIndents, oneLine } from "common-tags";
 import { Snowflake, Message, TextChannel, NewsChannel, DMChannel } from "discord.js";
 
 /** Generates the regex for detecting when a string starts with either a prefix or a user/bot mention
@@ -26,26 +26,20 @@ export function extractDigits(text: string): string {
  * @param {Command} command - The command to generate it for
  * @returns The help string
  */
-export function generateHelp(command: Command): string {
+export function generateHelp(command: Command, prefix?: string): string {
     let help = stripIndents`
-        ${oneLine`
-            Command **${command.name}**: ${command.options.description}
-            ${command.options.guildOnly ? " (Usably only in servers) " : ""}
-            ${command.options.dmOnly ? " (Usably only in dms) " : ""}
-            ${command.options.nsfw ? " (NSFW) " : ""}
-        `}
+        ${prefix ? prefix : ""}${command.name} ${command.format}
 
-        **Format:** \`${command.name} ${command.format}\`
-        **Group:** \`${command.options.group}:${command.name}\`
+        ${command.options.description} ${command.options.nsfw ? " (NSFW) " : ""}
     `;
 
     if (command.options.userPermissions.length > 0) {
-        help += `\n**Required Permissions:** \`${command.options.userPermissions.join(" | ")}\``;
+        help += `\nRequired Permissions: ${command.options.userPermissions.join(", ")}`;
     }
 
-    if (command.options.details) help += `\n\n**Details:** ${command.options.details}`;
+    if (command.options.details) help += `\n\n-------------------------------\n${command.options.details}`;
 
-    return help;
+    return "```\n" + help + "\n```";
 }
 
 /**
