@@ -1,7 +1,6 @@
-import { Message } from "discord.js";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
-import { stripIndents } from "common-tags";
+import { Message, MessageEmbed } from "discord.js";
 import { generateHelp } from "../../../utils/misc";
 
 export default class Help extends Command {
@@ -27,31 +26,25 @@ export default class Help extends Command {
         else {
             const prefix = await this.client.prefixes.get(message.guild ? message.guild.id : "", true);
 
-            // Extract the command groups
             const groups = [...new Set(this.client.commands.array().map((command) => command.options.group))];
 
-            /* eslint-disable prettier/prettier */
-            message.author.send(stripIndents`
-                To run a command use \`${prefix}command\` or \`@${this.client.user.tag} command\`.
+            const embed = new MessageEmbed({
+                color: "RANDOM",
+                title: "Plexi Help",
+                description: `Run ${prefix}help <command> for more details on a command`,
+                footer: { text: `This server's prefix is: ${prefix}`, iconURL: this.client.user.avatarURL() },
+                fields: groups.map((group) => {
+                    return {
+                        name: group,
+                        value: this.client.commands
+                            .filter((command) => command.options.group === group)
+                            .map((command) => `\`${command.name}\``)
+                            .join(", "),
+                    };
+                }),
+            });
 
-                Use \`${prefix}help <command>\` to view detailed information about a specific command.
-                Use \`${prefix}help\` to view this page.
-
-                ${groups.filter((group) => group !== "Debug").map((group) => stripIndents`
-                    __${group}__
-                    ${this.client.commands
-                        .array()
-                        .filter((command) => command.options.group === group && !command.options.hidden)
-                        .map((command) => stripIndents`
-                            **${command.name}:** ${command.options.description}${command.options.nsfw ? " (NSFW) " : ""}
-                        `).join("\n")}
-                `).join("\n\n")}
-            `, { split: true });
-            /* eslint-enable prettier/prettier */
-
-            if (message.channel.type !== "dm") {
-                message.channel.send("Sent you a DM with information.");
-            }
+            message.channel.send({ embed });
         }
     }
 }
