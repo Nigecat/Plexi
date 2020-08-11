@@ -37,7 +37,7 @@ export default class Help extends Command {
                 Use \`${prefix}help <command>\` to view detailed information about a specific command.
                 Use \`${prefix}help\` to view this page.
 
-                ${groups.map((group) => stripIndents`
+                ${groups.filter((group) => group !== "Debug").map((group) => stripIndents`
                     __${group}__
                     ${this.client.commands
                         .array()

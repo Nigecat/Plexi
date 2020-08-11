@@ -11,6 +11,7 @@ export default class Debug extends Command {
             name: "debug",
             group: "Debug",
             ownerOwnly: true,
+            hidden: true,
             description: "Get debug info",
         });
     }
