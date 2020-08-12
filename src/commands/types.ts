@@ -9,6 +9,12 @@ const argumentTypes: ArgumentTypes = {
         parse: (val: string): string => val,
     },
 
+    boolean: {
+        validate: (val: string): boolean => ["yes", "no", "true", "false"].includes(val.toLowerCase()),
+
+        parse: (val: string): boolean => ["yes", "true"].includes(val.toLowerCase()),
+    },
+
     user: {
         validate: (val: string, client: Plexi): boolean =>
             client.users.cache.has(extractDigits(val)) ||

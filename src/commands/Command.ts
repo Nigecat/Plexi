@@ -212,7 +212,7 @@ export interface Argument {
     /** The name of the argument, this is used for the help screen */
     name: string;
     /** The expected argument type */
-    type: "string" | "number" | "user" | "member" | "role";
+    type: "string" | "number" | "user" | "member" | "role" | "boolean";
     /** The default value of this command, if this is set then this argument becomes optional.
      *  Default values can only appear at the end of the command argument array.
      */
@@ -222,9 +222,9 @@ export interface Argument {
      */
     infinite?: boolean;
     /** A function to check if an argument is valid, this is purely optional for stricter checking  */
-    validate?: (val: string | number | User | GuildMember | Role) => boolean;
+    validate?: (val: string | number | User | GuildMember | Role | boolean) => boolean;
     /** The incoming argument must be one of these, this array should be all lowercase */
     oneOf?: string[];
 }
 
-export type ArgumentTypeArray = Array<string | number | User | GuildMember | Role>;
+export type ArgumentTypeArray = Array<string | number | User | GuildMember | Role | boolean>;

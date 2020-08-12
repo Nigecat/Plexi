@@ -72,6 +72,22 @@ describe("argumentTypes", () => {
         });
     });
 
+    describe("boolean", () => {
+        it("validate", () => {
+            expect(argumentTypes.boolean.validate("true", mockClient, mockMessage)).to.equal(true);
+            expect(argumentTypes.boolean.validate("false", mockClient, mockMessage)).to.equal(true);
+            expect(argumentTypes.boolean.validate("yes", mockClient, mockMessage)).to.equal(true);
+            expect(argumentTypes.boolean.validate("no", mockClient, mockMessage)).to.equal(true);
+        });
+
+        it("parse", () => {
+            expect(argumentTypes.boolean.parse("true", mockClient, mockMessage)).to.equal(true);
+            expect(argumentTypes.boolean.parse("false", mockClient, mockMessage)).to.equal(false);
+            expect(argumentTypes.boolean.parse("yes", mockClient, mockMessage)).to.equal(true);
+            expect(argumentTypes.boolean.parse("no", mockClient, mockMessage)).to.equal(false);
+        });
+    });
+
     describe("number", () => {
         it("validate", () => {
             expect(argumentTypes.number.validate("123", mockClient, mockMessage)).to.equal(true);

@@ -15,13 +15,15 @@ export default class Shutdown extends Command {
                 {
                     name: "force",
                     type: "boolean",
-                    default: false,
-                }
-            ]
+                    default: "false",
+                },
+            ],
         });
     }
 
-    async run(message: Message, [force]: [boolean]): Promise<void> {
+    async run(message: Message, [force]: [boolean | "false"]): Promise<void> {
+        if (force === "false") force = false;
+
         // Check if it is safe to shutdown (skip the check if running in force mode)
         if (this.client.voice.connections.size > 0 && !force) {
             // Warn the user
@@ -34,13 +36,14 @@ export default class Shutdown extends Command {
                         value: stripIndents`
                             Currently playing audio in ${this.client.voice.connections.size} guild(s)
                         `,
-                    }
+                    },
                 ],
             });
 
             message.channel.send({ embed });
         } else {
             // Shutdown
+            message.channel.send("Initiating shutdown...");
             this.client.destroy();
             await this.client.database.disconnect();
             process.exit(0);
