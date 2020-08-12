@@ -42,7 +42,7 @@ export default async function (client: Plexi, [message]: [Message]): Promise<voi
                 // Otherwise it's an invalid syntax warning so we send the help page
                 message.channel.send(generateHelp(command, prefixRaw));
             }
-        } else {
+        } else if (invalidRunReason) {
             message.channel.send(invalidRunReason);
         }
     }

@@ -22,7 +22,11 @@ export default class Help extends Command {
         // If it is a specific help command
         if (command !== "SHOW_ALL") {
             // Only show the help if we have the command and it is not owner only
-            if (this.client.commands.has(command) && !this.client.commands.get(command).options.ownerOwnly) {
+            if (
+                this.client.commands.has(command) &&
+                (!this.client.commands.get(command).options.ownerOwnly ||
+                    message.author.id === this.client.config.owner)
+            ) {
                 message.channel.send(generateHelp(this.client.commands.get(command), prefix));
             }
         }
