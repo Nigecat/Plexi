@@ -1,6 +1,6 @@
 import { Plexi } from "../Plexi";
 import { Message } from "discord.js";
-import { generateHelp } from "../utils/misc";
+import { generateRegExp, generateHelp } from "../utils/misc";
 
 /** Main handler for incoming commands */
 export default async function (client: Plexi, [message]: [Message]): Promise<void> {
@@ -11,7 +11,8 @@ export default async function (client: Plexi, [message]: [Message]): Promise<voi
     cleanUp(message);
 
     // Figure out what prefix we are using for this server
-    const prefix = await client.prefixes.get(message.guild ? message.guild.id : "");
+    const prefixRaw = message.guild ? (await client.database.getGuild(message.guild.id)).prefix : client.config.prefix;
+    const prefix = generateRegExp(prefixRaw, client.config.prefix);
 
     // If this message matches the prefix
     if (message.content.match(prefix)) {
@@ -39,10 +40,7 @@ export default async function (client: Plexi, [message]: [Message]): Promise<voi
                 command.run(message, formattedArgs);
             } else {
                 // Otherwise it's an invalid syntax warning so we send the help page
-                const prefix = await client.prefixes.get(message.guild ? message.guild.id : "", true);
-
-                // If it is not valid we just send the help page
-                message.channel.send(generateHelp(command, prefix));
+                message.channel.send(generateHelp(command, prefixRaw));
             }
         } else {
             message.channel.send(invalidRunReason);

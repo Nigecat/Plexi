@@ -21,7 +21,6 @@ const client = new Plexi({
     plexi: {
         supportServer: "https://discord.gg/ZbaXJDF",
         owner: "307429254017056769",
-        databasePath: "./data/data.sqlite",
         prefix: "$",
         version: version,
     },

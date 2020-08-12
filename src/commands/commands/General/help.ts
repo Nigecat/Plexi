@@ -14,7 +14,9 @@ export default class Help extends Command {
     }
 
     async run(message: Message, [command]: [string]): Promise<void> {
-        const prefix = await this.client.prefixes.get(message.guild ? message.guild.id : "", true);
+        const prefix = message.guild
+            ? (await this.client.database.getGuild(message.guild.id)).prefix
+            : this.client.config.prefix;
 
         // If it is a specific help command
         if (command !== "SHOW_ALL") {
