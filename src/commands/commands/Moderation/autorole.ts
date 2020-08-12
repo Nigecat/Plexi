@@ -47,7 +47,7 @@ export default class Autorole extends Command {
             // If we have a higher role than the autorole
             if (message.guild.me.roles.highest.position > role.position) {
                 await this.client.database.updateGuild(message.guild.id, "autorole", role.id);
-                message.channel.send(`Autorole set to: ${role}`);
+                message.channel.send(`Autorole set to: ${role}`, { disableMentions: "everyone" });
             } else {
                 message.channel.send("You can't assign a role higher than my highest role!", {
                     disableMentions: "everyone",
