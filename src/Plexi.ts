@@ -1,4 +1,5 @@
 import events from "./events";
+import plugins from "./plugins";
 import loadCommands from "./commands";
 import { Command } from "./commands/Command";
 import DatabaseManager from "./managers/DatabaseManager";
@@ -47,6 +48,9 @@ export class Plexi extends Client {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             this.on(event as any, (...data) => events[event](this, data));
         });
+
+        // Load our plugs
+        plugins.forEach((plugin) => plugin(this));
     }
 }
 

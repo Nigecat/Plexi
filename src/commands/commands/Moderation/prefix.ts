@@ -26,7 +26,9 @@ export default class Prefix extends Command {
 
     async run(message: Message, [prefix]: [string]): Promise<void> {
         if (prefix === "DISPLAY_DEFAULT") {
-            prefix = (await this.client.database.getGuild(message.guild.id)).prefix;
+            prefix = this.client.database
+                ? (await this.client.database.getGuild(message.guild.id)).prefix
+                : this.client.config.prefix;
             message.channel.send(`The current prefix for this server is: \`${prefix}\``);
         } else {
             await this.client.database.updateGuild(message.guild.id, "prefix", prefix);

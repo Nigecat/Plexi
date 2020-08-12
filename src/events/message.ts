@@ -7,11 +7,11 @@ export default async function (client: Plexi, [message]: [Message]): Promise<voi
     // Ignore bot messages
     if (message.author.bot) return;
 
-    someone(message);
-    cleanUp(message);
-
     // Figure out what prefix we are using for this server
-    const prefixRaw = message.guild ? (await client.database.getGuild(message.guild.id)).prefix : client.config.prefix;
+    const prefixRaw =
+        message.guild && client.database
+            ? (await client.database.getGuild(message.guild.id)).prefix
+            : client.config.prefix;
     const prefix = generateRegExp(prefixRaw, client.config.prefix);
 
     // If this message matches the prefix
@@ -45,34 +45,5 @@ export default async function (client: Plexi, [message]: [Message]): Promise<voi
         } else {
             message.channel.send(invalidRunReason);
         }
-    }
-}
-
-/**
- * @ someone feature replication see https://youtu.be/BeG5FqTpl9U
- * Requires a role called 'someone' to exist and be pinged
- */
-async function someone(message: Message): Promise<void> {
-    if (message.mentions.roles.size > 0 && message.mentions.roles.some((role) => role.name === "someone")) {
-        const role = message.guild.roles.cache.find((role) => role.name === "someone");
-        if (role) {
-            const member = await message.guild.members.cache.random().roles.add(role);
-            const ping = await message.channel.send(role, {
-                allowedMentions: { roles: [role.id] },
-                disableMentions: "everyone",
-            });
-            await ping.delete();
-            await member.roles.remove(role);
-        }
-    }
-}
-
-/** Custom code for 264163117078937601 (Pinpointpotato#9418) AKA the ideas man */
-function cleanUp(message: Message): void {
-    if (
-        message.author.id === "264163117078937601" &&
-        message.content.toLowerCase().includes("you know why they call me the ideas man")
-    ) {
-        message.channel.send("cuz i CLEEEEEEAaaan up");
     }
 }

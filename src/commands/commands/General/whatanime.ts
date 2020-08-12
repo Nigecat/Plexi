@@ -47,9 +47,10 @@ export default class WhatAnime extends Command {
                 result.edit("I could not find anything close to that...");
             }
         } else {
-            const prefix = message.guild
-                ? (await this.client.database.getGuild(message.guild.id)).autorole
-                : this.client.config.prefix;
+            const prefix =
+                message.guild && this.client.database
+                    ? (await this.client.database.getGuild(message.guild.id)).autorole
+                    : this.client.config.prefix;
             message.channel.send(generateHelp(this, prefix));
         }
     }
