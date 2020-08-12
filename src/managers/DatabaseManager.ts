@@ -70,7 +70,8 @@ export default class DatabaseManager extends EventEmitter {
      * @param {string} value - The new value of this key
      * @returns {Guild} The updated guild
      */
-    async updateGuild(id: Snowflake, key: string, value: string): Promise<Guild> {
+    // eslint-disable-next-line
+    async updateGuild(id: Snowflake, key: string, value: any): Promise<Guild> {
         const guild = await this.getGuild(id);
         this.client.emit("debug", `Updating guild: ${id} (${key}:${guild[key]} -> ${key}:${value})`);
         guild[key] = value;
@@ -105,10 +106,11 @@ export default class DatabaseManager extends EventEmitter {
      * Update a user in the database, if it does not exist it will be created
      * @param {Snowflake} id - The id of the user to update
      * @param {string} key - The key to update
-     * @param {string} value - The new value of this key
+     * @param {any} value - The new value of this key
      * @returns {User} The updated user
      */
-    async updateUser(id: Snowflake, key: string, value: string): Promise<User> {
+    // eslint-disable-next-line
+    async updateUser(id: Snowflake, key: string, value: any): Promise<User> {
         const user = await this.getUser(id);
         this.client.emit("debug", `Updating user: ${id} (${key}:${user[key]} -> ${key}:${value})`);
         user[key] = value;
