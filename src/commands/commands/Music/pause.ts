@@ -2,15 +2,12 @@ import { Message } from "discord.js";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
 
-export default class Leave extends Command {
+export default class Pause extends Command {
     constructor(client: Plexi) {
         super(client, {
-            name: "leave",
+            name: "pause",
+            description: "Pause the currently playing song",
             group: "Music",
-            guildOnly: true,
-            aliases: ["disconnect"],
-            description: "Make the bot leave it's current voice channel (you must be in the channel with it)",
-            userPermissions: ["MOVE_MEMBERS", "SPEAK"],
         });
     }
 
@@ -20,7 +17,8 @@ export default class Leave extends Command {
             message.member.voice.channel &&
             message.guild.me.voice.channel.id === message.member.voice.channel.id
         ) {
-            message.guild.me.voice.channel.leave();
+            message.react(["👍", "👌"][Math.floor(Math.random() * 2)]);
+            message.guild.me.voice.connection.dispatcher.pause();
         } else {
             message.channel.send("You aren't in a voice channel with me!");
         }
