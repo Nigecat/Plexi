@@ -34,6 +34,7 @@ export default class Autorole extends Command {
             if (current) {
                 message.channel.send(
                     `This server's autorole is currently: ${await message.guild.roles.fetch(current)}`,
+                    { disableMentions: "everyone" },
                 );
             } else {
                 message.channel.send("This server does not currently have an autorole!");
@@ -48,7 +49,9 @@ export default class Autorole extends Command {
                 await this.client.database.updateGuild(message.guild.id, "autorole", role.id);
                 message.channel.send(`Autorole set to: ${role}`);
             } else {
-                message.channel.send("You can't assign a role higher than my highest role!");
+                message.channel.send("You can't assign a role higher than my highest role!", {
+                    disableMentions: "everyone",
+                });
             }
         }
     }
