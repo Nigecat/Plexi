@@ -1,6 +1,9 @@
+import { Plexi } from "../Plexi";
+import { Message } from "discord.js";
+import { generateRegExp, generateHelp } from "../utils/misc";
+
 /** Main handler for incoming commands */
-export default async function (): Promise<void> {
-    /*
+export default async function (client: Plexi, [message]: [Message]): Promise<void> {
     // Ignore bot messages
     if (message.author.bot) return;
 
@@ -8,7 +11,8 @@ export default async function (): Promise<void> {
     cleanUp(message);
 
     // Figure out what prefix we are using for this server
-    const prefix = await client.prefixes.get(message.guild ? message.guild.id : "");
+    const prefixRaw = message.guild ? (await client.database.getGuild(message.guild.id)).prefix : client.config.prefix;
+    const prefix = generateRegExp(prefixRaw, client.config.prefix);
 
     // If this message matches the prefix
     if (message.content.match(prefix)) {
@@ -36,23 +40,18 @@ export default async function (): Promise<void> {
                 command.run(message, formattedArgs);
             } else {
                 // Otherwise it's an invalid syntax warning so we send the help page
-                const prefix = await client.prefixes.get(message.guild ? message.guild.id : "", true);
-
-                // If it is not valid we just send the help page
-                message.channel.send(generateHelp(command, prefix));
+                message.channel.send(generateHelp(command, prefixRaw));
             }
         } else {
             message.channel.send(invalidRunReason);
         }
     }
-    */
 }
 
 /**
  * @ someone feature replication see https://youtu.be/BeG5FqTpl9U
  * Requires a role called 'someone' to exist and be pinged
  */
-/*
 async function someone(message: Message): Promise<void> {
     if (message.mentions.roles.size > 0 && message.mentions.roles.some((role) => role.name === "someone")) {
         const role = message.guild.roles.cache.find((role) => role.name === "someone");
@@ -67,10 +66,8 @@ async function someone(message: Message): Promise<void> {
         }
     }
 }
-*/
 
 /** Custom code for 264163117078937601 (Pinpointpotato#9418) AKA the ideas man */
-/*
 function cleanUp(message: Message): void {
     if (
         message.author.id === "264163117078937601" &&
@@ -79,4 +76,3 @@ function cleanUp(message: Message): void {
         message.channel.send("cuz i CLEEEEEEAaaan up");
     }
 }
-*/

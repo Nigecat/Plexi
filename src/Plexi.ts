@@ -1,8 +1,6 @@
-// TODO: Re-enable
-// import events from "./events";
-// import loadCommands from "./commands";
+import events from "./events";
+import loadCommands from "./commands";
 import { Command } from "./commands/Command";
-import { generateRegExp } from "./utils/misc";
 import DatabaseManager from "./managers/DatabaseManager";
 import { Client, ClientOptions, Collection } from "discord.js";
 
@@ -19,10 +17,6 @@ export class Plexi extends Client {
      */
     public database: DatabaseManager;
 
-    /** This is the default prefix used for responding to messages,
-     *  it is dynamically generated based on the config and the client id. */
-    public defaultPrefix: RegExp;
-
     /** The commands this client has access to, mapped by their name */
     public commands: Collection<string, Command>;
 
@@ -38,10 +32,7 @@ export class Plexi extends Client {
 
     /** Init the bot, this runs after we have connected to the gateway */
     async init(): Promise<void> {
-        // Generate the regex for the supplied prefix
-        this.defaultPrefix = generateRegExp(this.config.prefix, this.user.id);
-
-        // Do database setup if we got a path
+        // Do database setup if we got a uri
         if (process.env.DATABASE_URI) {
             // Connect to the database
             this.database = new DatabaseManager(this, process.env.DATABASE_URI);
@@ -49,13 +40,13 @@ export class Plexi extends Client {
         }
 
         // Load our commands
-        // this.commands = await loadCommands(this);
+        this.commands = await loadCommands(this);
 
         // Register our event handlers
-        // Object.keys(events).forEach((event) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // this.on(event as any, (...data) => events[event](this, data));
-        // });
+        Object.keys(events).forEach((event) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            this.on(event as any, (...data) => events[event](this, data));
+        });
     }
 }
 
