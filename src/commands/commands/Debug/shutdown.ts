@@ -45,7 +45,7 @@ export default class Shutdown extends Command {
             // Shutdown
             message.channel.send("Initiating shutdown...");
             this.client.destroy();
-            await this.client.database.disconnect();
+            if (this.client.database) await this.client.database.disconnect();
             process.exit(0);
         }
     }
