@@ -22,11 +22,14 @@ export default class Give extends Command {
     }
 
     async run(message: Message, [user, coins]: [User, number]): Promise<void> {
-        const destination = await this.client.database.getUser(user.id);
         const origin = await this.client.database.getUser(message.author.id);
 
-        // If they have enough coins to do this
-        if (origin.coins - coins > 0) {
+        // If we are trying to give coins to ourself
+        if (message.author.id === user.id) {
+            message.channel.send("You can't give coins to yourself!");
+        } else if (coins > 0 && origin.coins - coins > 0) {
+            // If they have enough coins to do this
+            const destination = await this.client.database.getUser(user.id);
             await this.client.database.updateUser(user.id, "coins", destination.coins + coins);
             await this.client.database.updateUser(message.author.id, "coins", origin.coins - coins);
             message.channel.send(`${coins} coins transfered from ${message.author} -> ${user}`, {
