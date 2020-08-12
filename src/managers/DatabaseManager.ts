@@ -4,8 +4,8 @@ import { Snowflake } from "discord.js";
 import mongoose, { Schema, Document } from "mongoose";
 
 export default class DatabaseManager extends EventEmitter {
-    private Guild: GuildModel;
-    private User: UserModel;
+    private Guild: mongoose.Model<mongoose.Document, Record<string, Schema<Guild>>>;
+    private User: mongoose.Model<mongoose.Document, Record<string, Schema<User>>>;
 
     /**
      * Create a database manager
@@ -137,6 +137,3 @@ export interface User extends Document {
     xp: number;
     coins: number;
 }
-
-export type GuildModel = mongoose.Model<mongoose.Document, Record<string, Schema<Guild>>>;
-export type UserModel = mongoose.Model<mongoose.Document, Record<string, Schema<User>>>;
