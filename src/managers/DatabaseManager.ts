@@ -5,7 +5,6 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export default class DatabaseManager extends EventEmitter {
     private Guild: GuildModel;
-
     private User: UserModel;
 
     /**
@@ -38,6 +37,10 @@ export default class DatabaseManager extends EventEmitter {
     /** Connect to the database */
     async init(): Promise<void> {
         await mongoose.connect(this.uri, { useNewUrlParser: true, useUnifiedTopology: true });
+        this.client.emit(
+            "debug",
+            `Connecting to database at ${this.uri.split("://")[0]}://${"*".repeat(this.uri.split("://")[1].length)}`,
+        );
     }
 
     /**
@@ -46,6 +49,7 @@ export default class DatabaseManager extends EventEmitter {
      * @returns {Guild} The guild
      */
     async getGuild(id: Snowflake): Promise<Guild> {
+        this.client.emit("debug", `Getting guild: ${id}`);
         const res = await this.Guild.find({ id });
         if (res.length > 0) {
             return res[0] as Guild;
@@ -63,6 +67,7 @@ export default class DatabaseManager extends EventEmitter {
      */
     async updateGuild(id: Snowflake, key: string, value: string): Promise<Guild> {
         const guild = await this.getGuild(id);
+        this.client.emit("debug", `Updating guild: ${id} (${key}.${guild[key]} -> ${key}.${value})`);
         guild[key] = value;
         return guild.save();
     }
@@ -73,6 +78,7 @@ export default class DatabaseManager extends EventEmitter {
      * @returns {boolean} The status of the delete
      */
     async deleteGuild(id: Snowflake): Promise<boolean> {
+        this.client.emit("debug", `Deleting guild: ${id}`);
         return !!+(await this.Guild.deleteOne({ id })).ok;
     }
 
@@ -82,6 +88,7 @@ export default class DatabaseManager extends EventEmitter {
      * @returns {User} The user
      */
     async getUser(id: Snowflake): Promise<User> {
+        this.client.emit("debug", `Getting user: ${id}`);
         const res = await this.User.find({ id });
         if (res.length > 0) {
             return res[0] as User;
@@ -99,6 +106,7 @@ export default class DatabaseManager extends EventEmitter {
      */
     async updateUser(id: Snowflake, key: string, value: string): Promise<User> {
         const user = await this.getUser(id);
+        this.client.emit("debug", `Updating user: ${id} (${key}.${user[key]} -> ${key}.${value})`);
         user[key] = value;
         return user.save();
     }
@@ -109,6 +117,7 @@ export default class DatabaseManager extends EventEmitter {
      * @returns {boolean} The status of the delete
      */
     async deleteUser(id: Snowflake): Promise<boolean> {
+        this.client.emit("debug", `Deleting user: ${id}`);
         return !!+(await this.User.deleteOne({ id })).ok;
     }
 }
