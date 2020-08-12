@@ -41,7 +41,7 @@ export default class Autorole extends Command {
             }
         } else if (current && role.id === current) {
             // If it is the same one then remove it
-            // this.client.autoroles.del(message.guild.id);
+            this.client.database.updateGuild(message.guild.id, "autorole", null);
             message.channel.send("Autorole cleared!");
         } else {
             // If we have a higher role than the autorole
