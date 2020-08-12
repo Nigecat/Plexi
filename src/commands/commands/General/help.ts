@@ -22,14 +22,25 @@ export default class Help extends Command {
         // If it is a specific help command
         if (command !== "SHOW_ALL") {
             // Only show the help if we have the command and it is not owner only
-            if (this.client.commands.has(command) && !this.client.commands.get(command).options.ownerOwnly) {
+            if (
+                this.client.commands.has(command) &&
+                (!this.client.commands.get(command).options.ownerOwnly ||
+                    message.author.id === this.client.config.owner)
+            ) {
                 message.channel.send(generateHelp(this.client.commands.get(command), prefix));
             }
         }
 
         // Otherwise it is a general help command
         else {
-            const groups = [...new Set(this.client.commands.array().map((command) => command.options.group))];
+            // Remove any hidden commands and duplicate commands (since aliases register under the same command name)
+            const commands = this.client.commands
+                .filter((command) => !command.options.hidden)
+                .array()
+                .filter((command, index, found) => found.findIndex((cmd) => cmd.name === command.name) === index);
+
+            // Figure out our command groups
+            const groups = [...new Set(commands.map((command) => command.options.group))];
 
             const embed = new MessageEmbed({
                 color: "RANDOM",
@@ -39,7 +50,7 @@ export default class Help extends Command {
                 fields: groups.map((group) => {
                     return {
                         name: group,
-                        value: this.client.commands
+                        value: commands
                             .filter((command) => command.options.group === group)
                             .map((command) => `\`${command.name}\``)
                             .join(", "),
