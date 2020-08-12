@@ -75,7 +75,7 @@ export default class DatabaseManager extends EventEmitter {
         const guild = await this.getGuild(id);
         this.client.emit("debug", `Updating guild: ${id} (${key}:${guild[key]} -> ${key}:${value})`);
         guild[key] = value;
-        return guild.save();
+        return (guild.save() as unknown) as Guild;
     }
 
     /**
@@ -114,7 +114,7 @@ export default class DatabaseManager extends EventEmitter {
         const user = await this.getUser(id);
         this.client.emit("debug", `Updating user: ${id} (${key}:${user[key]} -> ${key}:${value})`);
         user[key] = value;
-        return user.save();
+        return (user.save() as unknown) as User;
     }
 
     /**
@@ -128,14 +128,16 @@ export default class DatabaseManager extends EventEmitter {
     }
 }
 
-export interface Guild extends Document {
+export interface Guild extends Omit<Document, "save"> {
     id: string;
     autorole: string;
     prefix: string;
+    save: Document["save"];
 }
 
-export interface User extends Document {
+export interface User extends Omit<Document, "save"> {
     id: string;
     xp: number;
     coins: number;
+    save: Document["save"];
 }
