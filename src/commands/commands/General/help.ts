@@ -1,6 +1,7 @@
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
 import { Message, MessageEmbed } from "discord.js";
+import { generateHelp } from "../../../utils/misc";
 
 export default class Help extends Command {
     constructor(client: Plexi) {
@@ -13,15 +14,15 @@ export default class Help extends Command {
     }
 
     async run(message: Message, [command]: [string]): Promise<void> {
-        // TODO: Re-enable
-        // const prefix = await this.client.prefixes.get(message.guild ? message.guild.id : "", true);
+        const prefix = message.guild
+            ? (await this.client.database.getGuild(message.guild.id)).prefix
+            : this.client.config.prefix;
 
         // If it is a specific help command
         if (command !== "SHOW_ALL") {
             // Only show the help if we have the command and it is not owner only
             if (this.client.commands.has(command) && !this.client.commands.get(command).options.ownerOwnly) {
-                // TODO: Re-enable
-                // message.channel.send(generateHelp(this.client.commands.get(command), prefix));
+                message.channel.send(generateHelp(this.client.commands.get(command), prefix));
             }
         }
 
@@ -32,9 +33,8 @@ export default class Help extends Command {
             const embed = new MessageEmbed({
                 color: "RANDOM",
                 title: "Plexi Help",
-                // TODO: Re-enable
-                // description: `Run ${prefix}help <command> for more details on a command`,
-                // footer: { text: `This server's prefix is: ${prefix}`, iconURL: this.client.user.avatarURL() },
+                description: `Run ${prefix}help <command> for more details on a command`,
+                footer: { text: `This server's prefix is: ${prefix}`, iconURL: this.client.user.avatarURL() },
                 fields: groups.map((group) => {
                     return {
                         name: group,

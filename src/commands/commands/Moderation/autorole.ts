@@ -1,6 +1,7 @@
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
 import { stripIndents } from "common-tags";
+import { Message, Role } from "discord.js";
 
 export default class Autorole extends Command {
     constructor(client: Plexi) {
@@ -8,6 +9,7 @@ export default class Autorole extends Command {
             name: "autorole",
             group: "Moderation",
             userPermissions: ["ADMINISTRATOR"],
+            guildOnly: true,
             description: "Set or view an autorole for this server",
             details: stripIndents`
                 Set an autorole for this server, this role will be automatically applied to any new members. 
@@ -24,31 +26,30 @@ export default class Autorole extends Command {
         });
     }
 
-    async run(): Promise<void> {
-        // TODO: Re-enable
-        /*
-        const current = await this.client.autoroles.get(message.guild.id);
+    async run(message: Message, [role]: [Role]): Promise<void> {
+        const current = (await this.client.database.getGuild(message.guild.id)).autorole;
 
         // If we just want to check what the current autorole is
         if (((role as unknown) as string) === "DISPLAY_CURRENT") {
             if (current) {
-                message.channel.send(`This server's autorole is currently: ${current}`);
+                message.channel.send(
+                    `This server's autorole is currently: ${await message.guild.roles.fetch(current)}`,
+                );
             } else {
                 message.channel.send("This server does not currently have an autorole!");
             }
-        } else if (current && role.id === current.id) {
+        } else if (current && role.id === current) {
             // If it is the same one then remove it
             // this.client.autoroles.del(message.guild.id);
             message.channel.send("Autorole cleared!");
         } else {
             // If we have a higher role than the autorole
             if (message.guild.me.roles.highest.position > role.position) {
-                await this.client.autoroles.set(message.guild.id, role.id);
+                await this.client.database.updateGuild(message.guild.id, "autorole", role.id);
                 message.channel.send(`Autorole set to: ${role}`);
             } else {
                 message.channel.send("You can't assign a role higher than my highest role!");
             }
         }
-        */
     }
 }

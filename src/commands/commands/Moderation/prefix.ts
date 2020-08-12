@@ -26,13 +26,11 @@ export default class Prefix extends Command {
 
     async run(message: Message, [prefix]: [string]): Promise<void> {
         if (prefix === "DISPLAY_DEFAULT") {
-            // TODO: Re-enable
-            // prefix = await this.client.prefixes.get(message.guild.id, true);
-            // message.channel.send(`The current prefix for this server is: \`${prefix}\``);
+            prefix = (await this.client.database.getGuild(message.guild.id)).prefix;
+            message.channel.send(`The current prefix for this server is: \`${prefix}\``);
         } else {
-            // TODO: Re-enable
-            // this.client.prefixes.set(message.guild.id, prefix);
-            // message.channel.send(`This server's prefix is now: \`${prefix}\``);
+            await this.client.database.updateGuild(message.guild.id, "prefix", prefix);
+            message.channel.send(`This server's prefix is now: \`${prefix}\``);
         }
     }
 }

@@ -14,9 +14,7 @@ export default class Shutdown extends Command {
 
     async run(): Promise<void> {
         this.client.destroy();
-        // TODO: Re-enable
-        // await this.client.prefixes.destroy();
-        // await this.client.autoroles.destroy();
+        await this.client.database.disconnect();
         process.exit(0);
     }
 }

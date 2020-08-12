@@ -43,13 +43,18 @@ export default class DatabaseManager extends EventEmitter {
         );
     }
 
+    /** Disconnect from the database */
+    async disconnect(): Promise<void> {
+        this.client.emit("debug", "Disconnecting from database");
+        await mongoose.disconnect();
+    }
+
     /**
      * Get a guild from the database, if it does not exist it will be created
      * @param {Snowflake} id - The id of the guild to get
      * @returns {Guild} The guild
      */
     async getGuild(id: Snowflake): Promise<Guild> {
-        this.client.emit("debug", `Getting guild: ${id}`);
         const res = await this.Guild.find({ id });
         if (res.length > 0) {
             return res[0] as Guild;
@@ -67,7 +72,7 @@ export default class DatabaseManager extends EventEmitter {
      */
     async updateGuild(id: Snowflake, key: string, value: string): Promise<Guild> {
         const guild = await this.getGuild(id);
-        this.client.emit("debug", `Updating guild: ${id} (${key}.${guild[key]} -> ${key}.${value})`);
+        this.client.emit("debug", `Updating guild: ${id} (${key}:${guild[key]} -> ${key}:${value})`);
         guild[key] = value;
         return guild.save();
     }
@@ -88,7 +93,6 @@ export default class DatabaseManager extends EventEmitter {
      * @returns {User} The user
      */
     async getUser(id: Snowflake): Promise<User> {
-        this.client.emit("debug", `Getting user: ${id}`);
         const res = await this.User.find({ id });
         if (res.length > 0) {
             return res[0] as User;
@@ -106,7 +110,7 @@ export default class DatabaseManager extends EventEmitter {
      */
     async updateUser(id: Snowflake, key: string, value: string): Promise<User> {
         const user = await this.getUser(id);
-        this.client.emit("debug", `Updating user: ${id} (${key}.${user[key]} -> ${key}.${value})`);
+        this.client.emit("debug", `Updating user: ${id} (${key}:${user[key]} -> ${key}:${value})`);
         user[key] = value;
         return user.save();
     }
