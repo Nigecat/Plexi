@@ -8,6 +8,7 @@ export default class Leave extends Command {
             name: "leave",
             group: "Music",
             guildOnly: true,
+            aliases: ["disconnect"],
             description: "Make the bot leave it's current voice channel (you must be in the channel with it)",
             userPermissions: ["MOVE_MEMBERS", "SPEAK"],
         });

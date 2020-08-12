@@ -8,6 +8,7 @@ export default class Summon extends Command {
             name: "summon",
             group: "Music",
             guildOnly: true,
+            aliases: ["connect"],
             description: "Summon the bot into your voice channel",
             userPermissions: ["SPEAK"],
             clientPermissions: ["CONNECT"],
