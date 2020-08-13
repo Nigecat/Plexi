@@ -1,6 +1,11 @@
 # Plexi
 
-[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=Nigecat/Plexi&identifier=207711753)](https://dependabot.com) [![CircleCI](https://circleci.com/gh/Nigecat/Plexi.svg?style=svg&circle-token=5401c770dc2a6dad53621bbe9a9371bf47835a26)](<LINK>)
+<div align="center">
+  <p>
+    <a href="https://github.com/Nigecat/Plexi"><img src="https://circleci.com/gh/Nigecat/Plexi.svg?style=svg&circle-token=5401c770dc2a6dad53621bbe9a9371bf47835a26" alt="Build status" /></a>
+    <a href="https://david-dm.org/Nigecat/Plexi"><img src="https://david-dm.org/Nigecat/Plexi/status.svg" alt="Dependencies" /></a>
+  </p>
+</div>
 
 A general purpose discord bot
 
