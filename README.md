@@ -1,6 +1,11 @@
 # Plexi
 
 <div align="center">
+  <br />
+  <p>
+    <a href="https://github.com/Nigecat/Plexi"><img src="https://github.com/Nigecat/Plexi/raw/master/banner.png" width="546" alt="Plexi" /></a>
+  </p>
+  <br />
   <p>
     <a href="https://github.com/Nigecat/Plexi"><img src="https://circleci.com/gh/Nigecat/Plexi.svg?style=svg&circle-token=5401c770dc2a6dad53621bbe9a9371bf47835a26" alt="Build status" /></a>
     <a href="https://david-dm.org/Nigecat/Plexi"><img src="https://david-dm.org/Nigecat/Plexi/status.svg" alt="Dependencies" /></a>
