@@ -1,5 +1,3 @@
-# Plexi
-
 <div align="center">
   <br />
   <p>
