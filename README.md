@@ -36,3 +36,43 @@ DISCORD_TOKEN=xxxxxxxxxxx
 ```
 
 The bot can then be started with `npm start`.
+
+
+## Contributing
+
+In a developement environment it is recommended to change the owner id in [index.ts](index.ts) to your id, this allows you to access the debug commands like shutdown and reload.  
+(NOTE: Reload will refresh all commands but WILL NOT recompile any of them, this must be done manually prior with `npm run build` or using watch mode with `npm run build:watch`)
+
+### Creating a command
+
+Each command is stored in `src/commands/commands/<group>/<commandName>.ts`. The first step is to create a file there.   
+The file name should match the command name and they should both be all lowercase.  
+Each command must default export a class inheriting from the command class defined in [Command.ts](src/commands/Command.ts).  
+The name of the class should be PascalCase. For example, if we had a command called banuser, the class would be named BanUser.  
+It is recommended to look at existing commands to get an idea of what it looks like, here is an example [avatar](src/commands/commands/General/avatar.ts) command:
+```javascript
+import { Plexi } from "../../../Plexi";
+import { Command } from "../../Command";
+import { Message, User, MessageEmbed } from "discord.js";
+
+export default class Avatar extends Command {
+    constructor(client: Plexi) {
+        super(client, {
+            name: "avatar",
+            group: "General",
+            description: "Get a user's avatar",
+            args: [{ name: "user", type: "user" }],
+        });
+    }
+
+    run(message: Message, [user]: [User]): void {
+        const embed = new MessageEmbed({
+            color: "#0099ff",
+            title: user.tag,
+            image: { url: user.avatarURL({ dynamic: true, format: "png", size: 512 }) },
+        });
+        message.channel.send({ embed });
+    }
+}
+```
+The available command options can be seen in the CommandInfo interface exported from [Command.ts](src/commands/Command.ts).
