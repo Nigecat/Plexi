@@ -1,7 +1,7 @@
 <div align="center">
   <br />
   <p>
-    <a href="https://github.com/Nigecat/Plexi"><img src="https://github.com/Nigecat/Plexi/raw/master/banner.png" width="546" alt="Plexi" /></a>
+    <a href="https://github.com/Nigecat/Plexi"><img src="banner.png" width="546" alt="Plexi" /></a>
   </p>
   <br />
   <p>

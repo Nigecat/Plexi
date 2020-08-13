@@ -49,7 +49,7 @@ export class Plexi extends Client {
             this.on(event as any, (...data) => events[event](this, data));
         });
 
-        // Load our plugs
+        // Load our plugins
         plugins.forEach((plugin) => plugin(this));
     }
 }
