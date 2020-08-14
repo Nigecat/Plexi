@@ -1,3 +1,4 @@
+import { extname } from "path";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
 import { Message, MessageEmbed, MessageAttachment } from "discord.js";
@@ -21,12 +22,12 @@ export default class CardInfo extends Command {
     run(message: Message, [cardSearch]: [string]): void {
         if (this.client.cards.has(cardSearch)) {
             const card = this.client.cards.get(cardSearch);
-            const image = new MessageAttachment(card.image, "card.jpg");
+            const image = new MessageAttachment(card.image, `card.${extname(card.image)}`);
             const embed = new MessageEmbed({
                 color: "RANDOM",
                 title: card.name,
                 files: [image],
-                image: { url: "attachment://card.jpg" },
+                image: { url: `attachment://card.${extname(card.image)}` },
                 fields: [
                     {
                         name: "Pack",
