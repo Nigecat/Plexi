@@ -18,7 +18,7 @@ export default class ListenMoe extends Command {
             return;
         }
 
-        await message.react(["👍", "👌"][Math.floor(Math.random() * 2)]);
+        message.react(["👍", "👌"][Math.floor(Math.random() * 2)]);
 
         const connection = await message.member.voice.channel.join();
         this.play(connection);

@@ -3,7 +3,11 @@ import { Plexi } from "../Plexi";
 import guildMemberAdd from "./guildMemberAdd";
 import voiceStateUpdate from "./voiceStateUpdate";
 
-export default <EventHandlers>{ message, guildMemberAdd, voiceStateUpdate };
+export default <EventHandlers>{
+    message,
+    guildMemberAdd,
+    voiceStateUpdate,
+};
 
 export interface EventHandlers {
     [key: string]: EventHandler;
