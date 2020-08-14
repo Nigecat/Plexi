@@ -28,6 +28,8 @@ export default class DatabaseManager extends EventEmitter {
             "User",
             new Schema({
                 id: String,
+                cards: [String],
+                deck: [String],
                 xp: { type: Number, default: 0 },
                 coins: { type: Number, default: 500 },
             }),
@@ -138,6 +140,8 @@ export interface Guild extends Omit<Document, "save"> {
 export interface User extends Omit<Document, "save"> {
     id: string;
     xp: number;
+    cards: string[];
+    deck: string[];
     coins: number;
     save: Document["save"];
 }

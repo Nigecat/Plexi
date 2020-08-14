@@ -2,6 +2,7 @@ import events from "./events";
 import plugins from "./plugins";
 import loadCommands from "./commands";
 import { Command } from "./commands/Command";
+import CardManager from "./managers/CardManager";
 import DatabaseManager from "./managers/DatabaseManager";
 import { Client, ClientOptions, Collection } from "discord.js";
 
@@ -18,6 +19,9 @@ export class Plexi extends Client {
      */
     public database: DatabaseManager;
 
+    /** The available cards to the client */
+    public cards: CardManager;
+
     /** The commands this client has access to, mapped by their name */
     public commands: Collection<string, Command>;
 
@@ -33,6 +37,8 @@ export class Plexi extends Client {
 
     /** Init the bot, this runs after we have connected to the gateway */
     async init(): Promise<void> {
+        this.cards = new CardManager();
+
         // Do database setup if we got a uri
         if (process.env.DATABASE_URI) {
             // Connect to the database
