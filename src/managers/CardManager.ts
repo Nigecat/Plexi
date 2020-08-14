@@ -8,18 +8,7 @@ function calculateValue(rarity: number): number {
     return Math.floor((30 - rarity) ** 1.433);
 }
 
-/** An extension of the discord.js collection that allows us to have case insensitive keys */
-class CaseInsensitiveCollection<T, U> extends Collection<T, U> {
-    set(key: T, value: U): this {
-        if (typeof key === "string") {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            key = <T>(key.toLowerCase() as unknown);
-        }
-        return super.set(key, value);
-    }
-}
-
-export default class CardManager extends CaseInsensitiveCollection<string, Card> {
+export default class CardManager extends Collection<string, Card> {
     constructor() {
         super();
 
@@ -46,6 +35,10 @@ export default class CardManager extends CaseInsensitiveCollection<string, Card>
                 image: resolve(__dirname, "..", "assets", "cards", "images", "Mewtal Gear", `${card.name}.jpg`),
             });
         });
+    }
+
+    set(key: string, value: Card): this {
+        return super.set(key.toLowerCase(), value);
     }
 }
 

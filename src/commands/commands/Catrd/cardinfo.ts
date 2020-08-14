@@ -20,8 +20,8 @@ export default class CardInfo extends Command {
     }
 
     run(message: Message, [cardSearch]: [string]): void {
-        if (this.client.cards.has(cardSearch)) {
-            const card = this.client.cards.get(cardSearch);
+        if (this.client.cards.has(cardSearch.toLowerCase())) {
+            const card = this.client.cards.get(cardSearch.toLowerCase());
             const image = new MessageAttachment(card.image, `card.${extname(card.image)}`);
             const embed = new MessageEmbed({
                 color: "RANDOM",
