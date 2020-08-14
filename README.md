@@ -49,6 +49,7 @@ Each command is stored in `src/commands/commands/<group>/<commandName>.ts`. The 
 The file name should match the command name and they should both be all lowercase.  
 Each command must default export a class inheriting from the command class defined in [Command.ts](src/commands/Command.ts).  
 The name of the class should be PascalCase. For example, if we had a command called banuser, the class would be named BanUser.  
+Any specified arguments are automatically converted to the required type and passed as an array to the run function.  
 It is recommended to look at existing commands to get an idea of what it looks like, here is an example [avatar](src/commands/commands/General/avatar.ts) command:
 ```javascript
 import { Plexi } from "../../../Plexi";
