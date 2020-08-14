@@ -40,6 +40,14 @@ export default class CardManager extends Collection<string, Card> {
     set(key: string, value: Card): this {
         return super.set(key.toLowerCase(), value);
     }
+
+    get(key: string): Card {
+        return super.get(key.toLowerCase());
+    }
+
+    has(key: string): boolean {
+        return super.has(key.toLowerCase());
+    }
 }
 
 /** A card */
