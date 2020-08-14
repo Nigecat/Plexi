@@ -1,0 +1,122 @@
+[
+    {
+        "name": "Shoulder Cat",
+        "type": "Scout",
+        "power": 6,
+        "rarity": 15
+    },
+    {
+        "name": "Mom Cat",
+        "type": "Defense",
+        "power": 2,
+        "rarity": 25
+    },
+    {
+        "name": "Throne Cat",
+        "type": "Scout",
+        "power": 3,
+        "rarity": 25
+    },
+    {
+        "name": "Thug Cat",
+        "type": "Melee",
+        "power": 4,
+        "rarity": 20
+    },
+    {
+        "name": "Hungry Cat",
+        "type": "Melee",
+        "power": 4,
+        "rarity": 10
+    },
+    {
+        "name": "Property Rights Cat",
+        "type": "Defense",
+        "power": 2,
+        "rarity": 25
+    },
+    {
+        "name": "Bipedal Cat",
+        "type": "Melee",
+        "power": 5,
+        "rarity": 15
+    },
+    {
+        "name": "Standard Cat",
+        "type": "Melee",
+        "power": 1,
+        "rarity": 25
+    },
+    {
+        "name": "Void Cat",
+        "type": "Defense",
+        "power": 3,
+        "rarity": 5
+    },
+    {
+        "name": "Expressive Cat",
+        "type": "Melee",
+        "power": 10,
+        "rarity": 5
+    },
+    {
+        "name": "Father Cat",
+        "type": "Scout",
+        "power": 3,
+        "rarity": 25
+    },
+    {
+        "name": "Malfunctioning Cat",
+        "type": "Melee",
+        "power": 2,
+        "rarity": 10
+    },
+    {
+        "name": "Fat Cat",
+        "type": "Melee",
+        "power": 10,
+        "rarity": 0
+    },
+    {
+        "name": "Compact Cat",
+        "type": "Defense",
+        "power": 4,
+        "rarity": 15
+    },
+    {
+        "name": "Home Depot Cat",
+        "type": "Melee",
+        "power": 2,
+        "rarity": 10
+    },
+    {
+        "name": "Decoy Cat",
+        "type": "Melee",
+        "power": 3,
+        "rarity": 20
+    },
+    {
+        "name": "Renaissance Cat",
+        "type": "Melee",
+        "power": 5,
+        "rarity": 15
+    },
+    {
+        "name": "Mountain Cat",
+        "type": "Scout",
+        "power": 6,
+        "rarity": 15
+    },
+    {
+        "name": "Banshee Cat",
+        "type": "Melee",
+        "power": 7,
+        "rarity": 10
+    },
+    {
+        "name": "Gun Cat",
+        "type": "Scout",
+        "power": 0,
+        "rarity": 0
+    }
+]
