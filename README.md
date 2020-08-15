@@ -7,6 +7,7 @@
   <p>
     <a href="https://github.com/Nigecat/Plexi"><img src="https://circleci.com/gh/Nigecat/Plexi.svg?style=svg&circle-token=5401c770dc2a6dad53621bbe9a9371bf47835a26" alt="Build status" /></a>
     <a href="https://david-dm.org/Nigecat/Plexi"><img src="https://david-dm.org/Nigecat/Plexi/status.svg" alt="Dependencies" /></a>
+    <a href="https://discord.gg/ZbaXJDF"><img src="https://img.shields.io/discord/621181741972979722.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2" alt="Discord" /></a>
   </p>
 </div>
 
