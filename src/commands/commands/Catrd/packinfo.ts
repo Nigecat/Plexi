@@ -47,7 +47,7 @@ export default class PackInfo extends Command {
             // If we found any cards
             if (cards.length > 0) {
                 const embed = new MessageEmbed({
-                    title: `Pack: ${cards[0].pack}`,
+                    title: `Pack: ${cards[0].pack} (${packData[cards[0].pack].cost} coins)`,
                     color: "RANDOM",
                     fields: [
                         {
