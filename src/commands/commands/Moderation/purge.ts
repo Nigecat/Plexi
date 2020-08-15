@@ -1,7 +1,6 @@
-import { oneLine } from "common-tags";
+import { Message } from "discord.js";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
-import { Message, MessageReaction } from "discord.js";
 
 export default class Purge extends Command {
     constructor(client: Plexi) {
@@ -22,31 +21,6 @@ export default class Purge extends Command {
     }
 
     async run(message: Message, [limit]: [number]): Promise<void> {
-        const confirm = await message.channel.send(oneLine`
-            This action will delete the last ${limit} messages.
-            Are you sure you want to continue?
-        `);
-
-        confirm.react("🇾");
-        confirm.react("🇳");
-
-        const collected = await confirm.awaitReactions(
-            (reaction: MessageReaction) =>
-                ["🇾", "🇳"].includes(reaction.emoji.name) &&
-                reaction.users.cache.some((user) => user.id === message.author.id),
-            { time: 10000, max: 1 },
-        );
-
-        if (collected.first()) {
-            if (collected.first().emoji.name === "🇾") {
-                await message.channel.bulkDelete(limit);
-            } else {
-                await confirm.reactions.removeAll();
-                await confirm.edit("Operation cancelled");
-            }
-        } else {
-            await confirm.reactions.removeAll();
-            await confirm.edit("Operation cancelled (you took too long to react)");
-        }
+        await message.channel.bulkDelete(limit);
     }
 }
