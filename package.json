@@ -10,13 +10,16 @@
     "scripts": {
         "lint": "eslint . --ext .ts --max-warnings 0",
         "lint:fix": "eslint . --ext .ts --fix",
-        "clean": "tsc --build --clean",
+
         "build": "tsc",
         "build:watch": "tsc --watch",
+        "build:clean": "tsc --build --clean",
+        
         "start": "npm run build && node index.js",
         "start:nobuild": "node index.js",
-        "tests": "npm run build && mocha -r ts-node/register tests/**/*.test.ts",
-        "test": "npm run build && mocha -r ts-node/register tests/**/*.test.ts && npm run lint"
+
+        "tests": "npm run build:clean && mocha -r ts-node/register tests/**/*.test.ts",
+        "test": "npm run build && npm run tests && npm run lint"
     },
     "devDependencies": {
         "@types/chai": "^4.2.12",
