@@ -141,7 +141,10 @@ export class Command {
             if (arg === this.options.args[i].default) return arg;
 
             // If we have the 'oneOf' property set then check if the argument we are receiving is not in it
-            if (this.options.args[i].oneOf && !this.options.args[i].oneOf.includes(arg.toLowerCase())) {
+            if (
+                this.options.args[i].oneOf &&
+                !this.options.args[i].oneOf.map((el) => el.toLowerCase()).includes(arg.toLowerCase())
+            ) {
                 isValid = false;
             }
 
