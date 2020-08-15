@@ -77,3 +77,7 @@ export default class Avatar extends Command {
 }
 ```
 The available command options can be seen in the CommandInfo interface exported from [Command.ts](src/commands/Command.ts).
+
+### What if the thing I want to add would involve touching multiple files or the main client?
+You might want to create a plugin. They are stored in the [plugins](src/plugins/) directory, each one default exports a function that gets called with the client object after the bot finishes initializing.  
+They can then do their own thing like registering additional on message event handlers.
