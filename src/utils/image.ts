@@ -1,4 +1,3 @@
-import { file } from "tmp-promise";
 import { read as jimpRead } from "jimp";
 
 /**
@@ -30,7 +29,7 @@ export async function manipulateImage(
     const ext = "." + url.split(".").pop().split(/#|\?/)[0];
 
     // Create a temporary file with the matching extension so discord knows what to do with it when we upload the file
-    const { path } = await file({ postfix: ext });
+    const { path } = "todo";
 
     (await jimpRead(url)).pixelate(pixelate).posterize(posterize).contrast(contrast).write(path);
 
