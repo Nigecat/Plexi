@@ -31,6 +31,7 @@ export default class MyCards extends Command {
                     {
                         name: "\u200b",
                         value: "\u200b",
+                        inline: true,
                     },
                     {
                         name: "Deck",
