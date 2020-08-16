@@ -10,14 +10,11 @@
     "scripts": {
         "lint": "eslint . --ext .ts --max-warnings 0",
         "lint:fix": "eslint . --ext .ts --fix",
-
         "build": "tsc",
         "build:watch": "tsc --watch",
         "build:clean": "tsc --build --clean",
-        
         "start": "npm run build && node index.js",
         "start:nobuild": "node index.js",
-
         "tests": "npm run build:clean && mocha -r ts-node/register tests/**/*.test.ts",
         "test": "npm run build && npm run tests && npm run lint"
     },
@@ -47,7 +44,6 @@
         "jimp": "^0.16.0",
         "mongoose": "^5.9.29",
         "popyt": "^4.1.1",
-        "tmp-promise": "^3.0.2",
         "typescript": "^3.9.7",
         "weather-js": "^2.0.0",
         "winston": "^3.3.3",
