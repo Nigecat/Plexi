@@ -12,8 +12,6 @@ export default class Invite extends Command {
     }
 
     run(message: Message): void {
-        message.channel.send(`
-            https://discord.com/oauth2/authorize?client_id=${this.client.user.id}&scope=bot&permissions=1043721343
-        `);
+        message.channel.send(this.client.config.invite);
     }
 }

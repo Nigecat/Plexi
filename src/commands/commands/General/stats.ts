@@ -25,7 +25,7 @@ export default class Stats extends Command {
                 {
                     name: "Useful Links",
                     // eslint-disable-next-line prettier/prettier
-                    value: `[Invite Me](https://discordapp.com/oauth2/authorize?client_id=${this.client.user.id}&permissions=8&scope=bot)${this.client.config.supportServer ? ` | [Support Server](${this.client.config.supportServer})` : ""}`,
+                    value: `[Invite Me](${this.client.config.invite}) | [Support Server](${this.client.config.supportServer})`,
                 },
             ],
             footer: { text: this.client.config.version ? "v" + this.client.config.version : "" },
