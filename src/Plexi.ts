@@ -80,4 +80,6 @@ export interface PlexiOptions {
     prefix: string;
     /** The current version of the bot */
     version?: string;
+    /** An invite link for the bot */
+    invite?: string;
 }

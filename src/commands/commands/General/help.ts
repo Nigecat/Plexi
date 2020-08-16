@@ -46,16 +46,26 @@ export default class Help extends Command {
                 color: "RANDOM",
                 title: "Plexi Help",
                 description: `Run ${prefix}help <command> for more details on a command`,
-                footer: { text: `This server's prefix is: ${prefix}`, iconURL: this.client.user.avatarURL() },
-                fields: groups.map((group) => {
-                    return {
-                        name: group,
-                        value: commands
-                            .filter((command) => command.options.group === group)
-                            .map((command) => `\`${command.name}\``)
-                            .join(", "),
-                    };
-                }),
+                footer: {
+                    text: `This server's prefix is: ${prefix}`,
+                    iconURL: this.client.user.avatarURL(),
+                },
+                fields: groups
+                    .map((group) => {
+                        return {
+                            name: group,
+                            value: commands
+                                .filter((command) => command.options.group === group)
+                                .map((command) => `\`${command.name}\``)
+                                .join(", "),
+                        };
+                    })
+                    .concat([
+                        {
+                            name: "Useful Links",
+                            value: `[Invite Me](${this.client.config.invite}) | [Support Server](${this.client.config.supportServer})`,
+                        },
+                    ]),
             });
 
             message.channel.send({ embed });
