@@ -13,6 +13,7 @@
         "build": "tsc",
         "build:watch": "tsc --watch",
         "build:clean": "tsc --build --clean",
+        "build:docs": "npm run build && ts-node generateDocs.ts",
         "start": "npm run build && node index.js",
         "start:nobuild": "node index.js",
         "tests": "npm run build:clean && mocha -r ts-node/register tests/**/*.test.ts",
