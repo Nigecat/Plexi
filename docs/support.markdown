@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Support
-permalink: /support/
+permalink: /support
 layout: redirect
 redirect: https://discord.gg/ZbaXJDF
 ---

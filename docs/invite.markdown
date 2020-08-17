@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Invite
-permalink: /invite/
+permalink: /invite
 layout: redirect
 redirect: https://discord.com/oauth2/authorize?client_id=621179289491996683&scope=bot&permissions=1043721343
 ---
