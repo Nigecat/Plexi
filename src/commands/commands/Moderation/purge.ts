@@ -1,6 +1,6 @@
-import { Message } from "discord.js";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
+import { Message, TextChannel, NewsChannel } from "discord.js";
 
 export default class Purge extends Command {
     constructor(client: Plexi) {
@@ -21,6 +21,6 @@ export default class Purge extends Command {
     }
 
     async run(message: Message, [limit]: [number]): Promise<void> {
-        await message.channel.bulkDelete(limit);
+        await ((message.channel as unknown) as TextChannel | NewsChannel).bulkDelete(limit);
     }
 }
