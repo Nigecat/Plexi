@@ -5,7 +5,4 @@ orbs:
 workflows:
   node-tests:
     jobs:
-      - node/test:
-          branches:
-            ignore:
-              - gh-pages
+      - node/test
