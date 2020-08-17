@@ -44,7 +44,7 @@
         "dotenv": "^8.2.0",
         "ffmpeg-static": "^4.2.6",
         "jimp": "^0.16.0",
-        "mongoose": "^5.9.29",
+        "mongoose": "^5.10.0",
         "popyt": "^4.1.1",
         "typescript": "^3.9.7",
         "weather-js": "^2.0.0",
