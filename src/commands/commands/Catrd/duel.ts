@@ -113,8 +113,28 @@ export default class Duel extends Command {
         // Finally start the game
         const embed = new MessageEmbed({
             color: "#ff0000",
-            title: `⚔️ Initiating duel between ${message.author.username} and ${user.username}⚔️`,
-            description: "TODO: Duel instructions",
+            title: `⚔️  Initiating duel between ${message.author.username} and ${user.username}  ⚔️`,
+            description: stripIndents`
+                So... how does this work?
+                Both duel participants will have now been sent a list of 7 cards, this is your hand.
+                The game is turn based, the current turn is displayed at the bottom of the game board.
+                The game board will be updated as the game progressing. Keep an eye on it.
+                The game has 'rounds', and round ends when both users have passed.
+    
+                When it is your turn, playing a card is as simple as typing the name of the card into the channel where the board is.
+                To pass just type 'pass' in the channel where the board is.
+                If a user runs out of cards in their hand they will automatically pass.
+                Once both users have passed, the user with the highest current total power on their side of the board will win the round. (This is the accumulative power of all the cards on their side)
+                
+                The total round wins can be seen at the top of the board next to the usernames.
+                The total played power is at the bottom.
+
+                Certain cards may have abilities that have side effects once played. 
+                These will be marked in the hand you were sent. Run \`abilityinfo\` to check what an ability does (this works in dms).
+                
+                The first user to two round wins will win the overall game.
+                Good luck!
+            `,
         });
         await message.channel.send({ embed });
         game.start();
@@ -233,62 +253,63 @@ class GameState {
         // Helper function to calculate the total power of an array of cards
         const totalPower = (cards: Card[]) => cards.reduce((total, card) => total + card.power, 0);
 
-        // Randomly decide who is going first
-        let turn = Math.random() >= 0.5 ? this.initiator : this.target;
-
         // Assign each user 7 random cards from their deck
         this.initiator.hand = getRandom(this.initiator.dbData.deck, 7).map((card) => this.client.cards.get(card));
         this.target.hand = getRandom(this.target.dbData.deck, 7).map((card) => this.client.cards.get(card));
+
+        // Randomly decide who is going first
+        let turn = Math.random() >= 0.5 ? this.initiator : this.target;
 
         // Send each user their deck
         this.initiator.deckContent = await this.initiator.dmChannel.send(generateDeckText(this.initiator));
         this.target.deckContent = await this.target.dmChannel.send(generateDeckText(this.initiator));
 
         // Create the game board embed
-        let embed = new MessageEmbed({
+        const originalBoardFields = [
+            {
+                name: "Melee",
+                value: ZERO_WIDTH_SPACE,
+                inline: true,
+            },
+            {
+                name: "Melee",
+                value: ZERO_WIDTH_SPACE,
+                inline: true,
+            },
+            {
+                name: ZERO_WIDTH_SPACE,
+                value: ZERO_WIDTH_SPACE,
+            },
+            {
+                name: "Scout",
+                value: ZERO_WIDTH_SPACE,
+                inline: true,
+            },
+            {
+                name: "Scout",
+                value: ZERO_WIDTH_SPACE,
+                inline: true,
+            },
+            {
+                name: ZERO_WIDTH_SPACE,
+                value: ZERO_WIDTH_SPACE,
+            },
+            {
+                name: "Defense",
+                value: ZERO_WIDTH_SPACE,
+                inline: true,
+            },
+            {
+                name: "Defense",
+                value: ZERO_WIDTH_SPACE,
+                inline: true,
+            },
+        ];
+        const embed = new MessageEmbed({
             color: "RANDOM",
             title: `${this.initiator.user.username} (0) | ${this.target.user.username} (0)`,
             footer: { text: `Total power: 0 | 0, Current turn: ${turn.user.username}` },
-            fields: [
-                {
-                    name: "Melee",
-                    value: ZERO_WIDTH_SPACE,
-                    inline: true,
-                },
-                {
-                    name: "Melee",
-                    value: ZERO_WIDTH_SPACE,
-                    inline: true,
-                },
-                {
-                    name: ZERO_WIDTH_SPACE,
-                    value: ZERO_WIDTH_SPACE,
-                },
-                {
-                    name: "Scout",
-                    value: ZERO_WIDTH_SPACE,
-                    inline: true,
-                },
-                {
-                    name: "Scout",
-                    value: ZERO_WIDTH_SPACE,
-                    inline: true,
-                },
-                {
-                    name: ZERO_WIDTH_SPACE,
-                    value: ZERO_WIDTH_SPACE,
-                },
-                {
-                    name: "Defense",
-                    value: ZERO_WIDTH_SPACE,
-                    inline: true,
-                },
-                {
-                    name: "Defense",
-                    value: ZERO_WIDTH_SPACE,
-                    inline: true,
-                },
-            ],
+            fields: originalBoardFields,
         });
 
         const board = await this.channel.send({ embed });
@@ -314,15 +335,13 @@ class GameState {
                 else if (message.author.id === turn.user.id && this.client.cards.has(message.content)) {
                     const card = this.client.cards.get(message.content);
                     // If this user has that card in their hand
-                    if (turn.hand.map(({ name }) => name).includes(card.name)) {
+                    if (turn.hand.map(({ name }) => name.toLowerCase()).includes(card.name.toLowerCase())) {
                         // Add the card to their played cards
                         turn.playedCards.push(card);
                         // Remove the card from their hand
                         turn.hand.splice(turn.hand.indexOf(card), 1);
-                        // Flip the turn only if the other user has not passed
-                        if (!swapTurn(turn).passed) turn = swapTurn(turn);
                         // Regenerate the board embed
-                        embed = new MessageEmbed({
+                        const newBoard = new MessageEmbed({
                             color: "RANDOM",
                             title: `${this.initiator.user.username} (${this.initiator.wins}) | ${this.target.user.username} (${this.target.wins})`,
                             footer: {
@@ -395,11 +414,13 @@ class GameState {
                                 },
                             ],
                         });
-                        await board.edit({ embed });
+                        await board.edit({ embed: newBoard });
                         // Update the hand for the user
                         turn.deckContent = await turn.deckContent.edit(generateDeckText(turn));
                         // Let the user know
                         this.channel.send(`${turn.user.username} has played: ${card.name}`);
+                        // Flip the turn only if the other user has not passed
+                        if (!swapTurn(turn).passed) turn = swapTurn(turn);
                     } else {
                         this.channel.send(
                             "You don't have that card in your hand! (HINT: Check your dms with me to view your hand)",
@@ -447,6 +468,15 @@ class GameState {
                     // Reset the board
                     this.initiator.playedCards = [];
                     this.target.playedCards = [];
+                    this.initiator.passed = false;
+                    this.target.passed = false;
+                    const embed = new MessageEmbed({
+                        color: "RANDOM",
+                        title: `${this.initiator.user.username} (${this.initiator.wins}) | ${this.target.user.username} (${this.target.wins})`,
+                        footer: { text: `Total power: 0 | 0, Current turn: ${turn.user.username}` },
+                        fields: originalBoardFields,
+                    });
+                    await board.edit({ embed });
 
                     // Check if a user has gotten 2 wins (this signifies a game end)
                     if (this.initiator.wins >= 2) {
