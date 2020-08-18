@@ -1,7 +1,7 @@
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
 import { User } from "../../../managers/DatabaseManager";
-import { Message, User as DiscordUser, MessageReaction, MessageEmbed } from "discord.js";
+import { Message, User as DiscordUser, Channel } from "discord.js";
 
 export default class Duel extends Command {
     constructor(client: Plexi) {
@@ -9,8 +9,8 @@ export default class Duel extends Command {
             name: "duel",
             group: "Catrd",
             description: "TODO",
-            guildOnly: true,
             details: "TODO",
+            guildOnly: true,
             args: [
                 {
                     name: "user",
@@ -20,6 +20,17 @@ export default class Duel extends Command {
         });
     }
 
+    async run(message: Message, [user]: [DiscordUser]): Promise<void> {
+        const game = new GameState(this.client, message.channel, message.author, user);
+        try {
+            await game.init();
+            message.channel.send("Game ready!");
+        } catch (err) {
+            message.channel.send(err.message);
+        }
+    }
+
+    /* Old Code:
     async run(message: Message, [user]: [DiscordUser]): Promise<void> {
         const user1 = await this.client.database.getUser(message.author.id);
         const user2 = await this.client.database.getUser(user.id);
@@ -60,32 +71,44 @@ export default class Duel extends Command {
             }
         }
     }
+    */
+}
 
-    ensureStart(message: Message, user: DiscordUser, user1: User, user2: User): boolean {
+class GameState {
+    public user1: User;
+    public user2: User;
+
+    constructor(
+        public client: Plexi,
+        public channel: Channel,
+        public initiator: DiscordUser,
+        public target: DiscordUser,
+    ) {}
+
+    /** Initialise the game, this will throw any errors if we cannot proceed with the game */
+    async init(): Promise<void> {
+        // Load both our users from the database
+        this.user1 = await this.client.database.getUser(this.initiator.id);
+        this.user2 = await this.client.database.getUser(this.target.id);
+
         // Don't allow users to duel themselves
-        if (message.author.id === user.id) {
-            message.channel.send("You can't duel yourself!");
-            return false;
+        if (this.initiator.id === this.target.id) {
+            throw new Error("You can't duel yourself!");
         }
 
         // Don't allow users to duel bots
-        if (user.bot) {
-            message.channel.send("You can't duel a bot!");
-            return false;
+        if (this.target.bot) {
+            throw new Error("You can't duel a bot!");
         }
 
         // Ensure both users have 20 cards in their deck
-        if (user1.deck.length !== 20) {
-            message.channel.send(
-                "You do not have 20 cards in your deck! Run `addcard <card>` to move a card to your deck.",
-            );
-            return false;
+        if (this.user1.deck.length !== 20) {
+            throw new Error("You do not have 20 cards in your deck! Run `addcard <card>` to move a card to your deck.");
         }
-        if (user2.deck.length !== 20) {
-            message.channel.send(`${message.author} does not have 20 cards in their deck!`);
-            return false;
+        if (this.user2.deck.length !== 20) {
+            throw new Error("The person you are trying to duel does not have 20 cards in their deck!");
         }
 
-        return true;
+        // We should be all good to obtain the user bets now
     }
 }
