@@ -54,8 +54,8 @@ export default argumentTypes;
 
 export interface ArgumentTypes {
     [type: string]: {
-        validate: (val: string, client: Plexi, message: Message) => boolean;
+        validate: (val: string, client?: Plexi, message?: Message) => boolean;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        parse: (val: string, client: Plexi, message: Message) => any;
+        parse: (val: string, client?: Plexi, message?: Message) => any;
     };
 }
