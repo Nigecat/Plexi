@@ -17,10 +17,6 @@ import {
 } from "discord.js";
 
 /*
-Known issues (AKA dev notes) TODO:
-The user data gets cached so if it updates during the setup process/game things break
-This, and a lot of other possible bugs could be fixed by applying a lock to the database user and preventing any other access while a game is running
-
 If there is a lock, a user could effectively brick another user's account by starting a game then disappearing off the face of the earth.
 This sould be fixed by having a game timout that starts after the setup is complete (probably ~10 minutes)
 
@@ -59,6 +55,17 @@ export default class Duel extends Command {
             user,
         );
 
+        await message.channel.send({
+            embed: {
+                color: "#ff0000",
+                description: stripIndents`
+                    NOTE: While you are in a duel, your user account gets locked.
+                    Any changes to your cards, coins or other data **WILL NOT** go through.
+                    It may look like it went through but no changes will be applied.
+                `,
+            },
+        });
+
         // Init the game and run all pre-game checks
         try {
             await game.init();
@@ -94,8 +101,10 @@ export default class Duel extends Command {
         const betConfirm = await message.channel.send(
             stripIndents`
                 **Current bets are:**
-                ${message.author}: ${game.initiator.bet}
-                ${user}: ${game.target.bet}
+                ${message.author}: ${
+                typeof game.initiator.bet === "number" ? `${game.initiator.bet} coins` : game.initiator.bet
+            }
+                ${user}: ${typeof game.target.bet === "number" ? `${game.target.bet} coins` : game.target.bet}
 
                 Could both users now react with whether they agree with this bet. 
                 If either user reacts with 🇳 the duel will be cancelled. 
@@ -172,7 +181,12 @@ class GameUser {
     }
 
     async init(): Promise<void> {
-        this.dbData = await this.client.database.getUser(this.user.id);
+        // Lock the user account
+        this.dbData = await this.client.database.updateUser(this.user.id, "lock", true);
+    }
+
+    async unlock(): Promise<void> {
+        this.client.database.updateUser(this.user.id, "lock", false);
     }
 }
 
@@ -505,6 +519,9 @@ class GameState {
                         );
                         // If this was a coin bet
                         if (typeof this.target.bet === "number") {
+                            // Unlock the accounts
+                            await this.initiator.unlock();
+                            await this.target.unlock();
                             // Apply the changes
                             this.client.database.updateUser(
                                 this.initiator.user.id,
@@ -520,6 +537,9 @@ class GameState {
                         // Otherwise we can assume it is a card bet
                         else {
                             // Apply the changes
+                            // Unlock the accounts
+                            await this.initiator.unlock();
+                            await this.target.unlock();
                             this.initiator.dbData.cards.push(this.target.bet);
                             this.target.dbData.cards.splice(this.target.dbData.cards.indexOf(this.target.bet), 1);
                             this.client.database.updateUser(

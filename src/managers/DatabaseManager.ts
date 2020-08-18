@@ -30,6 +30,7 @@ export default class DatabaseManager extends EventEmitter {
                 id: String,
                 cards: [String],
                 deck: [String],
+                lock: Boolean,
                 xp: { type: Number, default: 0 },
                 coins: { type: Number, default: 500 },
             }),
@@ -114,9 +115,14 @@ export default class DatabaseManager extends EventEmitter {
     // eslint-disable-next-line
     async updateUser(id: Snowflake, key: string, value: any): Promise<User> {
         const user = await this.getUser(id);
-        this.client.emit("debug", `Updating user: ${id} (${key}:${user[key]} -> ${key}:${value})`);
-        user[key] = value;
-        return (user.save() as unknown) as User;
+        // Only proceed if the user is not locked
+        if (!user.lock) {
+            this.client.emit("debug", `Updating user: ${id} (${key}:${user[key]} -> ${key}:${value})`);
+            user[key] = value;
+            return (user.save() as unknown) as User;
+        } else {
+            return user;
+        }
     }
 
     /**
@@ -143,5 +149,6 @@ export interface User extends Omit<Document, "save"> {
     cards: string[];
     deck: string[];
     coins: number;
+    lock: boolean;
     save: Document["save"];
 }
