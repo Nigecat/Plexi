@@ -18,7 +18,7 @@ export default class CatrdHelp extends Command {
             title: "Catrd: Its like Ryan Reynold’s Foolproof but better and a card game",
             description: stripIndents`
                 What is catrd?
-                It is a card game, but with cats! 
+                It's a card game, but with cats! 
             `,
             fields: [
                 {
@@ -35,9 +35,20 @@ export default class CatrdHelp extends Command {
                     `,
                 },
                 {
+                    name: "Common terminology",
+                    value: stripIndents`
+                        **duel** - A 1v1 card battle against another user.
+                        **deck** - The cards you have that will be used in a duel. There must be 20 to be able to participate in a duel.
+                        **cards** - Any cards you have that are not in your deck, most cards are placed here by default.
+
+                        You can move a card from your cards to your deck with \`addcard\` (since it 'adds' a card to your deck)
+                        A card can be removed from your deck with \`removecard\` (since it 'removes' the card from your deck)
+                    `,
+                },
+                {
                     name: "Getting started",
                     value: stripIndents`
-                        Get sstarted by running the \`mycards\` command to view your cards.
+                        Get started by running the \`mycards\` command to view your cards.
                         Run \`bal\` to view how many coins you have. 
                         View the Economy section of the \`help\` command result to see possible ways to get coins (just try running some of the commands).
                     `,
