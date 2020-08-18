@@ -8,7 +8,7 @@ import { createLogger, format, transports } from "winston";
 // Create the bot
 const client = new Plexi({
     client: {
-        disableMentions: "all",
+        disableMentions: "everyone",
         allowedMentions: { roles: [], users: [] },
         presence: {
             status: "online",

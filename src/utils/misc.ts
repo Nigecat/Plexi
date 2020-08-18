@@ -2,7 +2,7 @@ import { get as httpGet } from "http";
 import { get as httpsGet } from "https";
 import { stripIndents } from "common-tags";
 import { Command } from "../commands/Command";
-import { Snowflake, Message, TextChannel, NewsChannel, DMChannel } from "discord.js";
+import { Snowflake, Message, TextChannel, NewsChannel, DMChannel, MessageReaction } from "discord.js";
 
 /** Generates the regex for detecting when a string starts with either a prefix or a user/bot mention
  *  NOTE: This *requires* there to be text after the match, the string can't only contain the prefix/mention
@@ -157,4 +157,44 @@ export async function fetchReddit(subreddit: string): Promise<string> {
     const response = await fetch(`https://imgur.com/r/${subreddit}/hot.json`);
     const post = response.data[Math.floor(Math.random() * response.data.length)];
     return `http://imgur.com/${post.hash}.${post.mimetype.replace(/.+?(?=\/)/, "").substr(1)}`;
+}
+
+/**
+ * Get confirmation of something. Waits for the user to react to the message with y/n.
+ * @param {Snowflake} id - The id of the user to react for a reaction from.
+ * @param {Message} message - The message to display the confirmation on
+ * @returns The reaction result
+ */
+export async function confirm(id: Snowflake, message: Message): Promise<boolean> {
+    await message.react("🇾");
+    await message.react("🇳");
+
+    const response = await message.awaitReactions(
+        (reaction: MessageReaction) =>
+            ["🇾", "🇳"].includes(reaction.emoji.name) && reaction.users.cache.some((reactUser) => reactUser.id === id),
+        { max: 1, time: 25000 },
+    );
+
+    await message.reactions.removeAll();
+
+    return response.size > 0 ? response.first().emoji.name === "🇾" : false;
+}
+
+/**
+ * Get n random elements of the supplied array
+ * @param {ArrayLike<T>} arr - The array to get elements from
+ * @param {number} n - The number of random elements to get
+ * @returns The random elements
+ */
+export function getRandom<T>(arr: ReadonlyArray<T>, n: number): Array<T> {
+    const result = new Array(n);
+    let len = arr.length;
+    const taken = new Array(len);
+    if (n > len) throw new RangeError("getRandom: more elements taken than available");
+    while (n--) {
+        const x = Math.floor(Math.random() * len);
+        result[n] = arr[x in taken ? taken[x] : x];
+        taken[x] = --len in taken ? taken[len] : len;
+    }
+    return result;
 }
