@@ -182,7 +182,7 @@ export async function confirm(id: Snowflake, message: Message): Promise<boolean>
 
 /**
  * Get n random elements of the supplied array
- * @param {ArrayLike<T>} arr - The array to get elements from
+ * @param {ReadonlyArray<T>} arr - The array to get elements from
  * @param {number} n - The number of random elements to get
  * @returns The random elements
  */
