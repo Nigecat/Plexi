@@ -33,8 +33,14 @@ export default class Duel extends Command {
         super(client, {
             name: "duel",
             group: "Catrd",
-            description: "TODO",
-            details: "TODO",
+            description: "Fight another user in the ring of honor!",
+            details: stripIndents`
+                Fight another user, at the start of the duel both users place a bet.
+                This bet can either be coins of a card.
+                The winner takes the loser's bet.
+
+                When a duel is started, 7 cards will be picked at random from your deck (run \`mycards\` to view your deck).
+            `,
             guildOnly: true,
             args: [
                 {
