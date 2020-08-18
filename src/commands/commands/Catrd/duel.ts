@@ -2,7 +2,9 @@ import { Plexi } from "../../../Plexi";
 import ArgumentTypes from "../../types";
 import { Command } from "../../Command";
 import { stripIndents } from "common-tags";
-import { confirm } from "../../../utils/misc";
+import { Card } from "../../../managers/CardManager";
+import { ZERO_WIDTH_SPACE } from "../../../constants";
+import { confirm, getRandom } from "../../../utils/misc";
 import { User } from "../../../managers/DatabaseManager";
 import {
     Message,
@@ -13,6 +15,13 @@ import {
     DMChannel,
     MessageReaction,
 } from "discord.js";
+
+/*
+Known issues:
+The user gets cached so if it updates during the setup process things break
+Fix:
+    Make it an async getter and await it whenever we get it, re-request the data every time
+*/
 
 export default class Duel extends Command {
     constructor(client: Plexi) {
@@ -102,18 +111,23 @@ export default class Duel extends Command {
             return;
         }
 
+        // Finally start the game
         const embed = new MessageEmbed({
             color: "#ff0000",
             title: `⚔️ Initiating duel between ${message.author.username} and ${user.username}⚔️`,
             description: "TODO: Duel instructions",
         });
-        message.channel.send({ embed });
+        await message.channel.send({ embed });
+        game.start();
     }
 }
 
 class GameUser {
     public dbData: User;
     public dmChannel: DMChannel;
+    public hand: Card[];
+    public playedCards: Card[];
+    public deckContent: Message;
     // Users may bet either a card or coins
     public bet: string | number;
 
@@ -192,6 +206,85 @@ class GameState {
             GameState.getUserBet(this.client, this.initiator),
             GameState.getUserBet(this.client, this.target),
         ]);
+    }
+
+    /** Start the game, assumes prior setup is complete */
+    async start(): Promise<void> {
+        // Helper function to generate the deck text from an array of cards
+        const generateDeckText = (user: GameUser) => stripIndents`
+            Here is your hand, these cards have been randomly drawn from your deck.
+            This message will be automatically updated to reflect the current contents of your deck.
+            Check back here at any time to see your deck.
+
+            ${user.hand.map((card) => `${card.name} (${card.type}) - ${card.power} power`).join("\n")}
+        `;
+
+        // Helper function to swap a turn
+        const swapTurn = (user: GameUser) => (user.user.id === this.initiator.user.id ? this.target : this.initiator);
+
+        // Randomly decide who is going first
+        const turn = Math.random() >= 0.5 ? this.initiator : this.target;
+
+        // Assign each user 5 random cards from their deck
+        this.initiator.hand = getRandom(this.initiator.dbData.deck, 5).map((card) => this.client.cards.get(card));
+        this.target.hand = getRandom(this.target.dbData.deck, 5).map((card) => this.client.cards.get(card));
+
+        // Send each user their deck
+        this.initiator.deckContent = await this.initiator.dmChannel.send(generateDeckText(this.initiator));
+        this.target.deckContent = await this.target.dmChannel.send(generateDeckText(this.initiator));
+
+        // Create the game board embed
+        const embed = new MessageEmbed({
+            color: "RANDOM",
+            title: `${this.initiator.user.username} | ${this.target.user.username}`,
+            footer: { text: `Total power: 0 | 0` },
+            fields: [
+                {
+                    name: "Melee",
+                    value: ZERO_WIDTH_SPACE,
+                    inline: true,
+                },
+                {
+                    name: "Melee",
+                    value: ZERO_WIDTH_SPACE,
+                    inline: true,
+                },
+                {
+                    name: ZERO_WIDTH_SPACE,
+                    value: ZERO_WIDTH_SPACE,
+                },
+                {
+                    name: "Scout",
+                    value: ZERO_WIDTH_SPACE,
+                    inline: true,
+                },
+                {
+                    name: "Scout",
+                    value: ZERO_WIDTH_SPACE,
+                    inline: true,
+                },
+                {
+                    name: ZERO_WIDTH_SPACE,
+                    value: ZERO_WIDTH_SPACE,
+                },
+                {
+                    name: "Defense",
+                    value: ZERO_WIDTH_SPACE,
+                    inline: true,
+                },
+                {
+                    name: "Defense",
+                    value: ZERO_WIDTH_SPACE,
+                    inline: true,
+                },
+            ],
+        });
+
+        await this.channel.send("Here is the game board, this will automatically be edited as the game progresses:", {
+            embed,
+        });
+
+        // TODO: Main game loop
     }
 
     /** Get a user bet, this will also cache the dm channel of the user in the GameUser object
