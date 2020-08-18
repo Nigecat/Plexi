@@ -15,7 +15,7 @@ export default class CatrdHelp extends Command {
     run(message: Message): void {
         const embed = new MessageEmbed({
             color: "RANDOM",
-            title: "Catrd: Its like Ryan Reynold’s Foolproof but better and a card game",
+            title: "Catrd: It's like Ryan Reynold’s Foolproof but better and a card game",
             description: stripIndents`
                 What is catrd?
                 It's a card game, but with cats! 
