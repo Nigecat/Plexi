@@ -116,6 +116,7 @@ export default class Duel extends Command {
             title: `⚔️  Initiating duel between ${message.author.username} and ${user.username}  ⚔️`,
             description: stripIndents`
                 So... how does this work?
+                
                 Both duel participants will have now been sent a list of 7 cards, this is your hand.
                 The game is turn based, the current turn is displayed at the bottom of the game board.
                 The game board will be updated as the game progressing. Keep an eye on it.
