@@ -1,5 +1,6 @@
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
+import { confirm } from "../../../utils/misc";
 import { User } from "../../../managers/DatabaseManager";
 import { Message, User as DiscordUser, Channel } from "discord.js";
 
@@ -22,56 +23,32 @@ export default class Duel extends Command {
 
     async run(message: Message, [user]: [DiscordUser]): Promise<void> {
         const game = new GameState(this.client, message.channel, message.author, user);
+
         try {
             await game.init();
-            message.channel.send("Game ready!");
         } catch (err) {
             message.channel.send(err.message);
+            return;
         }
-    }
 
-    /* Old Code:
-    async run(message: Message, [user]: [DiscordUser]): Promise<void> {
-        const user1 = await this.client.database.getUser(message.author.id);
-        const user2 = await this.client.database.getUser(user.id);
-        // If all the checks pass for us to start
-        if (this.ensureStart(message, user, user1, user2)) {
-            // Confirm the user actually wants to duel
-            const confirmStart = await message.channel.send(
-                `${user}, ${message.author} is requesting to duel you. If you wish to accept react with 🇾 to this message.`,
-                { allowedMentions: { users: [user.id] } },
-            );
-
-            await confirmStart.react("🇾");
-            await confirmStart.react("🇳");
-
-            const response = await confirmStart.awaitReactions(
-                (reaction: MessageReaction) =>
-                    ["🇾", "🇳"].includes(reaction.emoji.name) &&
-                    reaction.users.cache.some((reactUser) => reactUser.id === user.id),
-                { max: 1, time: 25000 },
-            );
-
-            await confirmStart.reactions.removeAll();
-
-            if (response.size > 0) {
-                if (response.first().emoji.name === "🇾") {
-                    // Start the duel
-                    if (confirmStart.deletable) await confirmStart.delete();
-                    const embed = new MessageEmbed({
-                        color: "#ff0000",
-                        title: `⚔️ Initiating duel between ${message.author.username} and ${user.username} ⚔️`,
-                    });
-                    message.channel.send({ embed });
-                } else {
-                    await confirmStart.edit("Duel cancelled.");
-                }
-            } else {
-                await confirmStart.edit(`${user} took to long to respond! Duel cancelled.`);
-            }
+        // All pre-game checks should have passed if we get here
+        // Next we confirm if the user is willing to accept the duel
+        const confirmation = await message.channel.send(
+            `${user}, ${message.author.username} is requesting to duel you. If you wish to accept react to this message with a 🇾.`,
+            { allowedMentions: { users: [user.id] } },
+        );
+        // If the confirmation does not pass
+        if (!(await confirm(user.id, confirmation))) {
+            await confirmation.edit("Duel cancelled! (HINT: The duel request times out after not too long)");
+            return;
         }
+
+        await confirmation.delete();
+
+        // Now both users should be wanting to duel
+        // We can then get a bet for each user
+        message.channel.send("BET START");
     }
-    */
 }
 
 class GameState {
@@ -108,7 +85,5 @@ class GameState {
         if (this.user2.deck.length !== 20) {
             throw new Error("The person you are trying to duel does not have 20 cards in their deck!");
         }
-
-        // We should be all good to obtain the user bets now
     }
 }
