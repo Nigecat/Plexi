@@ -1,7 +1,6 @@
 import DBL from "dblapi.js";
 import { Plexi } from "./src/Plexi";
 import { version } from "./package.json";
-import { config as loadEnv } from "dotenv";
 import { existsSync, mkdirSync } from "fs";
 import { createLogger, format, transports } from "winston";
 
@@ -26,9 +25,6 @@ const client = new Plexi({
         version: version,
     },
 });
-
-// Load any environment variables into process.env
-loadEnv();
 
 // If our log output dir does not exist create it
 if (!existsSync("logs")) {

@@ -14,8 +14,8 @@
         "build:watch": "tsc --watch",
         "build:clean": "tsc --build --clean",
         "build:docs": "npm run build && ts-node generateDocs.ts",
-        "start": "npm run build && node index.js",
-        "start:nobuild": "node index.js",
+        "start": "npm run build && node -r dotenv/config index.js",
+        "start:nobuild": "node -r dotenv/config index.js",
         "tests": "npm run build:clean && mocha -r ts-node/register tests/**/*.test.ts",
         "test": "npm run build && npm run tests && npm run lint",
         "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
