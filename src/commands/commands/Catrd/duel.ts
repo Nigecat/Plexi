@@ -1,7 +1,7 @@
 import { Plexi } from "../../../Plexi";
 import ArgumentTypes from "../../types";
 import { Command } from "../../Command";
-import { stripIndents } from "common-tags";
+import { stripIndents, oneLine } from "common-tags";
 import { Card } from "../../../managers/CardManager";
 import { ZERO_WIDTH_SPACE } from "../../../constants";
 import { confirm, getRandom } from "../../../utils/misc";
@@ -19,8 +19,7 @@ import {
 /*
 Known issues:
 The user gets cached so if it updates during the setup process things break
-Fix:
-    Make it an async getter and await it whenever we get it, re-request the data every time
+This, and a lot of other possible bugs could be fixed by applying a 'lock' to the database yser
 */
 
 export default class Duel extends Command {
@@ -128,10 +127,16 @@ class GameUser {
     public hand: Card[];
     public playedCards: Card[];
     public deckContent: Message;
+    public wins: number;
+    public passed: boolean;
     // Users may bet either a card or coins
     public bet: string | number;
 
-    constructor(public client: Plexi, public user: DiscordUser) {}
+    constructor(public client: Plexi, public user: DiscordUser) {
+        this.wins = 0;
+        this.passed = false;
+        this.playedCards = [];
+    }
 
     async init(): Promise<void> {
         this.dbData = await this.client.database.getUser(this.user.id);
@@ -199,13 +204,16 @@ class GameState {
                 Either user can dm me 'cancel' during this process to call off the duel.
             `,
         });
-        await this.channel.send({ embed });
+
+        const msg = await this.channel.send({ embed });
 
         // Get the bets of both users
         await Promise.all([
             GameState.getUserBet(this.client, this.initiator),
             GameState.getUserBet(this.client, this.target),
         ]);
+
+        await msg.delete();
     }
 
     /** Start the game, assumes prior setup is complete */
@@ -222,22 +230,25 @@ class GameState {
         // Helper function to swap a turn
         const swapTurn = (user: GameUser) => (user.user.id === this.initiator.user.id ? this.target : this.initiator);
 
-        // Randomly decide who is going first
-        const turn = Math.random() >= 0.5 ? this.initiator : this.target;
+        // Helper function to calculate the total power of an array of cards
+        const totalPower = (cards: Card[]) => cards.reduce((total, card) => total + card.power, 0);
 
-        // Assign each user 5 random cards from their deck
-        this.initiator.hand = getRandom(this.initiator.dbData.deck, 5).map((card) => this.client.cards.get(card));
-        this.target.hand = getRandom(this.target.dbData.deck, 5).map((card) => this.client.cards.get(card));
+        // Randomly decide who is going first
+        let turn = Math.random() >= 0.5 ? this.initiator : this.target;
+
+        // Assign each user 7 random cards from their deck
+        this.initiator.hand = getRandom(this.initiator.dbData.deck, 7).map((card) => this.client.cards.get(card));
+        this.target.hand = getRandom(this.target.dbData.deck, 7).map((card) => this.client.cards.get(card));
 
         // Send each user their deck
         this.initiator.deckContent = await this.initiator.dmChannel.send(generateDeckText(this.initiator));
         this.target.deckContent = await this.target.dmChannel.send(generateDeckText(this.initiator));
 
         // Create the game board embed
-        const embed = new MessageEmbed({
+        let embed = new MessageEmbed({
             color: "RANDOM",
-            title: `${this.initiator.user.username} | ${this.target.user.username}`,
-            footer: { text: `Total power: 0 | 0` },
+            title: `${this.initiator.user.username} (0) | ${this.target.user.username} (0)`,
+            footer: { text: `Total power: 0 | 0, Current turn: ${turn.user.username}` },
             fields: [
                 {
                     name: "Melee",
@@ -280,11 +291,247 @@ class GameState {
             ],
         });
 
-        await this.channel.send("Here is the game board, this will automatically be edited as the game progresses:", {
-            embed,
-        });
+        const board = await this.channel.send({ embed });
 
-        // TODO: Main game loop
+        // Main game logic;
+        // We want to recieve every message both users send
+        const collector = this.channel.createMessageCollector(
+            (message: Message) =>
+                message.author.id === this.initiator.user.id || message.author.id === this.target.user.id,
+        );
+
+        collector.on("collect", async (message: Message) => {
+            // If this message came from the current turn user
+            if (message.author.id === turn.user.id) {
+                // If this is a pass
+                if (message.content.toLowerCase() === "pass") {
+                    turn.passed = true;
+                    this.channel.send("You have passed!");
+                    turn = swapTurn(turn);
+                }
+
+                // If this message came from the current turn user and is a valid card
+                else if (message.author.id === turn.user.id && this.client.cards.has(message.content)) {
+                    const card = this.client.cards.get(message.content);
+                    // If this user has that card in their hand
+                    if (turn.hand.map(({ name }) => name).includes(card.name)) {
+                        // Add the card to their played cards
+                        turn.playedCards.push(card);
+                        // Remove the card from their hand
+                        turn.hand.splice(turn.hand.indexOf(card), 1);
+                        // Flip the turn only if the other user has not passed
+                        if (!swapTurn(turn).passed) turn = swapTurn(turn);
+                        // Regenerate the board embed
+                        embed = new MessageEmbed({
+                            color: "RANDOM",
+                            title: `${this.initiator.user.username} (${this.initiator.wins}) | ${this.target.user.username} (${this.target.wins})`,
+                            footer: {
+                                text: oneLine`
+                                    Total power: ${totalPower(this.initiator.playedCards)} | 
+                                    ${totalPower(this.target.playedCards)}, Current turn: ${turn.user.username}`,
+                            },
+                            fields: [
+                                {
+                                    name: "Melee",
+                                    value:
+                                        this.initiator.playedCards
+                                            .filter((card) => card.type === "Melee")
+                                            .map(({ name }) => name)
+                                            .join("\n") || ZERO_WIDTH_SPACE,
+                                    inline: true,
+                                },
+                                {
+                                    name: "Melee",
+                                    value:
+                                        this.target.playedCards
+                                            .filter((card) => card.type === "Melee")
+                                            .map(({ name }) => name)
+                                            .join("\n") || ZERO_WIDTH_SPACE,
+                                    inline: true,
+                                },
+                                {
+                                    name: ZERO_WIDTH_SPACE,
+                                    value: ZERO_WIDTH_SPACE,
+                                },
+                                {
+                                    name: "Scout",
+                                    value:
+                                        this.initiator.playedCards
+                                            .filter((card) => card.type === "Scout")
+                                            .map(({ name }) => name)
+                                            .join("\n") || ZERO_WIDTH_SPACE,
+                                    inline: true,
+                                },
+                                {
+                                    name: "Scout",
+                                    value:
+                                        this.target.playedCards
+                                            .filter((card) => card.type === "Scout")
+                                            .map(({ name }) => name)
+                                            .join("\n") || ZERO_WIDTH_SPACE,
+                                    inline: true,
+                                },
+                                {
+                                    name: ZERO_WIDTH_SPACE,
+                                    value: ZERO_WIDTH_SPACE,
+                                },
+                                {
+                                    name: "Defense",
+                                    value:
+                                        this.initiator.playedCards
+                                            .filter((card) => card.type === "Defense")
+                                            .map(({ name }) => name)
+                                            .join("\n") || ZERO_WIDTH_SPACE,
+                                    inline: true,
+                                },
+                                {
+                                    name: "Defense",
+                                    value:
+                                        this.target.playedCards
+                                            .filter((card) => card.type === "Defense")
+                                            .map(({ name }) => name)
+                                            .join("\n") || ZERO_WIDTH_SPACE,
+                                    inline: true,
+                                },
+                            ],
+                        });
+                        await board.edit({ embed });
+                        // Update the hand for the user
+                        turn.deckContent = await turn.deckContent.edit(generateDeckText(turn));
+                        // Let the user know
+                        this.channel.send(`${turn.user.username} has played: ${card.name}`);
+                    } else {
+                        this.channel.send(
+                            "You don't have that card in your hand! (HINT: Check your dms with me to view your hand)",
+                        );
+                    }
+                }
+
+                // Auto pass if either user is out of cards
+                if (this.initiator.hand.length === 0) {
+                    this.initiator.passed = true;
+                    this.channel.send(
+                        `${this.initiator.user.username} has been automatically passed since they do not have any cards.`,
+                    );
+                }
+                if (this.target.hand.length === 0) {
+                    this.target.passed = true;
+                    this.channel.send(
+                        `${this.target.user.username} has been automatically passed since they do not have any cards.`,
+                    );
+                }
+
+                // If both users have now passed
+                if (this.initiator.passed && this.target.passed) {
+                    // Check who has the highest total power
+                    const initiatorPower = totalPower(this.initiator.playedCards);
+                    const targetPower = totalPower(this.target.playedCards);
+
+                    // If the round is a draw
+                    if (initiatorPower === targetPower) {
+                        this.channel.send("This round is a draw.");
+                        this.initiator.wins += 1;
+                        this.target.wins += 1;
+                    }
+                    // If the initiator won
+                    else if (initiatorPower > targetPower) {
+                        this.channel.send(`${this.initiator.user.username} has won the round!`);
+                        this.initiator.wins += 1;
+                    }
+                    // If the target won
+                    else {
+                        this.channel.send(`${this.target.user.username} has won the round!`);
+                        this.target.wins += 1;
+                    }
+
+                    // Reset the board
+                    this.initiator.playedCards = [];
+                    this.target.playedCards = [];
+
+                    // Check if a user has gotten 2 wins (this signifies a game end)
+                    if (this.initiator.wins >= 2) {
+                        this.channel.send(
+                            oneLine`
+                                ${this.initiator.user} has won the duel! 
+                                They will now recieve ${
+                                    typeof this.target.bet === "number" ? `${this.target.bet} coins` : this.target.bet
+                                }
+                            `,
+                            { allowedMentions: { users: [this.initiator.user.id] } },
+                        );
+                        // If this was a coin bet
+                        if (typeof this.target.bet === "number") {
+                            // Apply the changes
+                            this.client.database.updateUser(
+                                this.initiator.user.id,
+                                "coins",
+                                this.initiator.dbData.coins + this.target.bet,
+                            );
+                            this.client.database.updateUser(
+                                this.target.user.id,
+                                "coins",
+                                this.target.dbData.coins - this.target.bet,
+                            );
+                        }
+                        // Otherwise we can assume it is a card bet
+                        else {
+                            // Apply the changes
+                            this.initiator.dbData.cards.push(this.target.bet);
+                            this.target.dbData.cards.splice(this.target.dbData.cards.indexOf(this.target.bet), 1);
+                            this.client.database.updateUser(
+                                this.initiator.user.id,
+                                "cards",
+                                this.initiator.dbData.cards,
+                            );
+                            this.client.database.updateUser(this.target.user.id, "cards", this.target.dbData.cards);
+                        }
+                        collector.emit("end");
+                    } else if (this.target.wins >= 2) {
+                        this.channel.send(
+                            oneLine`
+                                ${this.target.user} has won the duel! 
+                                They will now recieve ${
+                                    typeof this.initiator.bet === "number"
+                                        ? `${this.initiator.bet} coins`
+                                        : this.initiator.bet
+                                }
+                            `,
+                            { allowedMentions: { users: [this.target.user.id] } },
+                        );
+                        // If this was a coin bet
+                        if (typeof this.initiator.bet === "number") {
+                            // Apply the changes
+                            this.client.database.updateUser(
+                                this.target.user.id,
+                                "coins",
+                                this.target.dbData.coins + this.initiator.bet,
+                            );
+                            this.client.database.updateUser(
+                                this.initiator.user.id,
+                                "coins",
+                                this.initiator.dbData.coins - this.initiator.bet,
+                            );
+                        }
+                        // Otherwise we can assume it is a card bet
+                        else {
+                            // Apply the changes
+                            this.target.dbData.cards.push(this.initiator.bet);
+                            this.initiator.dbData.cards.splice(
+                                this.initiator.dbData.cards.indexOf(this.initiator.bet),
+                                1,
+                            );
+                            this.client.database.updateUser(this.target.user.id, "cards", this.target.dbData.cards);
+                            this.client.database.updateUser(
+                                this.initiator.user.id,
+                                "cards",
+                                this.initiator.dbData.cards,
+                            );
+                        }
+                        collector.emit("end");
+                    }
+                }
+            }
+        });
     }
 
     /** Get a user bet, this will also cache the dm channel of the user in the GameUser object
