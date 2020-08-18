@@ -116,7 +116,7 @@
     {
         "name": "Gun Cat",
         "type": "Scout",
-        "power": 0,
+        "power": 15,
         "rarity": 0
     }
 ]

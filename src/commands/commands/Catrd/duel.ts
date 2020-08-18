@@ -17,9 +17,15 @@ import {
 } from "discord.js";
 
 /*
-Known issues:
-The user gets cached so if it updates during the setup process things break
-This, and a lot of other possible bugs could be fixed by applying a 'lock' to the database yser
+Known issues (AKA dev notes) TODO:
+The user data gets cached so if it updates during the setup process/game things break
+This, and a lot of other possible bugs could be fixed by applying a lock to the database user and preventing any other access while a game is running
+
+If there is a lock, a user could effectively brick another user's account by starting a game then disappearing off the face of the earth.
+This sould be fixed by having a game timout that starts after the setup is complete (probably ~10 minutes)
+
+Having to scroll so far up to see the board is annoying.
+This could be fixed by reposting the board after a each round ends.
 */
 
 export default class Duel extends Command {
@@ -263,7 +269,7 @@ class GameState {
 
         // Send each user their deck
         this.initiator.deckContent = await this.initiator.dmChannel.send(generateDeckText(this.initiator));
-        this.target.deckContent = await this.target.dmChannel.send(generateDeckText(this.initiator));
+        this.target.deckContent = await this.target.dmChannel.send(generateDeckText(this.target));
 
         // Create the game board embed
         const originalBoardFields = [
@@ -322,6 +328,7 @@ class GameState {
                 message.author.id === this.initiator.user.id || message.author.id === this.target.user.id,
         );
 
+        // This runs every time either the initiator or target sends a message in the game channel
         collector.on("collect", async (message: Message) => {
             // If this message came from the current turn user
             if (message.author.id === turn.user.id) {
@@ -433,13 +440,13 @@ class GameState {
                 if (this.initiator.hand.length === 0) {
                     this.initiator.passed = true;
                     this.channel.send(
-                        `${this.initiator.user.username} has been automatically passed since they do not have any cards.`,
+                        `${this.initiator.user.username} has automatically passed since they do not have any cards left in their hand.`,
                     );
                 }
                 if (this.target.hand.length === 0) {
                     this.target.passed = true;
                     this.channel.send(
-                        `${this.target.user.username} has been automatically passed since they do not have any cards.`,
+                        `${this.target.user.username} has automatically passed since they do not have any cards left in their hand.`,
                     );
                 }
 
