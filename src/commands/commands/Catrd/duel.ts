@@ -16,11 +16,6 @@ import {
     MessageReaction,
 } from "discord.js";
 
-/*
-Having to scroll so far up to see the board is annoying.
-This could be fixed by reposting the board after a each round ends.
-*/
-
 export default class Duel extends Command {
     constructor(client: Plexi) {
         super(client, {
@@ -356,14 +351,15 @@ class GameState {
                 inline: true,
             },
         ];
-        const embed = new MessageEmbed({
-            color: "RANDOM",
-            title: `${this.initiator.user.username} (0) | ${this.target.user.username} (0)`,
-            footer: { text: `Total power: 0 | 0, Current turn: ${turn.user.username}` },
-            fields: originalBoardFields,
-        });
 
-        const board = await this.channel.send({ embed });
+        let board = await this.channel.send({
+            embed: {
+                color: "RANDOM",
+                title: `${this.initiator.user.username} (0) | ${this.target.user.username} (0)`,
+                footer: { text: `Total power: 0 | 0, Current turn: ${turn.user.username}` },
+                fields: originalBoardFields,
+            },
+        });
 
         // Main game logic;
         // We want to recieve every message both users send
@@ -550,13 +546,15 @@ class GameState {
                     this.target.playedCards = [];
                     this.initiator.passed = false;
                     this.target.passed = false;
-                    const embed = new MessageEmbed({
-                        color: "RANDOM",
-                        title: `${this.initiator.user.username} (${this.initiator.wins}) | ${this.target.user.username} (${this.target.wins})`,
-                        footer: { text: `Total power: 0 | 0, Current turn: ${turn.user.username}` },
-                        fields: originalBoardFields,
+                    await board.delete();
+                    board = await this.channel.send({
+                        embed: {
+                            color: "RANDOM",
+                            title: `${this.initiator.user.username} (${this.initiator.wins}) | ${this.target.user.username} (${this.target.wins})`,
+                            footer: { text: `Total power: 0 | 0, Current turn: ${turn.user.username}` },
+                            fields: originalBoardFields,
+                        },
                     });
-                    await board.edit({ embed });
 
                     // If both user have 2 wins (game end as a draw)
                     if (this.initiator.wins === 2 && this.target.wins === 2) {
