@@ -416,6 +416,12 @@ class GameState {
                         turn.playedCards.push(card);
                         // Remove the card from their hand
                         turn.hand.splice(turn.hand.indexOf(card), 1);
+                        // Update the hand for the user
+                        turn.deckContent = await turn.deckContent.edit(generateDeckText(turn));
+                        // Let the user know
+                        this.channel.send(`${turn.user.username} has played: ${card.name}`);
+                        // Flip the turn only if the other user has not passed
+                        if (!swapTurn(turn).passed) turn = swapTurn(turn);
                         // Regenerate the board embed
                         const newBoard = new MessageEmbed({
                             color: "RANDOM",
@@ -491,12 +497,6 @@ class GameState {
                             ],
                         });
                         await board.edit({ embed: newBoard });
-                        // Update the hand for the user
-                        turn.deckContent = await turn.deckContent.edit(generateDeckText(turn));
-                        // Let the user know
-                        this.channel.send(`${turn.user.username} has played: ${card.name}`);
-                        // Flip the turn only if the other user has not passed
-                        if (!swapTurn(turn).passed) turn = swapTurn(turn);
                     } else {
                         this.channel.send(
                             "You don't have that card in your hand! (HINT: Check your dms with me to view your hand)",
