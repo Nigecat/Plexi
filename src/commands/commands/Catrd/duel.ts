@@ -191,7 +191,7 @@ class GameUser {
     }
 
     async unlock(): Promise<void> {
-        this.client.database.updateUser(this.user.id, "lock", false);
+        await this.client.database.updateUser(this.user.id, "lock", false);
     }
 }
 
@@ -574,6 +574,9 @@ class GameState {
                     // Check if a user has gotten 2 wins (this signifies a game end)
                     else if (this.initiator.wins >= 2) {
                         collector.stop();
+                        // Unlock the accounts
+                        await this.initiator.unlock();
+                        await this.target.unlock();
                         this.channel.send(
                             oneLine`
                                 ${this.initiator.user} has won the duel! 
@@ -585,16 +588,13 @@ class GameState {
                         );
                         // If this was a coin bet
                         if (typeof this.target.bet === "number") {
-                            // Unlock the accounts
-                            await this.initiator.unlock();
-                            await this.target.unlock();
                             // Apply the changes
-                            this.client.database.updateUser(
+                            await this.client.database.updateUser(
                                 this.initiator.user.id,
                                 "coins",
                                 this.initiator.dbData.coins + this.target.bet,
                             );
-                            this.client.database.updateUser(
+                            await this.client.database.updateUser(
                                 this.target.user.id,
                                 "coins",
                                 this.target.dbData.coins - this.target.bet,
@@ -603,17 +603,18 @@ class GameState {
                         // Otherwise we can assume it is a card bet
                         else {
                             // Apply the changes
-                            // Unlock the accounts
-                            await this.initiator.unlock();
-                            await this.target.unlock();
                             this.initiator.dbData.cards.push(this.target.bet);
                             this.target.dbData.cards.splice(this.target.dbData.cards.indexOf(this.target.bet), 1);
-                            this.client.database.updateUser(
+                            await this.client.database.updateUser(
                                 this.initiator.user.id,
                                 "cards",
                                 this.initiator.dbData.cards,
                             );
-                            this.client.database.updateUser(this.target.user.id, "cards", this.target.dbData.cards);
+                            await this.client.database.updateUser(
+                                this.target.user.id,
+                                "cards",
+                                this.target.dbData.cards,
+                            );
                         }
                     } else if (this.target.wins >= 2) {
                         collector.stop();
@@ -633,16 +634,13 @@ class GameState {
                         );
                         // If this was a coin bet
                         if (typeof this.initiator.bet === "number") {
-                            // Unlock the accounts
-                            await this.initiator.unlock();
-                            await this.target.unlock();
                             // Apply the changes
-                            this.client.database.updateUser(
+                            await this.client.database.updateUser(
                                 this.target.user.id,
                                 "coins",
                                 this.target.dbData.coins + this.initiator.bet,
                             );
-                            this.client.database.updateUser(
+                            await this.client.database.updateUser(
                                 this.initiator.user.id,
                                 "coins",
                                 this.initiator.dbData.coins - this.initiator.bet,
@@ -650,17 +648,18 @@ class GameState {
                         }
                         // Otherwise we can assume it is a card bet
                         else {
-                            // Unlock the accounts
-                            await this.initiator.unlock();
-                            await this.target.unlock();
                             // Apply the changes
                             this.target.dbData.cards.push(this.initiator.bet);
                             this.initiator.dbData.cards.splice(
                                 this.initiator.dbData.cards.indexOf(this.initiator.bet),
                                 1,
                             );
-                            this.client.database.updateUser(this.target.user.id, "cards", this.target.dbData.cards);
-                            this.client.database.updateUser(
+                            await this.client.database.updateUser(
+                                this.target.user.id,
+                                "cards",
+                                this.target.dbData.cards,
+                            );
+                            await this.client.database.updateUser(
                                 this.initiator.user.id,
                                 "cards",
                                 this.initiator.dbData.cards,

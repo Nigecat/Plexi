@@ -30,7 +30,7 @@ export default class DatabaseManager extends EventEmitter {
                 id: String,
                 cards: [String],
                 deck: [String],
-                lock: Boolean,
+                lock: { type: Boolean, default: false },
                 dailyClaimTime: Date,
                 xp: { type: Number, default: 0 },
                 coins: { type: Number, default: 500 },
