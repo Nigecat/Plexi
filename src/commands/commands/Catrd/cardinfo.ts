@@ -1,6 +1,7 @@
 import { extname } from "path";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
+import { ZERO_WIDTH_SPACE } from "../../../constants";
 import { Message, MessageEmbed, MessageAttachment } from "discord.js";
 
 export default class CardInfo extends Command {
@@ -45,8 +46,8 @@ export default class CardInfo extends Command {
                         inline: true,
                     },
                     {
-                        name: "\u200b",
-                        value: "\u200b",
+                        name: ZERO_WIDTH_SPACE,
+                        value: ZERO_WIDTH_SPACE,
                     },
                     {
                         name: "Power",

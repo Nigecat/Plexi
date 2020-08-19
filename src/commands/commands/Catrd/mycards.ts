@@ -33,8 +33,8 @@ export default class MyCards extends Command {
                 footer: { text: `Run \`duel\` to fight another user with your deck (Deck: [${user.deck.length}/20])` },
                 fields: cards.concat([
                     {
-                        name: "\u200b",
-                        value: "\u200b",
+                        name: ZERO_WIDTH_SPACE,
+                        value: ZERO_WIDTH_SPACE,
                         inline: true,
                     },
                     {
