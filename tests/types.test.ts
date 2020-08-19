@@ -100,7 +100,7 @@ describe("argumentTypes", () => {
         it("parse", () => {
             expect(argumentTypes.number.parse("123", mockClient, mockMessage)).to.equal(123);
             expect(argumentTypes.number.parse("2.5", mockClient, mockMessage)).to.equal(2.5);
-            expect(argumentTypes.number.parse("-7", mockClient, mockMessage)).to.equal(-7);
+            expect(argumentTypes.number.parse("-7", mockClient, mockMessage)).to.equal(0);
         });
     });
 
