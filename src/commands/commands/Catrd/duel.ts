@@ -120,12 +120,14 @@ export default class Duel extends Command {
             { max: 2, time: 60000 },
         );
 
-        await message.reactions.removeAll();
-        await betConfirm.delete();
+        await betConfirm.reactions.removeAll();
 
         // If any of the reactions aren't yes or we don't get enough of them
-        if (!response.has("🇾") || response.get("🇾").count !== 3) {
-            message.channel.send("Duel cancelled! (HINT: The bet confirmation times out after not too long)");
+        if (
+            response.has("🇳") &&
+            response.get("🇳").users.cache.filter((user) => [message.author.id, user.id].includes(user.id)).size > 0
+        ) {
+            await betConfirm.edit("Duel cancelled! (HINT: The bet confirmation times out after not too long)");
             // Unlock the accounts
             await game.initiator.unlock();
             await game.target.unlock();
