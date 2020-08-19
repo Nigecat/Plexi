@@ -418,6 +418,10 @@ export class GameState {
                         turn.playedCards.push(card);
                         // Remove the card from their hand
                         turn.hand.splice(turn.hand.indexOf(card), 1);
+                        // Execute the ability of the card if it exists
+                        if (card.ability) {
+                            card.ability.execute(this);
+                        }
                         // Update the hand for the user
                         turn.deckContent = await turn.deckContent.edit(generateDeckText(turn));
                         // Let the user know
