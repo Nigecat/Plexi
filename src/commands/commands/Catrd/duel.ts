@@ -372,8 +372,12 @@ class GameState {
                 message.author.id === this.initiator.user.id || message.author.id === this.target.user.id,
         );
 
-        // Delete the board once the game finishes
-        collector.on("end", () => board.delete());
+        // Delete the board and dms once the game finishes
+        collector.on("end", () => {
+            board.delete();
+            this.initiator.deckContent.delete();
+            this.target.deckContent.delete();
+        });
 
         // Set a timeout of 15 minutes as a game timeout
         // Users do not know this exists
