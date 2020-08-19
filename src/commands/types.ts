@@ -29,7 +29,7 @@ const argumentTypes: ArgumentTypes = {
         validate: (val: string): boolean =>
             val.trim() !== "" ? (Number.isFinite ? Number.isFinite(+val) : isFinite(+val)) : false,
 
-        parse: (val: string): number => parseFloat(val),
+        parse: (val: string): number => (parseFloat(val) > 0 ? parseFloat(val) : 0),
     },
 
     member: {
