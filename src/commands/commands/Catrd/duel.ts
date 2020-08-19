@@ -510,12 +510,14 @@ class GameState {
                     this.channel.send(
                         `${this.initiator.user.username} has automatically passed since they do not have any cards left in their hand.`,
                     );
+                    turn = swapTurn(turn);
                 }
                 if (this.target.hand.length === 0) {
                     this.target.passed = true;
                     this.channel.send(
                         `${this.target.user.username} has automatically passed since they do not have any cards left in their hand.`,
                     );
+                    turn = swapTurn(turn);
                 }
 
                 // If both users have now passed
@@ -611,6 +613,9 @@ class GameState {
                         }
                     } else if (this.target.wins >= 2) {
                         collector.emit("end");
+                        // Unlock the accounts
+                        await this.initiator.unlock();
+                        await this.target.unlock();
                         this.channel.send(
                             oneLine`
                                 ${this.target.user} has won the duel! 
@@ -624,6 +629,9 @@ class GameState {
                         );
                         // If this was a coin bet
                         if (typeof this.initiator.bet === "number") {
+                            // Unlock the accounts
+                            await this.initiator.unlock();
+                            await this.target.unlock();
                             // Apply the changes
                             this.client.database.updateUser(
                                 this.target.user.id,
@@ -638,6 +646,9 @@ class GameState {
                         }
                         // Otherwise we can assume it is a card bet
                         else {
+                            // Unlock the accounts
+                            await this.initiator.unlock();
+                            await this.target.unlock();
                             // Apply the changes
                             this.target.dbData.cards.push(this.initiator.bet);
                             this.initiator.dbData.cards.splice(
