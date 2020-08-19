@@ -1,3 +1,15 @@
+## [5.5.1](https://github.com/Nigecat/Plexi/compare/v5.5.0...v5.5.1) (2020-08-19)
+
+
+### Bug Fixes
+
+* extremely large decks not display properly ([d49a912](https://github.com/Nigecat/Plexi/commit/d49a912cca0cc2da06d44489a72f82c36552e41e))
+* extremely large decks not display properly ([775bc60](https://github.com/Nigecat/Plexi/commit/775bc60b35f9a8a55f6d972c05707af5c4524d61))
+* rps subtraction ([2b0b4da](https://github.com/Nigecat/Plexi/commit/2b0b4dae5417f824814566da83e59bef35df139c))
+* rps weighting ([7e1bb3e](https://github.com/Nigecat/Plexi/commit/7e1bb3eadf6ad4aca26a7c33d085da26757339ca))
+
+
+
 # [5.5.0](https://github.com/Nigecat/Plexi/compare/v5.4.7...v5.5.0) (2020-08-19)
 
 
