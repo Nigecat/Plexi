@@ -505,14 +505,18 @@ class GameState {
                 }
 
                 // Auto pass if either user is out of cards
-                if (this.initiator.hand.length === 0) {
+                if (
+                    this.initiator.user.id === turn.user.id &&
+                    this.initiator.hand.length === 0 &&
+                    !this.initiator.passed
+                ) {
                     this.initiator.passed = true;
                     this.channel.send(
                         `${this.initiator.user.username} has automatically passed since they do not have any cards left in their hand.`,
                     );
                     turn = swapTurn(turn);
                 }
-                if (this.target.hand.length === 0) {
+                if (this.target.user.id === turn.user.id && this.target.hand.length === 0 && !this.target.passed) {
                     this.target.passed = true;
                     this.channel.send(
                         `${this.target.user.username} has automatically passed since they do not have any cards left in their hand.`,
