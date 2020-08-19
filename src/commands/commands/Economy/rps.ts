@@ -37,7 +37,7 @@ export default class RPS extends Command {
             // 0 - user loses
             // 1 - draw
             // 2 - user wins
-            const winner = [0, 0, 0, 0, 1, 1, 1, 2, 2][Math.floor(Math.random() * 9)];
+            const winner = [0, 0, 0, 1, 1, 1, 2, 2][Math.floor(Math.random() * 9)];
 
             // If the user lost
             if (winner === 0) {
