@@ -1,3 +1,21 @@
+## [5.5.2](https://github.com/Nigecat/Plexi/compare/v5.5.1...v5.5.2) (2020-08-19)
+
+
+### Bug Fixes
+
+* duel bet confirm reaction allowing anyone to react ([d1ec09c](https://github.com/Nigecat/Plexi/commit/d1ec09cf8cb312b36e0d3db0f596885f8aac97f1))
+* duel command not properly unlocking user accounts ([53cf967](https://github.com/Nigecat/Plexi/commit/53cf96752d3eb68070f03a035e675ee4eb55edcc))
+* duel end condition ([1a6dd05](https://github.com/Nigecat/Plexi/commit/1a6dd0574a8557f813b629c8e732f51811d90550))
+* duel turn toggling ([58019c9](https://github.com/Nigecat/Plexi/commit/58019c9cd7602b9d76027afd6460a0e5e8081363))
+* incorrect duel card check target ([c8abf21](https://github.com/Nigecat/Plexi/commit/c8abf219e1db3ba7b7e0772e3db790e360c14b70))
+* infinite coin bug ([da502a2](https://github.com/Nigecat/Plexi/commit/da502a2d9afeb5c58c678728599c25bbbdc9d299))
+* mycards bug ([41bea2d](https://github.com/Nigecat/Plexi/commit/41bea2d5154210fa800d0747aa6b58b4a62474d0))
+* mycards bug ([524ab2f](https://github.com/Nigecat/Plexi/commit/524ab2fba15d2ebcd0c9f8a12471f28bc2a350b0))
+* premature duel auto passing ([94a748b](https://github.com/Nigecat/Plexi/commit/94a748b83a8fe478ec978a51d27492232dab3173))
+* several catrd duel bugs ([52a2db6](https://github.com/Nigecat/Plexi/commit/52a2db611cc590574c66d193fe0eacb4d675bd4c))
+
+
+
 ## [5.5.1](https://github.com/Nigecat/Plexi/compare/v5.5.0...v5.5.1) (2020-08-19)
 
 

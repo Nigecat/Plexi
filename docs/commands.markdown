@@ -10,12 +10,29 @@ permalink: /commands
 - [arg...] - The argument can have an infinite length. Any other arguments are restricted to a single word.
 - [arg1 \| arg2] - The supplied argument must be one of these.
 
+### Catrd
+
+| Command | Description | Usage |
+| ------- | :---------: | ----- |
+| buypack | Buy a pack of cards, run packinfo to see available packs and their cost. You will recieved 5 cards from the pack. | $buypack [Basic | Mewtal Gear...] |
+| cardinfo | Get info on the specified card | $cardinfo [card...] |
+| catrd-help | Run this command to see what catrd is and get an overview of how it works | $catrd-help  |
+| duel | Fight another user in the ring of honor! | $duel [user] |
+| mycards | View a list of the cards you currently have (and your deck) | $mycards  |
+| packinfo | Get a list of cards in the specified pack, if no pack is specified it will show an overview of all packs. | $packinfo [pack...] |
+| removecard | Remove a card from your deck (moves it to your cards), run `mycards` to view your cards/deck | $removecard [card...] |
+| sellcard | Sell a card for it's value. Run `cardinfo` to check the value of a card. | $sellcard [card...] |
+
+
 ### Economy
 
 | Command | Description | Usage |
 | ------- | :---------: | ----- |
 | checkbal | Check another user's coin balance | $checkbal [user] |
+| daily | Claim your daily 50 coins | $daily  |
 | give | Give a user some of your coins | $give [user] [coins] |
+| rps | Play rock paper scissors against me | $rps [bet] [rock | paper | scissors] |
+| topcoins | View the global top leaderboard for coins | $topcoins  |
 
 
 ### Fun
