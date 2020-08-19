@@ -426,11 +426,11 @@ export class GameState {
                         // Remove the card from their hand
                         turn.hand.splice(turn.hand.indexOf(card), 1);
                         // Let the user know
-                        this.channel.send(`${turn.user.username} has played: ${card.name}`);
+                        await this.channel.send(`${turn.user.username} has played: ${card.name}`);
                         // Execute the ability of the card if it exists
                         if (card.ability) {
-                            message.channel.send(`${card.name} triggered it's ability - ${card.ability.name}!`);
-                            await card.ability.execute({ game: this, turn, card });
+                            await message.channel.send(`${card.name} triggered it's ability - ${card.ability.name}!`);
+                            await message.channel.send(await card.ability.execute({ game: this, turn, card }));
                         }
                         // Update the hand for the user
                         turn.deckContent = await turn.deckContent.edit(generateDeckText(turn));
