@@ -1,0 +1,10 @@
+{
+    "Basic": {
+        "description": "The basic card pack for catrd",
+        "cost": 100
+    },
+    "Mewtal Gear": {
+        "description": "Kept you waiting, huh",
+        "cost": 200
+    }
+}

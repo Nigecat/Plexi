@@ -1,0 +1,74 @@
+[
+    {
+        "name": "Otacat",
+        "type": "Defense",
+        "power": 4,
+        "rarity": 15
+    },
+    {
+        "name": "Revolver Ocelot",
+        "type": "Scout",
+        "power": 8,
+        "rarity": 15
+    },
+    {
+        "name": "Metal Gear Cat",
+        "type": "Defense",
+        "power": 10,
+        "rarity": 10
+    },
+    {
+        "name": "Big Cat",
+        "type": "Melee",
+        "power": 7,
+        "rarity": 5
+    },
+    {
+        "name": "Punished Cat",
+        "type": "Melee",
+        "power": 6,
+        "rarity": 10
+    },
+    {
+        "name": "Solid Cat",
+        "type": "Melee",
+        "power": 6,
+        "rarity": 15
+    },
+    {
+        "name": "Liquid Cat",
+        "type": "Defense",
+        "power": 5,
+        "rarity": 5
+    },
+    {
+        "name": "Kazushiba Miller",
+        "type": "Scout",
+        "power": 3,
+        "rarity": 10
+    },
+    {
+        "name": "D-Dog",
+        "type": "Scout",
+        "power": 4,
+        "rarity": 10
+    },
+    {
+        "name": "D-Horse",
+        "type": "Defense",
+        "power": 4,
+        "rarity": 10
+    },
+    {
+        "name": "Nuke",
+        "type": "Scout",
+        "power": 2,
+        "rarity": 10
+    },
+    {
+        "name": "Sahewanthwopwis",
+        "type": "Melee",
+        "power": 15,
+        "rarity": 2
+    }
+]
