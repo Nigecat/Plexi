@@ -31,6 +31,7 @@ export default class DatabaseManager extends EventEmitter {
                 cards: [String],
                 deck: [String],
                 lock: Boolean,
+                dailyClaimTime: Date,
                 xp: { type: Number, default: 0 },
                 coins: { type: Number, default: 500 },
             }),
@@ -153,6 +154,7 @@ export interface User extends Omit<Document, "save"> {
     xp: number;
     cards: string[];
     deck: string[];
+    dailyClaimTime: Date;
     coins: number;
     lock: boolean;
     save: Document["save"];
