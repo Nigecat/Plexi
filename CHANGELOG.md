@@ -1,4 +1,43 @@
-## 5.4.6 (2020-08-16)
+# [5.5.0](https://github.com/Nigecat/Plexi/compare/v5.4.7...v5.5.0) (2020-08-19)
+
+
+### Bug Fixes
+
+* card image uploads not working with non jpgs ([6356c79](https://github.com/Nigecat/Plexi/commit/6356c7957457c6fd9de30dad415b104af576d1ab))
+* cards were case-sensitive ([9fd1935](https://github.com/Nigecat/Plexi/commit/9fd19356c6da7c074525266ddcccffa11ec67a1e))
+* change dotenv to be preloaded ([#86](https://github.com/Nigecat/Plexi/issues/86)) ([a53c1ac](https://github.com/Nigecat/Plexi/commit/a53c1ac87776fcce9094b6fcf4f9b489f8b1c96f))
+* command oneOf property is now case-insensitive ([098a84d](https://github.com/Nigecat/Plexi/commit/098a84d5bbc97e3419abea82f4923088eddc12c1))
+* duel command not properly calculating power ([14105d8](https://github.com/Nigecat/Plexi/commit/14105d8a0d52e1a10051732a3dbf5a1c50971fc2))
+* duel hand not getting deleted after duel finishes ([8773f97](https://github.com/Nigecat/Plexi/commit/8773f977dbb479c01639996b6b928e69ba2e6edd))
+* typo ([a8d9802](https://github.com/Nigecat/Plexi/commit/a8d980261c44dc643976d5eab97c53f6eab0ad39))
+* users being able to change their data while in a duel ([5e5a3da](https://github.com/Nigecat/Plexi/commit/5e5a3daca01308cff7ce93b199816e4053741588))
+* users could change their data during a duel to break things ([5b570e5](https://github.com/Nigecat/Plexi/commit/5b570e5b138659e657452fe15f527b28fd16f582))
+
+
+### Features
+
+* **command:** add buypack command ([9067c09](https://github.com/Nigecat/Plexi/commit/9067c0950dd6124564b6031befa1eb9edf40b626))
+* **command:** add cardinfo command ([192403d](https://github.com/Nigecat/Plexi/commit/192403dcf01bbf70291c87cc9b1abf17a13ea3aa))
+* **command:** add catrd pack info command ([2d27870](https://github.com/Nigecat/Plexi/commit/2d2787089785ee0703455cfc86302b261661cdb0))
+* **command:** add command to check your cards and deck ([2cea028](https://github.com/Nigecat/Plexi/commit/2cea0283e64240fbd376dd835a61a8712d821c4d))
+* **command:** add commands to add and remove cards from the deck ([d5aa40c](https://github.com/Nigecat/Plexi/commit/d5aa40c987ac512cac3254c2134ebb88bdb6d998))
+* **command:** create mycards command ([b1cc605](https://github.com/Nigecat/Plexi/commit/b1cc60538f675c149f42e970a2c310d8950190cc))
+* **command:** daily coin claim ([90f5599](https://github.com/Nigecat/Plexi/commit/90f5599fd6eb17e6a57571066d68bc49934e6084))
+* **command:** duel command ([#88](https://github.com/Nigecat/Plexi/issues/88)) ([f6c70d2](https://github.com/Nigecat/Plexi/commit/f6c70d2e3d00a4017409c823dc47c34bda288054))
+* **command:** help command for catrd ([b496030](https://github.com/Nigecat/Plexi/commit/b4960308bff2ae0fd45aaaee4a084c3cfdb625e1))
+* **command:** rock paper scissors command to gain coins ([9810753](https://github.com/Nigecat/Plexi/commit/9810753cef75b01932c5455ad6ca131c0f07da1b))
+* **command:** sellcard command to sell cards ([7cb5d7d](https://github.com/Nigecat/Plexi/commit/7cb5d7d0b6c8f902ac2b302d7df5e2a086f861b5))
+* **command:** topcoins command to check the global leaderboard for coins ([e7c6a2c](https://github.com/Nigecat/Plexi/commit/e7c6a2c72293cd3113483813e9b1cfa2d2396308))
+* add card manager system ([a962b70](https://github.com/Nigecat/Plexi/commit/a962b7074e749a42c19e14be599b62d5db620709))
+
+
+### Performance Improvements
+
+* remove useless class inheritance ([d53c7b6](https://github.com/Nigecat/Plexi/commit/d53c7b68cc6572bbcde42a95a9d8751dc983c7ad))
+
+
+
+## [5.4.7](https://github.com/Nigecat/Plexi/compare/5ca864a4f8e4dcd28bf7f4468608172171306fbf...v5.4.7) (2020-08-17)
 
 
 ### Bug Fixes
@@ -29,6 +68,7 @@
 
 ### Reverts
 
+* Revert "ci: fix build attempting to run on gh-pages branch (#74)" (#75) ([86b51b5](https://github.com/Nigecat/Plexi/commit/86b51b50b1020425d7024d309b951a754df21e7d)), closes [#74](https://github.com/Nigecat/Plexi/issues/74) [#75](https://github.com/Nigecat/Plexi/issues/75)
 * remove jekyll theme ([3b95613](https://github.com/Nigecat/Plexi/commit/3b956139a9e3e8b3578db27940a33a4f4d43449c))
 
 
