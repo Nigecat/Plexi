@@ -166,7 +166,7 @@ export default class Duel extends Command {
     }
 }
 
-class GameUser {
+export class GameUser {
     public dbData: User;
     public dmChannel: DMChannel;
     public hand: Card[];
@@ -197,7 +197,7 @@ class GameUser {
     }
 }
 
-class GameState {
+export class GameState {
     // The user who started the duel
     public initiator: GameUser;
     // The user who the duel was started against
