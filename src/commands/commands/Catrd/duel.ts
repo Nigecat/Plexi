@@ -17,9 +17,6 @@ import {
 } from "discord.js";
 
 /*
-If there is a lock, a user could effectively brick another user's account by starting a game then disappearing off the face of the earth.
-This sould be fixed by having a game timout that starts after the setup is complete (probably ~10 minutes)
-
 Having to scroll so far up to see the board is annoying.
 This could be fixed by reposting the board after a each round ends.
 */
@@ -55,6 +52,17 @@ export default class Duel extends Command {
             user,
         );
 
+        // Init the game and run all pre-game checks
+        try {
+            await game.init();
+        } catch (err) {
+            message.channel.send(err.message);
+            // Unlock the accounts
+            await game.initiator.unlock();
+            await game.target.unlock();
+            return;
+        }
+
         await message.channel.send({
             embed: {
                 color: "#ff0000",
@@ -66,14 +74,6 @@ export default class Duel extends Command {
             },
         });
 
-        // Init the game and run all pre-game checks
-        try {
-            await game.init();
-        } catch (err) {
-            message.channel.send(err.message);
-            return;
-        }
-
         // All pre-game checks should have passed if we get here
         // Next we confirm if the user is willing to accept the duel
         const confirmation = await message.channel.send(
@@ -83,6 +83,9 @@ export default class Duel extends Command {
         // If the confirmation does not pass
         if (!(await confirm(user.id, confirmation))) {
             await confirmation.edit("Duel cancelled! (HINT: The duel request times out after not too long)");
+            // Unlock the accounts
+            await game.initiator.unlock();
+            await game.target.unlock();
             return;
         }
 
@@ -94,6 +97,9 @@ export default class Duel extends Command {
             await game.getBet();
         } catch (err) {
             message.channel.send("The duel has been cancelled.");
+            // Unlock the accounts
+            await game.initiator.unlock();
+            await game.target.unlock();
             return;
         }
 
@@ -114,20 +120,20 @@ export default class Duel extends Command {
         await betConfirm.react("🇾");
         await betConfirm.react("🇳");
         const response = await betConfirm.awaitReactions(
-            (reaction: MessageReaction) =>
-                ["🇾", "🇳"].includes(reaction.emoji.name) &&
-                reaction.users.cache.some(
-                    (reactUser) => reactUser.id === message.author.id || reactUser.id === user.id,
-                ),
-            { max: 2 },
+            (reaction: MessageReaction, reactUser: DiscordUser) =>
+                ["🇳", "🇾"].includes(reaction.emoji.name) && [message.author.id, user.id].includes(reactUser.id),
+            { max: 2, time: 60000 },
         );
 
         await message.reactions.removeAll();
         await betConfirm.delete();
 
-        // If any of the reactions aren't yes
-        if (!response.every((emoji: MessageReaction) => emoji.emoji.name === "🇾")) {
-            message.channel.send("Duel cancelled!");
+        // If any of the reactions aren't yes or we don't get enough of them
+        if (!response.has("🇾") || response.get("🇾").count !== 3) {
+            message.channel.send("Duel cancelled! (HINT: The bet confirmation times out after not too long)");
+            // Unlock the accounts
+            await game.initiator.unlock();
+            await game.target.unlock();
             return;
         }
 
@@ -182,7 +188,11 @@ class GameUser {
 
     async init(): Promise<void> {
         // Lock the user account
-        this.dbData = await this.client.database.updateUser(this.user.id, "lock", true);
+        this.dbData = await this.client.database.getUser(this.user.id);
+    }
+
+    async lock(): Promise<void> {
+        await this.client.database.updateUser(this.user.id, "lock", true);
     }
 
     async unlock(): Promise<void> {
@@ -229,6 +239,18 @@ class GameState {
         if (this.initiator.dbData.deck.length !== 20) {
             throw new Error("The person you are trying to duel does not have 20 cards in their deck!");
         }
+
+        // Ensure neither user is already in a duel
+        if (this.initiator.dbData.lock) {
+            throw new Error("You are already in a duel!");
+        }
+        if (this.target.dbData.lock) {
+            throw new Error("The person you are trying to duel is already in a duel!");
+        }
+
+        // Lock the users
+        await this.initiator.lock();
+        await this.target.lock();
     }
 
     /** Get the user bets */
@@ -255,12 +277,14 @@ class GameState {
         const msg = await this.channel.send({ embed });
 
         // Get the bets of both users
-        await Promise.all([
-            GameState.getUserBet(this.client, this.initiator),
-            GameState.getUserBet(this.client, this.target),
-        ]);
-
-        await msg.delete();
+        try {
+            await Promise.all([
+                GameState.getUserBet(this.client, this.initiator),
+                GameState.getUserBet(this.client, this.target),
+            ]);
+        } finally {
+            await msg.delete();
+        }
     }
 
     /** Start the game, assumes prior setup is complete */
@@ -347,6 +371,30 @@ class GameState {
             (message: Message) =>
                 message.author.id === this.initiator.user.id || message.author.id === this.target.user.id,
         );
+
+        // Delete the board once the game finishes
+        collector.on("end", () => board.delete());
+
+        // Set a timeout of 15 minutes as a game timeout
+        // Users do not know this exists
+        setTimeout(async () => {
+            // If the duel has not ended after 15 minutes
+            if (!collector.ended) {
+                // End it
+                collector.emit("end");
+                // Unlock the accounts
+                await this.initiator.unlock();
+                await this.target.unlock();
+                // Let the users know
+                this.channel.send(
+                    oneLine`
+                        Duel between ${this.initiator.user} and ${this.target.user} has timed out. 
+                        (Duels have a max time limit of 15 minutes!)
+                    `,
+                    { allowedMentions: { users: [this.initiator.user.id, this.target.user.id] } },
+                );
+            }
+        }, 900000);
 
         // This runs every time either the initiator or target sends a message in the game channel
         collector.on("collect", async (message: Message) => {
@@ -506,8 +554,18 @@ class GameState {
                     });
                     await board.edit({ embed });
 
+                    // If both user have 2 wins (game end as a draw)
+                    if (this.initiator.wins === 2 && this.target.wins === 2) {
+                        collector.emit("end");
+                        this.channel.send("Duel over - this duel is a draw!");
+                        // Unlock the accounts
+                        await this.initiator.unlock();
+                        await this.target.unlock();
+                    }
+
                     // Check if a user has gotten 2 wins (this signifies a game end)
-                    if (this.initiator.wins >= 2) {
+                    else if (this.initiator.wins >= 2) {
+                        collector.emit("end");
                         this.channel.send(
                             oneLine`
                                 ${this.initiator.user} has won the duel! 
@@ -549,8 +607,8 @@ class GameState {
                             );
                             this.client.database.updateUser(this.target.user.id, "cards", this.target.dbData.cards);
                         }
-                        collector.emit("end");
                     } else if (this.target.wins >= 2) {
+                        collector.emit("end");
                         this.channel.send(
                             oneLine`
                                 ${this.target.user} has won the duel! 
@@ -591,7 +649,6 @@ class GameState {
                                 this.initiator.dbData.cards,
                             );
                         }
-                        collector.emit("end");
                     }
                 }
             }

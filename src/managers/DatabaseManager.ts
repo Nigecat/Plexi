@@ -115,14 +115,19 @@ export default class DatabaseManager extends EventEmitter {
     // eslint-disable-next-line
     async updateUser(id: Snowflake, key: string, value: any): Promise<User> {
         const user = await this.getUser(id);
-        // Only proceed if the user is not locked
-        if (!user.lock) {
+        // Only proceed if the user is not locked (unless we are trying to change the lock)
+        if (key === "lock" || !user.lock) {
             this.client.emit("debug", `Updating user: ${id} (${key}:${user[key]} -> ${key}:${value})`);
             user[key] = value;
             return (user.save() as unknown) as User;
         } else {
             return user;
         }
+    }
+
+    /** Get all users in the database */
+    async allUsers(): Promise<User[]> {
+        return ((await this.User.find({})) as unknown[]) as User[];
     }
 
     /**
