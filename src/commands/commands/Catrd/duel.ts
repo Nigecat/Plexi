@@ -292,7 +292,14 @@ export class GameState {
             This message will be automatically updated to reflect the current contents of your deck.
             Check back here at any time to see your deck.
 
-            ${user.hand.map((card) => `${card.name} (${card.type}) - ${card.power} power`).join("\n")}
+            ${user.hand
+                .map(
+                    (card) =>
+                        `${card.name} (${card.type}) - ${card.power} power ${
+                            card.ability ? `| Ability: ${card.ability.name}` : ""
+                        }`,
+                )
+                .join("\n")}
         `;
 
         // Helper function to swap a turn
@@ -418,14 +425,15 @@ export class GameState {
                         turn.playedCards.push(card);
                         // Remove the card from their hand
                         turn.hand.splice(turn.hand.indexOf(card), 1);
+                        // Let the user know
+                        this.channel.send(`${turn.user.username} has played: ${card.name}`);
                         // Execute the ability of the card if it exists
                         if (card.ability) {
-                            card.ability.execute(this);
+                            message.channel.send(`${card.name} triggered it's ability - ${card.ability.name}!`);
+                            await card.ability.execute({ game: this, turn, card });
                         }
                         // Update the hand for the user
                         turn.deckContent = await turn.deckContent.edit(generateDeckText(turn));
-                        // Let the user know
-                        this.channel.send(`${turn.user.username} has played: ${card.name}`);
                         // Flip the turn only if the other user has not passed
                         if (!swapTurn(turn).passed) turn = swapTurn(turn);
                         // Regenerate the board embed

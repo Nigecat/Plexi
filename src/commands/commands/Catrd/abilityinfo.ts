@@ -23,7 +23,7 @@ export default class AbilityInfo extends Command {
         const cards = this.client.cards.array().filter((card) => typeof card.ability !== "undefined");
 
         // If this ability exists
-        if (cards.some((card) => card.ability.name.toLowerCase() === ability)) {
+        if (cards.some((card) => card.ability.name.toLowerCase() === ability.toLowerCase())) {
             const card = cards.find((card) => card.ability.name.toLowerCase() === ability);
             const embed = new MessageEmbed({
                 color: "RANDOM",

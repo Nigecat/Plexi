@@ -34,7 +34,7 @@ export default class CardManager extends Collection<string, Card> {
                 power: card.power,
                 value: calculateValue(card.rarity),
                 rarity: card.rarity,
-                ability: undefined, // TODO: abilities[card.ability],
+                ability: abilities[card.ability],
                 image: resolve(__dirname, "..", "assets", "cards", "images", "Mewtal Gear", `${card.name}.jpg`),
             });
         });
