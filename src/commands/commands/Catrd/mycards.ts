@@ -21,8 +21,8 @@ export default class MyCards extends Command {
         } else {
             const cards = [{ name: "Cards", value: "", inline: true }];
             user.cards.forEach((card) => {
-                if (cards[cards.length - 1].value.length >= 1024) {
-                    cards.push({ name: ZERO_WIDTH_SPACE, value: "", inline: true });
+                if (cards[cards.length - 1].value.length >= 750) {
+                    cards.push({ name: ZERO_WIDTH_SPACE, value: "", inline: false });
                 }
                 cards[cards.length - 1].value += card + "\n";
             });
