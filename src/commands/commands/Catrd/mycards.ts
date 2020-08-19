@@ -19,10 +19,10 @@ export default class MyCards extends Command {
         if (user.cards.length === 0 && user.deck.length === 0) {
             message.channel.send("You don't have any cards! Run `packinfo` to get started.");
         } else {
-            const cards = [{ name: "Cards", value: "|", inline: true }];
+            const cards = [{ name: "Cards", value: ZERO_WIDTH_SPACE, inline: true }];
             user.cards.forEach((card) => {
                 if (cards[cards.length - 1].value.length >= 750) {
-                    cards.push({ name: ZERO_WIDTH_SPACE, value: "|", inline: false });
+                    cards.push({ name: ZERO_WIDTH_SPACE, value: ZERO_WIDTH_SPACE, inline: false });
                 }
                 cards[cards.length - 1].value += card + "\n";
             });
