@@ -138,5 +138,12 @@
         "ability": "Medic",
         "power": 0,
         "rarity": 10
+    },
+    {
+        "name": "Catouflage",
+        "type": "Melee",
+        "ability": "Spy",
+        "power": 0,
+        "rarity": 2
     }
 ]

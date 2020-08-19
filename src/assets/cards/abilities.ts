@@ -28,6 +28,13 @@ export const abilities: { [name: string]: Ability } = {
 
         },
     },
+    Spy: {
+        name: "Spy",
+        description: "This card plays on the enemy's side of the field, but you get two random cards from your deck.",
+        execute: async (game: GameState): Promise<void> => {
+
+        },
+    },
     */
 };
 
