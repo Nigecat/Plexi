@@ -74,6 +74,7 @@
     {
         "name": "Fat Cat",
         "type": "Melee",
+        "ability": "Morale Boost",
         "power": 10,
         "rarity": 0
     },
