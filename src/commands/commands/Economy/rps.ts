@@ -49,7 +49,7 @@ export default class RPS extends Command {
             } else if (winner === 2) {
                 // If the user won
                 message.channel.send(`You win! You just gained ${bet} coins.`);
-                await this.client.database.updateUser(message.author.id, "coins", user.coins - bet);
+                await this.client.database.updateUser(message.author.id, "coins", user.coins + bet);
             }
         }
     }
