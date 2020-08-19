@@ -231,7 +231,7 @@ class GameState {
         if (this.initiator.dbData.deck.length !== 20) {
             throw new Error("You do not have 20 cards in your deck! Run `addcard <card>` to move a card to your deck.");
         }
-        if (this.initiator.dbData.deck.length !== 20) {
+        if (this.target.dbData.deck.length !== 20) {
             throw new Error("The person you are trying to duel does not have 20 cards in their deck!");
         }
 
