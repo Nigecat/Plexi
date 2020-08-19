@@ -381,7 +381,7 @@ class GameState {
             // If the duel has not ended after 15 minutes
             if (!collector.ended) {
                 // End it
-                collector.emit("end");
+                collector.stop();
                 // Unlock the accounts
                 await this.initiator.unlock();
                 await this.target.unlock();
@@ -560,7 +560,7 @@ class GameState {
 
                     // If both user have 2 wins (game end as a draw)
                     if (this.initiator.wins === 2 && this.target.wins === 2) {
-                        collector.emit("end");
+                        collector.stop();
                         this.channel.send("Duel over - this duel is a draw!");
                         // Unlock the accounts
                         await this.initiator.unlock();
@@ -569,7 +569,7 @@ class GameState {
 
                     // Check if a user has gotten 2 wins (this signifies a game end)
                     else if (this.initiator.wins >= 2) {
-                        collector.emit("end");
+                        collector.stop();
                         this.channel.send(
                             oneLine`
                                 ${this.initiator.user} has won the duel! 
@@ -612,7 +612,7 @@ class GameState {
                             this.client.database.updateUser(this.target.user.id, "cards", this.target.dbData.cards);
                         }
                     } else if (this.target.wins >= 2) {
-                        collector.emit("end");
+                        collector.stop();
                         // Unlock the accounts
                         await this.initiator.unlock();
                         await this.target.unlock();
@@ -687,8 +687,7 @@ class GameState {
 
                 // If the user cancelled it reject the promise
                 if (message.content.toLowerCase() === "cancel") {
-                    message.channel.send("❌ Duel cancelled");
-                    initiatorCollector.emit("end");
+                    initiatorCollector.stop();
                     reject();
                 }
 
@@ -699,7 +698,7 @@ class GameState {
                     if (user.dbData.cards.includes(card.name)) {
                         message.channel.send(`✅ Bet recieved (${card.name})`);
                         user.bet = card.name;
-                        initiatorCollector.emit("end");
+                        initiatorCollector.stop();
                         resolve();
                     } else {
                         message.channel.send(
@@ -715,7 +714,7 @@ class GameState {
                     if (user.dbData.coins >= coins) {
                         message.channel.send(`✅ Bet recieved (${coins} coins)`);
                         user.bet = coins;
-                        initiatorCollector.emit("end");
+                        initiatorCollector.stop();
                         resolve();
                     } else {
                         message.channel.send(
