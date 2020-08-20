@@ -4,7 +4,7 @@ import { oneLine, stripIndents } from "common-tags";
 import { PermissionResolvable, Message, Snowflake, User, GuildMember, Role } from "discord.js";
 
 /** A command that can be run in a client */
-export class Command {
+export abstract class Command {
     /** The name of this command */
     public readonly name: string;
 
@@ -172,10 +172,7 @@ export class Command {
      * (each element will be automatically converted to the specified type prior to calling the run function).
      * @abstract
      */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    run(message: Message, args?: ArgumentTypeArray): void | Promise<void> {
-        throw new Error("Command not implemented! Create a run() function in the inherited class.");
-    }
+    abstract run(message: Message, args?: ArgumentTypeArray): void | Promise<void>;
 }
 
 export interface CommandInfo {
