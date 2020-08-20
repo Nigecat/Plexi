@@ -35,6 +35,7 @@ export default class DefineUD extends Command {
         const embed = new MessageEmbed({
             title: `Urban dictionary word definition: ${word}`,
             color: "#0099ff",
+            footer: { text: "Source: Urban Dictionary" },
         });
 
         // Remove any definitions greater than the max embed field character limit
