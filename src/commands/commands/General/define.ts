@@ -1,8 +1,8 @@
 import { Message } from "discord.js";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
-import { getDef } from "word-definition";
 import { stripIndents } from "common-tags";
+import { getDef, WordDefinition } from "word-definition";
 
 export default class Define extends Command {
     constructor(client: Plexi) {
@@ -23,8 +23,7 @@ export default class Define extends Command {
     async run(message: Message, [word]: [string]): Promise<void> {
         const result = await message.channel.send(`Searching for word: \`${word}\`...`);
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const definition: any = await new Promise((resolve) => getDef(word, "en", null, resolve));
+        const definition: WordDefinition = await new Promise((resolve) => getDef(word, "en", null, resolve));
 
         if (definition.definition) {
             result.edit(stripIndents`

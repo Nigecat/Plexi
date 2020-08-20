@@ -4,7 +4,7 @@ import loadCommands from "./commands";
 import { Command } from "./commands/Command";
 import CardManager from "./managers/CardManager";
 import DatabaseManager from "./managers/DatabaseManager";
-import { Client, ClientOptions, Collection } from "discord.js";
+import { Client, ClientOptions, Collection, ClientEvents } from "discord.js";
 
 /**
  * An extended version of the discord.js client
@@ -51,8 +51,7 @@ export class Plexi extends Client {
 
         // Register our event handlers
         Object.keys(events).forEach((event) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            this.on(event as any, (...data) => events[event](this, data));
+            this.on(event as keyof ClientEvents, (...data) => events[event](this, data));
         });
 
         // Load our plugins
