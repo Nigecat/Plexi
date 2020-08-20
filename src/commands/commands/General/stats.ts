@@ -18,7 +18,11 @@ export default class Stats extends Command {
             thumbnail: { url: this.client.user.avatarURL({ dynamic: true, format: "png", size: 512 }) },
             fields: [
                 { name: "Total Servers", value: this.client.guilds.cache.size, inline: true },
-                { name: "Total Users", value: this.client.users.cache.size, inline: true },
+                {
+                    name: "Total Users",
+                    value: this.client.guilds.cache.map(({ memberCount }) => memberCount).reduce((a, b) => a + b, 0),
+                    inline: true,
+                },
                 { name: "Total Channels", value: this.client.channels.cache.size, inline: true },
                 { name: "Memory Usage (MB)", value: process.memoryUsage().heapUsed / 1024 / 1024, inline: true },
                 { name: "Uptime (hours)", value: process.uptime() / 3600, inline: true },
