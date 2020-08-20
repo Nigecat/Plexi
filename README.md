@@ -11,8 +11,6 @@
   </p>
 </div>
 
-A general purpose discord bot
-
 ## Setup
 
 Development dependencies can be installed by running `npm ci --no-optional`.
