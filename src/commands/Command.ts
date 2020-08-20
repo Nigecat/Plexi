@@ -173,7 +173,7 @@ export class Command {
      * @abstract
      */
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    run(message: Message, args: ArgumentTypeArray): void {
+    run(message: Message, args?: ArgumentTypeArray): void | Promise<void> {
         throw new Error("Command not implemented! Create a run() function in the inherited class.");
     }
 }
