@@ -3,15 +3,13 @@ import { Plexi } from "../Plexi";
 import guildMemberAdd from "./guildMemberAdd";
 import voiceStateUpdate from "./voiceStateUpdate";
 
-export default <EventHandlers>{
+const events: Record<string, EventHandler> = {
     message,
     guildMemberAdd,
     voiceStateUpdate,
 };
 
-export interface EventHandlers {
-    [key: string]: EventHandler;
-}
+export default events;
 
 export interface EventHandler {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
