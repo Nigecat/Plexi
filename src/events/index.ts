@@ -12,6 +12,5 @@ const events: Record<string, EventHandler> = {
 export default events;
 
 export interface EventHandler {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (client: Plexi, [...data]: any[]): void;
+    (client: Plexi, [...data]: unknown[]): void;
 }

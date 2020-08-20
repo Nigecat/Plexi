@@ -1,7 +1,7 @@
 import { promisify } from "util";
-import { find } from "weather-js";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
+import { find, WeatherData } from "weather-js";
 import { Message, MessageEmbed } from "discord.js";
 
 export default class Weather extends Command {
@@ -24,18 +24,17 @@ export default class Weather extends Command {
     async run(message: Message, [city]: [string]): Promise<void> {
         // Check if user included the C/F
         const includedDegrees =
-            city.substr(city.length - 1).toLowerCase() === "c" || city.substr(city.length - 1).toLowerCase() === "f";
+            city.substr(city.length - 1).toUpperCase() === "C" || city.substr(city.length - 1).toUpperCase() === "F";
+
+        // Extract C/F from input or default to C
+        const degreeType = (<unknown>(includedDegrees ? city.substr(city.length - 1).toUpperCase() : "C")) as "C" | "F";
 
         // Remove C/F from input trying if user supplied it
         city = includedDegrees ? city.substring(0, city.length - 2) : city;
 
-        // Extract C/F from input or default to C
-        const degreeType = includedDegrees ? city.substr(city.length - 1) : "c";
-
         const result = await message.channel.send(`Finding weather for city: \`${city}\`...`);
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let weather: any;
+        let weather: WeatherData[];
 
         try {
             weather = await promisify(find)({ search: city, degreeType });
@@ -57,7 +56,7 @@ export default class Weather extends Command {
             fields: [
                 {
                     name: "Current Condition",
-                    value: `${weather[0].current.skytext} °${degreeType.toUpperCase()}`,
+                    value: `${weather[0].current.skytext}`,
                     inline: true,
                 },
                 {
@@ -73,12 +72,12 @@ export default class Weather extends Command {
                 { name: "‎", value: "‎" },
                 {
                     name: "Windspeed",
-                    value: `${weather[0].current.winddisplay} °${degreeType.toUpperCase()}`,
+                    value: `${weather[0].current.winddisplay}`,
                     inline: true,
                 },
                 {
                     name: "Checked On",
-                    value: `${weather[0].current.day} °${degreeType.toUpperCase()}`,
+                    value: `${weather[0].current.day}`,
                     inline: true,
                 },
             ],

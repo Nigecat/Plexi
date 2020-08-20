@@ -2,7 +2,7 @@ import DBL from "dblapi.js";
 import { Plexi } from "./src/Plexi";
 import { version } from "./package.json";
 import { existsSync, mkdirSync } from "fs";
-import { createLogger, format, transports } from "winston";
+import { createLogger, format, transports, Logger } from "winston";
 
 // Create the bot
 const client = new Plexi({
@@ -54,11 +54,11 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-logger.error = (err: any): any => {
+logger.error = (err: any): Logger => {
     if (err instanceof Error) {
-        logger.log({ level: "error", message: `${err.stack || err}` });
+        return logger.log({ level: "error", message: `${err.stack || err}` });
     } else {
-        logger.log({ level: "error", message: err });
+        return logger.log({ level: "error", message: err });
     }
 };
 
