@@ -2,7 +2,14 @@ import { Plexi } from "../Plexi";
 import { extractDigits } from "../utils/misc";
 import { User, Message, GuildMember, Role } from "discord.js";
 
-const argumentTypes: ArgumentTypes = {
+const argumentTypes: Record<
+    string,
+    {
+        validate: (val: string, client?: Plexi, message?: Message) => boolean;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        parse: (val: string, client?: Plexi, message?: Message) => any;
+    }
+> = {
     string: {
         validate: (): boolean => true,
 
@@ -51,11 +58,3 @@ const argumentTypes: ArgumentTypes = {
 };
 
 export default argumentTypes;
-
-export interface ArgumentTypes {
-    [type: string]: {
-        validate: (val: string, client?: Plexi, message?: Message) => boolean;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        parse: (val: string, client?: Plexi, message?: Message) => any;
-    };
-}
