@@ -15,7 +15,7 @@ export default class OwnerDist extends Command {
     }
 
     async run(message: Message): Promise<void> {
-        const uniqueOwners = [...new Set(this.client.guilds.cache.map(({ owner }) => owner.id))];
+        const uniqueOwners = [...new Set(this.client.guilds.cache.map(({ owner }) => (owner ? owner.id : null)))];
         message.channel.send(stripIndents`
             \`\`\`
             Total Guilds: ${this.client.guilds.cache.size}
