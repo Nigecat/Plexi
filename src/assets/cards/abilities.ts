@@ -1,7 +1,7 @@
 import { Card } from "../../managers/CardManager";
 import { GameState, GameUser } from "../../commands/commands/Catrd/duel";
 
-export const abilities: { [name: string]: Ability } = {
+export const abilities: Record<string, Ability> = {
     "Morale Boost": {
         name: "Morale Boost",
         description: "Raises the power of every other card in it's row by 1.",
