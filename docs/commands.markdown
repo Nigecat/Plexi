@@ -44,6 +44,7 @@ permalink: /commands
 | cow | Force a cow to say the specified text | $cow [text...] |
 | crab | Put the 🦀 emoji around the specified text,  if no text is supplied it will use the previous message | $crab [text] |
 | defineud | Get the urban dictionary definition of a word | $defineud [word] |
+| joke | Get a random joke | $joke  |
 | kaomoji | Display a random kaomoji! (´・ω・｀) 3000 will definitely be enough to keep you busy! (ｖ｀▽´)ｖ | $kaomoji  |
 | mock | Mock the previous message | $mock  |
 | ship | Ship two users (merge their usernames) | $ship [user1] [user2] |

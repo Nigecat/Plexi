@@ -1,3 +1,22 @@
+## [5.5.3](https://github.com/Nigecat/Plexi/compare/v5.5.2...v5.5.3) (2020-08-21)
+
+
+### Bug Fixes
+
+* add urban dictionary source disclaimer ([a58f89e](https://github.com/Nigecat/Plexi/commit/a58f89e9627474242c453a5564a3ca129a4e1195))
+* null guild owner bug ([ba85860](https://github.com/Nigecat/Plexi/commit/ba858606c11007763af04e74849a8ae8a4289c2f))
+* stat command user count ([1be5461](https://github.com/Nigecat/Plexi/commit/1be54616aa20b2fdd9411096446e62f3b4ea59f2))
+
+
+### Features
+
+* **command:** boombox command ([07a727f](https://github.com/Nigecat/Plexi/commit/07a727f0d3ef0205d371e033c97a6beeec216f25))
+* **command:** debug command to chain multiple commands together ([79aa938](https://github.com/Nigecat/Plexi/commit/79aa9388cd5a25e118eed8f8f698dbe729cc6853))
+* **command:** joke command to get a random joke ([4f34ca9](https://github.com/Nigecat/Plexi/commit/4f34ca9fe5e70a9f23f80d7704ed56c9f92a0d73))
+* **commant:** debug command for checking owner distribution ([a12590e](https://github.com/Nigecat/Plexi/commit/a12590e3ad66c81a5723658ff807e0f5b41a4471))
+
+
+
 ## [5.5.2](https://github.com/Nigecat/Plexi/compare/v5.5.1...v5.5.2) (2020-08-19)
 
 
