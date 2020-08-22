@@ -1,5 +1,6 @@
 import DBL from "dblapi.js";
 import { Plexi } from "./src/Plexi";
+import { Intents } from "discord.js";
 import { version } from "./package.json";
 import { existsSync, mkdirSync } from "fs";
 import { createLogger, format, transports, Logger } from "winston";
@@ -9,6 +10,9 @@ const client = new Plexi({
     client: {
         disableMentions: "everyone",
         allowedMentions: { roles: [], users: [] },
+        ws: {
+            intents: Intents.NON_PRIVILEGED | Intents.FLAGS.GUILD_MEMBERS,
+        },
         presence: {
             status: "online",
             activity: {
