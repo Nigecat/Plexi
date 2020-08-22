@@ -33,6 +33,10 @@ export class Plexi extends Client {
         this.config = options.plexi;
 
         this.on("ready", this.init.bind(this));
+        process.on("SIGTERM", () => {
+            if (this.database) this.database.disconnect();
+            this.destroy();
+        });
     }
 
     /** Init the bot, this runs after we have connected to the gateway */

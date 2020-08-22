@@ -25,5 +25,5 @@ The tokens that are checked for are:
 
 The only required token is the `DISCORD_TOKEN`. However, errors will occur if the program attempts to access any of the other keys.
 
-The bot can be started with `npm start`, but for development it is recommended to use docker. `docker-compose up` can be used to start the bot and a mongodb instance for testing. The files are automatically rebuilt if they are changed.
+The bot can be started with `npm start`, but for development it is recommended to use docker. `docker-compose up --build` can be used to start the bot and a mongodb instance for testing. The files are automatically rebuilt if they are changed.
 The container will have to be manually restarted if a file that is not a command is updated. Commands can be reloaded by running `$reload` through discord.
