@@ -35,3 +35,9 @@ DISCORD_TOKEN=xxxxxxxxxxx
 ```
 
 The bot can then be started with `npm start`.
+
+### Docker
+
+The docker image can be built directly from the git repo with `docker build https://github.com/Nigecat/Plexi.git -t plexi`  
+The environment variables must be passed through the build command. These are named the same as above, e.g `docker build --build-arg DISCORD_TOKEN=xxxxxx -t plexi https://github.com/Nigecat/Plexi.git`  
+On linux, an extra flag is required to allow the mongodb database to connect to localhost: `--add-host=host.docker.internal:host-gateway`
