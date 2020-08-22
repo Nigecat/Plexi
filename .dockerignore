@@ -1,5 +1,4 @@
 .git
-.env
 logs
 *.js
 node_modules
