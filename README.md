@@ -11,4 +11,19 @@
   </p>
 </div>
 
-## TODO
+## Setup
+All of the tokens are loaded from environment variables.  
+These can either be configured on the device or placed in an `.env` file in the root of this project, this file will be automatically loaded when the application starts.  
+The tokens that are checked for are: 
+|   Name         |  Description  |
+|----------------|---------------|
+| DISCORD_TOKEN  | A [discord bot token](https://discord.com/developers/applications). |
+| YOUTUBE_TOKEN  | A [youtube data api v3 token](https://console.developers.google.com/apis/credentials). |
+| TOPGG_TOKEN    | A [top.gg](https://top.gg/api/docs#mybots) token. |
+| DATABASE_URI   | A uri to a [mongodb](https://www.mongodb.com/) database to store persistent data in, must begin with `mongodb://`. |
+| NODE_ENV       | If this is set to 'production' all console logs will be disabled. |
+
+The only required token is the `DISCORD_TOKEN`. However, errors will occur if the program attempts to access any of the other keys.
+
+The bot can be started with `npm start`, but for development it is recommended to use docker. `docker-compose up` can be used to start the bot and a mongodb instance for testing. The files are automatically rebuilt if they are changed.
+The container will have to be manually restarted if a file that is not a command is updated. Commands are automatically reloaded.
