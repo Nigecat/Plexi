@@ -1,0 +1,20 @@
+FROM node:12
+
+ARG DISCORD_TOKEN
+ARG YOUTUBE_TOKEN
+ARG TOPGG_TOKEN 
+ARG DATABASE_URI=mongodb://host.docker.internal:27017/data
+
+ENV DISCORD_TOKEN=${DISCORD_TOKEN}
+ENV YOUTUBE_TOKEN=${YOUTUBE_TOKEN}
+ENV TOPGG_TOKEN=${TOPGG_TOKEN}
+ENV DATABASE_URI=${DATABASE_URI}
+ENV NODE_ENV=production
+
+WORKDIR /plexi
+COPY package.json /plexi
+COPY package-lock.json /plexi
+RUN npm ci
+COPY . /plexi
+
+CMD npm start
