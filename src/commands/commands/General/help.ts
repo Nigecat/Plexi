@@ -63,7 +63,7 @@ export default class Help extends Command {
                     .concat([
                         {
                             name: "Useful Links",
-                            value: `[Invite Me](${this.client.config.invite}) | [Support Server](${this.client.config.supportServer})`,
+                            value: `[Invite Me](${this.client.config.invite})`,
                         },
                     ]),
             });
