@@ -421,8 +421,11 @@ export class GameState {
                     const card = this.client.cards.get(message.content);
                     // If this user has that card in their hand
                     if (turn.hand.map(({ name }) => name.toLowerCase()).includes(card.name.toLowerCase())) {
-                        // Add the card to their played cards
-                        turn.playedCards.push(card);
+                        // Only put the card in their played cards if we don't have an ability or we don't have an override
+                        if (!card.ability || (card.ability && !card.ability.override)) {
+                            // Add the card to their played cards
+                            turn.playedCards.push(card);
+                        }
                         // Remove the card from their hand
                         turn.hand.splice(turn.hand.indexOf(card), 1);
                         // Let the user know
@@ -430,7 +433,9 @@ export class GameState {
                         // Execute the ability of the card if it exists
                         if (card.ability) {
                             await message.channel.send(`${card.name} triggered it's ability - ${card.ability.name}!`);
-                            await message.channel.send(await card.ability.execute({ game: this, turn, card }));
+                            await message.channel.send(
+                                await card.ability.execute({ game: this, turn, card, otherTurn: swapTurn(turn) }),
+                            );
                         }
                         // Update the hand for the user
                         turn.deckContent = await turn.deckContent.edit(generateDeckText(turn));
