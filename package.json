@@ -15,6 +15,7 @@
         "build:clean": "tsc --build --clean",
         "build:docs": "npm run build && ts-node generateDocs.ts",
         "start": "npm run build && node -r dotenv/config index.js",
+        "start:dev": "docker-compose up --build",
         "start:nobuild": "node -r dotenv/config index.js",
         "tests": "npm run build:clean && mocha -r ts-node/register tests/**/*.test.ts",
         "test": "npm run build && npm run tests && npm run lint",
