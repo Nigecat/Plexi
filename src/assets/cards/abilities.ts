@@ -6,7 +6,7 @@ export const abilities: Record<string, Ability> = {
     "Morale Boost": {
         name: "Morale Boost",
         description: "Raises the power of every other card in it's row by 1.",
-        execute: async ({ turn, card }: AbilityData): Promise<string> => {
+        execute: async ({ turn, card }: GameData): Promise<string> => {
             turn.playedCards
                 .filter((c) => c.type === card.type)
                 .forEach((card) => {
@@ -18,7 +18,7 @@ export const abilities: Record<string, Ability> = {
     "Tight Bond": {
         name: "Tight Bond",
         description: "Doubles its power each time you play the same card.",
-        execute: async ({ game, turn }: AbilityData): Promise<string> => {
+        execute: async ({ game, turn }: GameData): Promise<string> => {
             // Find all the tight bond cards they have played
             const cards = turn.playedCards.filter((card) => card.ability.name === "Tight Bond");
             // Set each tight bond card's power to be the total number of tight bond cards times the original card power
@@ -32,7 +32,7 @@ export const abilities: Record<string, Ability> = {
         name: "Spy",
         description: "This card plays on the enemy's side of the field, but you get two random cards from your deck.",
         override: true,
-        execute: async ({ game, turn, otherTurn, card }: AbilityData): Promise<string> => {
+        execute: async ({ game, turn, otherTurn, card }: GameData): Promise<string> => {
             // Add the card to the other user's played cards
             otherTurn.playedCards.push(card);
 
@@ -47,18 +47,21 @@ export const abilities: Record<string, Ability> = {
             return `${card.name} played on the opposite side of the field, ${turn.user.username} recieved 2 cards!`;
         },
     },
-    /*
     Medic: {
         name: "Medic",
-        description: "Brings back one card of your choice that was played during a previous round.",
-        execute: async (game: GameState): Promise<string> => {
+        description: "Draws a random card from your deck.",
+        execute: async ({ game, turn }: GameData): Promise<string> => {
+            // Get a random card from their deck
+            const card = getRandom(turn.dbData.deck, 1)[0];
+            // Add it to their hand
+            turn.hand.push(game.client.cards.get(card));
 
+            return `${turn.user.username} drew an extra card!`;
         },
     },
-    */
 };
 
-interface AbilityData {
+interface GameData {
     /** The current state of the game */
     game: GameState;
     /** The user who played this card (it is their turn) */
@@ -77,5 +80,5 @@ export interface Ability {
     /** Whether to override the default card assignment */
     override?: boolean;
     /** A function to run this ability, this should modify the objects passed to it */
-    execute: (data: AbilityData) => Promise<string>;
+    execute: (data: GameData) => Promise<string>;
 }
