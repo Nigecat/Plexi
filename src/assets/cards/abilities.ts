@@ -1,6 +1,7 @@
 import { getRandom } from "../../utils/misc";
 import { Card } from "../../managers/CardManager";
 import { GameState, GameUser } from "../../commands/commands/Catrd/duel";
+import { Message } from "discord.js";
 
 export const abilities: Record<string, Ability> = {
     "Morale Boost": {
@@ -57,6 +58,29 @@ export const abilities: Record<string, Ability> = {
             turn.hand.push(game.client.cards.get(card));
 
             return `${turn.user.username} drew an extra card!`;
+        },
+    },
+    Agile: {
+        name: "Agile",
+        description: "You get to decide whether this card plays to the Melee or Scout position.",
+        execute: async ({ game, card, turn }: GameData): Promise<string> => {
+            game.channel.send(
+                `${turn.user.username}, please type either 'melee' or 'scout' for the position you want to play this card.`,
+            );
+            // Wait for them to send the position
+            const messages = await game.channel.awaitMessages(
+                (message: Message) =>
+                    message.author.id === turn.user.id && ["melee", "scout"].includes(message.content.toLowerCase()),
+                { max: 1 },
+            );
+            // Figure out which one it was and update the card
+            const position = messages.first().content;
+            if (position.toLowerCase() === "melee") {
+                card.type = "Melee";
+            } else if (position.toLowerCase() === "scout") {
+                card.type = "Scout";
+            }
+            return `It played as a ${card.type} card!`;
         },
     },
 };
