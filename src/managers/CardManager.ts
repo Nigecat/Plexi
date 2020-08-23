@@ -1,6 +1,7 @@
 import { resolve } from "path";
 import { Collection } from "discord.js";
 import basic from "../assets/cards/packs/basic.json";
+import { Ability, abilities } from "../assets/cards/abilities";
 import mewtal_gear from "../assets/cards/packs/mewtal-gear.json";
 
 /** Calculate the value (in coins) of a card */
@@ -20,6 +21,7 @@ export default class CardManager extends Collection<string, Card> {
                 power: card.power,
                 value: calculateValue(card.rarity),
                 rarity: card.rarity,
+                ability: abilities[card.ability],
                 image: resolve(__dirname, "..", "assets", "cards", "images", "Basic", `${card.name}.jpg`),
             });
         });
@@ -32,6 +34,7 @@ export default class CardManager extends Collection<string, Card> {
                 power: card.power,
                 value: calculateValue(card.rarity),
                 rarity: card.rarity,
+                ability: abilities[card.ability],
                 image: resolve(__dirname, "..", "assets", "cards", "images", "Mewtal Gear", `${card.name}.jpg`),
             });
         });
@@ -66,4 +69,6 @@ export interface Card {
     image: string;
     /** The number of coins this is card is worth */
     value: number;
+    /** The ability of this card */
+    ability?: Ability;
 }

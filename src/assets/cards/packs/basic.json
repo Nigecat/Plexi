@@ -20,6 +20,7 @@
     {
         "name": "Thug Cat",
         "type": "Melee",
+        "ability": "Morale Boost",
         "power": 4,
         "rarity": 20
     },
@@ -32,6 +33,7 @@
     {
         "name": "Property Rights Cat",
         "type": "Defense",
+        "ability": "Tight Bond",
         "power": 2,
         "rarity": 25
     },
@@ -44,14 +46,16 @@
     {
         "name": "Standard Cat",
         "type": "Melee",
+        "ability": "Tight Bond",
         "power": 1,
         "rarity": 25
     },
     {
         "name": "Void Cat",
         "type": "Defense",
+        "ability": "Morale Boost",
         "power": 3,
-        "rarity": 5
+        "rarity": 10
     },
     {
         "name": "Expressive Cat",
@@ -74,6 +78,7 @@
     {
         "name": "Fat Cat",
         "type": "Melee",
+        "ability": "Morale Boost",
         "power": 10,
         "rarity": 0
     },
@@ -84,8 +89,16 @@
         "rarity": 15
     },
     {
+        "name": "Comforting Cat",
+        "type": "Scout",
+        "ability": "Morale Boost",
+        "power": 0,
+        "rarity": 15
+    },
+    {
         "name": "Home Depot Cat",
         "type": "Melee",
+        "ability": "Morale Boost",
         "power": 2,
         "rarity": 10
     },
@@ -118,5 +131,19 @@
         "type": "Scout",
         "power": 15,
         "rarity": 0
+    },
+    {
+        "name": "Flower Cat",
+        "type": "Defense",
+        "ability": "Medic",
+        "power": 0,
+        "rarity": 10
+    },
+    {
+        "name": "Catouflage",
+        "type": "Melee",
+        "ability": "Spy",
+        "power": 0,
+        "rarity": 2
     }
 ]
