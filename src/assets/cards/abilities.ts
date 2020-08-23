@@ -32,7 +32,7 @@ export const abilities: Record<string, Ability> = {
         name: "Spy",
         description: "This card plays on the enemy's side of the field, but you get two random cards from your deck.",
         override: true,
-        execute: async ({ game, turn, otherTurn, card }): Promise<string> => {
+        execute: async ({ game, turn, otherTurn, card }: AbilityData): Promise<string> => {
             // Add the card to the other user's played cards
             otherTurn.playedCards.push(card);
 
