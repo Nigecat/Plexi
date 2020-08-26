@@ -10,6 +10,7 @@ const client = new Plexi({
     client: {
         disableMentions: "everyone",
         allowedMentions: { roles: [], users: [] },
+        fetchAllMembers: true,
         ws: {
             intents: Intents.NON_PRIVILEGED | Intents.FLAGS.GUILD_MEMBERS,
         },
