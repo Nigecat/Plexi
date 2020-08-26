@@ -9,6 +9,7 @@ export default class AroundTheWorld extends Command {
             name: "aroundtheworld",
             group: "Fun",
             description: "Around the world",
+            hidden: true,
         });
     }
 
