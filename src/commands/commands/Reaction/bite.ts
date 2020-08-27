@@ -1,8 +1,8 @@
 import { Plexi } from "../../../Plexi";
 import ReactionCommand from "../../extras/ReactionCommand";
 
-export default class Hug extends ReactionCommand {
+export default class Bite extends ReactionCommand {
     constructor(client: Plexi) {
-        super(client, "hug", "Hug", "hugged");
+        super(client, "bite", "Bite", "bitten");
     }
 }
