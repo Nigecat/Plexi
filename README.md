@@ -21,6 +21,7 @@ The tokens that are checked for are:
 | YOUTUBE_TOKEN  | A [youtube data api v3 token](https://console.developers.google.com/apis/credentials). |
 | TOPGG_TOKEN    | A [top.gg](https://top.gg/api/docs#mybots) token. |
 | DATABASE_URI   | A uri to a [mongodb](https://www.mongodb.com/) database to store persistent data in, must begin with `mongodb://`. |
+| EMILIA_TOKEN   | A [Emilia-API](https://emilia-api.xyz/) token. |
 | NODE_ENV       | If this is set to 'production' all console logs will be disabled. |
 
 The only required token is the `DISCORD_TOKEN`. However, errors will occur if the program attempts to access any of the other keys.
