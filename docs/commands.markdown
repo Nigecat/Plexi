@@ -39,7 +39,6 @@ permalink: /commands
 
 | Command | Description | Usage |
 | ------- | :---------: | ----- |
-| clap | Put the 👏 emoji in the spaces of the specified text,  if no text is supplied it will use the previous message | $clap [text] |
 | communism | Make some text communist, if no text is supplied it will use the previous message | $communism [text] |
 | cow | Force a cow to say the specified text | $cow [text...] |
 | crab | Put the 🦀 emoji around the specified text,  if no text is supplied it will use the previous message | $crab [text] |
@@ -74,6 +73,7 @@ permalink: /commands
 | invite | Generate an invite link for adding me to a server | $invite  |
 | isprime | Check if a number is a prime (NOTE: Will prevent the command from running at ~300 digits) | $isprime [number] |
 | lmgtfy | LMGTFY a search query, if no text is supplied it will use the previous message | $lmgtfy [text...] |
+| math | Solve a math equation | $math [equation...] |
 | ping | Check the bot's ping to the Discord server | $ping  |
 | reverse | Reverse the supplied text | $reverse [text...] |
 | roll | Get a random number (inclusive) between the two specified numbers | $roll [min] [max] |
@@ -120,3 +120,35 @@ permalink: /commands
 | play | Play music into your voice channel (takes either a search query or a youtube url) | $play [search...] |
 | resume | Resume (unpause) the currently playing song | $resume  |
 | summon | Summon the bot into your voice channel | $summon  |
+
+
+### Reaction
+
+| Command | Description | Usage |
+| ------- | :---------: | ----- |
+| bite | Bite someone! | $bite [user] |
+| blush | Be blush! | $blush  |
+| boop | Boop someone! | $boop [user] |
+| confused | Be confused! | $confused  |
+| cry | Be cry! | $cry  |
+| cuddle | Cuddle someone! | $cuddle [user] |
+| dance | Be dance! | $dance  |
+| happy | Be happy! | $happy  |
+| hug | Hug someone! | $hug [user] |
+| kiss | Kiss someone! | $kiss [user] |
+| laugh | Be laugh! | $laugh  |
+| lewd | Be lewd! | $lewd  |
+| lick | Lick someone! | $lick [user] |
+| pat | Pat someone! | $pat [user] |
+| poke | Poke someone! | $poke [user] |
+| pout | Be pout! | $pout  |
+| punch | Punch someone! | $punch [user] |
+| run | Be run! | $run  |
+| scared | Be scared! | $scared  |
+| shocked | Be shocked! | $shocked  |
+| slap | Slap someone! | $slap [user] |
+| smile | Be smile! | $smile  |
+| smug | Be smug! | $smug  |
+| surprised | Be surprised! | $surprised  |
+| tickle | Tickle someone! | $tickle [user] |
+| wave | Be wave! | $wave  |
