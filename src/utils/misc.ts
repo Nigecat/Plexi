@@ -232,13 +232,13 @@ export function getRandom<T>(arr: ReadonlyArray<T>, n: number): Array<T> {
  * @param {TextChannel} channel - The channel to send the image to
  */
 export async function sendBufApi(url: string, channel: TextChannel | DMChannel | NewsChannel): Promise<void> {
-    const image = await fetchBuf(url);
-
-    const { ext } = await FileType.fromBuffer(image);
-
     channel.startTyping();
 
     try {
+        const image = await fetchBuf(url);
+
+        const { ext } = await FileType.fromBuffer(image);
+
         const embed = new MessageEmbed({ color: "RANDOM" });
         embed.attachFiles([{ name: `image.${ext}`, attachment: image }]);
         embed.setImage(`attachment://image.${ext}`);
