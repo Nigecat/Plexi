@@ -1,8 +1,9 @@
+import FileType from "file-type";
 import { get as httpGet } from "http";
 import { get as httpsGet } from "https";
 import { stripIndents } from "common-tags";
 import { Command } from "../commands/Command";
-import { Snowflake, Message, TextChannel, NewsChannel, DMChannel, MessageReaction } from "discord.js";
+import { Snowflake, Message, TextChannel, NewsChannel, DMChannel, MessageReaction, MessageEmbed } from "discord.js";
 
 /** Generates the regex for detecting when a string starts with either a prefix or a user/bot mention
  *  NOTE: This *requires* there to be text after the match, the string can't only contain the prefix/mention
@@ -223,4 +224,32 @@ export function getRandom<T>(arr: ReadonlyArray<T>, n: number): Array<T> {
         taken[x] = --len in taken ? taken[len] : len;
     }
     return result;
+}
+
+/**
+ * Sends the result of an api request that returns an image buffer to the specified channel
+ * @param {string} url - The url to make the api request to
+ * @param {TextChannel} channel - The channel to send the image to
+ */
+export async function sendBufApi(url: string, channel: TextChannel | DMChannel | NewsChannel): Promise<void> {
+    channel.startTyping();
+
+    try {
+        const image = await fetchBuf(url);
+
+        const { ext } = await FileType.fromBuffer(image);
+
+        const embed = new MessageEmbed({ color: "RANDOM" });
+        embed.attachFiles([{ name: `image.${ext}`, attachment: image }]);
+        embed.setImage(`attachment://image.${ext}`);
+
+        channel.send({ embed });
+    } catch (err) {
+        this.client.emit("error", err);
+        channel.send(
+            "Oops! It appears something went wrong and I couldn't fetch that image, maybe try running the command again?",
+        );
+    } finally {
+        channel.stopTyping();
+    }
 }
