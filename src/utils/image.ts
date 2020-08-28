@@ -1,7 +1,4 @@
-import { resolve } from "path";
-import { unlinkSync } from "fs";
-import { randomBytes } from "crypto";
-import { read as jimpRead } from "jimp";
+import Jimp from "jimp";
 
 /**
  * Check if the supplied string is a valid discord attachment/embed image url
@@ -20,30 +17,17 @@ export function isDiscordURL(url: string): boolean {
  * @param contrast The contrast level
  * @param pixelate The level of pixelation
  *
- * @returns The path of the output file, it is up to the caller to delete this file
+ * @returns A buffer of the image
  */
 export async function manipulateImage(
     url: string,
     posterize: number,
     contrast = 0.75,
     pixelate: number = Math.floor(Math.random() * 2 + 2),
-): Promise<string> {
-    // Get the file extension from the supplied url
-    const ext = "." + url.split(".").pop().split(/#|\?/)[0];
+): Promise<Buffer> {
+    const img = await Jimp.read(url);
+    img.pixelate(pixelate).posterize(posterize).contrast(contrast);
+    const imgBuf = await img.getBufferAsync((Jimp.AUTO as unknown) as string);
 
-    // Create a temporary file with the matching extension so discord knows what to do with it when we upload the file
-    const path = resolve(
-        __dirname,
-        "..",
-        "assets",
-        "temp",
-        `image-${posterize}${contrast}${pixelate}-${randomBytes(6).readUIntLE(0, 6).toString(36)}.${ext}`,
-    );
-
-    // The file will automatically be deleted after one minute
-    setTimeout(() => unlinkSync(path), 60000);
-
-    (await jimpRead(url)).pixelate(pixelate).posterize(posterize).contrast(contrast).write(path);
-
-    return path;
+    return imgBuf;
 }
