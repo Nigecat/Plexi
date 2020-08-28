@@ -143,7 +143,6 @@ permalink: /commands
 | poke | Poke someone! | $poke [user] |
 | pout | It's literally the name of the command | $pout  |
 | punch | Punch someone! | $punch [user] |
-| run | It's literally the name of the command | $run  |
 | scared | It's literally the name of the command | $scared  |
 | shocked | It's literally the name of the command | $shocked  |
 | slap | Slap someone! | $slap [user] |
