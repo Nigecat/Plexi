@@ -11,6 +11,8 @@ export default class ReactionCommand extends Command {
      * @param nameUpper - The name of this command with the first letter uppercase (e.g 'Hug')
      * @param namePlural - A plural of this command that will be put into `{user} was <plural> by {user}` (e.g 'hugged') or `${user} <plural> themselves. For a self command it is `${user} is <plural>
      * @param self - Whether this command can be used on another user (false is yes)
+     * @param ex - Whether to use a ! after the message for a self command
+     * @param nsfw - Whether this reaction should be nsfw gated
      */
     constructor(
         client: Plexi,
@@ -18,11 +20,14 @@ export default class ReactionCommand extends Command {
         nameUpper: string,
         private namePlural: string,
         private self = false,
+        private ex = true,
+        private nsfw = false,
     ) {
         super(client, {
             name: nameLower,
             description: self ? `It's literally the name of the command` : `${nameUpper} someone!`,
             group: "Reaction",
+            nsfw: nsfw,
             args: self
                 ? []
                 : [
@@ -45,7 +50,7 @@ export default class ReactionCommand extends Command {
             const { ext } = await FileType.fromBuffer(image);
 
             const title = this.self
-                ? `${message.author.username} is ${this.namePlural}!`
+                ? `${message.author.username} is ${this.namePlural}${this.ex ? "!" : "..."}`
                 : message.author.id === user.id
                 ? `${user.username} ${this.namePlural} themselves!`
                 : `${user.username} was ${this.namePlural} by ${message.author.username}!`;
