@@ -127,28 +127,28 @@ permalink: /commands
 | Command | Description | Usage |
 | ------- | :---------: | ----- |
 | bite | Bite someone! | $bite [user] |
-| blush | Be blush! | $blush  |
+| blush | It's literally the name of the command | $blush  |
 | boop | Boop someone! | $boop [user] |
-| confused | Be confused! | $confused  |
-| cry | Be cry! | $cry  |
+| confused | It's literally the name of the command | $confused  |
+| cry | It's literally the name of the command | $cry  |
 | cuddle | Cuddle someone! | $cuddle [user] |
-| dance | Be dance! | $dance  |
-| happy | Be happy! | $happy  |
+| dance | It's literally the name of the command | $dance  |
+| happy | It's literally the name of the command | $happy  |
 | hug | Hug someone! | $hug [user] |
 | kiss | Kiss someone! | $kiss [user] |
-| laugh | Be laugh! | $laugh  |
-| lewd | Be lewd! | $lewd  |
+| laugh | It's literally the name of the command | $laugh  |
+| lewd | It's literally the name of the command | $lewd  |
 | lick | Lick someone! | $lick [user] |
 | pat | Pat someone! | $pat [user] |
 | poke | Poke someone! | $poke [user] |
-| pout | Be pout! | $pout  |
+| pout | It's literally the name of the command | $pout  |
 | punch | Punch someone! | $punch [user] |
-| run | Be run! | $run  |
-| scared | Be scared! | $scared  |
-| shocked | Be shocked! | $shocked  |
+| run | It's literally the name of the command | $run  |
+| scared | It's literally the name of the command | $scared  |
+| shocked | It's literally the name of the command | $shocked  |
 | slap | Slap someone! | $slap [user] |
-| smile | Be smile! | $smile  |
-| smug | Be smug! | $smug  |
-| surprised | Be surprised! | $surprised  |
+| smile | It's literally the name of the command | $smile  |
+| smug | It's literally the name of the command | $smug  |
+| surprised | It's literally the name of the command | $surprised  |
 | tickle | Tickle someone! | $tickle [user] |
-| wave | Be wave! | $wave  |
+| wave | It's literally the name of the command | $wave  |

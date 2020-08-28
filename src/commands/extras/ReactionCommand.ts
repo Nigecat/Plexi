@@ -21,7 +21,7 @@ export default class ReactionCommand extends Command {
     ) {
         super(client, {
             name: nameLower,
-            description: self ? `Be ${nameLower}!` : `${nameUpper} someone!`,
+            description: self ? `It's literally the name of the command` : `${nameUpper} someone!`,
             group: "Reaction",
             args: self
                 ? []
