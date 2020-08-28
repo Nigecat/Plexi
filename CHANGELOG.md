@@ -1,3 +1,18 @@
+## [5.5.5](https://github.com/Nigecat/Plexi/compare/v5.5.4...v5.5.5) (2020-08-28)
+
+
+### Bug Fixes
+
+* reaction commands timing out and not stopping ([40711d2](https://github.com/Nigecat/Plexi/commit/40711d2a356426a02801efa6198b3e6e0199a1d6))
+* reaction help formatting ([62eef52](https://github.com/Nigecat/Plexi/commit/62eef5205b4a5625f60eb6c9f26964d8333ff6e5))
+
+
+### Features
+
+* image generators ([79fd3a3](https://github.com/Nigecat/Plexi/commit/79fd3a32a10ae7481c607521a6f4f87669e26059))
+
+
+
 ## [5.5.4](https://github.com/Nigecat/Plexi/compare/v5.5.3...v5.5.4) (2020-08-28)
 
 

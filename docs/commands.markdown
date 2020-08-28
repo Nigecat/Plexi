@@ -84,6 +84,14 @@ permalink: /commands
 | whatanime | Attempt to figure out what anime an image comes from, if no url is supplied it will act on the image from the previous message | $whatanime [url...] |
 
 
+### Generator
+
+| Command | Description | Usage |
+| ------- | :---------: | ----- |
+| kyongun | Draw someones profile picture in front of Kyon shooting a gun. | $kyongun [user] |
+| tobecontinued | Draws an image with the "To Be Continued..." arrow | $tobecontinued [url] |
+
+
 ### Image
 
 | Command | Description | Usage |
