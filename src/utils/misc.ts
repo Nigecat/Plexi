@@ -59,10 +59,11 @@ export async function lastMessage(channel: TextChannel | NewsChannel | DMChannel
 /**
  * Make a http request and return the result
  * @param {string} url - The url to make the request to
- * @param useHttp - Whether to make the request over http, this is false by default
+ * @param {boolean} useHttp - Whether to make the request over http, this is false by default
+ * @param {boolean} json - Whether to automatically parse the result to json, this is true by default
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function fetch(url: string, useHttp = false): Promise<any> {
+export function fetch(url: string, useHttp = false, json = true): Promise<any> {
     return new Promise((resolve, reject) => {
         (useHttp ? httpGet : httpsGet)(url, (resp) => {
             let data = "";
@@ -72,10 +73,35 @@ export function fetch(url: string, useHttp = false): Promise<any> {
             });
 
             resp.on("end", () => {
-                resolve(JSON.parse(data));
+                if (json) resolve(JSON.parse(data));
+                else resolve(data);
             });
 
             resp.on("error", reject);
+        });
+    });
+}
+
+/**
+ * Read a buffer from a url
+ * @param {string} url - The url to read data from
+ */
+export function fetchBuf(url: string): Promise<Buffer> {
+    return new Promise((resolve) => {
+        httpsGet(url, (res) => {
+            const data = [];
+
+            res.on("data", (chunk) => {
+                data.push(chunk);
+            });
+
+            res.on("end", () => {
+                // At this point data is an array of Buffers
+                //  so Buffer.concat() can make us a new Buffer of all of them together
+                const buffer = Buffer.concat(data);
+
+                resolve(buffer);
+            });
         });
     });
 }
