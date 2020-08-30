@@ -5,6 +5,18 @@ import { Card } from "../../managers/CardManager";
 import { GameState, GameUser } from "../../commands/commands/Catrd/duel";
 
 export const abilities: Record<string, Ability> = {
+    Commander: {
+        name: "Commander",
+        description: "Double the power of all other cards in the row this card is played to.",
+        execute: async ({ turn, card }: GameData): Promise<string> => {
+            turn.playedCards
+                .filter((c) => c.type === card.type)
+                .forEach((card) => {
+                    card.power = card.power * 2;
+                });
+            return `All cards on ${turn.user.username}'s ${card.type} row have doubled their power!`;
+        },
+    },
     "More gun cat": {
         name: "More gun cat",
         description: "Automatically play any 'more gun cat' cards you have onto the field.",

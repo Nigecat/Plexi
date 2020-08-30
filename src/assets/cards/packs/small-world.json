@@ -27,6 +27,12 @@
         "ability": "Medic"
     },
     {
+        "name": "THE GLOBE",
+        "power": 10,
+        "type": "Defense",
+        "rarity": 4
+    },
+    {
         "name": "Archimedes",
         "power": 2,
         "rarity": 20,
