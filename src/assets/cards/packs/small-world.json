@@ -30,7 +30,8 @@
         "name": "THE GLOBE",
         "power": 10,
         "type": "Defense",
-        "rarity": 4
+        "rarity": 4,
+        "ability": "Commander"
     },
     {
         "name": "Archimedes",
