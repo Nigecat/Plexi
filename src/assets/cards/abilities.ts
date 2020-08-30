@@ -1,9 +1,35 @@
+import { Message } from "discord.js";
+import cloneDeep from "lodash/cloneDeep";
 import { getRandom } from "../../utils/misc";
 import { Card } from "../../managers/CardManager";
 import { GameState, GameUser } from "../../commands/commands/Catrd/duel";
-import { Message } from "discord.js";
 
 export const abilities: Record<string, Ability> = {
+    Commander: {
+        name: "Commander",
+        description: "Double the power of all other cards in the row this card is played to.",
+        execute: async ({ turn, card }: GameData): Promise<string> => {
+            turn.playedCards
+                .filter((c) => c.type === card.type)
+                .forEach((card) => {
+                    card.power = card.power * 2;
+                });
+            return `All cards on ${turn.user.username}'s ${card.type} row have doubled their power!`;
+        },
+    },
+    "More gun cat": {
+        name: "More gun cat",
+        description: "Automatically play any 'more gun cat' cards you have onto the field.",
+        execute: async ({ turn, game }: GameData): Promise<string> => {
+            const cards = turn.dbData.cards
+                .filter((card) => card === "More gun cat")
+                .map((name) => cloneDeep(game.client.cards.find((card) => card.name === name)));
+
+            turn.playedCards.concat(cards);
+
+            return `This played ${cards.length} cards!`;
+        },
+    },
     "Morale Boost": {
         name: "Morale Boost",
         description: "Raises the power of every other card in it's row by 1.",
