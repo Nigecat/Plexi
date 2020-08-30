@@ -21,6 +21,19 @@
         "rarity": 7
     },
     {
+        "name": "Archimedes",
+        "power": 2,
+        "rarity": 20,
+        "type": "Scout",
+        "ability": "Medic"
+    },
+    {
+        "name": "Beeg Yoshi",
+        "power": 5,
+        "rarity": 15,
+        "type": "Defense"
+    },
+    {
         "name": "Smol Bird",
         "type": "Scout",
         "power": 2,
