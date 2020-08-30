@@ -91,7 +91,7 @@
     {
         "name": "Comforting Cat",
         "type": "Scout",
-        "ability": "Morale Boost",
+        "ability": "Medic",
         "power": 0,
         "rarity": 15
     },

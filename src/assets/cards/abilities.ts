@@ -1,9 +1,23 @@
+import { Message } from "discord.js";
+import cloneDeep from "lodash/cloneDeep";
 import { getRandom } from "../../utils/misc";
 import { Card } from "../../managers/CardManager";
 import { GameState, GameUser } from "../../commands/commands/Catrd/duel";
-import { Message } from "discord.js";
 
 export const abilities: Record<string, Ability> = {
+    "More gun cat": {
+        name: "More gun cat",
+        description: "Automatically play any 'more gun cat' cards you have onto the field.",
+        execute: async ({ turn, game }: GameData): Promise<string> => {
+            const cards = turn.dbData.cards
+                .filter((card) => card === "More gun cat")
+                .map((name) => cloneDeep(game.client.cards.find((card) => card.name === name)));
+
+            turn.playedCards.concat(cards);
+
+            return `This played ${cards.length} cards!`;
+        },
+    },
     "Morale Boost": {
         name: "Morale Boost",
         description: "Raises the power of every other card in it's row by 1.",

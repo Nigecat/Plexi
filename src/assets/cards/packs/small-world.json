@@ -1,0 +1,43 @@
+[
+    {
+        "name": "Dog",
+        "type": "Melee",
+        "ability": "Spy",
+        "power": 5,
+        "rarity": 15
+    },
+    {
+        "name": "Use more gun",
+        "type": "Scout",
+        "power": 2,
+        "ability": "More gun cat",
+        "rarity": 15
+    },
+    {
+        "name": "More gun cat",
+        "type": "Defense",
+        "power": 4,
+        "ability": "Tight Bond",
+        "rarity": 7
+    },
+    {
+        "name": "Smol Bird",
+        "type": "Scout",
+        "power": 2,
+        "rarity": 20,
+        "ability": "Tight Bond"
+    },
+    {
+        "name": "Beeg Bird",
+        "type": "Melee",
+        "power": 7,
+        "rarity": 5
+    },
+    {
+        "name": "Sneaky French Cat",
+        "type": "Melee",
+        "power": 2,
+        "rarity": 15,
+        "ability": "Spy"
+    }
+]
