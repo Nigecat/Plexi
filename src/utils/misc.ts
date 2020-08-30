@@ -1,8 +1,9 @@
+import FileType from "file-type";
 import { get as httpGet } from "http";
 import { get as httpsGet } from "https";
 import { stripIndents } from "common-tags";
 import { Command } from "../commands/Command";
-import { Snowflake, Message, TextChannel, NewsChannel, DMChannel, MessageReaction } from "discord.js";
+import { Snowflake, Message, TextChannel, NewsChannel, DMChannel, MessageReaction, MessageEmbed } from "discord.js";
 
 /** Generates the regex for detecting when a string starts with either a prefix or a user/bot mention
  *  NOTE: This *requires* there to be text after the match, the string can't only contain the prefix/mention
@@ -59,10 +60,11 @@ export async function lastMessage(channel: TextChannel | NewsChannel | DMChannel
 /**
  * Make a http request and return the result
  * @param {string} url - The url to make the request to
- * @param useHttp - Whether to make the request over http, this is false by default
+ * @param {boolean} useHttp - Whether to make the request over http, this is false by default
+ * @param {boolean} json - Whether to automatically parse the result to json, this is true by default
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function fetch(url: string, useHttp = false): Promise<any> {
+export function fetch(url: string, useHttp = false, json = true): Promise<any> {
     return new Promise((resolve, reject) => {
         (useHttp ? httpGet : httpsGet)(url, (resp) => {
             let data = "";
@@ -72,10 +74,35 @@ export function fetch(url: string, useHttp = false): Promise<any> {
             });
 
             resp.on("end", () => {
-                resolve(JSON.parse(data));
+                if (json) resolve(JSON.parse(data));
+                else resolve(data);
             });
 
             resp.on("error", reject);
+        });
+    });
+}
+
+/**
+ * Read a buffer from a url
+ * @param {string} url - The url to read data from
+ */
+export function fetchBuf(url: string): Promise<Buffer> {
+    return new Promise((resolve) => {
+        httpsGet(url, (res) => {
+            const data = [];
+
+            res.on("data", (chunk) => {
+                data.push(chunk);
+            });
+
+            res.on("end", () => {
+                // At this point data is an array of Buffers
+                //  so Buffer.concat() can make us a new Buffer of all of them together
+                const buffer = Buffer.concat(data);
+
+                resolve(buffer);
+            });
         });
     });
 }
@@ -197,4 +224,32 @@ export function getRandom<T>(arr: ReadonlyArray<T>, n: number): Array<T> {
         taken[x] = --len in taken ? taken[len] : len;
     }
     return result;
+}
+
+/**
+ * Sends the result of an api request that returns an image buffer to the specified channel
+ * @param {string} url - The url to make the api request to
+ * @param {TextChannel} channel - The channel to send the image to
+ */
+export async function sendBufApi(url: string, channel: TextChannel | DMChannel | NewsChannel): Promise<void> {
+    channel.startTyping();
+
+    try {
+        const image = await fetchBuf(url);
+
+        const { ext } = await FileType.fromBuffer(image);
+
+        const embed = new MessageEmbed({ color: "RANDOM" });
+        embed.attachFiles([{ name: `image.${ext}`, attachment: image }]);
+        embed.setImage(`attachment://image.${ext}`);
+
+        channel.send({ embed });
+    } catch (err) {
+        this.client.emit("error", err);
+        channel.send(
+            "Oops! It appears something went wrong and I couldn't fetch that image, maybe try running the command again?",
+        );
+    } finally {
+        channel.stopTyping();
+    }
 }

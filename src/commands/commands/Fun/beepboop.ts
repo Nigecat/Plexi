@@ -7,6 +7,7 @@ export default class BeepBoop extends Command {
         super(client, {
             name: "beepboop",
             group: "Fun",
+            hidden: true,
             description: "beepboop",
         });
     }

@@ -39,7 +39,6 @@ permalink: /commands
 
 | Command | Description | Usage |
 | ------- | :---------: | ----- |
-| clap | Put the 👏 emoji in the spaces of the specified text,  if no text is supplied it will use the previous message | $clap [text] |
 | communism | Make some text communist, if no text is supplied it will use the previous message | $communism [text] |
 | cow | Force a cow to say the specified text | $cow [text...] |
 | crab | Put the 🦀 emoji around the specified text,  if no text is supplied it will use the previous message | $crab [text] |
@@ -74,6 +73,7 @@ permalink: /commands
 | invite | Generate an invite link for adding me to a server | $invite  |
 | isprime | Check if a number is a prime (NOTE: Will prevent the command from running at ~300 digits) | $isprime [number] |
 | lmgtfy | LMGTFY a search query, if no text is supplied it will use the previous message | $lmgtfy [text...] |
+| math | Solve a math equation | $math [equation...] |
 | ping | Check the bot's ping to the Discord server | $ping  |
 | reverse | Reverse the supplied text | $reverse [text...] |
 | roll | Get a random number (inclusive) between the two specified numbers | $roll [min] [max] |
@@ -82,6 +82,14 @@ permalink: /commands
 | stats | Get general stats about the bot | $stats  |
 | weather | Get the weather for the specified city (add c/f to the end to specify the degree type) | $weather [city] <c/f> |
 | whatanime | Attempt to figure out what anime an image comes from, if no url is supplied it will act on the image from the previous message | $whatanime [url...] |
+
+
+### Generator
+
+| Command | Description | Usage |
+| ------- | :---------: | ----- |
+| kyongun | Draw someones profile picture in front of Kyon shooting a gun. | $kyongun [user] |
+| tobecontinued | Draws an image with the "To Be Continued..." arrow | $tobecontinued [url] |
 
 
 ### Image
@@ -120,3 +128,34 @@ permalink: /commands
 | play | Play music into your voice channel (takes either a search query or a youtube url) | $play [search...] |
 | resume | Resume (unpause) the currently playing song | $resume  |
 | summon | Summon the bot into your voice channel | $summon  |
+
+
+### Reaction
+
+| Command | Description | Usage |
+| ------- | :---------: | ----- |
+| bite | Bite someone! | $bite [user] |
+| blush | It's literally the name of the command | $blush  |
+| boop | Boop someone! | $boop [user] |
+| confused | It's literally the name of the command | $confused  |
+| cry | It's literally the name of the command | $cry  |
+| cuddle | Cuddle someone! | $cuddle [user] |
+| dance | It's literally the name of the command | $dance  |
+| happy | It's literally the name of the command | $happy  |
+| hug | Hug someone! | $hug [user] |
+| kiss | Kiss someone! | $kiss [user] |
+| laugh | It's literally the name of the command | $laugh  |
+| lewd | It's literally the name of the command | $lewd  |
+| lick | Lick someone! | $lick [user] |
+| pat | Pat someone! | $pat [user] |
+| poke | Poke someone! | $poke [user] |
+| pout | It's literally the name of the command | $pout  |
+| punch | Punch someone! | $punch [user] |
+| scared | It's literally the name of the command | $scared  |
+| shocked | It's literally the name of the command | $shocked  |
+| slap | Slap someone! | $slap [user] |
+| smile | It's literally the name of the command | $smile  |
+| smug | It's literally the name of the command | $smug  |
+| surprised | It's literally the name of the command | $surprised  |
+| tickle | Tickle someone! | $tickle [user] |
+| wave | It's literally the name of the command | $wave  |

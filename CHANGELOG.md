@@ -1,3 +1,74 @@
+## [5.5.5](https://github.com/Nigecat/Plexi/compare/v5.5.4...v5.5.5) (2020-08-28)
+
+
+### Bug Fixes
+
+* reaction commands timing out and not stopping ([40711d2](https://github.com/Nigecat/Plexi/commit/40711d2a356426a02801efa6198b3e6e0199a1d6))
+* reaction help formatting ([62eef52](https://github.com/Nigecat/Plexi/commit/62eef5205b4a5625f60eb6c9f26964d8333ff6e5))
+
+
+### Features
+
+* image generators ([79fd3a3](https://github.com/Nigecat/Plexi/commit/79fd3a32a10ae7481c607521a6f4f87669e26059))
+
+
+
+## [5.5.4](https://github.com/Nigecat/Plexi/compare/v5.5.3...v5.5.4) (2020-08-28)
+
+
+### Bug Fixes
+
+* beepboop and aroundtheworld commands not being hidden ([5adb169](https://github.com/Nigecat/Plexi/commit/5adb169e520ab4c6f7650b815d642d10664848f1))
+* client user caching issue ([776b5b4](https://github.com/Nigecat/Plexi/commit/776b5b42d22434f4ee3f6ca54125b03c3156c53b))
+* improper use of gateway intents ([9eba15e](https://github.com/Nigecat/Plexi/commit/9eba15ee49a0367fdf65b41d447ad27b0737de29))
+* process not terminating cleanly ([29788b9](https://github.com/Nigecat/Plexi/commit/29788b962eaabd09335579a44ba1ea7a4742a984))
+* shutdown command erroring and not disconnecting from database ([616fa9c](https://github.com/Nigecat/Plexi/commit/616fa9cb2628feaa3b89e7ee862d666deb43faa6))
+
+
+### Features
+
+* **command:** around the world ([4ec9976](https://github.com/Nigecat/Plexi/commit/4ec9976d6dbe9074011aca16a0a7f8457495fb61))
+* **command:** bite comamnd ([58e704f](https://github.com/Nigecat/Plexi/commit/58e704fcd61b1ef2a30cf89594b6196402aa7e1b))
+* **command:** boop command ([8c49314](https://github.com/Nigecat/Plexi/commit/8c49314e75536c6198bc0b673079f43ea6387a05))
+* **command:** chainable reload command for debugging ([6e61d81](https://github.com/Nigecat/Plexi/commit/6e61d81471404fdf4fc43eff742894b2099543a0))
+* **command:** confused command ([9db9b94](https://github.com/Nigecat/Plexi/commit/9db9b94171715a86addb9e8ba9e5fb438dfc83ba))
+* **command:** cry command ([0161a47](https://github.com/Nigecat/Plexi/commit/0161a479a84d97fd7e5ba94424d2ee09dd58b53c))
+* **command:** cuddle command ([30a2de6](https://github.com/Nigecat/Plexi/commit/30a2de6ccda4ac1c0da87485fe7f676eff64ab9d))
+* **command:** dance command ([3725d4f](https://github.com/Nigecat/Plexi/commit/3725d4f93537d7093b22b3d2fb59140b68630eeb))
+* **command:** happy command ([76e6c21](https://github.com/Nigecat/Plexi/commit/76e6c2110809f34f975c972604415b45288be481))
+* **command:** kiss command ([b74ad58](https://github.com/Nigecat/Plexi/commit/b74ad587ad5b29b328ae38234381385c1299d06d))
+* **command:** lewd command ([2273ff8](https://github.com/Nigecat/Plexi/commit/2273ff89ea77403a736ffdc20440624515209229))
+* **command:** lewd command ([042cb93](https://github.com/Nigecat/Plexi/commit/042cb935e28e7142a9c09fb8114f9d307abdd642))
+* **command:** lick command ([97fcf7d](https://github.com/Nigecat/Plexi/commit/97fcf7ddf0bb3aba803639d1620f75868d40ab8f))
+* **command:** pat command ([2fac258](https://github.com/Nigecat/Plexi/commit/2fac2587f236abf678c7330043bd60430b5a80c7))
+* **command:** poke command ([4de8289](https://github.com/Nigecat/Plexi/commit/4de8289b1c6db04559e01047c6a908a2e2cd22ee))
+* **command:** pout and run commands ([fb0489f](https://github.com/Nigecat/Plexi/commit/fb0489f8f9d5d2fbe4ff6a3f469e556a6b4b89a5))
+* **command:** punch command ([9004095](https://github.com/Nigecat/Plexi/commit/9004095ab0519d554138be215b4fa525d5efc86b))
+* **command:** scared command ([4c4134d](https://github.com/Nigecat/Plexi/commit/4c4134db5aa5c243b25cb1a030f9c47f5fb2e66f))
+* **command:** shocked command ([3a20289](https://github.com/Nigecat/Plexi/commit/3a202894fe066076e4e19c2c112b358b4b1bf360))
+* **command:** slap command ([59aec45](https://github.com/Nigecat/Plexi/commit/59aec455cf00b4b1b0d9bb947b5b4a098fcaca07))
+* **command:** smile command ([0aebfa3](https://github.com/Nigecat/Plexi/commit/0aebfa39aec8d357104ea769dc0bc12b10584e2f))
+* **command:** smug command ([5c8c63e](https://github.com/Nigecat/Plexi/commit/5c8c63e46a115e2df35cd1e9591c6beb7e87cd90))
+* **command:** surprised command ([24f0106](https://github.com/Nigecat/Plexi/commit/24f0106849fe7fed37a0c33a5661bc64e9a1a17a))
+* **command:** waving command ([3ebb822](https://github.com/Nigecat/Plexi/commit/3ebb8221f8301d71a8099de364c4f6ffcf60d073))
+* generic self reaction command handler ([5425ce7](https://github.com/Nigecat/Plexi/commit/5425ce705c981bbf7526c3d5b44c9c58108a866e))
+* **command:** tickle command ([e648c06](https://github.com/Nigecat/Plexi/commit/e648c06d04b0c1c812e9ca3c116680672be68f9f))
+* generic reaction command handler ([dbb6f4a](https://github.com/Nigecat/Plexi/commit/dbb6f4a46f9f2df959884a1adb3bc61e3ffc9786))
+* math command for solving equations ([be2d80a](https://github.com/Nigecat/Plexi/commit/be2d80a26a45d00b1d390779b2a29466d42e7cfd))
+
+
+### Performance Improvements
+
+* reduce docker image layers ([56d2bdc](https://github.com/Nigecat/Plexi/commit/56d2bdc637aeed61874ac730a195d3390f83e6ed))
+* remove need for storing images as temporary files ([66b8803](https://github.com/Nigecat/Plexi/commit/66b880325e91b14ebec5734594107ff3449044b8))
+
+
+### Reverts
+
+* remove support invite from help ([a3a9e90](https://github.com/Nigecat/Plexi/commit/a3a9e903ce4433e8e00c5e782ae61453b308428d))
+
+
+
 ## [5.5.3](https://github.com/Nigecat/Plexi/compare/v5.5.2...v5.5.3) (2020-08-21)
 
 
