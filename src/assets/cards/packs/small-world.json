@@ -21,6 +21,12 @@
         "rarity": 7
     },
     {
+        "name": "Medimedes",
+        "power": 4,
+        "rarity": 15,
+        "ability": "Medic"
+    },
+    {
         "name": "Archimedes",
         "power": 2,
         "rarity": 20,
