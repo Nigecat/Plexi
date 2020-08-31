@@ -2,7 +2,8 @@ import { Message } from "discord.js";
 import cloneDeep from "lodash/cloneDeep";
 import { getRandom } from "../../utils/misc";
 import { Card } from "../../managers/CardManager";
-import { GameState, GameUser } from "../../commands/commands/Catrd/duel";
+import { GameUser } from "../../commands/extras/duel/GameUser";
+import { GameState } from "../../commands/extras/duel/GameState";
 
 export const abilities: Record<string, Ability> = {
     Commander: {
