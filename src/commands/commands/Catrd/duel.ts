@@ -158,6 +158,9 @@ export default class Duel extends Command {
                 Certain cards may have abilities that have side effects once played. 
                 These will be marked in the hand you were sent. Run \`abilityinfo\` to check what an ability does (this works in dms).
                 
+                Whoever has the current turn may type \`refresh\` in the this channel to send a new message with the board.
+                This is for longer duels so you don't have to scroll upwards as far.
+
                 The first user to two round wins will win the overall game.
                 Good luck!
             `,
@@ -309,6 +312,83 @@ export class GameState {
         // Helper function to calculate the total power of an array of cards
         const totalPower = (cards: Card[]) => cards.reduce((total, card) => total + card.power, 0);
 
+        // Helper function to regenerate the board
+        const regenerateBoard = () => {
+            return new MessageEmbed({
+                color: "RANDOM",
+                title: `${this.initiator.user.username} (${this.initiator.wins}) | ${this.target.user.username} (${this.target.wins})`,
+                footer: {
+                    text: oneLine`
+                        Total power: ${totalPower(this.initiator.playedCards)} | 
+                        ${totalPower(this.target.playedCards)}, Current turn: ${turn.user.username}`,
+                },
+                fields: [
+                    {
+                        name: "Melee",
+                        value:
+                            this.initiator.playedCards
+                                .filter((card) => card.type === "Melee")
+                                .map(({ name }) => name)
+                                .join("\n") || ZERO_WIDTH_SPACE,
+                        inline: true,
+                    },
+                    {
+                        name: "Melee",
+                        value:
+                            this.target.playedCards
+                                .filter((card) => card.type === "Melee")
+                                .map(({ name }) => name)
+                                .join("\n") || ZERO_WIDTH_SPACE,
+                        inline: true,
+                    },
+                    {
+                        name: ZERO_WIDTH_SPACE,
+                        value: ZERO_WIDTH_SPACE,
+                    },
+                    {
+                        name: "Scout",
+                        value:
+                            this.initiator.playedCards
+                                .filter((card) => card.type === "Scout")
+                                .map(({ name }) => name)
+                                .join("\n") || ZERO_WIDTH_SPACE,
+                        inline: true,
+                    },
+                    {
+                        name: "Scout",
+                        value:
+                            this.target.playedCards
+                                .filter((card) => card.type === "Scout")
+                                .map(({ name }) => name)
+                                .join("\n") || ZERO_WIDTH_SPACE,
+                        inline: true,
+                    },
+                    {
+                        name: ZERO_WIDTH_SPACE,
+                        value: ZERO_WIDTH_SPACE,
+                    },
+                    {
+                        name: "Defense",
+                        value:
+                            this.initiator.playedCards
+                                .filter((card) => card.type === "Defense")
+                                .map(({ name }) => name)
+                                .join("\n") || ZERO_WIDTH_SPACE,
+                        inline: true,
+                    },
+                    {
+                        name: "Defense",
+                        value:
+                            this.target.playedCards
+                                .filter((card) => card.type === "Defense")
+                                .map(({ name }) => name)
+                                .join("\n") || ZERO_WIDTH_SPACE,
+                        inline: true,
+                    },
+                ],
+            });
+        };
+
         // Assign each user 7 random cards from their deck
         this.initiator.hand = getRandom(this.initiator.dbData.deck, 7).map((card) => this.client.cards.get(card));
         this.target.hand = getRandom(this.target.dbData.deck, 7).map((card) => this.client.cards.get(card));
@@ -417,6 +497,14 @@ export class GameState {
                     turn = swapTurn(turn);
                 }
 
+                // If this is a board refresh
+                else if (message.content.toLowerCase() === "refresh") {
+                    // Regenerate the board embed in a new message
+                    const newBoard = regenerateBoard();
+                    await board.delete();
+                    board = await this.channel.send({ embed: newBoard });
+                }
+
                 // If this message came from the current turn user and is a valid card
                 else if (message.author.id === turn.user.id && this.client.cards.has(message.content)) {
                     // Perform a deep clone so our abilities can modify this card
@@ -444,79 +532,7 @@ export class GameState {
                         // Flip the turn only if the other user has not passed
                         if (!swapTurn(turn).passed) turn = swapTurn(turn);
                         // Regenerate the board embed
-                        const newBoard = new MessageEmbed({
-                            color: "RANDOM",
-                            title: `${this.initiator.user.username} (${this.initiator.wins}) | ${this.target.user.username} (${this.target.wins})`,
-                            footer: {
-                                text: oneLine`
-                                    Total power: ${totalPower(this.initiator.playedCards)} | 
-                                    ${totalPower(this.target.playedCards)}, Current turn: ${turn.user.username}`,
-                            },
-                            fields: [
-                                {
-                                    name: "Melee",
-                                    value:
-                                        this.initiator.playedCards
-                                            .filter((card) => card.type === "Melee")
-                                            .map(({ name }) => name)
-                                            .join("\n") || ZERO_WIDTH_SPACE,
-                                    inline: true,
-                                },
-                                {
-                                    name: "Melee",
-                                    value:
-                                        this.target.playedCards
-                                            .filter((card) => card.type === "Melee")
-                                            .map(({ name }) => name)
-                                            .join("\n") || ZERO_WIDTH_SPACE,
-                                    inline: true,
-                                },
-                                {
-                                    name: ZERO_WIDTH_SPACE,
-                                    value: ZERO_WIDTH_SPACE,
-                                },
-                                {
-                                    name: "Scout",
-                                    value:
-                                        this.initiator.playedCards
-                                            .filter((card) => card.type === "Scout")
-                                            .map(({ name }) => name)
-                                            .join("\n") || ZERO_WIDTH_SPACE,
-                                    inline: true,
-                                },
-                                {
-                                    name: "Scout",
-                                    value:
-                                        this.target.playedCards
-                                            .filter((card) => card.type === "Scout")
-                                            .map(({ name }) => name)
-                                            .join("\n") || ZERO_WIDTH_SPACE,
-                                    inline: true,
-                                },
-                                {
-                                    name: ZERO_WIDTH_SPACE,
-                                    value: ZERO_WIDTH_SPACE,
-                                },
-                                {
-                                    name: "Defense",
-                                    value:
-                                        this.initiator.playedCards
-                                            .filter((card) => card.type === "Defense")
-                                            .map(({ name }) => name)
-                                            .join("\n") || ZERO_WIDTH_SPACE,
-                                    inline: true,
-                                },
-                                {
-                                    name: "Defense",
-                                    value:
-                                        this.target.playedCards
-                                            .filter((card) => card.type === "Defense")
-                                            .map(({ name }) => name)
-                                            .join("\n") || ZERO_WIDTH_SPACE,
-                                    inline: true,
-                                },
-                            ],
-                        });
+                        const newBoard = regenerateBoard();
                         await board.edit({ embed: newBoard });
                     } else {
                         this.channel.send(
@@ -536,6 +552,9 @@ export class GameState {
                         `${this.initiator.user.username} has automatically passed since they do not have any cards left in their hand.`,
                     );
                     turn = swapTurn(turn);
+                    // Regenerate the board embed
+                    const newBoard = regenerateBoard();
+                    await board.edit({ embed: newBoard });
                 }
                 if (this.target.user.id === turn.user.id && this.target.hand.length === 0 && !this.target.passed) {
                     this.target.passed = true;
@@ -543,6 +562,9 @@ export class GameState {
                         `${this.target.user.username} has automatically passed since they do not have any cards left in their hand.`,
                     );
                     turn = swapTurn(turn);
+                    // Regenerate the board embed
+                    const newBoard = regenerateBoard();
+                    await board.edit({ embed: newBoard });
                 }
 
                 // If both users have now passed
