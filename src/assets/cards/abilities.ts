@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import cloneDeep from "lodash/cloneDeep";
+import { clone } from "../../utils/clone";
 import { getRandom } from "../../utils/misc";
 import { Card } from "../../managers/CardManager";
 import { GameUser } from "../../commands/extras/duel/GameUser";
@@ -24,7 +24,7 @@ export const abilities: Record<string, Ability> = {
         execute: async ({ turn, game }: GameData): Promise<string> => {
             const cards = turn.dbData.cards
                 .filter((card) => card === "More gun cat")
-                .map((name) => cloneDeep(game.client.cards.find((card) => card.name === name)));
+                .map((name) => clone(game.client.cards.find((card) => card.name === name)));
 
             turn.playedCards.concat(cards);
 

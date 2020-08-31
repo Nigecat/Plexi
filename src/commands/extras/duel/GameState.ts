@@ -1,7 +1,7 @@
 import { GameUser } from "./GameUser";
 import { Plexi } from "../../../Plexi";
 import ArgumentTypes from "../../types";
-import cloneDeep from "lodash/cloneDeep";
+import { clone } from "../../../utils/clone";
 import { getRandom } from "../../../utils/misc";
 import { stripIndents, oneLine } from "common-tags";
 import { Card } from "../../../managers/CardManager";
@@ -315,7 +315,7 @@ export class GameState {
                 // If this message came from the current turn user and is a valid card
                 else if (message.author.id === turn.user.id && this.client.cards.has(message.content)) {
                     // Perform a deep clone so our abilities can modify this card
-                    const card = cloneDeep(this.client.cards.get(message.content));
+                    const card = clone(this.client.cards.get(message.content));
                     // If this user has that card in their hand
                     if (turn.hand.map(({ name }) => name.toLowerCase()).includes(card.name.toLowerCase())) {
                         // Only put the card in their played cards if we don't have an ability or we don't have an override

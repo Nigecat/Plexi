@@ -24,7 +24,6 @@
     "devDependencies": {
         "@types/chai": "^4.2.12",
         "@types/common-tags": "^1.8.0",
-        "@types/lodash": "^4.14.159",
         "@types/mathjs": "^6.0.5",
         "@types/mocha": "^8.0.3",
         "@types/mongoose": "^5.7.36",
@@ -49,7 +48,6 @@
         "ffmpeg-static": "^4.2.7",
         "file-type": "^15.0.0",
         "jimp": "^0.16.0",
-        "lodash": "^4.17.20",
         "mathjs": "^7.2.0",
         "mongoose": "^5.10.1",
         "popyt": "^4.1.1",
