@@ -1,10 +1,10 @@
+import { GameUser } from "./GameUser";
 import { Plexi } from "../../../Plexi";
 import ArgumentTypes from "../../types";
 import cloneDeep from "lodash/cloneDeep";
 import { getRandom } from "../../../utils/misc";
 import { stripIndents, oneLine } from "common-tags";
 import { Card } from "../../../managers/CardManager";
-import { GameUser } from "../../extras/duel/GameUser";
 import { ZERO_WIDTH_SPACE } from "../../../constants";
 import { Message, User as DiscordUser, TextChannel, NewsChannel, MessageEmbed, DMChannel } from "discord.js";
 
