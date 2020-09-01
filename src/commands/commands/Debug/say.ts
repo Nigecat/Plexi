@@ -7,6 +7,8 @@ export default class Say extends Command {
         super(client, {
             name: "say",
             group: "Debug",
+            ownerOwnly: true,
+            hidden: true,
             description: "Make the bot say something",
             args: [
                 {
