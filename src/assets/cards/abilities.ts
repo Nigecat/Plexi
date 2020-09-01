@@ -64,27 +64,52 @@ export const abilities: Record<string, Ability> = {
             // Add the card to the other user's played cards
             otherTurn.playedCards.push(card);
 
-            // Pick two random cards from the person who played this cards deck
-            const cards = getRandom(turn.dbData.deck, 2);
+            try {
+                // Pick two random cards from the person who played this cards deck,
+                //  exclude any cards that have already been played (this round) or are in their hand already
+                const cards = getRandom(
+                    turn.dbData.deck.filter(
+                        (card) =>
+                            !turn.playedCards.map((card) => card.name).includes(card) &&
+                            !turn.hand.map((card) => card.name).includes(card),
+                    ),
+                    2,
+                );
 
-            // Add each card to the user's hand after fetching the card object
-            cards.forEach((card) => {
-                turn.hand.push(game.client.cards.get(card));
-            });
+                // Add each card to the user's hand after fetching the card object
+                cards.forEach((card) => {
+                    turn.hand.push(game.client.cards.get(card));
+                });
 
-            return `${card.name} played on the opposite side of the field, ${turn.user.username} recieved 2 cards!`;
+                return `${card.name} played on the opposite side of the field, ${turn.user.username} recieved 2 cards!`;
+            } catch {
+                return "I could not take 2 cards out of your deck, you have played all of them (or they are already in your hand).";
+            }
         },
     },
     Medic: {
         name: "Medic",
         description: "Draws a random card from your deck.",
         execute: async ({ game, turn }: GameData): Promise<string> => {
-            // Get a random card from their deck
-            const card = getRandom(turn.dbData.deck, 1)[0];
-            // Add it to their hand
-            turn.hand.push(game.client.cards.get(card));
+            try {
+                // Get a random card from their deck
+                //  and exclude any cards that have already been played (this round) or are in their hand already
+                const card = getRandom(
+                    turn.dbData.deck.filter(
+                        (card) =>
+                            !turn.playedCards.map((card) => card.name).includes(card) &&
+                            !turn.hand.map((card) => card.name).includes(card),
+                    ),
+                    1,
+                )[0];
 
-            return `${turn.user.username} drew an extra card!`;
+                // Add it to their hand
+                turn.hand.push(game.client.cards.get(card));
+
+                return `${turn.user.username} drew an extra card!`;
+            } catch {
+                return "I could not take a card out of your deck, you have played all of them (or they are already in your hand)";
+            }
         },
     },
     Agile: {
