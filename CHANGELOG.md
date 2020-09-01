@@ -1,3 +1,18 @@
+## [5.5.7](https://github.com/Nigecat/Plexi/compare/v5.5.6...v5.5.7) (2020-09-01)
+
+
+### Bug Fixes
+
+* incorrect group on cardchance command ([141cf45](https://github.com/Nigecat/Plexi/commit/141cf4572d23050ea43c990e8c831f5374ff8d05))
+* say command flags ([3f9a31f](https://github.com/Nigecat/Plexi/commit/3f9a31fc434c89610bccc9652e9b22a294b6c51f))
+
+
+### Features
+
+* **command:** command to check the chance of drawing a card ([05f4b86](https://github.com/Nigecat/Plexi/commit/05f4b8607f3d6dad3204a0baaa3d52575d53853c))
+
+
+
 ## [5.5.6](https://github.com/Nigecat/Plexi/compare/v5.5.5...v5.5.6) (2020-09-01)
 
 
