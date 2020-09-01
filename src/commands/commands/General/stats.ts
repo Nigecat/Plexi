@@ -20,7 +20,10 @@ export default class Stats extends Command {
                 { name: "Total Servers", value: this.client.guilds.cache.size, inline: true },
                 {
                     name: "Total Users",
-                    value: this.client.guilds.cache.map(({ memberCount }) => memberCount).reduce((a, b) => a + b, 0),
+                    value: this.client.guilds.cache
+                        .map(({ memberCount }) => memberCount)
+                        .filter((members) => members !== undefined)
+                        .reduce((a, b) => a + b, 0),
                     inline: true,
                 },
                 { name: "Total Channels", value: this.client.channels.cache.size, inline: true },
