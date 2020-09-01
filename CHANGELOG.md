@@ -1,3 +1,31 @@
+## [5.5.6](https://github.com/Nigecat/Plexi/compare/v5.5.5...v5.5.6) (2020-09-01)
+
+
+### Bug Fixes
+
+* card ability deepclone issue ([ac995b2](https://github.com/Nigecat/Plexi/commit/ac995b213a58716e119a747aff5ee7082537650a))
+* cry command having an exclamation mark ([50f7a36](https://github.com/Nigecat/Plexi/commit/50f7a3691dcbc89d222790bab01d83cf3cf972d7))
+* discord attachment regex missing media files ([d4f1334](https://github.com/Nigecat/Plexi/commit/d4f1334c4f03802b62bd99362816044efe3db08e))
+* improper implementation of the spy ability ([c1f1afa](https://github.com/Nigecat/Plexi/commit/c1f1afa096684b74e3c13f2fb401b9be9caca4a2))
+
+
+### Features
+
+* duel board refreshing ([ad83df8](https://github.com/Nigecat/Plexi/commit/ad83df83e56abea7260e8662074f1b50be74087f))
+* small world pack ([#107](https://github.com/Nigecat/Plexi/issues/107)) ([8092e07](https://github.com/Nigecat/Plexi/commit/8092e07175cab0afc0634790b3dfdc1b2b2d6ae8))
+* **command:** debug command to make the bot say things ([da39b74](https://github.com/Nigecat/Plexi/commit/da39b748f42cb7ce4da2bd2134acbdd927952781))
+* agile ability ([3abcd83](https://github.com/Nigecat/Plexi/commit/3abcd83537d0d0ef05174bd84f00ebedc9739433))
+* infrastructure for card abilities ([e89b400](https://github.com/Nigecat/Plexi/commit/e89b400f397d91db223c8e92db61e515ef3a6d50))
+* medic ability ([3ab9ff4](https://github.com/Nigecat/Plexi/commit/3ab9ff4507166d8a46f7e19d074193875112c63e))
+* spy ability ([1d64e88](https://github.com/Nigecat/Plexi/commit/1d64e88603fbdb31c348d09792ef4009959932e6))
+
+
+### Performance Improvements
+
+* remove lodash dependency ([4633fdc](https://github.com/Nigecat/Plexi/commit/4633fdc46f6b758148a80ed3abbee1f1620fe617))
+
+
+
 ## [5.5.5](https://github.com/Nigecat/Plexi/compare/v5.5.4...v5.5.5) (2020-08-28)
 
 

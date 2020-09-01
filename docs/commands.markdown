@@ -14,7 +14,8 @@ permalink: /commands
 
 | Command | Description | Usage |
 | ------- | :---------: | ----- |
-| buypack | Buy a pack of cards, run packinfo to see available packs and their cost. You will recieved 5 cards from the pack. | $buypack [Basic | Mewtal Gear...] |
+| addcard | Move a card from your cards to your deck, run `mycards` to view your cards/deck | $addcard [card...] |
+| buypack | Buy a pack of cards, run packinfo to see available packs and their cost. You will recieved 5 cards from the pack. | $buypack [Basic | Mewtal Gear | Small World...] |
 | cardinfo | Get info on the specified card | $cardinfo [card...] |
 | catrd-help | Run this command to see what catrd is and get an overview of how it works | $catrd-help  |
 | duel | Fight another user in the ring of honor! | $duel [user] |
@@ -22,6 +23,12 @@ permalink: /commands
 | packinfo | Get a list of cards in the specified pack, if no pack is specified it will show an overview of all packs. | $packinfo [pack...] |
 | removecard | Remove a card from your deck (moves it to your cards), run `mycards` to view your cards/deck | $removecard [card...] |
 | sellcard | Sell a card for it's value. Run `cardinfo` to check the value of a card. | $sellcard [card...] |
+
+
+### Debug
+
+| Command | Description | Usage |
+| ------- | :---------: | ----- |
 
 
 ### Economy
