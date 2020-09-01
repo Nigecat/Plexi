@@ -6,7 +6,7 @@ import Jimp from "jimp";
  * @returns Whether it is or not
  */
 export function isDiscordURL(url: string): boolean {
-    return url.match(/(http(s):\/\/?)cdn.?discord(app?).com\/(attachments|icons)\//) !== null;
+    return url.match(/(http(s):\/\/?)(cdn|media).?discord(app?).(com|net)\/(attachments|icons)\//) !== null;
 }
 
 /**
