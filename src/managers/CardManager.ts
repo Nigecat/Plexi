@@ -1,6 +1,8 @@
 import { resolve } from "path";
 import { Collection } from "discord.js";
 import basic from "../assets/cards/packs/basic.json";
+import { Ability, abilities } from "../assets/cards/abilities";
+import small_word from "../assets/cards/packs/small-world.json";
 import mewtal_gear from "../assets/cards/packs/mewtal-gear.json";
 
 /** Calculate the value (in coins) of a card */
@@ -20,6 +22,7 @@ export default class CardManager extends Collection<string, Card> {
                 power: card.power,
                 value: calculateValue(card.rarity),
                 rarity: card.rarity,
+                ability: abilities[card.ability],
                 image: resolve(__dirname, "..", "assets", "cards", "images", "Basic", `${card.name}.jpg`),
             });
         });
@@ -32,7 +35,21 @@ export default class CardManager extends Collection<string, Card> {
                 power: card.power,
                 value: calculateValue(card.rarity),
                 rarity: card.rarity,
+                ability: abilities[card.ability],
                 image: resolve(__dirname, "..", "assets", "cards", "images", "Mewtal Gear", `${card.name}.jpg`),
+            });
+        });
+
+        small_word.forEach((card) => {
+            this.set(card.name, {
+                name: card.name,
+                pack: "Small World",
+                type: card.type as Card["type"],
+                power: card.power,
+                value: calculateValue(card.rarity),
+                rarity: card.rarity,
+                ability: abilities[card.ability],
+                image: resolve(__dirname, "..", "assets", "cards", "images", "Small World", `${card.name}.jpg`),
             });
         });
     }
@@ -55,7 +72,7 @@ export interface Card {
     /** The name of this card */
     name: string;
     /** The pack this card belongs to */
-    pack: "Basic" | "Mewtal Gear";
+    pack: "Basic" | "Mewtal Gear" | "Small World";
     /** The type of this card */
     type: "Melee" | "Scout" | "Defense";
     /** The power level of this card */
@@ -66,4 +83,6 @@ export interface Card {
     image: string;
     /** The number of coins this is card is worth */
     value: number;
+    /** The ability of this card */
+    ability?: Ability;
 }

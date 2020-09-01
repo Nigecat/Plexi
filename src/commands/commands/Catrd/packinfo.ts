@@ -49,6 +49,7 @@ export default class PackInfo extends Command {
                 const embed = new MessageEmbed({
                     title: `Pack: ${cards[0].pack} (${packData[cards[0].pack].cost} coins)`,
                     color: "RANDOM",
+                    description: packData[cards[0].pack].description,
                     fields: [
                         {
                             name: "Cards",

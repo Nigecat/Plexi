@@ -59,6 +59,11 @@ export default class CardInfo extends Command {
                         value: card.rarity,
                         inline: true,
                     },
+                    {
+                        name: "Ability",
+                        value: card.ability ? card.ability.name : "None",
+                        inline: true,
+                    },
                 ],
             });
 

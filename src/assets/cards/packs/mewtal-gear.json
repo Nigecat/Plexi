@@ -26,6 +26,7 @@
     {
         "name": "Punished Cat",
         "type": "Melee",
+        "ability": "Morale Boost",
         "power": 6,
         "rarity": 10
     },
@@ -38,12 +39,14 @@
     {
         "name": "Liquid Cat",
         "type": "Defense",
+        "ability": "Medic",
         "power": 5,
         "rarity": 5
     },
     {
         "name": "Kazushiba Miller",
         "type": "Scout",
+        "ability": "Morale Boost",
         "power": 3,
         "rarity": 10
     },
@@ -62,6 +65,7 @@
     {
         "name": "Nuke",
         "type": "Scout",
+        "ability": "Medic",
         "power": 2,
         "rarity": 10
     },

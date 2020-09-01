@@ -1,0 +1,69 @@
+[
+    {
+        "name": "Dog",
+        "type": "Melee",
+        "ability": "Spy",
+        "power": 5,
+        "rarity": 15
+    },
+    {
+        "name": "Use more gun",
+        "type": "Scout",
+        "power": 2,
+        "ability": "More gun cat",
+        "rarity": 15
+    },
+    {
+        "name": "More gun cat",
+        "type": "Defense",
+        "power": 4,
+        "ability": "Tight Bond",
+        "rarity": 7
+    },
+    {
+        "name": "Medimedes",
+        "power": 4,
+        "rarity": 15,
+        "ability": "Medic"
+    },
+    {
+        "name": "THE GLOBE",
+        "power": 10,
+        "type": "Defense",
+        "rarity": 4,
+        "ability": "Commander"
+    },
+    {
+        "name": "Archimedes",
+        "power": 2,
+        "rarity": 20,
+        "type": "Scout",
+        "ability": "Medic"
+    },
+    {
+        "name": "Beeg Yoshi",
+        "power": 5,
+        "rarity": 15,
+        "type": "Defense"
+    },
+    {
+        "name": "Smol Bird",
+        "type": "Scout",
+        "power": 2,
+        "rarity": 20,
+        "ability": "Tight Bond"
+    },
+    {
+        "name": "Beeg Bird",
+        "type": "Melee",
+        "power": 7,
+        "rarity": 5
+    },
+    {
+        "name": "Sneaky French Cat",
+        "type": "Melee",
+        "power": 2,
+        "rarity": 15,
+        "ability": "Spy"
+    }
+]

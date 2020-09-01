@@ -6,5 +6,9 @@
     "Mewtal Gear": {
         "description": "Kept you waiting, huh",
         "cost": 200
+    },
+    "Small World": {
+        "description": "Small world, huh?",
+        "cost": 200
     }
 }
