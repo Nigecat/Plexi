@@ -7,7 +7,7 @@ export default class CardChance extends Command {
     constructor(client: Plexi) {
         super(client, {
             name: "cardchance",
-            group: "Debug",
+            group: "Catrd",
             description:
                 "Check what your chance of drawing a specific card is from buying a deck (this is a rough approximation)",
             args: [
