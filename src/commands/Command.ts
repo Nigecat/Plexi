@@ -109,6 +109,42 @@ export abstract class Command {
      * @internal
      */
     validateArgs(args: string[], message: Message): { isValid: boolean; formattedArgs: ArgumentTypeArray } {
+        // Ok so we have to do a bit of thinking to get the arguments to parse correctly.
+        // First, we create a variable to keep track of whether or not these arguments are valid.
+        // This is necessary since we are unable to directly return from the foreach callback.
+        //
+        // The main parser expects there to be the same number of incoming arguments as the command expects.
+        // So first we iterate through each argument,
+        //      and if it has a default and the position has not been specified in the incoming arguments,
+        //      then we assign that argument to be the default.
+        //
+        // Now we should have the same number of arguments as the expected arguments apart from infinite arguments.
+        // Luckily, infinite arguments can only appear at the end of an argument list.
+        // So if we detect that we have an infinite argument we can take all of the arguments past it.
+        //      and collapse them into a single string at the end.
+        // This works since even though the caller splits the arguments into single words,
+        //      the parser doesn't actually care what the content of each array element is,
+        //      so it will happily parse an element with multiple words in it.
+        //
+        // At this point we should have the same number of incoming arguments as expected,
+        //      if we don't then we know that we must have recieved an invalid argument,
+        //      so we can immediately return that the arguments are invalid.
+        //
+        // Now we can easily map the arguments 1:1 since there are the same ammount of incoming/expected arguments.
+        // So we loop through each of the incoming arguments to process them seperately.
+        // For each argument we do the following (if any of these fail then we mark the arguments as invalid):
+        //      1. Check if this argument is the same as the default argument.
+        //          - If this is true then we skip any other checks,
+        //                  this allows the default to not be restricted by the argument type.
+        //      2. If this command has a 'oneOf' property set then check if the incoming argument is in it.
+        //      3. We then check if the incoming argument parses the validator of the expected type.
+        //      4. After validating the type, we parse the argument from the incoming string to the actual expected type.
+        //      5. If this command has a validator for this argument we run it through that as well.
+        //      6. The parsed and validated argument gets added to an array of valid arguments.
+        //
+        // If all of the previous steps have passed for all the arguments then we return the formatted arguments.
+        // Otherwise we return that the arguments were not valid.
+
         let isValid = true;
 
         // Assign any default values if we need them

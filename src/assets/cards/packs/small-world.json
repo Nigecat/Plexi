@@ -11,14 +11,14 @@
         "type": "Scout",
         "power": 2,
         "ability": "More gun cat",
-        "rarity": 15
+        "rarity": 7
     },
     {
         "name": "More gun cat",
         "type": "Defense",
         "power": 4,
         "ability": "Tight Bond",
-        "rarity": 7
+        "rarity": 15
     },
     {
         "name": "Medimedes",
