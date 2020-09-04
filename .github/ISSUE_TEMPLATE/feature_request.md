@@ -20,4 +20,4 @@ A clear and concise description of any alternative solutions or features you've 
 Add any other context or screenshots about the feature request here.
 
 **Scope of the feature**
-Would this feature only require modifying things inside the [commands](https://github.com/Nigecat/Plexi/tree/master/src/commands/commands) directory or do external things need to be modified?
+Would this feature only require modifying things inside the [commands](https://github.com/Nigecat/Plexi/tree/master/src/commands/commands) directory or do external things need to be modified? (leave this blank if you are unsure)
