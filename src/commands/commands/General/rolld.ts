@@ -1,0 +1,25 @@
+import { Message } from "discord.js";
+import { Plexi } from "../../../Plexi";
+import { Command } from "../../Command";
+import { DiceRoll } from "rpg-dice-roller";
+
+export default class RollD extends Command {
+    constructor(client: Plexi) {
+        super(client, {
+            name: "rolld",
+            description: "DND dice roll",
+            group: "General",
+            args: [
+                {
+                    name: "notation",
+                    type: "string",
+                    infinite: true,
+                },
+            ],
+        });
+    }
+
+    run(message: Message, [notation]: [string]): void {
+        message.channel.send(new DiceRoll(notation).output);
+    }
+}
