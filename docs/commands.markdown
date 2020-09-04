@@ -79,6 +79,7 @@ permalink: /commands
 | ping | Check the bot's ping to the Discord server | $ping  |
 | reverse | Reverse the supplied text | $reverse [text...] |
 | roll | Get a random number (inclusive) between the two specified numbers | $roll [min] [max] |
+| rolld | DND dice roll | $rolld [notation...] |
 | servericon | Get the icon of this server | $servericon  |
 | serverinfo | Get info on this server | $serverinfo  |
 | stats | Get general stats about the bot | $stats  |

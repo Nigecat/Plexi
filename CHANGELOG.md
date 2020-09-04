@@ -1,3 +1,21 @@
+## [5.5.9](https://github.com/Nigecat/Plexi/compare/v5.5.8...v5.5.9) (2020-09-04)
+
+
+### Bug Fixes
+
+* stats command failing if guilds are offline (fix [#114](https://github.com/Nigecat/Plexi/issues/114)) ([41d200b](https://github.com/Nigecat/Plexi/commit/41d200bf0b666016958eb958432b66b0051f5c65))
+
+
+### Features
+
+* **command:** dnd dice roll ([#119](https://github.com/Nigecat/Plexi/issues/119)) ([7cb2a43](https://github.com/Nigecat/Plexi/commit/7cb2a43761caa562e8efcb4f08e7a36bab6afbf9))
+
+
+
+## [5.5.8](https://github.com/Nigecat/Plexi/compare/v5.5.7...v5.5.8) (2020-09-01)
+
+
+
 ## [5.5.7](https://github.com/Nigecat/Plexi/compare/v5.5.6...v5.5.7) (2020-09-01)
 
 
