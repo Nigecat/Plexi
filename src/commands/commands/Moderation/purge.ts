@@ -21,6 +21,10 @@ export default class Purge extends Command {
     }
 
     async run(message: Message, [limit]: [number]): Promise<void> {
-        await ((message.channel as unknown) as TextChannel | NewsChannel).bulkDelete(limit);
+        let messages = await message.channel.messages.fetch({ limit });
+        // Prevent the command itself from being deleted
+        messages = messages.filter((msg) => msg.id !== message.id);
+        await ((message.channel as unknown) as TextChannel | NewsChannel).bulkDelete(messages);
+        message.channel.send(`Successfully deleted ${limit} messages!`);
     }
 }
