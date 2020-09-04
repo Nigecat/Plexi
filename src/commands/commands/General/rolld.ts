@@ -20,6 +20,10 @@ export default class RollD extends Command {
     }
 
     run(message: Message, [notation]: [string]): void {
-        message.channel.send(new DiceRoll(notation).output);
+        try {
+            message.channel.send(new DiceRoll(notation).output, { split: true });
+        } catch {
+            message.channel.send("I was unable to roll that.");
+        }
     }
 }
