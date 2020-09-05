@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { describe, it } from "mocha";
+import { clone } from "../src/utils/clone";
 import * as miscUtils from "../src/utils/misc";
 import * as imageUtils from "../src/utils/image";
 
@@ -64,6 +65,18 @@ describe("utils", () => {
                     "https://cdn.discordapp.com/attachments/709636050586173503/740066259512852510/spongebob_mocking.png",
                 ),
             ).to.equal(true);
+        });
+    });
+
+    describe("clone", () => {
+        it("clone", () => {
+            const a = {
+                a: 1,
+                b: 2,
+            };
+            const b = clone(a);
+            b.a = 2;
+            expect(a).to.not.equal(b);
         });
     });
 });
