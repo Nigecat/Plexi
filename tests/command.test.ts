@@ -14,7 +14,7 @@ class TestCommand extends Command {
     run() {}
 }
 
-describe("command", () => {
+describe("Command", () => {
     describe("flags", () => {
         // Create a command for testing the flag setting
         const command = new TestCommand({
