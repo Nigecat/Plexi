@@ -45,8 +45,11 @@ async function main(): Promise<void> {
             // If it is create a new table
             data += `\n\n### ${command.options.group}\n\n| Command | Description | Usage |\n| ------- | :---------: | ----- |\n`;
         } else {
-            // Otherwise just append a table row
-            data += `| ${command.name} | ${command.options.description} | $${command.name} ${command.format} |\n`;
+            // Otherwise just append a table row (and escape the '|' character from the format string)
+            data += `| ${command.name} | ${command.options.description} | $${command.name} ${command.format.replace(
+                /\|/g,
+                "\\|",
+            )} |\n`;
         }
     });
 
