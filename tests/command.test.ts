@@ -28,7 +28,10 @@ describe("command", () => {
             clientPermissions: [],
             userPermissions: [],
             nsfw: false,
-            args: [],
+            args: [
+                { name: "test1", type: "string" },
+                { name: "test2", type: "string" },
+            ],
             hidden: false,
             ownerOwnly: false,
         });
@@ -65,7 +68,7 @@ describe("command", () => {
             expect(command.options.dmOnly).to.equal(false);
             expect(defaultCommand.options.dmOnly).to.equal(false);
         });
-        it("dmOnly", () => {
+        it("ownerOwnly", () => {
             expect(command.options.ownerOwnly).to.equal(false);
             expect(defaultCommand.options.ownerOwnly).to.equal(false);
         });
@@ -82,7 +85,10 @@ describe("command", () => {
             expect(defaultCommand.options.nsfw).to.equal(false);
         });
         it("args", () => {
-            expect(command.options.args).to.eql([]);
+            expect(command.options.args).to.eql([
+                { name: "test1", type: "string" },
+                { name: "test2", type: "string" },
+            ]);
             expect(defaultCommand.options.args).to.eql([]);
         });
         it("hidden", () => {
@@ -120,6 +126,24 @@ describe("command", () => {
                 .property("canRun")
                 .to.equal(true);
         });
+        it("clientPermissions", () => {
+            const command = new TestCommand({ clientPermissions: ["ADD_REACTIONS"] });
+            // eslint-disable-next-line prettier/prettier
+            expect(command.canRun((({ guild: { me: { hasPermission: () => false } } } as unknown) as Message)))
+                .property("canRun")
+                .to.equal(false);
+        });
+        it("userPermissions", () => {
+            const command = new TestCommand({ userPermissions: ["ADD_REACTIONS"] });
+            expect(command.canRun(({ guild: true, member: { hasPermission: () => false } } as unknown) as Message))
+                .property("canRun")
+                .to.equal(false);
+            // The permission check is meant to be skipped if we don't have a valid guild object
+            // Since then we are likely in a dm
+            expect(command.canRun(({ member: { hasPermission: () => false } } as unknown) as Message))
+                .property("canRun")
+                .to.equal(true);
+        });
         it("nsfw", () => {
             const command = new TestCommand({ nsfw: true });
             expect(command.canRun({ channel: { nsfw: false } } as Message))
@@ -149,6 +173,78 @@ describe("command", () => {
             expect(command.canRun({ author: { id: "12345" } } as Message))
                 .property("canRun")
                 .to.equal(false);
+        });
+    });
+
+    // Check the argument validator
+    describe("validateArgs", () => {
+        it("oneOf", () => {
+            const command = new TestCommand({
+                args: [
+                    {
+                        name: "test",
+                        type: "string",
+                        oneOf: ["a", "b"],
+                    },
+                ],
+            });
+            expect(command.validateArgs(["test"], null))
+                .property("isValid")
+                .to.equal(false);
+            expect(command.validateArgs(["a"], null))
+                .property("isValid")
+                .to.equal(true);
+        });
+        it("default", () => {
+            const command = new TestCommand({
+                args: [
+                    {
+                        name: "test",
+                        type: "string",
+                        default: "a",
+                    },
+                ],
+            });
+            expect(command.validateArgs(["test"], null))
+                .property("isValid")
+                .to.equal(true);
+            expect(command.validateArgs([], null)).property("isValid").to.equal(true);
+            expect(command.validateArgs([], null)).property("formattedArgs").to.eql(["a"]);
+        });
+        it("length", () => {
+            const command = new TestCommand({ args: [{ name: "test", type: "string" }] });
+            expect(command.validateArgs([], null)).property("isValid").to.equal(false);
+        });
+        it("infinite", () => {
+            const command = new TestCommand({ args: [{ name: "test", type: "string", infinite: true }] });
+            expect(command.validateArgs([], null)).property("isValid").to.equal(false);
+            expect(command.validateArgs(["infinite", "test"], null))
+                .property("isValid")
+                .to.equal(true);
+            expect(command.validateArgs(["infinite", "test"], null))
+                .property("formattedArgs")
+                .to.eql(["infinite test"]);
+        });
+        it("validator", () => {
+            const command = new TestCommand({ args: [{ name: "test", type: "string", validate: (s) => s === "a" }] });
+            expect(command.validateArgs(["test"], null))
+                .property("isValid")
+                .to.equal(false);
+            expect(command.validateArgs(["a"], null))
+                .property("isValid")
+                .to.equal(true);
+        });
+        it("type", () => {
+            const command = new TestCommand({ args: [{ name: "test", type: "number" }] });
+            expect(command.validateArgs(["1"], null))
+                .property("isValid")
+                .to.equal(true);
+            expect(command.validateArgs(["a"], null))
+                .property("isValid")
+                .to.equal(false);
+            expect(command.validateArgs(["1"], null))
+                .property("formattedArgs")
+                .to.eql([1]);
         });
     });
 });
