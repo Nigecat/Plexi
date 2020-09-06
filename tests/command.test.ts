@@ -1,9 +1,15 @@
 import { expect } from "chai";
 import { describe, it } from "mocha";
-import { Command } from "../src/commands/Command";
+import { Message } from "discord.js";
+import { Command, CommandInfo } from "../src/commands/Command";
 
 // Since the command class is an abstract class we have to extend it for our testing
 class TestCommand extends Command {
+    constructor(options: Partial<CommandInfo>, client = null) {
+        options.name = options.name || "test";
+        options.group = options.group || "Test";
+        super(client, options as CommandInfo);
+    }
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     run() {}
 }
@@ -11,7 +17,7 @@ class TestCommand extends Command {
 describe("command", () => {
     describe("flags", () => {
         // Create a command for testing the flag setting
-        const command = new TestCommand(null, {
+        const command = new TestCommand({
             name: "test",
             group: "Test",
             description: "A test command",
@@ -24,9 +30,10 @@ describe("command", () => {
             nsfw: false,
             args: [],
             hidden: false,
+            ownerOwnly: false,
         });
         // Check the defaults as well
-        const defaultCommand = new TestCommand(null, {
+        const defaultCommand = new TestCommand({
             name: "test",
             group: "Test",
         });
@@ -58,6 +65,10 @@ describe("command", () => {
             expect(command.options.dmOnly).to.equal(false);
             expect(defaultCommand.options.dmOnly).to.equal(false);
         });
+        it("dmOnly", () => {
+            expect(command.options.ownerOwnly).to.equal(false);
+            expect(defaultCommand.options.ownerOwnly).to.equal(false);
+        });
         it("clientPermissions", () => {
             expect(command.options.clientPermissions).to.eql([]);
             expect(defaultCommand.options.clientPermissions).to.eql([]);
@@ -77,6 +88,67 @@ describe("command", () => {
         it("hidden", () => {
             expect(command.options.hidden).to.equal(false);
             expect(defaultCommand.options.hidden).to.equal(false);
+        });
+    });
+
+    // Test the checker for whether or not we can run
+    describe("canRun", () => {
+        it("dmOnly", () => {
+            const command = new TestCommand({ dmOnly: true });
+            expect(command.canRun({ channel: { type: "text" } } as Message))
+                .property("canRun")
+                .to.equal(false);
+            expect(command.canRun({ channel: { type: "dm" } } as Message))
+                .property("canRun")
+                .to.equal(true);
+        });
+        it("guildOnly", () => {
+            const command = new TestCommand({ guildOnly: true });
+            expect(command.canRun({ guild: null } as Message))
+                .property("canRun")
+                .to.equal(false);
+            expect(command.canRun(({ guild: true } as unknown) as Message))
+                .property("canRun")
+                .to.equal(true);
+        });
+        it("ownerOnly", () => {
+            const command = new TestCommand({ ownerOwnly: true }, { config: { owner: "12345" } });
+            expect(command.canRun({ author: { id: "54321" } } as Message))
+                .property("canRun")
+                .to.equal(false);
+            expect(command.canRun({ author: { id: "12345" } } as Message))
+                .property("canRun")
+                .to.equal(true);
+        });
+        it("nsfw", () => {
+            const command = new TestCommand({ nsfw: true });
+            expect(command.canRun({ channel: { nsfw: false } } as Message))
+                .property("canRun")
+                .to.equal(false);
+            expect(command.canRun(({ channel: { nsfw: false, type: "dm" } } as unknown) as Message))
+                .property("canRun")
+                .to.equal(true);
+            expect(command.canRun({ channel: { nsfw: true } } as Message))
+                .property("canRun")
+                .to.equal(true);
+        });
+        it("whitelist", () => {
+            const command = new TestCommand({ whitelist: ["12345"] });
+            expect(command.canRun({ author: { id: "54321" } } as Message))
+                .property("canRun")
+                .to.equal(false);
+            expect(command.canRun({ author: { id: "12345" } } as Message))
+                .property("canRun")
+                .to.equal(true);
+        });
+        it("blacklist", () => {
+            const command = new TestCommand({ blacklist: ["12345"] });
+            expect(command.canRun({ author: { id: "54321" } } as Message))
+                .property("canRun")
+                .to.equal(true);
+            expect(command.canRun({ author: { id: "12345" } } as Message))
+                .property("canRun")
+                .to.equal(false);
         });
     });
 });
