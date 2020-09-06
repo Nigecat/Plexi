@@ -15,7 +15,7 @@ permalink: /commands
 | Command | Description | Usage |
 | ------- | :---------: | ----- |
 | addcard | Move a card from your cards to your deck, run `mycards` to view your cards/deck | $addcard <card...> |
-| buypack | Buy a pack of cards, run packinfo to see available packs and their cost. You will recieved 5 cards from the pack. | $buypack <Basic | Mewtal Gear | Small World...> |
+| buypack | Buy a pack of cards, run packinfo to see available packs and their cost. You will recieved 5 cards from the pack. | $buypack <Basic \| Mewtal Gear \| Small World...> |
 | cardchance | Check what your chance of drawing a specific card is from buying a deck (this is a rough approximation) | $cardchance <card...> |
 | cardinfo | Get info on the specified card | $cardinfo <card...> |
 | catrd-help | Run this command to see what catrd is and get an overview of how it works | $catrd-help  |
@@ -33,7 +33,7 @@ permalink: /commands
 | checkbal | Check another user's coin balance | $checkbal <user> |
 | daily | Claim your daily 50 coins | $daily  |
 | give | Give a user some of your coins | $give <user> <coins> |
-| rps | Play rock paper scissors against me | $rps <bet> <rock | paper | scissors> |
+| rps | Play rock paper scissors against me | $rps <bet> <rock \| paper \| scissors> |
 | topcoins | View the global top leaderboard for coins | $topcoins  |
 
 
