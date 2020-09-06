@@ -95,6 +95,7 @@ describe("argumentTypes", () => {
             expect(argumentTypes.number.validate("12.2", mockClient, mockMessage)).to.equal(true);
             expect(argumentTypes.number.validate("-4", mockClient, mockMessage)).to.equal(true);
             expect(argumentTypes.number.validate("5a", mockClient, mockMessage)).to.equal(false);
+            expect(argumentTypes.number.validate("", mockClient, mockMessage)).to.equal(false);
         });
 
         it("parse", () => {
