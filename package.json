@@ -19,9 +19,11 @@
         "start:nobuild": "node -r dotenv/config index.js",
         "tests": "npm run build:clean && mocha -r ts-node/register tests/**/*.test.ts",
         "test": "npm run build && npm run tests && npm run lint",
+        "coverage": "nyc --reporter=html --reporter=text npm run tests -- --reporter min",
         "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
     },
     "devDependencies": {
+        "@istanbuljs/nyc-config-typescript": "^1.0.1",
         "@types/chai": "^4.2.12",
         "@types/common-tags": "^1.8.0",
         "@types/mathjs": "^6.0.5",
@@ -35,7 +37,9 @@
         "eslint-config-prettier": "^6.11.0",
         "eslint-plugin-prettier": "^3.1.4",
         "mocha": "^8.1.3",
+        "nyc": "^15.1.0",
         "prettier": "^2.1.1",
+        "source-map-support": "^0.5.19",
         "ts-node": "^9.0.0"
     },
     "dependencies": {
