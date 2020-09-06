@@ -5,6 +5,10 @@
         "src/"
     ],
     "exclude": [
+        "src/assets/",
+        "src/events/",
+        "src/plugins/",
+        "src/commands/extras/",
         "src/commands/commands/"
     ]
 }

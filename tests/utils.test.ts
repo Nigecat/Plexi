@@ -104,6 +104,16 @@ describe("utils", () => {
 
     describe("clone", () => {
         it("clone", () => {
+            // Check if the expected object assignment behaviour works
+            const y = {
+                a: 1,
+                b: 2,
+            };
+            const l = y;
+            l.a = 2;
+            expect(y.a).to.equal(2);
+
+            // Test our clone function
             const a = {
                 a: 1,
                 b: 2,
