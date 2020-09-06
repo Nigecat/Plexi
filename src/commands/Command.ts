@@ -29,8 +29,8 @@ export abstract class Command {
 
         this.format = this.options.args.reduce((prev, arg) => {
             if (arg.oneOf) arg.name = arg.oneOf.join(" | ");
-            const wrapL = arg.default !== null ? "[" : "<";
-            const wrapR = arg.default !== null ? "]" : ">";
+            const wrapL = arg.default !== undefined ? "[" : "<";
+            const wrapR = arg.default !== undefined ? "]" : ">";
             return `${prev}${prev ? " " : ""}${wrapL}${arg.name}${arg.infinite ? "..." : ""}${wrapR}`;
         }, "");
     }
