@@ -57,7 +57,7 @@
         "mathjs": "^7.2.0",
         "mongoose": "^5.10.3",
         "popyt": "^4.1.1",
-        "rpg-dice-roller": "^4.4.1",
+        "rpg-dice-roller": "^4.5.0",
         "typescript": "^4.0.2",
         "weather-js": "^2.0.0",
         "winston": "^3.3.3",
