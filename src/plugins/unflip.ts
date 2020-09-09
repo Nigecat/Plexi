@@ -8,7 +8,7 @@ export default function (client: Plexi): void {
         if (message.author.bot) return;
 
         if (message.content.endsWith("(╯°□°）╯︵ ┻━┻")) {
-            message.channel.send("┬─┬ ノ( ゜-゜ノ)");
+            message.channel.send("┬─┬ ノ(¬_¬ノ)");
         }
     });
 }
