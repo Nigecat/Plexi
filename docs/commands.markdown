@@ -41,6 +41,7 @@ permalink: /commands
 
 | Command | Description | Usage |
 | ------- | :---------: | ----- |
+| clap | Put the 👏 emoji in the spaces of the specified text,  if no text is supplied it will use the previous message | $clap [text] |
 | communism | Make some text communist, if no text is supplied it will use the previous message | $communism [text] |
 | cow | Force a cow to say the specified text | $cow <text...> |
 | crab | Put the 🦀 emoji around the specified text,  if no text is supplied it will use the previous message | $crab [text] |

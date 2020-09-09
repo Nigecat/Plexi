@@ -1,3 +1,22 @@
+## [5.5.10](https://github.com/Nigecat/Plexi/compare/v5.5.9...v5.5.10) (2020-09-09)
+
+
+### Bug Fixes
+
+* bot crashing when having an invalid notation ([31150fb](https://github.com/Nigecat/Plexi/commit/31150fb1e5d6e3780b02ecb5de3e8c67b5e7fe8f))
+* help command displaying incorrect format ([5e0eea2](https://github.com/Nigecat/Plexi/commit/5e0eea2b7115648be21a1d5818a82017996dccf9))
+* purge command deleting the command ([b225b1e](https://github.com/Nigecat/Plexi/commit/b225b1ea2b4bf1d710713e187ed812cbcbee37c4))
+
+
+### Features
+
+* table unflip ([#133](https://github.com/Nigecat/Plexi/issues/133)) ([94be306](https://github.com/Nigecat/Plexi/commit/94be306a408b707350accd0d85273a584a9f157f))
+* **command:** command to make the previous message 'go brrrr' ([fee3621](https://github.com/Nigecat/Plexi/commit/fee3621e9495e8554e6837bab0eca90bb20ea90c))
+* automatic deletion of purge command result ([2699e71](https://github.com/Nigecat/Plexi/commit/2699e71df2e47cfdb009f36d98aa849eb65f6371))
+* rolld command alias to rl ([d5a5868](https://github.com/Nigecat/Plexi/commit/d5a5868c3fa2ff581eb044e7373e86c3b2499cd2))
+
+
+
 ## [5.5.9](https://github.com/Nigecat/Plexi/compare/v5.5.8...v5.5.9) (2020-09-04)
 
 
