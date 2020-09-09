@@ -9,7 +9,14 @@ export default class Communism extends Command {
             name: "communism",
             group: "Fun",
             description: "Make some text communist, if no text is supplied it will use the previous message",
-            args: [{ name: "text", type: "string", default: "USE_PREVIOUS" }],
+            args: [
+                {
+                    name: "text",
+                    type: "string",
+                    default: "USE_PREVIOUS",
+                    infinite: true,
+                },
+            ],
         });
     }
 
@@ -29,7 +36,7 @@ export default class Communism extends Command {
         // Convert the text with a search and replace of communism words
         const converted = text
             .split(" ")
-            .map((word) => (word in COMMUNISM ? COMMUNISM[word] : word))
+            .map((word) => (word.toLowerCase() in COMMUNISM ? COMMUNISM[word.toLowerCase()] : word))
             .join(" ");
 
         message.channel.send(`☭ ${converted} ☭`);
