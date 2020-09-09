@@ -1,3 +1,4 @@
+import unflip from "./unflip";
 import someone from "./someone";
 import { Plexi } from "../Plexi";
 import theideasman from "./theideasman";
@@ -6,6 +7,7 @@ import theideasman from "./theideasman";
 export default <Plugin[]>[
     someone,
     theideasman,
+    unflip,
 ];
 
 export interface Plugin {
