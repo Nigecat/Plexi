@@ -7,6 +7,7 @@ export default class RollD extends Command {
     constructor(client: Plexi) {
         super(client, {
             name: "rolld",
+            aliases: ["rl"],
             description: "DND dice roll",
             group: "General",
             args: [
