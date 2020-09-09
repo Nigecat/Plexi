@@ -1,6 +1,7 @@
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
 import { Message, TextChannel, NewsChannel } from "discord.js";
+import { setTimeout } from "timers";
 
 export default class Purge extends Command {
     constructor(client: Plexi) {
@@ -21,10 +22,11 @@ export default class Purge extends Command {
     }
 
     async run(message: Message, [limit]: [number]): Promise<void> {
-        let messages = await message.channel.messages.fetch({ limit });
-        // Prevent the command itself from being deleted
-        messages = messages.filter((msg) => msg.id !== message.id);
+        const messages = await message.channel.messages.fetch({ limit });
         await ((message.channel as unknown) as TextChannel | NewsChannel).bulkDelete(messages);
-        message.channel.send(`Successfully deleted ${limit} messages!`);
+        const msg = await message.channel.send(`Successfully deleted ${limit} messages!`);
+        setTimeout(() => {
+            msg.delete();
+        }, 3000);
     }
 }
