@@ -8,5 +8,9 @@ services:
             - DATABASE_URI=mongodb://mongo:27017/data
         volumes: 
             - .:/plexi
+    api:
+        build: api/
+        ports: 
+            - 8000
     mongo:
         image: mongo
