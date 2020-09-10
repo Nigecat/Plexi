@@ -6,3 +6,5 @@ edition = "2018"
 
 [dependencies]
 rocket = "0.4.5"
+image = "0.23.9"
+reqwest = { version = "0.10.8", features = ["blocking"] }
