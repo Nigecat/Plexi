@@ -1,0 +1,19 @@
+name: Build Docs
+
+on:
+    push:
+    pull_request:
+        branches:
+            - master
+
+jobs:
+    build:
+        name: Build
+        timeout-minutes: 5
+        runs-on: ubuntu-latest
+        steps:
+            - name: Install bundler
+              run: sudo apt install ruby-bundler
+
+            - name: Run build
+              run: cd docs && bundle exec jekyll build
