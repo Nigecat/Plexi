@@ -16,15 +16,15 @@ jobs:
         steps:
             - uses: actions/checkout@v2
 
-            - name: Install bundler
-              run: sudo apt install ruby-bundler
-
             - name: Cache dependencies
               uses: actions/cache@v2
               with:
                 path: vendor/bundle
                 key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
                 restore-keys: ${{ runner.os }}-gems-
+
+            - name: Install bundler
+              run: sudo apt install ruby-bundler
 
             - name: Install dependencies
               run: |
@@ -33,3 +33,6 @@ jobs:
 
             - name: Run build
               run: bundle exec jekyll build --verbose
+
+            - name: Verify html
+              uses: Cyb3r-Jak3/html5validator-action@v0.4.2
