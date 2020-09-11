@@ -15,14 +15,16 @@ jobs:
                 working-directory: docs
         steps:
             - uses: actions/checkout@v2
-
-            - name: Install bundler
-              run: sudo apt install ruby-bundler
+            - uses: actions/cache@v2
+            with:
+                path: vendor/bundle
+                key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+                restore-keys: ${{ runner.os }}-gems-
 
             - name: Install dependencies
-              run: bundle install
+                run: |
+                bundle config path vendor/bundle
+                bundle install --jobs 4 --retry 3
 
             - name: Run build
-              run: |
-                cd docs
-                bundle exec jekyll build --verbose
+              run: bundle exec jekyll build --verbose
