@@ -33,6 +33,3 @@ jobs:
 
             - name: Run build
               run: bundle exec jekyll build --verbose
-
-            - name: Verify html
-              uses: Cyb3r-Jak3/html5validator-action@v0.4.2
