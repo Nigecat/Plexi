@@ -23,6 +23,9 @@ jobs:
                 key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
                 restore-keys: ${{ runner.os }}-gems-
 
+            - name: Install bundler
+              run: sudo apt install ruby-bundler
+
             - name: Install dependencies
               run: |
                 bundle config path vendor/bundle
