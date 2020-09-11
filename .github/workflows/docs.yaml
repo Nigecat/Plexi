@@ -16,4 +16,5 @@ jobs:
               run: sudo apt install ruby-bundler
 
             - name: Run build
-              run: cd docs && bundle exec jekyll build
+              working-directory: ./docs
+              run: bundle exec jekyll build
