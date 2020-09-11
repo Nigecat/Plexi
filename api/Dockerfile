@@ -1,16 +1,18 @@
 FROM rust:latest
 
-WORKDIR /plexi-api
-RUN rustup override set nightly
+EXPOSE 8000
+ENV USER root
 
+RUN rustup override set nightly
+RUN cd / && cargo new --bin plexi-api
+
+WORKDIR /plexi-api
 COPY Cargo* /plexi-api/
-# Create a mock main file to use for the build process so the dependencies can be cached
-# This is removed after the dependencies are built
-RUN mkdir src && echo "fn main() {}" >> /plexi-api/src/main.rs 
-RUN cargo build
-RUN rm -rf /plexi-api/src
+RUN cargo build --release
+RUN rm src/*.rs
 
 COPY . /plexi-api
-RUN cargo build
+RUN rm /plexi-api/target/release/deps/plexi_api*
+RUN cargo build --release
 
-CMD cargo run
+CMD cargo run --release
