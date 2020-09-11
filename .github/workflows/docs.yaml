@@ -1,7 +1,6 @@
 name: Build Docs
 
 on:
-    push:
     pull_request:
         branches:
             - master
@@ -16,5 +15,4 @@ jobs:
               run: sudo apt install ruby-bundler
 
             - name: Run build
-              working-directory: ./docs
-              run: bundle exec jekyll build
+              run: ls
