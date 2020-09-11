@@ -1,4 +1,6 @@
 .git
 logs
 *.js
+docs
+coverage
 node_modules
