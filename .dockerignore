@@ -3,4 +3,5 @@ logs
 *.js
 docs
 coverage
+.nyc_output
 node_modules
