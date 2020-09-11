@@ -21,5 +21,5 @@ fn manipulate<'a>(url: String, posterize: f64, contrast: Option<f32>, pixelate: 
 }
 
 fn main() {
-    rocket::ignite().mount("/plexi/api/", routes![manipulate]).launch();
+    rocket::ignite().mount("/api/", routes![manipulate]).launch();
 }
