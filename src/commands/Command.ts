@@ -103,9 +103,8 @@ export abstract class Command {
     }
 
     /** Given an array of arguments check if they match the specified args of this command.
-     * If any of the args are invalid this will through an error
      * @param {ArgumentArray} args - The args to check
-     * @returns The formatted arguments (converts things to their actual objects)
+     * @returns An object with the formatted arguments (converted to their actual objects), and whether they are valid
      * @internal
      */
     validateArgs(args: string[], message: Message): { isValid: boolean; formattedArgs: ArgumentTypeArray } {
