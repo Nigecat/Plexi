@@ -62,7 +62,7 @@
         "weather-js": "^2.0.0",
         "winston": "^3.3.3",
         "word-definition": "^2.1.6",
-        "ytdl-core-discord": "^1.2.2"
+        "ytdl-core-discord": "^1.2.3"
     },
     "optionalDependencies": {
         "bufferutil": "^4.0.1",
