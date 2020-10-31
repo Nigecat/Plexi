@@ -42,7 +42,7 @@ permalink: /commands
 | Command | Description | Usage |
 | ------- | :---------: | ----- |
 | clap | Put the 👏 emoji in the spaces of the specified text,  if no text is supplied it will use the previous message | $clap [text] |
-| communism | Make some text communist, if no text is supplied it will use the previous message | $communism [text] |
+| communism | Make some text communist, if no text is supplied it will use the previous message | $communism [text...] |
 | cow | Force a cow to say the specified text | $cow <text...> |
 | crab | Put the 🦀 emoji around the specified text,  if no text is supplied it will use the previous message | $crab [text] |
 | defineud | Get the urban dictionary definition of a word | $defineud <word> |
@@ -78,6 +78,7 @@ permalink: /commands
 | lmgtfy | LMGTFY a search query, if no text is supplied it will use the previous message | $lmgtfy [text...] |
 | math | Solve a math equation | $math <equation...> |
 | ping | Check the bot's ping to the Discord server | $ping  |
+| poll | Starts a yes/no poll in the current text channel asking users to vote with the specified time.  Time must be a single word in human readable format (e.g 10minutes). | $poll <time> <question...> |
 | reverse | Reverse the supplied text | $reverse <text...> |
 | roll | Get a random number (inclusive) between the two specified numbers | $roll <min> <max> |
 | rolld | DND dice roll | $rolld <notation...> |
