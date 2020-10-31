@@ -11,20 +11,44 @@
   </p>
 </div>
 
-## Setup
-All of the tokens are loaded from environment variables.  
-These can either be configured on the device or placed in an `.env` file in the root of this project, this file will be automatically loaded when the application starts.  
-The tokens that are checked for are: 
-|   Name         |  Description  |
-|----------------|---------------|
-| DISCORD_TOKEN  | A [discord bot token](https://discord.com/developers/applications). |
-| YOUTUBE_TOKEN  | A [youtube data api v3 token](https://console.developers.google.com/apis/credentials). |
-| TOPGG_TOKEN    | A [top.gg](https://top.gg/api/docs#mybots) token. |
-| DATABASE_URI   | A uri to a [mongodb](https://www.mongodb.com/) database to store persistent data in, must begin with `mongodb://`. |
-| EMILIA_TOKEN   | An [Emilia-API](https://emilia-api.xyz/) token. |
-| NODE_ENV       | If this is set to 'production' all console logs will be disabled. |
+## Requirements
+> Note: All options other than node.js and the discord bot token are \*technically\* optional but if a user tries to run anything that uses them the bot will error. They should all be included in a production environment.
+ - [Node.js](https://nodejs.org/en/) v12 or newer
+ - Discord Bot Token - [Guide](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot)
+ - YouTube Data API v3 Token - [Guide](https://developers.google.com/youtube/v3/getting-started)
+ - Emilia API Token - [Link](https://emilia-api.xyz/)
+ - [**Optional**] A [top.gg](https://top.gg/) Token - [Link](https://discordbots.org/api/docs#mybots)
 
-The only required token is the `DISCORD_TOKEN`. However, errors will occur if the program attempts to access any of the other keys.
+## Getting Started
+Clone the repository and install dependencies.  
+`git clone https://github.com/Nigecat/Plexi.git`  
+`cd Plexi`  
+`npm ci`
 
-The bot can be started with `npm start`, but for development it is recommended to use docker. `docker-compose up --build` can be used to start the bot and a mongodb instance for testing (or `npm run start:dev` as a shortcut). The files are automatically rebuilt if they are changed.
-The container will have to be manually restarted if a file that is not a command is updated. Commands can be reloaded by running `$reload` through discord.
+## Configuration
+Create a file `.env` and place it in the root of the project, the tokens mentions in the requirements section should go here. The following is a sample of this file with the different keys.
+```
+DISCORD_TOKEN=xxxxxxxx
+YOUTUBE_TOKEN=xxxxxxxx
+TOPGG_TOKEN=xxxxxxxx
+EMILIA_TOKEN=xxxxxxxx
+```
+If running in a production environment, an additional key called `NODE_ENV` should be set to `production`. For development this should be set to `development`
+
+## Data Storage
+The bot uses [mongodb](https://www.mongodb.com/) to store persistent user data between sessions. However, since this can be difficult to setup in development environments, the bot can also function through docker. If using an external mongodb setup, set the `DATABASE_URI` key to the uri to the database in the `.env` file. This is a must have for a production environment.
+
+## Starting the Bot
+If you are using an external mongodb environment you can simple run `npm start` to start the bot.  
+If you are relying on docker to handle it, ensure the docker daemon is running and run `npm run start:dev`. This should only be used in a development environment.
+
+## Commands
+See https://nigecat.github.io/Plexi/commands for a list of commands.
+
+## Contributing
+1. [Fork the repository](https://github.com/Nigecat/Plexi/fork)
+2. Clone your fork: `git clone https://github.com/your-username/Plexi.git`
+3. Create your feature branch: `git checkout -b my-feature`
+4. Commit your changes: `git commit -m "Add my feature"`
+5. Push the branch: `git push origin -u my-feature`
+6. Submit a [pull request](https://github.com/Nigecat/Plexi/pulls)
