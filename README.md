@@ -33,7 +33,8 @@ YOUTUBE_TOKEN=xxxxxxxx
 TOPGG_TOKEN=xxxxxxxx
 EMILIA_TOKEN=xxxxxxxx
 ```
-If running in a production environment, an additional key called `NODE_ENV` should be set to `production`. For development this should be set to `development`
+If running in a production environment, an additional key called `NODE_ENV` should be set to `production`. For development this should be set to `development`  
+If you wish for the bot to update it's status on top.gg, set the `TOPGG_TOKEN` key to your token. This key can be safely omitted if you do not want this.
 
 ## Data Storage
 The bot uses [mongodb](https://www.mongodb.com/) to store persistent user data between sessions. However, since this can be difficult to setup in development environments, the bot can also function through docker. If using an external mongodb setup, set the `DATABASE_URI` key to the uri to the database in the `.env` file. This is a must have for a production environment.
