@@ -53,3 +53,8 @@ See https://nigecat.github.io/Plexi/commands for a list of commands.
 4. Commit your changes: `git commit -m "Add my feature"`
 5. Push the branch: `git push origin -u my-feature`
 6. Submit a [pull request](https://github.com/Nigecat/Plexi/pulls)
+
+## Author
+
+Plexi © [Nigecat](https://github.com/Nigecat).  
+Authored and maintained by Nigecat.
