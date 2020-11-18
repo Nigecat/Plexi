@@ -56,7 +56,7 @@
         "file-type": "^16.0.1",
         "jimp": "^0.16.1",
         "mathjs": "^8.0.1",
-        "mongoose": "^5.10.14",
+        "mongoose": "^5.10.15",
         "popyt": "^4.2.0",
         "rpg-dice-roller": "^4.4.1",
         "typescript": "^4.0.5",
