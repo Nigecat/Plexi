@@ -50,7 +50,7 @@
         "@types/node": "^14.14.9",
         "common-tags": "^1.8.0",
         "dblapi.js": "^2.4.1",
-        "discord.js": "^12.5.0",
+        "discord.js": "^12.5.1",
         "dotenv": "^8.2.0",
         "ffmpeg-static": "^4.2.7",
         "file-type": "^16.0.1",
