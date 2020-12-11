@@ -47,7 +47,7 @@
     },
     "dependencies": {
         "@discordjs/opus": "^0.3.3",
-        "@types/node": "^14.14.11",
+        "@types/node": "^14.14.12",
         "common-tags": "^1.8.0",
         "dblapi.js": "^2.4.1",
         "discord.js": "^12.5.1",
