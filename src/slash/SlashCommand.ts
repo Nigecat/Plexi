@@ -46,6 +46,10 @@ export interface SlashCommandResponse {
     type: number;
     /** An optional response message */
     data?: SlashCommandResponseData;
+    /** Response flags
+     * 64: Only the user that invoked the command will be able to see the response
+     */
+    flags: number;
 }
 
 export interface SlashCommandResponseData {
