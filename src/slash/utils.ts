@@ -1,4 +1,9 @@
-import { SlashCommandOption, SlashCommandResponse } from "./SlashCommand";
+import {
+    SlashCommandOption,
+    SlashCommandOptionType,
+    SlashCommandResponse,
+    SlashCommandResponseType,
+} from "./SlashCommand";
 
 /**
  * A user option
@@ -9,7 +14,7 @@ export function user(description: string, required = true): SlashCommandOption {
     return {
         name: "user",
         description,
-        type: 6,
+        type: SlashCommandOptionType.User,
         required,
     };
 }
@@ -22,7 +27,7 @@ export function role(description: string, required = true): SlashCommandOption {
     return {
         name: "role",
         description,
-        type: 8,
+        type: SlashCommandOptionType.Role,
         required,
     };
 }
@@ -33,7 +38,7 @@ export function role(description: string, required = true): SlashCommandOption {
  */
 export function ephemeral(content: string): SlashCommandResponse {
     return {
-        type: 3,
+        type: SlashCommandResponseType.ChannelMessage,
         data: {
             content,
             flags: 1 << 6,

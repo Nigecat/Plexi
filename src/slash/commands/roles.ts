@@ -1,7 +1,13 @@
 import { Plexi } from "../../Plexi";
 import { GuildMember, Role } from "discord.js";
 import { user, role, ephemeral } from "../utils";
-import { InteractionData, InteractionDataOptions, SlashCommand, SlashCommandResponse } from "../SlashCommand";
+import {
+    InteractionData,
+    InteractionDataOptions,
+    SlashCommand,
+    SlashCommandOptionType,
+    SlashCommandResponse,
+} from "../SlashCommand";
 
 export default class Roles extends SlashCommand {
     constructor(client: Plexi) {
@@ -12,13 +18,13 @@ export default class Roles extends SlashCommand {
                 {
                     name: "add",
                     description: "Add a role to a user",
-                    type: 1,
+                    type: SlashCommandOptionType.SubCommand,
                     options: [user("The user to add the role to"), role("The role to add")],
                 },
                 {
                     name: "remove",
                     description: "Remove a role from a user",
-                    type: 1,
+                    type: SlashCommandOptionType.SubCommand,
                     options: [user("The user to remove the role from"), role("The role to remove")],
                 },
             ],

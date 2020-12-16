@@ -41,17 +41,24 @@ export abstract class SlashCommand {
     ): void | Promise<void> | SlashCommandResponse | Promise<SlashCommandResponse>;
 }
 
+/** The type the response is */
+export enum SlashCommandResponseType {
+    /** ACK a `ping` */
+    Pong = 1,
+    /** ACK a command without sending a message, eating the user's input (this is the default) */
+    Acknowledge = 2,
+    /** Respond with a message, eating the user's input */
+    ChannelMessage = 3,
+    /** Response with a message, showng the user's input */
+    ChannelMessageWithSource = 4,
+    /** ACK a command without sending a message, showing the user's input */
+    ACKWithSource = 5,
+}
+
 /** The response to a slash command */
 export interface SlashCommandResponse {
-    /** The type this response is
-     * [FIXME: Replace this option with a string then convert it to the number internally]
-     * 1: (Pong) ACK a `ping`
-     * 2: (Acknowledge) ACK a command without sending a message, eating the user's input (this is the default)
-     * 3: (ChannelMessage) Respond with a message, eating the user's input
-     * 4: (ChannelMessageWithSource) Response with a message, showng the user's input
-     * 5: (ACKWithSource) ACK a command without sending a message, showing the user's input
-     */
-    type: number;
+    /** The type this response is */
+    type: SlashCommandResponseType;
     /** An optional response message */
     data?: SlashCommandResponseData;
 }
@@ -85,24 +92,26 @@ export interface SlashCommandInfo {
     options?: SlashCommandOption[];
 }
 
+/** The type of option this is */
+export enum SlashCommandOptionType {
+    SubCommand = 1,
+    SubCommandGroup = 2,
+    String = 3,
+    Integer = 4,
+    Boolean = 5,
+    User = 6,
+    Channel = 7,
+    Role = 8,
+}
+
 /** A single option for a slash command */
 export interface SlashCommandOption {
     /** The name of this option */
     name: string;
     /** The description of this option */
     description: string;
-    /** The type of option this is
-     * [FIXME: Replace this option with a string then convert it to the number internally]
-     * 1: SUB_COMMAND
-     * 2: SUB_COMMAND_GROUP
-     * 3: STRING
-     * 4: INTEGER
-     * 5: BOOLEAN
-     * 6: USER
-     * 7: CHANNEL
-     * 8: ROLE
-     */
-    type: number;
+    /** The type of option this is */
+    type: SlashCommandOptionType;
     /** Whether this option is required */
     required?: boolean;
     /** Whether this option is the default */
