@@ -1,10 +1,12 @@
-import events from "./events";
 import plugins from "./plugins";
 import loadCommands from "./commands";
+import loadSlashCommands from "./slash";
 import { Command } from "./commands/Command";
+import { events, rawEvents } from "./events";
 import CardManager from "./managers/CardManager";
+import { SlashCommand } from "./slash/SlashCommand";
 import DatabaseManager from "./managers/DatabaseManager";
-import { Client, ClientOptions, Collection, ClientEvents } from "discord.js";
+import { Client, ClientOptions, Collection, ClientEvents, WSEventType } from "discord.js";
 
 /**
  * An extended version of the discord.js client
@@ -24,6 +26,9 @@ export class Plexi extends Client {
 
     /** The commands this client has access to, mapped by their name */
     public commands: Collection<string, Command>;
+
+    /** The slash commands this client has access to, mapped by their name */
+    public slashCommands: Collection<string, SlashCommand>;
 
     /** Create a new bot
      * @param {Options} options - The options for this client
@@ -53,9 +58,17 @@ export class Plexi extends Client {
         // Load our commands
         this.commands = await loadCommands(this);
 
+        // Load our slash commands
+        this.slashCommands = await loadSlashCommands(this);
+
         // Register our event handlers
         Object.keys(events).forEach((event) => {
             this.on(event as keyof ClientEvents, (...data) => events[event](this, data));
+        });
+
+        // Register our raw event handlers
+        Object.keys(rawEvents).forEach((event) => {
+            this.ws.on(event as WSEventType, (data) => rawEvents[event](this, data));
         });
 
         // Load our plugins
@@ -77,6 +90,8 @@ export interface Options {
 export interface PlexiOptions {
     /** An invite link to the bot's support server */
     supportServer?: string;
+    /** The id of the bot's dev server */
+    devServerId?: string;
     /** The id of the bot owner */
     owner?: string;
     /** The default prefix for the bot */
