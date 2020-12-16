@@ -12,6 +12,7 @@
         "lint:fix": "eslint . --ext .ts --fix",
         "build": "tsc",
         "build:watch": "tsc --watch",
+        "build:clean": "tsc --build --clean",
         "build:docs": "npm run build && ts-node generateDocs.ts && typedoc --options typedoc.json",
         "start": "npm run build && node -r dotenv/config index.js",
         "start:dev": "docker-compose up --build",
