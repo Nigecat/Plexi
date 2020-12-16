@@ -3,10 +3,7 @@ import { Plexi } from "../Plexi";
 import { DISCORD_API } from "../constants";
 import { MessageEmbed, MessageMentionOptions } from "discord.js";
 
-/** A [slash command]{@link https://discord.com/developers/docs/interactions/slash-commands}
- *
- * This has no reliance on the client and acts completely seperately.
- */
+/** A [slash command]{@link https://discord.com/developers/docs/interactions/slash-commands} */
 export abstract class SlashCommand {
     /** The name of this slash command */
     public readonly name: string;
@@ -28,7 +25,7 @@ export abstract class SlashCommand {
             headers: {
                 Authorization: `Bot ${client.token}`,
             },
-        });
+        }).catch((err) => this.client.emit("error", err));
     }
 
     abstract handler(
@@ -52,10 +49,10 @@ export interface SlashCommandResponse {
 }
 
 export interface SlashCommandResponseData {
-    /** Is the response tts */
-    tts?: boolean;
     /** Message content */
     content: string;
+    /** Is the response tts */
+    tts?: boolean;
     /** Message embeds, supports up to 10 */
     embeds?: MessageEmbed[];
     /** Allowed message mentions */
@@ -133,5 +130,10 @@ export interface InteractionData {
     data: {
         name: string;
         id: string;
+        /** The options the user chose */
+        options?: {
+            name: string;
+            value: string;
+        }[];
     };
 }
