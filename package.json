@@ -13,7 +13,7 @@
         "build": "tsc",
         "build:watch": "tsc --watch",
         "build:clean": "tsc --build --clean",
-        "build:docs": "npm run build && ts-node generateDocs.ts && typedoc src --out docs/internal/docs --exclude src/commands/commands --exclude src/commands/extras --exclude src/events --exclude src/plugins --excludeExternals",
+        "build:docs": "npm run build && ts-node generateDocs.ts && typedoc --options typedoc.json",
         "start": "npm run build && node -r dotenv/config index.js",
         "start:dev": "docker-compose up --build",
         "start:nobuild": "node -r dotenv/config index.js",
