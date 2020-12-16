@@ -49,7 +49,7 @@ export interface SlashCommandResponse {
     /** Response flags
      * 64: Only the user that invoked the command will be able to see the response
      */
-    flags: number;
+    flags?: number;
 }
 
 export interface SlashCommandResponseData {
