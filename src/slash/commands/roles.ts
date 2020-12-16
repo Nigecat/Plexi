@@ -1,7 +1,7 @@
 import { Plexi } from "../../Plexi";
 import { GuildMember, Role } from "discord.js";
 import { user, role, ephemeral } from "../utils";
-import { InteractionData, SlashCommand, SlashCommandResponse } from "../SlashCommand";
+import { InteractionData, InteractionDataOptions, SlashCommand, SlashCommandResponse } from "../SlashCommand";
 
 export default class Roles extends SlashCommand {
     constructor(client: Plexi) {
@@ -25,10 +25,10 @@ export default class Roles extends SlashCommand {
         });
     }
 
-    async handler(interaction: InteractionData): Promise<SlashCommandResponse> {
-        const subcommand = interaction.data.options[0].name;
-        const args = interaction.data.options[0].options;
-
+    async handler(
+        interaction: InteractionData,
+        [{ name: subcommand, options: args }]: InteractionDataOptions,
+    ): Promise<SlashCommandResponse> {
         const guild = await this.client.guilds.fetch(interaction.guild_id);
         const user = await guild.members.fetch(args.find((arg) => arg.name === "user").value);
         const role = await guild.roles.fetch(args.find((arg) => arg.name === "role").value);

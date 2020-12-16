@@ -10,7 +10,7 @@ export default async function (client: Plexi, data: InteractionData): Promise<vo
     client.emit("debug", `Running slash command ${name}`);
 
     // Look it up and run the handler
-    const response = await client.slashCommands.get(name.toLowerCase()).handler(data);
+    const response = await client.slashCommands.get(name.toLowerCase()).handler(data, data.data.options);
 
     // If the handler returned any data run the callback with it
     if (response) {

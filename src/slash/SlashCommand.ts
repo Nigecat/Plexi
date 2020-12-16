@@ -31,11 +31,13 @@ export abstract class SlashCommand {
     /**
      * The handler for a slash command, this should be overridden by the inherited class
      * @param {InteractionData} interaction - The interaction event that triggered the command
+     * @param {InteractionDataOptions} args - The user supplied args
      * @returns The response to the command
      * @abstract
      */
     abstract handler(
         interaction: InteractionData,
+        args?: InteractionDataOptions,
     ): void | Promise<void> | SlashCommandResponse | Promise<SlashCommandResponse>;
 }
 
