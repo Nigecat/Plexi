@@ -12,8 +12,7 @@
         "lint:fix": "eslint . --ext .ts --fix",
         "build": "tsc",
         "build:watch": "tsc --watch",
-        "build:clean": "tsc --build --clean",
-        "build:docs": "npm run build && ts-node generateDocs.ts && typedoc src --out docs/internal/docs --exclude src/commands/commands --exclude src/commands/extras --exclude src/slash/commands --exclude src/events --exclude src/plugins --disableOutputCheck --excludeExternals",
+        "build:docs": "npm run build && ts-node generateDocs.ts && typedoc --options typedoc.json",
         "start": "npm run build && node -r dotenv/config index.js",
         "start:dev": "docker-compose up --build",
         "start:nobuild": "node -r dotenv/config index.js",
@@ -47,7 +46,7 @@
     },
     "dependencies": {
         "@discordjs/opus": "^0.3.3",
-        "@types/node": "^14.14.13",
+        "@types/node": "^14.14.14",
         "axios": "^0.21.0",
         "common-tags": "^1.8.0",
         "dblapi.js": "^2.4.1",
