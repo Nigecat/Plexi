@@ -33,10 +33,24 @@ export function role(description: string, required = true): SlashCommandOption {
 }
 
 /**
- * An ephemeral message
+ * An ephemeral message, leaves the source command visible
  * @param content - The content of message
  */
 export function ephemeral(content: string): SlashCommandResponse {
+    return {
+        type: SlashCommandResponseType.ChannelMessageWithSource,
+        data: {
+            content,
+            flags: 1 << 6,
+        },
+    };
+}
+
+/**
+ * A ephemeral message, hides the source command
+ * @param content - The content of the message
+ */
+export function ephemeralHidden(content: string): SlashCommandResponse {
     return {
         type: SlashCommandResponseType.ChannelMessage,
         data: {
