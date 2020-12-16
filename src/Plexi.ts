@@ -30,12 +30,22 @@ export class Plexi extends Client {
     /** The slash commands this client has access to, mapped by their name */
     public slashCommands: Collection<string, SlashCommand>;
 
+    /** A proxy object for accessing discord's api directly */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public discord: any;
+
     /** Create a new bot
      * @param {Options} options - The options for this client
      */
     constructor(options: Options) {
         super(options.client);
         this.config = options.plexi;
+
+        // Due to the fact that the discord.js typing make the api object private
+        // We must cast it to the any type before accessing it
+        // This is why we assign it to another object within our own class so we don't have to do this cast everytime we access it
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        this.discord = (this as any).api;
 
         this.on("ready", this.init.bind(this));
         process.on("SIGTERM", () => {
