@@ -46,18 +46,22 @@ export interface SlashCommandResponse {
     type: number;
     /** An optional response message */
     data?: SlashCommandResponseData;
-    /** Response flags
-     * 64: Only the user that invoked the command will be able to see the response
-     */
-    flags?: number;
 }
 
 export interface SlashCommandResponseData {
     /** Message content */
     content: string;
+    /** Response flags
+     * 64 (1 << 6): An ephemeral message - only the user that invoked the command will be able to see the response
+     */
+    flags?: number;
     /** Is the response tts */
     tts?: boolean;
-    /** Message embeds, supports up to 10 */
+    /** Message embeds, supports up to 10
+     *
+     * FIXME: According to the docs we should be able to return an embed in our response.
+     * But for some reason this isn't working, so we manually send it for the time being.
+     */
     embeds?: MessageEmbed[];
     /** Allowed message mentions */
     allows_mentions?: MessageMentionOptions;
