@@ -14,10 +14,15 @@ export default class Kick extends SlashCommand {
     async handler(interaction: InteractionData): Promise<SlashCommandResponse> {
         const guild = await this.client.guilds.fetch(interaction.guild_id);
         const user = await guild.members.fetch(interaction.data.options[0].value);
+        const author = await guild.members.fetch(interaction.member.user.id);
 
         if (user.kickable) {
-            await user.kick();
-            return ephemeral(`${user} successfully kicked.`);
+            if (author.roles.highest.position > user.roles.highest.position) {
+                await user.kick();
+                return ephemeral(`${user} successfully kicked.`);
+            } else {
+                return ephemeral(`Unable to kick ${user}, I can't kick someone with a higher role than you.`);
+            }
         } else {
             return ephemeral(`Unable to kick ${user}, I can't kick anyone with a higher role than me.`);
         }
