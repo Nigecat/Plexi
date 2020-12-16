@@ -1,0 +1,14 @@
+{
+    "inputFiles": ["./src"],
+    "out": "docs/internal/docs",
+    "excludeExternals": false,
+    "disableOutputCheck": true,
+    "mode": "modules",
+    "exclude": [
+        "src/commands/commands/**/*",
+        "src/commands/extras/**/*",
+        "src/events/**/*",
+        "src/plugins/**/*",
+        "src/assets/**/*"
+    ]
+}
