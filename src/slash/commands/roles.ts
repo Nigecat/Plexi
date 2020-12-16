@@ -1,6 +1,6 @@
 import { Plexi } from "../../Plexi";
 import { GuildMember, Role } from "discord.js";
-import { user, role, ephemeral } from "../utils";
+import { user, role, ephemeral, message } from "../utils";
 import {
     InteractionData,
     InteractionDataOptions,
@@ -38,6 +38,11 @@ export default class Roles extends SlashCommand {
         const guild = await this.client.guilds.fetch(interaction.guild_id);
         const user = await guild.members.fetch(args.find((arg) => arg.name === "user").value);
         const role = await guild.roles.fetch(args.find((arg) => arg.name === "role").value);
+        const author = await guild.members.fetch(interaction.member.user.id);
+
+        if (!author.hasPermission("MANAGE_ROLES")) {
+            return message("You don't have permission to manage roles on this server.");
+        }
 
         const helper = async (
             success: string,
@@ -49,7 +54,7 @@ export default class Roles extends SlashCommand {
                 await operation(user, role);
                 return ephemeral(success);
             } catch {
-                return ephemeral(failure);
+                return message(failure);
             }
         };
 

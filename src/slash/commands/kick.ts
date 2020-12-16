@@ -1,5 +1,5 @@
 import { Plexi } from "../../Plexi";
-import { ephemeral, user } from "../utils";
+import { ephemeral, user, message } from "../utils";
 import { InteractionData, InteractionDataOptions, SlashCommand, SlashCommandResponse } from "../SlashCommand";
 
 export default class Kick extends SlashCommand {
@@ -19,15 +19,19 @@ export default class Kick extends SlashCommand {
         const member = await guild.members.fetch(user);
         const author = await guild.members.fetch(interaction.member.user.id);
 
-        if (member.kickable) {
-            if (author.roles.highest.position > member.roles.highest.position) {
-                await member.kick();
-                return ephemeral(`${member} successfully kicked.`);
-            } else {
-                return ephemeral(`Unable to kick ${member}, I can't kick someone with a higher role than you.`);
-            }
-        } else {
-            return ephemeral(`Unable to kick ${member}, I can't kick anyone with a higher role than me.`);
+        if (!author.hasPermission("KICK_MEMBERS")) {
+            return message("You don't have permission to kick users on this server!");
         }
+
+        if (!member.kickable) {
+            return message(`Unable to kick ${member}, I can't kick anyone with a higher role than me.`);
+        }
+
+        if (author.roles.highest.position <= member.roles.highest.position) {
+            return message(`Unable to kick ${member}, I can't kick someone with a higher role than you.`);
+        }
+
+        await member.kick();
+        return ephemeral(`${member} successfully kicked.`);
     }
 }
