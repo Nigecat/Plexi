@@ -28,6 +28,12 @@ export abstract class SlashCommand {
         }).catch((err) => this.client.emit("error", err));
     }
 
+    /**
+     * The handler for a slash command, this should be overridden by the inherited class
+     * @param {InteractionData} interaction - The interaction event that triggered the command
+     * @returns The response to the command
+     * @abstract
+     */
     abstract handler(
         interaction: InteractionData,
     ): void | Promise<void> | SlashCommandResponse | Promise<SlashCommandResponse>;
