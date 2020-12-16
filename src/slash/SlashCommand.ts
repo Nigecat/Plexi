@@ -72,11 +72,7 @@ export interface SlashCommandResponseData {
     flags?: number;
     /** Is the response tts */
     tts?: boolean;
-    /** Message embeds, supports up to 10
-     *
-     * FIXME: According to the docs we should be able to return an embed in our response.
-     * But for some reason this isn't working, so we manually send it for the time being.
-     */
+    /** Message embeds, supports up to 10 */
     embeds?: MessageEmbed[];
     /** Allowed message mentions */
     allows_mentions?: MessageMentionOptions;
@@ -147,9 +143,7 @@ export interface InteractionData {
         premium_since?: boolean;
         permissions: string;
         pending: boolean;
-        // FIXME: Figure out what type this is
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        nick?: any;
+        nick?: string;
         mute: boolean;
         joined_at: string;
         is_pending: boolean;
