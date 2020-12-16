@@ -108,6 +108,12 @@ export interface SlashCommandOption {
     }[];
 }
 
+export type InteractionDataOptions = {
+    name: string;
+    value?: string;
+    options?: InteractionDataOptions;
+}[];
+
 export interface InteractionData {
     version: number;
     type: number;
@@ -139,9 +145,6 @@ export interface InteractionData {
         name: string;
         id: string;
         /** The options the user chose */
-        options?: {
-            name: string;
-            value: string;
-        }[];
+        options?: InteractionDataOptions;
     };
 }
