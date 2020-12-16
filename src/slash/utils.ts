@@ -33,6 +33,19 @@ export function role(description: string, required = true): SlashCommandOption {
 }
 
 /**
+ * A normal message, leaves the source command visible
+ * @param content - The content of message
+ */
+export function message(content: string): SlashCommandResponse {
+    return {
+        type: SlashCommandResponseType.ChannelMessageWithSource,
+        data: {
+            content,
+        },
+    };
+}
+
+/**
  * An ephemeral message, leaves the source command visible
  * @param content - The content of message
  */
