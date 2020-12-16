@@ -1,5 +1,5 @@
-import { ephemeral, user } from "../utils";
 import { Plexi } from "../../Plexi";
+import { ephemeral, user } from "../utils";
 import { InteractionData, SlashCommand, SlashCommandResponse } from "../SlashCommand";
 
 export default class Ban extends SlashCommand {
