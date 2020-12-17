@@ -3,6 +3,11 @@
     "editor.detectIndentation": false,
     "editor.tabSize": 4,
     "editor.insertSpaces": true,
+    "[elixir]": {
+        "editor.detectIndentation": false,
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+    },
     "files.exclude": {
         "**/*.js": { "when": "$(basename).ts" },
         "**/*.js.map": { "when": "$(basename)" }
