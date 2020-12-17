@@ -1,7 +1,5 @@
-import axios from "axios";
 import { Plexi } from "../../Plexi";
 import { ephemeral } from "../../slash/utils";
-import { DISCORD_API } from "../../constants";
 import { InteractionData, SlashCommandResponse } from "../../slash/SlashCommand";
 
 export default async function (client: Plexi, data: InteractionData): Promise<void> {
@@ -23,9 +21,7 @@ export default async function (client: Plexi, data: InteractionData): Promise<vo
 
     // If the handler returned any data run the callback with it
     if (response) {
-        await axios({
-            method: "post",
-            url: `${DISCORD_API}/interactions/${data.id}/${data.token}/callback`,
+        client.discord.interactions(data.id, data.token).callback.post({
             data: response,
         });
     }
