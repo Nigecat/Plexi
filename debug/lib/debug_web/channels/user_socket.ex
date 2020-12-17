@@ -2,7 +2,7 @@ defmodule DebugWeb.UserSocket do
     use Phoenix.Socket
 
     ## Channels
-    # channel "room:*", DebugWeb.RoomChannel
+    channel "log", DebugWeb.LogChannel
 
     # Socket params are passed from the client and can
     # be used to verify and authenticate a user. After

@@ -6,6 +6,19 @@ defmodule Debug.Application do
     use Application
 
     def start(_type, _args) do
+        # Ensure the log folder exists
+        unless File.exists?(DebugWeb.Constants.log_dir) do
+            File.mkdir!("logs")
+        end
+
+        # Ensure the log files exist
+        unless File.exists?(DebugWeb.Constants.info_log) do
+            File.write!(DebugWeb.Constants.info_log, "");
+        end
+        unless File.exists?(DebugWeb.Constants.error_log) do
+            File.write!(DebugWeb.Constants.error_log, "");
+        end
+
         children = [
             # Start the Telemetry supervisor
             DebugWeb.Telemetry,
