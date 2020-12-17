@@ -38,6 +38,8 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 							<input type="checkbox" id="tsd-filter-only-exported" />
 							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
@@ -110,12 +112,14 @@
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_plexi_.plexi.html#commands" class="tsd-kind-icon">commands</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_plexi_.plexi.html#config" class="tsd-kind-icon">config</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_plexi_.plexi.html#database" class="tsd-kind-icon">database</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_plexi_.plexi.html#discord" class="tsd-kind-icon">discord</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_plexi_.plexi.html#emojis" class="tsd-kind-icon">emojis</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_plexi_.plexi.html#guilds" class="tsd-kind-icon">guilds</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_plexi_.plexi.html#options" class="tsd-kind-icon">options</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_plexi_.plexi.html#readyat" class="tsd-kind-icon">ready<wbr>At</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_plexi_.plexi.html#readytimestamp" class="tsd-kind-icon">ready<wbr>Timestamp</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_plexi_.plexi.html#shard" class="tsd-kind-icon">shard</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_plexi_.plexi.html#slashcommands" class="tsd-kind-icon">slash<wbr>Commands</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_plexi_.plexi.html#token" class="tsd-kind-icon">token</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_plexi_.plexi.html#uptime" class="tsd-kind-icon">uptime</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_plexi_.plexi.html#user" class="tsd-kind-icon">user</a></li>
@@ -136,6 +140,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_plexi_.plexi.html#eventnames" class="tsd-kind-icon">event<wbr>Names</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_plexi_.plexi.html#fetchapplication" class="tsd-kind-icon">fetch<wbr>Application</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_plexi_.plexi.html#fetchguildpreview" class="tsd-kind-icon">fetch<wbr>Guild<wbr>Preview</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_plexi_.plexi.html#fetchguildtemplate" class="tsd-kind-icon">fetch<wbr>Guild<wbr>Template</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_plexi_.plexi.html#fetchinvite" class="tsd-kind-icon">fetch<wbr>Invite</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_plexi_.plexi.html#fetchvoiceregions" class="tsd-kind-icon">fetch<wbr>Voice<wbr>Regions</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="_plexi_.plexi.html#fetchwebhook" class="tsd-kind-icon">fetch<wbr>Webhook</a></li>
@@ -177,7 +182,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Client.__constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/89b19a1/src/Plexi.ts#L26">src/Plexi.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/Nigecat/Plexi/blob/4b43d53/src/Plexi.ts#L35">src/Plexi.ts:35</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -209,7 +214,7 @@
 					<div class="tsd-signature tsd-kind-icon">cards<span class="tsd-signature-symbol">:</span> <a href="_managers_cardmanager_.cardmanager.html" class="tsd-signature-type">CardManager</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/89b19a1/src/Plexi.ts#L23">src/Plexi.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi/blob/4b43d53/src/Plexi.ts#L25">src/Plexi.ts:25</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -235,7 +240,7 @@
 					<div class="tsd-signature tsd-kind-icon">commands<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Collection</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="_commands_command_.command.html" class="tsd-signature-type">Command</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/89b19a1/src/Plexi.ts#L26">src/Plexi.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi/blob/4b43d53/src/Plexi.ts#L28">src/Plexi.ts:28</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -250,7 +255,7 @@
 					<div class="tsd-signature tsd-kind-icon">config<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_plexi_.plexioptions.html" class="tsd-signature-type">PlexiOptions</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/89b19a1/src/Plexi.ts#L15">src/Plexi.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi/blob/4b43d53/src/Plexi.ts#L17">src/Plexi.ts:17</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -265,13 +270,28 @@
 					<div class="tsd-signature tsd-kind-icon">database<span class="tsd-signature-symbol">:</span> <a href="_managers_databasemanager_.databasemanager.html" class="tsd-signature-type">DatabaseManager</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/89b19a1/src/Plexi.ts#L20">src/Plexi.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi/blob/4b43d53/src/Plexi.ts#L22">src/Plexi.ts:22</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The database manager for this client.
 							NOTE: This is only created if the process.env.DATABASE_URI environment variable option is set.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="discord" class="tsd-anchor"></a>
+					<h3>discord</h3>
+					<div class="tsd-signature tsd-kind-icon">discord<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi/blob/4b43d53/src/Plexi.ts#L35">src/Plexi.ts:35</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A proxy object for accessing discord&#39;s api directly</p>
 						</div>
 					</div>
 				</section>
@@ -340,6 +360,21 @@
 							<li>Defined in node_modules/discord.js/typings/index.d.ts:206</li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="slashcommands" class="tsd-anchor"></a>
+					<h3>slash<wbr>Commands</h3>
+					<div class="tsd-signature tsd-kind-icon">slash<wbr>Commands<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Collection</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="_slash_slashcommand_.slashcommand.html" class="tsd-signature-type">SlashCommand</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi/blob/4b43d53/src/Plexi.ts#L31">src/Plexi.ts:31</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The slash commands this client has access to, mapped by their name</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 					<a name="token" class="tsd-anchor"></a>
@@ -559,7 +594,7 @@
 								<p>Inherited from <a href="_plexi_.plexi.html">Plexi</a>.<a href="_plexi_.plexi.html#emit">emit</a></p>
 								<p>Overrides <a href="_managers_databasemanager_.databasemanager.html">DatabaseManager</a>.<a href="_managers_databasemanager_.databasemanager.html#emit">emit</a></p>
 								<ul>
-									<li>Defined in node_modules/discord.js/typings/index.d.ts:236</li>
+									<li>Defined in node_modules/discord.js/typings/index.d.ts:237</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -584,7 +619,7 @@
 								<p>Inherited from <a href="_plexi_.plexi.html">Plexi</a>.<a href="_plexi_.plexi.html#emit">emit</a></p>
 								<p>Overrides <a href="_managers_databasemanager_.databasemanager.html">DatabaseManager</a>.<a href="_managers_databasemanager_.databasemanager.html#emit">emit</a></p>
 								<ul>
-									<li>Defined in node_modules/discord.js/typings/index.d.ts:237</li>
+									<li>Defined in node_modules/discord.js/typings/index.d.ts:238</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -667,6 +702,30 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="fetchguildtemplate" class="tsd-anchor"></a>
+					<h3>fetch<wbr>Guild<wbr>Template</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">fetch<wbr>Guild<wbr>Template<span class="tsd-signature-symbol">(</span>template<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">GuildTemplateResolvable</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">GuildTemplate</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="_plexi_.plexi.html">Plexi</a>.<a href="_plexi_.plexi.html#fetchguildtemplate">fetchGuildTemplate</a></p>
+								<ul>
+									<li>Defined in node_modules/discord.js/typings/index.d.ts:217</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>template: <span class="tsd-signature-type">GuildTemplateResolvable</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">GuildTemplate</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="fetchinvite" class="tsd-anchor"></a>
 					<h3>fetch<wbr>Invite</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -701,7 +760,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_plexi_.plexi.html">Plexi</a>.<a href="_plexi_.plexi.html#fetchvoiceregions">fetchVoiceRegions</a></p>
 								<ul>
-									<li>Defined in node_modules/discord.js/typings/index.d.ts:217</li>
+									<li>Defined in node_modules/discord.js/typings/index.d.ts:218</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Collection</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">VoiceRegion</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -719,7 +778,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_plexi_.plexi.html">Plexi</a>.<a href="_plexi_.plexi.html#fetchwebhook">fetchWebhook</a></p>
 								<ul>
-									<li>Defined in node_modules/discord.js/typings/index.d.ts:218</li>
+									<li>Defined in node_modules/discord.js/typings/index.d.ts:219</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -746,7 +805,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_plexi_.plexi.html">Plexi</a>.<a href="_plexi_.plexi.html#generateinvite">generateInvite</a></p>
 								<ul>
-									<li>Defined in node_modules/discord.js/typings/index.d.ts:219</li>
+									<li>Defined in node_modules/discord.js/typings/index.d.ts:220</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -787,7 +846,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/89b19a1/src/Plexi.ts#L43">src/Plexi.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/Nigecat/Plexi/blob/4b43d53/src/Plexi.ts#L58">src/Plexi.ts:58</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -858,7 +917,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_plexi_.plexi.html">Plexi</a>.<a href="_plexi_.plexi.html#login">login</a></p>
 								<ul>
-									<li>Defined in node_modules/discord.js/typings/index.d.ts:220</li>
+									<li>Defined in node_modules/discord.js/typings/index.d.ts:221</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -884,7 +943,7 @@
 								<p>Inherited from <a href="_plexi_.plexi.html">Plexi</a>.<a href="_plexi_.plexi.html#off">off</a></p>
 								<p>Overrides <a href="_managers_databasemanager_.databasemanager.html">DatabaseManager</a>.<a href="_managers_databasemanager_.databasemanager.html#off">off</a></p>
 								<ul>
-									<li>Defined in node_modules/discord.js/typings/index.d.ts:239</li>
+									<li>Defined in node_modules/discord.js/typings/index.d.ts:240</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -927,7 +986,7 @@
 								<p>Inherited from <a href="_plexi_.plexi.html">Plexi</a>.<a href="_plexi_.plexi.html#off">off</a></p>
 								<p>Overrides <a href="_managers_databasemanager_.databasemanager.html">DatabaseManager</a>.<a href="_managers_databasemanager_.databasemanager.html#off">off</a></p>
 								<ul>
-									<li>Defined in node_modules/discord.js/typings/index.d.ts:240</li>
+									<li>Defined in node_modules/discord.js/typings/index.d.ts:241</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -980,7 +1039,7 @@
 								<p>Inherited from <a href="_plexi_.plexi.html">Plexi</a>.<a href="_plexi_.plexi.html#on">on</a></p>
 								<p>Overrides <a href="_managers_databasemanager_.databasemanager.html">DatabaseManager</a>.<a href="_managers_databasemanager_.databasemanager.html#on">on</a></p>
 								<ul>
-									<li>Defined in node_modules/discord.js/typings/index.d.ts:224</li>
+									<li>Defined in node_modules/discord.js/typings/index.d.ts:225</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1023,7 +1082,7 @@
 								<p>Inherited from <a href="_plexi_.plexi.html">Plexi</a>.<a href="_plexi_.plexi.html#on">on</a></p>
 								<p>Overrides <a href="_managers_databasemanager_.databasemanager.html">DatabaseManager</a>.<a href="_managers_databasemanager_.databasemanager.html#on">on</a></p>
 								<ul>
-									<li>Defined in node_modules/discord.js/typings/index.d.ts:225</li>
+									<li>Defined in node_modules/discord.js/typings/index.d.ts:226</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1076,7 +1135,7 @@
 								<p>Inherited from <a href="_plexi_.plexi.html">Plexi</a>.<a href="_plexi_.plexi.html#once">once</a></p>
 								<p>Overrides <a href="_managers_databasemanager_.databasemanager.html">DatabaseManager</a>.<a href="_managers_databasemanager_.databasemanager.html#once">once</a></p>
 								<ul>
-									<li>Defined in node_modules/discord.js/typings/index.d.ts:230</li>
+									<li>Defined in node_modules/discord.js/typings/index.d.ts:231</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1119,7 +1178,7 @@
 								<p>Inherited from <a href="_plexi_.plexi.html">Plexi</a>.<a href="_plexi_.plexi.html#once">once</a></p>
 								<p>Overrides <a href="_managers_databasemanager_.databasemanager.html">DatabaseManager</a>.<a href="_managers_databasemanager_.databasemanager.html#once">once</a></p>
 								<ul>
-									<li>Defined in node_modules/discord.js/typings/index.d.ts:231</li>
+									<li>Defined in node_modules/discord.js/typings/index.d.ts:232</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1286,7 +1345,7 @@
 								<p>Inherited from <a href="_plexi_.plexi.html">Plexi</a>.<a href="_plexi_.plexi.html#removealllisteners">removeAllListeners</a></p>
 								<p>Overrides <a href="_managers_databasemanager_.databasemanager.html">DatabaseManager</a>.<a href="_managers_databasemanager_.databasemanager.html#removealllisteners">removeAllListeners</a></p>
 								<ul>
-									<li>Defined in node_modules/discord.js/typings/index.d.ts:245</li>
+									<li>Defined in node_modules/discord.js/typings/index.d.ts:246</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1308,7 +1367,7 @@
 								<p>Inherited from <a href="_plexi_.plexi.html">Plexi</a>.<a href="_plexi_.plexi.html#removealllisteners">removeAllListeners</a></p>
 								<p>Overrides <a href="_managers_databasemanager_.databasemanager.html">DatabaseManager</a>.<a href="_managers_databasemanager_.databasemanager.html#removealllisteners">removeAllListeners</a></p>
 								<ul>
-									<li>Defined in node_modules/discord.js/typings/index.d.ts:246</li>
+									<li>Defined in node_modules/discord.js/typings/index.d.ts:247</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1548,7 +1607,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_plexi_.plexi.html">Plexi</a>.<a href="_plexi_.plexi.html#sweepmessages">sweepMessages</a></p>
 								<ul>
-									<li>Defined in node_modules/discord.js/typings/index.d.ts:221</li>
+									<li>Defined in node_modules/discord.js/typings/index.d.ts:222</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1573,7 +1632,7 @@
 								<p>Inherited from <a href="_plexi_.plexi.html">Plexi</a>.<a href="_plexi_.plexi.html#tojson">toJSON</a></p>
 								<p>Overrides BaseClient.toJSON</p>
 								<ul>
-									<li>Defined in node_modules/discord.js/typings/index.d.ts:222</li>
+									<li>Defined in node_modules/discord.js/typings/index.d.ts:223</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
@@ -1590,9 +1649,6 @@
 					</li>
 					<li class="current tsd-kind-module">
 						<a href="../modules/_plexi_.html">&quot;<wbr>Plexi&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="../modules/_assets_cards_abilities_.html">&quot;assets/cards/abilities&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_commands_command_.html">&quot;commands/<wbr>Command&quot;</a>
@@ -1613,7 +1669,19 @@
 						<a href="../modules/_managers_databasemanager_.html">&quot;managers/<wbr>Database<wbr>Manager&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="../modules/_slash_slashcommand_.html">&quot;slash/<wbr>Slash<wbr>Command&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_slash_index_.html">&quot;slash/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_slash_utils_.html">&quot;slash/utils&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="../modules/_utils_clone_.html">&quot;utils/clone&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_utils_fs_.html">&quot;utils/fs&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_utils_image_.html">&quot;utils/image&quot;</a>
@@ -1648,6 +1716,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="_plexi_.plexi.html#database" class="tsd-kind-icon">database</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_plexi_.plexi.html#discord" class="tsd-kind-icon">discord</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="_plexi_.plexi.html#emojis" class="tsd-kind-icon">emojis</a>
 							</li>
@@ -1665,6 +1736,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="_plexi_.plexi.html#shard" class="tsd-kind-icon">shard</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_plexi_.plexi.html#slashcommands" class="tsd-kind-icon">slash<wbr>Commands</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
 								<a href="_plexi_.plexi.html#token" class="tsd-kind-icon">token</a>
@@ -1710,6 +1784,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_plexi_.plexi.html#fetchguildpreview" class="tsd-kind-icon">fetch<wbr>Guild<wbr>Preview</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="_plexi_.plexi.html#fetchguildtemplate" class="tsd-kind-icon">fetch<wbr>Guild<wbr>Template</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="_plexi_.plexi.html#fetchinvite" class="tsd-kind-icon">fetch<wbr>Invite</a>
@@ -1815,6 +1892,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
