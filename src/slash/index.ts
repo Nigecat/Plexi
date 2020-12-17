@@ -4,12 +4,6 @@ import { getFiles } from "../utils/fs";
 import { Collection } from "discord.js";
 import { SlashCommand } from "./SlashCommand";
 
-/**
- * Load our slash commands
- * @param {string} id - The application id to use
- * @param {string} token - The token to authentiacte with
- * @param {string} devServer - The id of the bot's developement server
- */
 export default async function loadSlashCommands(client: Plexi): Promise<Collection<string, SlashCommand>> {
     // The object to hold all our commands
     const commands: Collection<string, SlashCommand> = new Collection();
