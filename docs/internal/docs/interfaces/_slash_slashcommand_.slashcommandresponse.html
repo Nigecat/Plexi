@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>PlexiOptions | plexi</title>
+	<title>SlashCommandResponse | plexi</title>
 	<meta name="description" content="Documentation for plexi">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_plexi_.html">&quot;Plexi&quot;</a>
+					<a href="../modules/_slash_slashcommand_.html">&quot;slash/SlashCommand&quot;</a>
 				</li>
 				<li>
-					<a href="_plexi_.plexioptions.html">PlexiOptions</a>
+					<a href="_slash_slashcommand_.slashcommandresponse.html">SlashCommandResponse</a>
 				</li>
 			</ul>
-			<h1>Interface PlexiOptions</h1>
+			<h1>Interface SlashCommandResponse</h1>
 		</div>
 	</div>
 </header>
@@ -72,7 +72,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The options specific to our client</p>
+						<p>The response to a slash command</p>
 					</div>
 				</div>
 			</section>
@@ -80,7 +80,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">PlexiOptions</span>
+						<span class="target">SlashCommandResponse</span>
 					</li>
 				</ul>
 			</section>
@@ -91,12 +91,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_plexi_.plexioptions.html#devserverid" class="tsd-kind-icon">dev<wbr>Server<wbr>Id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_plexi_.plexioptions.html#invite" class="tsd-kind-icon">invite</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_plexi_.plexioptions.html#owner" class="tsd-kind-icon">owner</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_plexi_.plexioptions.html#prefix" class="tsd-kind-icon">prefix</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_plexi_.plexioptions.html#supportserver" class="tsd-kind-icon">support<wbr>Server</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_plexi_.plexioptions.html#version" class="tsd-kind-icon">version</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_slash_slashcommand_.slashcommandresponse.html#data" class="tsd-kind-icon">data</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_slash_slashcommand_.slashcommandresponse.html#type" class="tsd-kind-icon">type</a></li>
 							</ul>
 						</section>
 					</div>
@@ -105,92 +101,32 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="devserverid" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> dev<wbr>Server<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">dev<wbr>Server<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="data" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> data</h3>
+					<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <a href="_slash_slashcommand_.slashcommandresponsedata.html" class="tsd-signature-type">SlashCommandResponseData</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/Plexi.ts#L104">src/Plexi.ts:104</a></li>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/slash/SlashCommand.ts#L63">src/slash/SlashCommand.ts:63</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The id of the bot&#39;s dev server</p>
+							<p>An optional response message</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="invite" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> invite</h3>
-					<div class="tsd-signature tsd-kind-icon">invite<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="type" class="tsd-anchor"></a>
+					<h3>type</h3>
+					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <a href="../enums/_slash_slashcommand_.slashcommandresponsetype.html" class="tsd-signature-type">SlashCommandResponseType</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/Plexi.ts#L112">src/Plexi.ts:112</a></li>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/slash/SlashCommand.ts#L61">src/slash/SlashCommand.ts:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>An invite link for the bot</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="owner" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> owner</h3>
-					<div class="tsd-signature tsd-kind-icon">owner<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/Plexi.ts#L106">src/Plexi.ts:106</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The id of the bot owner</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="prefix" class="tsd-anchor"></a>
-					<h3>prefix</h3>
-					<div class="tsd-signature tsd-kind-icon">prefix<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/Plexi.ts#L108">src/Plexi.ts:108</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The default prefix for the bot</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="supportserver" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> support<wbr>Server</h3>
-					<div class="tsd-signature tsd-kind-icon">support<wbr>Server<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/Plexi.ts#L102">src/Plexi.ts:102</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>An invite link to the bot&#39;s support server</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="version" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> version</h3>
-					<div class="tsd-signature tsd-kind-icon">version<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/Plexi.ts#L110">src/Plexi.ts:110</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The current version of the bot</p>
+							<p>The type this response is</p>
 						</div>
 					</div>
 				</section>
@@ -202,7 +138,7 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/_plexi_.html">&quot;<wbr>Plexi&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -223,7 +159,7 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/_managers_databasemanager_.html">&quot;managers/<wbr>Database<wbr>Manager&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/_slash_slashcommand_.html">&quot;slash/<wbr>Slash<wbr>Command&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -248,39 +184,45 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="../enums/_slash_slashcommand_.slashcommandoptiontype.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Option<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="../enums/_slash_slashcommand_.slashcommandresponsetype.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Response<wbr>Type</a>
+					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/_plexi_.plexi.html" class="tsd-kind-icon">Plexi</a>
+						<a href="../classes/_slash_slashcommand_.slashcommand.html" class="tsd-kind-icon">Slash<wbr>Command</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="_plexi_.options.html" class="tsd-kind-icon">Options</a>
+						<a href="_slash_slashcommand_.interactiondata.html" class="tsd-kind-icon">Interaction<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_slash_slashcommand_.slashcommandinfo.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Info</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_slash_slashcommand_.slashcommandoption.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Option</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="_plexi_.plexioptions.html" class="tsd-kind-icon">Plexi<wbr>Options</a>
+						<a href="_slash_slashcommand_.slashcommandresponse.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Response</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_plexi_.plexioptions.html#devserverid" class="tsd-kind-icon">dev<wbr>Server<wbr>Id</a>
+								<a href="_slash_slashcommand_.slashcommandresponse.html#data" class="tsd-kind-icon">data</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_plexi_.plexioptions.html#invite" class="tsd-kind-icon">invite</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_plexi_.plexioptions.html#owner" class="tsd-kind-icon">owner</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_plexi_.plexioptions.html#prefix" class="tsd-kind-icon">prefix</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_plexi_.plexioptions.html#supportserver" class="tsd-kind-icon">support<wbr>Server</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_plexi_.plexioptions.html#version" class="tsd-kind-icon">version</a>
+								<a href="_slash_slashcommand_.slashcommandresponse.html#type" class="tsd-kind-icon">type</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_slash_slashcommand_.slashcommandresponsedata.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Response<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/_slash_slashcommand_.html#interactiondataoptions" class="tsd-kind-icon">Interaction<wbr>Data<wbr>Options</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

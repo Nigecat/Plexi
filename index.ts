@@ -24,6 +24,7 @@ const client = new Plexi({
     },
     plexi: {
         supportServer: "https://nigecat.github.io/Plexi/support",
+        devServerId: "621181741972979722",
         invite: "https://nigecat.github.io/Plexi/invite",
         owner: "307429254017056769",
         prefix: "$",

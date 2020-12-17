@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Argument | plexi</title>
+	<title>SlashCommandOption | plexi</title>
 	<meta name="description" content="Documentation for plexi">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,24 +56,31 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_commands_command_.html">&quot;commands/Command&quot;</a>
+					<a href="../modules/_slash_slashcommand_.html">&quot;slash/SlashCommand&quot;</a>
 				</li>
 				<li>
-					<a href="_commands_command_.argument.html">Argument</a>
+					<a href="_slash_slashcommand_.slashcommandoption.html">SlashCommandOption</a>
 				</li>
 			</ul>
-			<h1>Interface Argument</h1>
+			<h1>Interface SlashCommandOption</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A single option for a slash command</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Argument</span>
+						<span class="target">SlashCommandOption</span>
 					</li>
 				</ul>
 			</section>
@@ -84,12 +91,13 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_commands_command_.argument.html#default" class="tsd-kind-icon">default</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_commands_command_.argument.html#infinite" class="tsd-kind-icon">infinite</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_commands_command_.argument.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_commands_command_.argument.html#oneof" class="tsd-kind-icon">one<wbr>Of</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_commands_command_.argument.html#type" class="tsd-kind-icon">type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_commands_command_.argument.html#validate" class="tsd-kind-icon">validate</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_slash_slashcommand_.slashcommandoption.html#choices" class="tsd-kind-icon">choices</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_slash_slashcommand_.slashcommandoption.html#default" class="tsd-kind-icon">default</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_slash_slashcommand_.slashcommandoption.html#description" class="tsd-kind-icon">description</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_slash_slashcommand_.slashcommandoption.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_slash_slashcommand_.slashcommandoption.html#options" class="tsd-kind-icon">options</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_slash_slashcommand_.slashcommandoption.html#required" class="tsd-kind-icon">required</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_slash_slashcommand_.slashcommandoption.html#type" class="tsd-kind-icon">type</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,36 +106,39 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="default" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> default</h3>
-					<div class="tsd-signature tsd-kind-icon">default<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="choices" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> choices</h3>
+					<div class="tsd-signature tsd-kind-icon">choices<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/commands/Command.ts#L254">src/commands/Command.ts:254</a></li>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/slash/SlashCommand.ts#L109">src/slash/SlashCommand.ts:109</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The default value of this command, if this is set then this argument becomes optional.
-							Default values can only appear at the end of the command argument array.</p>
+							<p>The choices for the user to pick from</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="infinite" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> infinite</h3>
-					<div class="tsd-signature tsd-kind-icon">infinite<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="default" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> default</h3>
+					<div class="tsd-signature tsd-kind-icon">default<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/commands/Command.ts#L258">src/commands/Command.ts:258</a></li>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/slash/SlashCommand.ts#L105">src/slash/SlashCommand.ts:105</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether this can be of infinite length, by default each argument is a single word.
-							This can only be specified in the last argument of the array.</p>
-						</div>
-					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="description" class="tsd-anchor"></a>
+					<h3>description</h3>
+					<div class="tsd-signature tsd-kind-icon">description<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/slash/SlashCommand.ts#L101">src/slash/SlashCommand.ts:101</a></li>
+						</ul>
+					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="name" class="tsd-anchor"></a>
@@ -135,79 +146,48 @@
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/commands/Command.ts#L248">src/commands/Command.ts:248</a></li>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/slash/SlashCommand.ts#L100">src/slash/SlashCommand.ts:100</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="options" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> options</h3>
+					<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <a href="_slash_slashcommand_.slashcommandoption.html" class="tsd-signature-type">SlashCommandOption</a><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/slash/SlashCommand.ts#L107">src/slash/SlashCommand.ts:107</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The name of the argument, this is used for the help screen</p>
+							<p>The options for this option (nested options)</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="oneof" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> one<wbr>Of</h3>
-					<div class="tsd-signature tsd-kind-icon">one<wbr>Of<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
+					<a name="required" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> required</h3>
+					<div class="tsd-signature tsd-kind-icon">required<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/commands/Command.ts#L262">src/commands/Command.ts:262</a></li>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/slash/SlashCommand.ts#L104">src/slash/SlashCommand.ts:104</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The incoming argument must be one of these, this array should be all lowercase</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="type" class="tsd-anchor"></a>
 					<h3>type</h3>
-					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"string"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"user"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"member"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"role"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"boolean"</span></div>
+					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <a href="../enums/_slash_slashcommand_.slashcommandoptiontype.html" class="tsd-signature-type">SlashCommandOptionType</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/commands/Command.ts#L250">src/commands/Command.ts:250</a></li>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/slash/SlashCommand.ts#L103">src/slash/SlashCommand.ts:103</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The expected argument type</p>
+							<p>The type of option this is</p>
 						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="validate" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> validate</h3>
-					<div class="tsd-signature tsd-kind-icon">validate<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">User</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">GuildMember</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Role</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/commands/Command.ts#L260">src/commands/Command.ts:260</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>A function to check if an argument is valid, this is purely optional for stricter checking</p>
-						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-signature">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">User</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">GuildMember</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Role</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5>val: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">User</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">GuildMember</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Role</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
 					</div>
 				</section>
 			</section>
@@ -221,7 +201,7 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/_plexi_.html">&quot;<wbr>Plexi&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/_commands_command_.html">&quot;commands/<wbr>Command&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -239,7 +219,7 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/_managers_databasemanager_.html">&quot;managers/<wbr>Database<wbr>Manager&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/_slash_slashcommand_.html">&quot;slash/<wbr>Slash<wbr>Command&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -264,41 +244,59 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="../enums/_slash_slashcommand_.slashcommandoptiontype.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Option<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="../enums/_slash_slashcommand_.slashcommandresponsetype.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Response<wbr>Type</a>
+					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/_commands_command_.command.html" class="tsd-kind-icon">Command</a>
+						<a href="../classes/_slash_slashcommand_.slashcommand.html" class="tsd-kind-icon">Slash<wbr>Command</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_slash_slashcommand_.interactiondata.html" class="tsd-kind-icon">Interaction<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_slash_slashcommand_.slashcommandinfo.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Info</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="_commands_command_.argument.html" class="tsd-kind-icon">Argument</a>
+						<a href="_slash_slashcommand_.slashcommandoption.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Option</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_commands_command_.argument.html#default" class="tsd-kind-icon">default</a>
+								<a href="_slash_slashcommand_.slashcommandoption.html#choices" class="tsd-kind-icon">choices</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_commands_command_.argument.html#infinite" class="tsd-kind-icon">infinite</a>
+								<a href="_slash_slashcommand_.slashcommandoption.html#default" class="tsd-kind-icon">default</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_commands_command_.argument.html#name" class="tsd-kind-icon">name</a>
+								<a href="_slash_slashcommand_.slashcommandoption.html#description" class="tsd-kind-icon">description</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_commands_command_.argument.html#oneof" class="tsd-kind-icon">one<wbr>Of</a>
+								<a href="_slash_slashcommand_.slashcommandoption.html#name" class="tsd-kind-icon">name</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_commands_command_.argument.html#type" class="tsd-kind-icon">type</a>
+								<a href="_slash_slashcommand_.slashcommandoption.html#options" class="tsd-kind-icon">options</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_commands_command_.argument.html#validate" class="tsd-kind-icon">validate</a>
+								<a href="_slash_slashcommand_.slashcommandoption.html#required" class="tsd-kind-icon">required</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_slash_slashcommand_.slashcommandoption.html#type" class="tsd-kind-icon">type</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="_commands_command_.commandinfo.html" class="tsd-kind-icon">Command<wbr>Info</a>
+						<a href="_slash_slashcommand_.slashcommandresponse.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_slash_slashcommand_.slashcommandresponsedata.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Response<wbr>Data</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/_commands_command_.html#argumenttypearray" class="tsd-kind-icon">Argument<wbr>Type<wbr>Array</a>
+						<a href="../modules/_slash_slashcommand_.html#interactiondataoptions" class="tsd-kind-icon">Interaction<wbr>Data<wbr>Options</a>
 					</li>
 				</ul>
 			</nav>

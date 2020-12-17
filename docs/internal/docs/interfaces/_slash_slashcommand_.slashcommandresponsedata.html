@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>User | plexi</title>
+	<title>SlashCommandResponseData | plexi</title>
 	<meta name="description" content="Documentation for plexi">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_managers_databasemanager_.html">&quot;managers/DatabaseManager&quot;</a>
+					<a href="../modules/_slash_slashcommand_.html">&quot;slash/SlashCommand&quot;</a>
 				</li>
 				<li>
-					<a href="_managers_databasemanager_.user.html">User</a>
+					<a href="_slash_slashcommand_.slashcommandresponsedata.html">SlashCommandResponseData</a>
 				</li>
 			</ul>
-			<h1>Interface User</h1>
+			<h1>Interface SlashCommandResponseData</h1>
 		</div>
 	</div>
 </header>
@@ -73,12 +73,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="tsd-signature-symbol">{}</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<span class="target">User</span>
-							</li>
-						</ul>
+						<span class="target">SlashCommandResponseData</span>
 					</li>
 				</ul>
 			</section>
@@ -89,14 +84,11 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_managers_databasemanager_.user.html#cards" class="tsd-kind-icon">cards</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_managers_databasemanager_.user.html#coins" class="tsd-kind-icon">coins</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_managers_databasemanager_.user.html#dailyclaimtime" class="tsd-kind-icon">daily<wbr>Claim<wbr>Time</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_managers_databasemanager_.user.html#deck" class="tsd-kind-icon">deck</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_managers_databasemanager_.user.html#id" class="tsd-kind-icon">id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_managers_databasemanager_.user.html#lock" class="tsd-kind-icon">lock</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_managers_databasemanager_.user.html#save" class="tsd-kind-icon">save</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_managers_databasemanager_.user.html#xp" class="tsd-kind-icon">xp</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_slash_slashcommand_.slashcommandresponsedata.html#allows_mentions" class="tsd-kind-icon">allows_<wbr>mentions</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_slash_slashcommand_.slashcommandresponsedata.html#content" class="tsd-kind-icon">content</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_slash_slashcommand_.slashcommandresponsedata.html#embeds" class="tsd-kind-icon">embeds</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_slash_slashcommand_.slashcommandresponsedata.html#flags" class="tsd-kind-icon">flags</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_slash_slashcommand_.slashcommandresponsedata.html#tts" class="tsd-kind-icon">tts</a></li>
 							</ul>
 						</section>
 					</div>
@@ -105,82 +97,63 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="cards" class="tsd-anchor"></a>
-					<h3>cards</h3>
-					<div class="tsd-signature tsd-kind-icon">cards<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
+					<a name="allows_mentions" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> allows_<wbr>mentions</h3>
+					<div class="tsd-signature tsd-kind-icon">allows_<wbr>mentions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">MessageMentionOptions</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/managers/DatabaseManager.ts#L153">src/managers/DatabaseManager.ts:153</a></li>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/slash/SlashCommand.ts#L75">src/slash/SlashCommand.ts:75</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="coins" class="tsd-anchor"></a>
-					<h3>coins</h3>
-					<div class="tsd-signature tsd-kind-icon">coins<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="content" class="tsd-anchor"></a>
+					<h3>content</h3>
+					<div class="tsd-signature tsd-kind-icon">content<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/managers/DatabaseManager.ts#L156">src/managers/DatabaseManager.ts:156</a></li>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/slash/SlashCommand.ts#L67">src/slash/SlashCommand.ts:67</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="dailyclaimtime" class="tsd-anchor"></a>
-					<h3>daily<wbr>Claim<wbr>Time</h3>
-					<div class="tsd-signature tsd-kind-icon">daily<wbr>Claim<wbr>Time<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span></div>
+					<a name="embeds" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> embeds</h3>
+					<div class="tsd-signature tsd-kind-icon">embeds<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">MessageEmbed</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/managers/DatabaseManager.ts#L155">src/managers/DatabaseManager.ts:155</a></li>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/slash/SlashCommand.ts#L74">src/slash/SlashCommand.ts:74</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Message embeds, supports up to 10</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="deck" class="tsd-anchor"></a>
-					<h3>deck</h3>
-					<div class="tsd-signature tsd-kind-icon">deck<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
+					<a name="flags" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> flags</h3>
+					<div class="tsd-signature tsd-kind-icon">flags<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/managers/DatabaseManager.ts#L154">src/managers/DatabaseManager.ts:154</a></li>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/slash/SlashCommand.ts#L71">src/slash/SlashCommand.ts:71</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Response flags
+							64 (1 &lt;&lt; 6): An ephemeral message - only the user that invoked the command will be able to see the response</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="id" class="tsd-anchor"></a>
-					<h3>id</h3>
-					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="tts" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> tts</h3>
+					<div class="tsd-signature tsd-kind-icon">tts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/managers/DatabaseManager.ts#L151">src/managers/DatabaseManager.ts:151</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="lock" class="tsd-anchor"></a>
-					<h3>lock</h3>
-					<div class="tsd-signature tsd-kind-icon">lock<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/managers/DatabaseManager.ts#L157">src/managers/DatabaseManager.ts:157</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="save" class="tsd-anchor"></a>
-					<h3>save</h3>
-					<div class="tsd-signature tsd-kind-icon">save<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Document</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"save"</span><span class="tsd-signature-symbol">]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/managers/DatabaseManager.ts#L158">src/managers/DatabaseManager.ts:158</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="xp" class="tsd-anchor"></a>
-					<h3>xp</h3>
-					<div class="tsd-signature tsd-kind-icon">xp<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/managers/DatabaseManager.ts#L152">src/managers/DatabaseManager.ts:152</a></li>
+							<li>Defined in <a href="https://github.com/Nigecat/Plexi.git//blob/0833d17/src/slash/SlashCommand.ts#L72">src/slash/SlashCommand.ts:72</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -210,10 +183,10 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/_managers_cardmanager_.html">&quot;managers/<wbr>Card<wbr>Manager&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/_managers_databasemanager_.html">&quot;managers/<wbr>Database<wbr>Manager&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/_slash_slashcommand_.html">&quot;slash/<wbr>Slash<wbr>Command&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -238,45 +211,54 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="../enums/_slash_slashcommand_.slashcommandoptiontype.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Option<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="../enums/_slash_slashcommand_.slashcommandresponsetype.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Response<wbr>Type</a>
+					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/_managers_databasemanager_.databasemanager.html" class="tsd-kind-icon">Database<wbr>Manager</a>
+						<a href="../classes/_slash_slashcommand_.slashcommand.html" class="tsd-kind-icon">Slash<wbr>Command</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="_managers_databasemanager_.guild.html" class="tsd-kind-icon">Guild</a>
+						<a href="_slash_slashcommand_.interactiondata.html" class="tsd-kind-icon">Interaction<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_slash_slashcommand_.slashcommandinfo.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Info</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_slash_slashcommand_.slashcommandoption.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Option</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="_slash_slashcommand_.slashcommandresponse.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Response</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="_managers_databasemanager_.user.html" class="tsd-kind-icon">User</a>
+						<a href="_slash_slashcommand_.slashcommandresponsedata.html" class="tsd-kind-icon">Slash<wbr>Command<wbr>Response<wbr>Data</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_managers_databasemanager_.user.html#cards" class="tsd-kind-icon">cards</a>
+								<a href="_slash_slashcommand_.slashcommandresponsedata.html#allows_mentions" class="tsd-kind-icon">allows_<wbr>mentions</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_managers_databasemanager_.user.html#coins" class="tsd-kind-icon">coins</a>
+								<a href="_slash_slashcommand_.slashcommandresponsedata.html#content" class="tsd-kind-icon">content</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_managers_databasemanager_.user.html#dailyclaimtime" class="tsd-kind-icon">daily<wbr>Claim<wbr>Time</a>
+								<a href="_slash_slashcommand_.slashcommandresponsedata.html#embeds" class="tsd-kind-icon">embeds</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_managers_databasemanager_.user.html#deck" class="tsd-kind-icon">deck</a>
+								<a href="_slash_slashcommand_.slashcommandresponsedata.html#flags" class="tsd-kind-icon">flags</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_managers_databasemanager_.user.html#id" class="tsd-kind-icon">id</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_managers_databasemanager_.user.html#lock" class="tsd-kind-icon">lock</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_managers_databasemanager_.user.html#save" class="tsd-kind-icon">save</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_managers_databasemanager_.user.html#xp" class="tsd-kind-icon">xp</a>
+								<a href="_slash_slashcommand_.slashcommandresponsedata.html#tts" class="tsd-kind-icon">tts</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/_slash_slashcommand_.html#interactiondataoptions" class="tsd-kind-icon">Interaction<wbr>Data<wbr>Options</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

@@ -1,3 +1,26 @@
+# [5.6.0](https://github.com/Nigecat/Plexi/compare/v5.5.10...v5.6.0) (2020-12-17)
+
+
+### Bug Fixes
+
+* communism text replacement ignore uppercase text ([33d2ae8](https://github.com/Nigecat/Plexi/commit/33d2ae8aae5c9efc795c13e06e4015270e25c1a3))
+* jekyll not building internal docs ([49c88ef](https://github.com/Nigecat/Plexi/commit/49c88ef85ba56a17743ce2270aa30e464757e315))
+* unflip text ([ef755a1](https://github.com/Nigecat/Plexi/commit/ef755a155a5bf32cc18d01c21d02acd964a1af11))
+
+
+### Features
+
+* slash commands ([#238](https://github.com/Nigecat/Plexi/issues/238)) ([0833d17](https://github.com/Nigecat/Plexi/commit/0833d17063c72f48f692031b16d72978a5823544))
+* **command:** add poll command ([da63537](https://github.com/Nigecat/Plexi/commit/da6353785eab3f97de49166fd38b5ce835532073))
+
+
+### Performance Improvements
+
+* remove docs and coverage from docker image ([490c9c6](https://github.com/Nigecat/Plexi/commit/490c9c65c6e50cec8320ce298a4ee54eb3e97e58))
+* remove nyc output from docker image ([916a02c](https://github.com/Nigecat/Plexi/commit/916a02cffc811b4697fd80378300f8b7e04b6d19))
+
+
+
 ## [5.5.10](https://github.com/Nigecat/Plexi/compare/v5.5.9...v5.5.10) (2020-09-09)
 
 
