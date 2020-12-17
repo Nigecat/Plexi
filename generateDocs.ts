@@ -3,11 +3,35 @@ import loadCommands from "./src/commands";
 import { stripIndents } from "common-tags";
 import { existsSync, promises as fs } from "fs";
 
+/** Copy `CHANGELOG.md` to `docs/changelog.markdown` */
+async function changelog(): Promise<void> {
+    const file = resolve(__dirname, "docs", "changelog.markdown");
+
+    // First we delete the output file if it exists
+    if (existsSync(file)) await fs.unlink(file);
+
+    let data = await fs.readFile("CHANGELOG.md", "utf-8");
+    data = stripIndents`
+        ---
+        layout: page
+        title: Changelog
+        permalink: /changelog
+        ---
+
+        ${data}
+    `;
+
+    await fs.writeFile(file, data, "utf-8");
+}
+
 /**
-This file will read all commands in `src/commands/commands` and parse the expected markdown into `docs/commands.markdown`.
-This will overwrite any data in `docs/commands.markdown`.
-*/
+ * This file will read all commands in `src/commands/commands` and parse the expected markdown into `docs/commands.markdown`.
+ * This will overwrite any data in `docs/commands.markdown`.
+ * It will also copy `CHANGELOG.md` to `docs/changelog.markdown`.
+ */
 async function main(): Promise<void> {
+    await changelog();
+
     const file = resolve(__dirname, "docs", "commands.markdown");
 
     // First we delete the output file if it exists
