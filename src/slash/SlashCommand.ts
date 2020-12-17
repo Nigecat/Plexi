@@ -64,25 +64,20 @@ export interface SlashCommandResponse {
 }
 
 export interface SlashCommandResponseData {
-    /** Message content */
     content: string;
     /** Response flags
      * 64 (1 << 6): An ephemeral message - only the user that invoked the command will be able to see the response
      */
     flags?: number;
-    /** Is the response tts */
     tts?: boolean;
     /** Message embeds, supports up to 10 */
     embeds?: MessageEmbed[];
-    /** Allowed message mentions */
     allows_mentions?: MessageMentionOptions;
 }
 
 /** The information required to create a new slash command */
 export interface SlashCommandInfo {
-    /** The name of this command */
     name: string;
-    /** The description of this command */
     description: string;
     /** The options of this command */
     options?: SlashCommandOption[];
@@ -102,15 +97,11 @@ export enum SlashCommandOptionType {
 
 /** A single option for a slash command */
 export interface SlashCommandOption {
-    /** The name of this option */
     name: string;
-    /** The description of this option */
     description: string;
     /** The type of option this is */
     type: SlashCommandOptionType;
-    /** Whether this option is required */
     required?: boolean;
-    /** Whether this option is the default */
     default?: boolean;
     /** The options for this option (nested options) */
     options?: SlashCommandOption[];
@@ -130,7 +121,9 @@ export type InteractionDataOptions = {
 export interface InteractionData {
     version: number;
     type: number;
+    /** The interaction token */
     token: string;
+    /** Information on the user that ran the command */
     member: {
         user: {
             username: string;
@@ -149,6 +142,7 @@ export interface InteractionData {
         is_pending: boolean;
         deaf: boolean;
     };
+    /** The interaction id */
     id: string;
     guild_id: string;
     channel_id: string;
