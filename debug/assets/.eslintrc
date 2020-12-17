@@ -1,0 +1,9 @@
+{
+    "rules": {
+        "no-console": "off"
+    },
+    "globals": {
+        "window": true,
+        "console": true
+    }
+}
