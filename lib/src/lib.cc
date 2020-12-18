@@ -1,5 +1,6 @@
 #define NAPI_CPP_EXCEPTIONS
 #include <napi.h>
+#include "posterize.h"
 
 using namespace Napi;
 

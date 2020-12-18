@@ -2,7 +2,7 @@
     "targets": [
         {
             "target_name": "lib",
-            "sources": ["lib.cc"],
+            "sources": ["src/lib.cc", "src/posterize.cc"],
             "include_dirs": [
                 "<!(node -p \"require('node-addon-api').include_dir\")"
             ],
