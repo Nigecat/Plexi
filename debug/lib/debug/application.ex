@@ -13,10 +13,10 @@ defmodule Debug.Application do
 
         # Ensure the log files exist
         unless File.exists?(DebugWeb.Constants.info_log) do
-            File.write!(DebugWeb.Constants.info_log, "");
+            File.write!(DebugWeb.Constants.info_log, "level,message,timestamp");
         end
         unless File.exists?(DebugWeb.Constants.error_log) do
-            File.write!(DebugWeb.Constants.error_log, "");
+            File.write!(DebugWeb.Constants.error_log, "level,message,timestamp");
         end
 
         children = [
