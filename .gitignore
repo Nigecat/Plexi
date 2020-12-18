@@ -5,3 +5,4 @@ logs
 coverage
 .nyc_output
 node_modules
+.vscode/c_cpp_properties.json
