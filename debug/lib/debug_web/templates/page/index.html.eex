@@ -1,3 +1,6 @@
+<h1><%= 1 + 1 %></h1>
+
+<!--
 <section class="phx-hero">
     <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
     <p>Peace of mind from prototype to production</p>
@@ -36,3 +39,4 @@
         </ul>
     </article>
 </section>
+-->

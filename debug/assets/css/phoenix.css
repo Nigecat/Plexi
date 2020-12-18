@@ -14,11 +14,12 @@
 
 html {
     box-sizing: border-box;
-    font-size: 62.5%
+    font-size: 62.5%;
+    background-color: #2C2F33;
 }
 
 body {
-    color: #000000;
+    color: #fff;
     font-family: 'Helvetica', 'Arial', sans-serif;
     font-size: 1.6em;
     font-weight: 300;
@@ -683,7 +684,7 @@ select {
 /* Headers */
 header {
     width: 100%;
-    background: #fdfdfd;
+    background: #2C2F33;
     border-bottom: 1px solid #eaeaea;
     margin-bottom: 2rem;
 }
