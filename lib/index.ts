@@ -5,6 +5,6 @@ export interface lib {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const lib: lib = require("./build/Release/lib");
 
-console.log(lib.fn());
+lib.fn();
 
 export default lib;
