@@ -1,6 +1,5 @@
 #define NAPI_CPP_EXCEPTIONS
 #include <napi.h>
-//#include "contrast.h"
 
 using namespace Napi;
 

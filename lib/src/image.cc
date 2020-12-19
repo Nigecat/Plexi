@@ -1,6 +1,5 @@
 #include <vector>
 #include <iostream>
-#include "contrast.h"
 // Move this to lib.cc
 #define STB_IMAGE_IMPLEMENTATION
 #include "../vendor/stb_image.h"
@@ -11,9 +10,8 @@
 #define RGBA_CHANNELS 4
 
 // Load an image as RGBA, even if it is only RGB
-bool load_image(std::vector<unsigned char> &image, char const *file, int &width, int &height)
+bool load_image(std::vector<unsigned char> &image, char const *file, int &width, int &height, int &channels)
 {
-    int channels;
     unsigned char *data = stbi_load(file, &width, &height, &channels, RGBA_CHANNELS);
     if (data != nullptr)
     {
@@ -58,10 +56,10 @@ int main()
     char const *output = "test.jpg";
 
 
-    int width, height;
+    int width, height, channels;
     std::vector<unsigned char> image;
 
-    bool success = load_image(image, file, width, height);
+    bool success = load_image(image, file, width, height, channels);
     if (!success) 
     {
         printf("Failed to load image data (maybe the file doesn't exist)");
@@ -70,7 +68,10 @@ int main()
 
     printf("Loaded image with width: %i, height: %i\n", width, height);
 
-    std::cout << get_pixel(image, width, height, 3, 4);
+   // std::cout << get_pixel(image, width, height, 3, 4);
+
+    unsigned char* data = &image[0];
+    stbi_write_jpg(output, width, height, channels, data, width * channels);
 
     return 0;
 }
