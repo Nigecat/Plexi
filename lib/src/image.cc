@@ -17,13 +17,6 @@ std::ostream &operator << (std::ostream &os, const Pixel &pixel)
 
 bool Image::init(char const *file)
 {
-    std::vector<int> test_vec(100, 0);
-    for (int &n : Util::sample(test_vec, 10))
-    {
-        std::cout << n << "\n";
-    }
-
-
     unsigned char *raw_data = stbi_load(file, &width, &height, &channels, RGBA_CHANNELS);
     if (raw_data != nullptr)
     {
