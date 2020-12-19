@@ -51,6 +51,9 @@ public:
 
     /// Adjust the contrast of this image
     void contrast(int adjustment);
+
+    /// Posterize this image
+    void posterize(int colours);
 };
 
 #endif

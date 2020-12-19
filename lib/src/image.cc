@@ -7,6 +7,7 @@
 #include "../vendor/stb_image.h"
 #include "../vendor/stb_image_write.h"
 #include "image.h"
+#include "util/random.h"
 
 std::ostream &operator << (std::ostream &os, const Pixel &pixel)
 {
@@ -16,6 +17,13 @@ std::ostream &operator << (std::ostream &os, const Pixel &pixel)
 
 bool Image::init(char const *file)
 {
+    std::vector<int> test_vec(100, 0);
+    for (int &n : Util::sample(test_vec, 10))
+    {
+        std::cout << n << "\n";
+    }
+
+
     unsigned char *raw_data = stbi_load(file, &width, &height, &channels, RGBA_CHANNELS);
     if (raw_data != nullptr)
     {
@@ -79,4 +87,10 @@ void Image::contrast(int adjustment)
             replace_pixel(Pixel { red, green, blue, pixel.alpha }, x, y);
         }
     }
+}
+
+void Image::posterize(int colours)
+{
+    // TODO
+    // Python Implementation of Posterization Algorithm: https://github.com/joelgrus/posterization-pyladies/blob/master/solution/posterization.py
 }

@@ -2,7 +2,7 @@
     "targets": [
         {
             "target_name": "lib",
-            "sources": ["src/lib.cc", "src/image.cc"],
+            "sources": ["src/lib.cc", "src/image.cc", "src/util/random.cc"],
             "include_dirs": [
                 "<!(node -p \"require('node-addon-api').include_dir\")"
             ],
