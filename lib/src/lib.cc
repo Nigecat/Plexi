@@ -1,24 +1,30 @@
 #define NAPI_CPP_EXCEPTIONS
 #include <napi.h>
+#include <string>
 #include "image.h"
 
 using namespace Napi;
+using std::string;
 
-Value Fn(const CallbackInfo& info)
+Value manipulate_image(const CallbackInfo& info)
 {
     Env env = info.Env();
 
-    Image image;
-    image.init("W:/Meme-Formats/stonks.png");
-    image.contrast(300);
-    image.save("test.jpg");
+    string input = string(info[0].ToString());
+    string output = string(info[1].ToString());
+    int contrast = info[2].ToNumber();
 
-    return String::New(env, "Hello, World!");
+    Image image;
+    image.init(input.c_str());
+    image.contrast(contrast);
+    image.save(output.c_str());
+
+    return;
 }
 
 Object Init(Env env, Object exports)
 {
-    exports.Set(String::New(env, "fn"), Function::New<Fn>(env));
+    exports.Set(String::New(env, "manipulate_image"), Function::New<manipulate_image>(env));
     return exports;
 }
 
