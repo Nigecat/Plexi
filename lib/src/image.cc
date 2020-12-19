@@ -1,9 +1,9 @@
 #include <vector>
 #include <iostream>
-// Move this to lib.cc
+// Move this main file
 #define STB_IMAGE_IMPLEMENTATION
 #include "../vendor/stb_image.h"
-// Also move this to lib.cc
+// Also move this main file
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "../vendor/stb_image_write.h"
 
@@ -24,18 +24,41 @@ bool load_image(std::vector<unsigned char> &image, char const *file, int &width,
 struct Pixel 
 {
     // Red channel
-    int r;
+    int red;
     // Green channel
-    int g;
+    int green;
     // Blue channel
-    int b;
+    int blue;
     // Alpha channel
-    int a;
+    int alpha;
 };
 
-Pixel get_pixel(std::vector<unsigned char> &image, int width, int height, int x, int y) 
+// Ensure a number is within the range of 0 to 255
+int truncate(int num)
 {
-    size_t index = RGBA_CHANNELS * (y * width + x);
+    if (num < 0)
+    {
+        return 0;
+    }
+    else if (num > 255)
+    {
+        return 255;
+    }
+    else
+    {
+        return num;
+    }
+}
+
+size_t calculate_index(int x, int y, int width)
+{
+    return RGBA_CHANNELS * (y * width + x);
+}
+
+// Get a pixel at (x, y) from an image
+Pixel get_pixel(std::vector<unsigned char> &image, int width, int x, int y) 
+{
+    size_t index = calculate_index(x, y, width);
     return Pixel {
         static_cast<int>(image[index + 0]),
         static_cast<int>(image[index + 1]),
@@ -44,15 +67,25 @@ Pixel get_pixel(std::vector<unsigned char> &image, int width, int height, int x,
     };
 }
 
+// Replace a pixel at (x, y) in the source image
+void replace_pixel(std::vector<unsigned char> &image, Pixel pixel, int width, int x, int y)
+{
+    size_t index = calculate_index(x, y, width);
+    image[index + 0] = static_cast<unsigned char>(pixel.red);
+    image[index + 1] = static_cast<unsigned char>(pixel.green);
+    image[index + 2] = static_cast<unsigned char>(pixel.blue);
+    image[index + 3] = static_cast<unsigned char>(pixel.alpha);
+}
+
 std::ostream &operator << (std::ostream &os, const Pixel &pixel)
 {
-    os << "Pixel (" << pixel.r << ", " << pixel.g << ", " << pixel.b << ", " << pixel.a << ")";
+    os << "Pixel (" << pixel.red << ", " << pixel.green << ", " << pixel.blue << ", " << pixel.alpha << ")";
     return os;
 }
 
 int main()
 {
-    char const *file = "K:/Meme Formats/stonks.png";
+    char const *file = "W:/Meme-Formats/stonks.png";
     char const *output = "test.jpg";
 
 
@@ -66,9 +99,24 @@ int main()
         return 1;
     }
 
-    printf("Loaded image with width: %i, height: %i\n", width, height);
+    int adjustment = 400;
+    int factor = (259 * (adjustment + 255)) / (255 * (259 - adjustment));
 
-   // std::cout << get_pixel(image, width, height, 3, 4);
+    for (int x = 0; x < width; x++)
+    {
+        for (int y = 0; y < height; y++)
+        {
+            Pixel pixel = get_pixel(image, width, x, y);
+            int red = truncate(factor * (pixel.red - 128) + 128);
+            int green = truncate(factor * (pixel.green - 128) + 128);
+            int blue = truncate(factor * (pixel.blue - 128) + 128);
+            replace_pixel(image, Pixel { red, green, blue, pixel.alpha }, width, x, y);
+
+           
+           // printf("Currently at position: (%i, %i) with ", x, y);
+           // std::cout << pixel << "\n";
+        }
+    }
 
     unsigned char* data = &image[0];
     stbi_write_jpg(output, width, height, channels, data, width * channels);
