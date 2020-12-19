@@ -22,7 +22,7 @@ void manipulate_image(const CallbackInfo& info)
 
 Object Init(Env env, Object exports)
 {
-    exports.Set(String::New(env, "manipulate_image"), Function::New<manipulate_image>(env));
+    exports.Set(String::New(env, "manipulateImage"), Function::New<manipulate_image>(env));
     return exports;
 }
 
