@@ -6,7 +6,7 @@
 using namespace Napi;
 using std::string;
 
-Value manipulate_image(const CallbackInfo& info)
+void manipulate_image(const CallbackInfo& info)
 {
     Env env = info.Env();
 
@@ -18,8 +18,6 @@ Value manipulate_image(const CallbackInfo& info)
     image.init(input.c_str());
     image.contrast(contrast);
     image.save(output.c_str());
-
-    return;
 }
 
 Object Init(Env env, Object exports)
