@@ -72,9 +72,6 @@ void Image::contrast(int adjustment)
     {
         for (int y = 0; y < height; y++)
         {
-           // printf("Currently at position: (%i, %i) with ", x, y);
-           // std::cout << pixel << "\n";
-
             Pixel pixel = get_pixel(x, y);
             int red = truncate(factor * (pixel.red - 128) + 128);
             int green = truncate(factor * (pixel.green - 128) + 128);
