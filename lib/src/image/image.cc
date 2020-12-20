@@ -1,7 +1,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #define RGBA_CHANNELS 4
-#define K_MEANS_NUM_ITERATIONS 10
 
 #include <vector>
 #include <iostream>
