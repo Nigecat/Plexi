@@ -1,4 +1,4 @@
-#include "image.h"
+#include "image.hpp"
 
 void Image::contrast(int adjustment)
 {

@@ -1,4 +1,4 @@
-#include "image.h"
+#include "image.hpp"
 
 void Image::posterize(int num_colours)
 {

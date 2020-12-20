@@ -1,7 +1,7 @@
 #define NAPI_CPP_EXCEPTIONS
 #include <napi.h>
 #include <string>
-#include "image/image.h"
+#include "image/image.hpp"
 
 using namespace Napi;
 using std::string;

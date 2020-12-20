@@ -7,7 +7,7 @@
 #include <iostream>
 #include <vendor/stb_image.h>
 #include <vendor/stb_image_write.h>
-#include "image.h"
+#include "image.hpp"
 
 std::ostream &operator << (std::ostream &os, const Pixel &pixel)
 {
