@@ -1,13 +1,13 @@
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #define RGBA_CHANNELS 4
+#define K_MEANS_NUM_ITERATIONS 10
 
 #include <vector>
 #include <iostream>
-#include "../vendor/stb_image.h"
-#include "../vendor/stb_image_write.h"
+#include <vendor/stb_image.h>
+#include <vendor/stb_image_write.h>
 #include "image.h"
-#include "util/random.h"
 
 std::ostream &operator << (std::ostream &os, const Pixel &pixel)
 {
@@ -62,28 +62,4 @@ int Image::truncate(int num)
     if (num < 0) return 0;
     else if (num > 255) return 255;
     else return num;
-}
-
-void Image::contrast(int adjustment)
-{
-    int factor = (259 * (adjustment + 255)) / (255 * (259 - adjustment));
-
-    // Iterate over the pixels
-    for (int x = 0; x < width; x++)
-    {
-        for (int y = 0; y < height; y++)
-        {
-            Pixel pixel = get_pixel(x, y);
-            int red = truncate(factor * (pixel.red - 128) + 128);
-            int green = truncate(factor * (pixel.green - 128) + 128);
-            int blue = truncate(factor * (pixel.blue - 128) + 128);
-            replace_pixel(Pixel { red, green, blue, pixel.alpha }, x, y);
-        }
-    }
-}
-
-void Image::posterize(int colours)
-{
-    // TODO
-    // Python Implementation of Posterization Algorithm: https://github.com/joelgrus/posterization-pyladies/blob/master/solution/posterization.py
 }

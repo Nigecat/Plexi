@@ -1,13 +1,11 @@
 #include <random>
 #include <vector>
-#include "random.h"
-
-using std::vector;
+#include "util.h"
 
 namespace Util
 {
 
-vector<int> random(int min, int max, int amount)
+std::vector<int> random(int min, int max, int amount)
 {
     // Obtain a random number from the hardware
     std::random_device rd;
@@ -19,27 +17,13 @@ vector<int> random(int min, int max, int amount)
     std::uniform_int_distribution<> distr(min, max);
     
     // Generate the numbers
-    vector<int> numbers(amount, 0);
+    std::vector<int> numbers(amount, 0);
     for (int i = 0; i < amount; i++)
     {
         numbers[i] = distr(gen);
     }
 
     return numbers;
-}
-
-template <typename T>
-vector<T> sample(vector<T> &input, int k)
-{
-    vector<T> output;
-    vector<int> numbers = random(0, input.size(), k);
-
-    for (int &number : numbers)
-    {
-        output.push_back(input[number]);
-    }
-
-    return output;
 }
 
 }

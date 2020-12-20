@@ -53,7 +53,7 @@ public:
     void contrast(int adjustment);
 
     /// Posterize this image
-    void posterize(int colours);
+    void posterize(int num_colours);
 };
 
 #endif

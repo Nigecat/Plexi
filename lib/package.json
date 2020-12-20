@@ -1,4 +1,8 @@
 {
+    "scripts": {
+        "rebuild": "node-gyp configure --verbose && npm run build",
+        "build": "node-gyp build -j 4 --verbose"
+    },
     "dependencies": {
         "node-addon-api": "*"
     }

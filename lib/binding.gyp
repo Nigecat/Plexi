@@ -2,9 +2,17 @@
     "targets": [
         {
             "target_name": "lib",
-            "sources": ["src/lib.cc", "src/image.cc", "src/util/random.cc"],
+            "sources": [
+                "src/lib.cc",
+                "src/image/image.cc",
+                "src/image/contrast.cc",
+                "src/image/posterize.cc",
+                "src/util.cc"
+            ],
             "include_dirs": [
-                "<!(node -p \"require('node-addon-api').include_dir\")"
+                "<!(node -p \"require('node-addon-api').include_dir\")",
+                "./",
+                "./src"
             ],
             "cflags!": ["-fno-exceptions"],
             "cflags_cc!": ["-fno-exceptions"],
