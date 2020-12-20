@@ -16,10 +16,10 @@ std::ostream &operator << (std::ostream &os, const Pixel &pixel)
 
 bool Image::init(char const *file)
 {
-    unsigned char *raw_data = stbi_load(file, &width, &height, &channels, RGBA_CHANNELS);
+    unsigned char *raw_data = stbi_load(file, &this->width, &this->height, &this->channels, RGBA_CHANNELS);
     if (raw_data != nullptr)
     {
-        data = std::vector<unsigned char>(raw_data, raw_data + width * height * RGBA_CHANNELS);
+        this->data = std::vector<unsigned char>(raw_data, raw_data + this->width * this->height * RGBA_CHANNELS);
     }
     stbi_image_free(raw_data);
     return (raw_data != nullptr);
@@ -29,31 +29,31 @@ Pixel Image::get_pixel(int x, int y)
 {
     size_t index = calculate_index(x, y);
     return Pixel {
-        static_cast<int>(data[index + 0]),
-        static_cast<int>(data[index + 1]),
-        static_cast<int>(data[index + 2]),
-        static_cast<int>(data[index + 3]),
+        static_cast<int>(this->data[index + 0]),
+        static_cast<int>(this->data[index + 1]),
+        static_cast<int>(this->data[index + 2]),
+        static_cast<int>(this->data[index + 3]),
     };
 }
 
 void Image::replace_pixel(Pixel pixel, int x, int y)
 {
     size_t index = calculate_index(x, y);
-    data[index + 0] = static_cast<unsigned char>(pixel.red);
-    data[index + 1] = static_cast<unsigned char>(pixel.green);
-    data[index + 2] = static_cast<unsigned char>(pixel.blue);
-    data[index + 3] = static_cast<unsigned char>(pixel.alpha);
+    this->data[index + 0] = static_cast<unsigned char>(pixel.red);
+    this->data[index + 1] = static_cast<unsigned char>(pixel.green);
+    this->data[index + 2] = static_cast<unsigned char>(pixel.blue);
+    this->data[index + 3] = static_cast<unsigned char>(pixel.alpha);
 }
 
 void Image::save(char const *path)
 {
-    unsigned char* raw_data = &data[0];
-    stbi_write_jpg(path, width, height, channels, raw_data, width * channels);
+    unsigned char* raw_data = &this->data[0];
+    stbi_write_jpg(path, this->width, this->height,this-> channels, raw_data, this->width * this->channels);
 }
 
 size_t Image::calculate_index(int x, int y)
 {
-    return RGBA_CHANNELS * (y * width + x);
+    return RGBA_CHANNELS * (y * this->width + x);
 }
 
 int Image::truncate(int num)

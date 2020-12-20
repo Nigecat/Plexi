@@ -5,9 +5,9 @@ void Image::contrast(int adjustment)
     int factor = (259 * (adjustment + 255)) / (255 * (259 - adjustment));
 
     // Iterate over the pixels
-    for (int x = 0; x < width; x++)
+    for (int x = 0; x < this->width; x++)
     {
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < this->height; y++)
         {
             Pixel pixel = get_pixel(x, y);
             int red = truncate(factor * (pixel.red - 128) + 128);
