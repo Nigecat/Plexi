@@ -54,7 +54,7 @@
         "discord.js": "^12.5.1",
         "dotenv": "^8.2.0",
         "ffmpeg-static": "^4.2.7",
-        "file-type": "^16.0.1",
+        "file-type": "^16.1.0",
         "jimp": "^0.16.1",
         "mathjs": "^8.1.0",
         "mongoose": "^5.10.16",
