@@ -44,6 +44,10 @@ export default class Roles extends SlashCommand {
             return message("You don't have permission to manage roles on this server.");
         }
 
+        if (role.position > author.roles.highest.position) {
+            return message("I can't modify a role above your highest role.");
+        }
+
         const helper = async (
             success: string,
             failure: string,

@@ -4,4 +4,6 @@ updates:
   directory: "/"
   schedule:
     interval: daily
+  reviewers:
+     - "Nigecat"
   open-pull-requests-limit: 10
