@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
 import { Plexi } from "../../../Plexi";
 import { Command } from "../../Command";
-import { lastMessage, fetch, generateHelp } from "../../../utils/misc";
+import { lastMessage, fetch, generateHelp, isUrl } from "../../../utils/misc";
 
 export default class WhatAnime extends Command {
     constructor(client: Plexi) {
@@ -53,14 +53,5 @@ export default class WhatAnime extends Command {
                     : this.client.config.prefix;
             message.channel.send(generateHelp(this, prefix));
         }
-    }
-}
-
-function isUrl(str: string): boolean {
-    const regexp = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/;
-    if (regexp.test(str)) {
-        return true;
-    } else {
-        return false;
     }
 }
