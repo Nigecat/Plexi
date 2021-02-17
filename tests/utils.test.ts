@@ -79,6 +79,11 @@ describe("utils", () => {
                 expect(miscUtils.convertMs("00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")).to.equal(undefined);
             });
         });
+
+        it("isUrl", () => {
+            expect(miscUtils.isUrl("http://example.com"));
+            expect(miscUtils.isUrl("https://example.com"));
+        });
     });
 
     describe("image", () => {

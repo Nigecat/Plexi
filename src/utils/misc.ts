@@ -253,3 +253,16 @@ export async function sendBufApi(url: string, channel: TextChannel | DMChannel |
         channel.stopTyping();
     }
 }
+
+/**
+ * Check if the supplied string is a valid http/https url
+ * @param {String} str - The string to check
+ */
+export function isUrl(str: string): boolean {
+    const regexp = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/;
+    if (regexp.test(str)) {
+        return true;
+    } else {
+        return false;
+    }
+}
