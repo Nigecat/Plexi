@@ -27,7 +27,7 @@
         "@types/chai": "^4.2.15",
         "@types/common-tags": "^1.8.0",
         "@types/mathjs": "^6.0.11",
-        "@types/mocha": "^8.2.0",
+        "@types/mocha": "^8.2.1",
         "@types/mongoose": "^5.10.3",
         "@types/rewire": "^2.5.28",
         "@typescript-eslint/eslint-plugin": "^3.10.1",
