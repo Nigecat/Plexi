@@ -43,7 +43,7 @@
         "rewire": "^5.0.0",
         "source-map-support": "^0.5.19",
         "ts-node": "^9.1.1",
-        "typedoc": "^0.20.30"
+        "typedoc": "^0.20.32"
     },
     "dependencies": {
         "@discordjs/opus": "^0.4.0",
