@@ -31,7 +31,7 @@
         "@types/mongoose": "^5.10.4",
         "@types/rewire": "^2.5.28",
         "@typescript-eslint/eslint-plugin": "^3.10.1",
-        "@typescript-eslint/parser": "^3.10.1",
+        "@typescript-eslint/parser": "^4.19.0",
         "chai": "^4.3.3",
         "conventional-changelog-cli": "^2.1.1",
         "eslint": "^7.22.0",
