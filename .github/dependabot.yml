@@ -6,4 +6,4 @@ updates:
     interval: daily
   reviewers:
      - "Nigecat"
-  open-pull-requests-limit: 10
+  open-pull-requests-limit: 1
